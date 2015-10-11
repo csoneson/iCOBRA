@@ -1,0 +1,49 @@
+---
+title: "IBRA User Guide"
+author: "Charlotte Soneson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{IBRA User Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+IBRA is a package to calculate and visualize performance metrics for ranking and binary assignment methods. A typical use cases could be, for example, comparing methods calling differential expression in gene expression experiments, which could be seen as either a ranking problem (estimating the correct effect size and ordering the genes by significance) or a binary assignment problem (determining which genes are differentially expressed and which are not). 
+
+The starting point for such an evaluation is typically a collection of feature 'scores' (p-values, adjusted p-values or any other ranking score) and the truth (information about the true status, or the true scores for the features). 
+
+## Creating a data set
+
+```{r}
+#load(system.file("extdata", "example_data.Rdata", package = "IBRA"))
+#load("../data/example_data.Rdata")
+#ibradata
+```
+
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
