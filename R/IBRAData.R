@@ -1,4 +1,10 @@
-#' A class to hold observed scores and true values for features
+#' @rdname IBRAData
+#' @export
+.IBRAData <- setClass("IBRAData",
+                      slots = c(pval = "data.frame", padj = "data.frame",
+                                score = "data.frame", truth = "data.frame"))
+
+#' IBRAData object and constructor
 #'
 #' The IBRAData class contains slots to hold calculated p-values, adjusted
 #' p-values and general 'scores' for a set of features. The slots can contain
@@ -11,39 +17,29 @@
 #' are available, the adjusted p-values can be calculated using the
 #' \code{calculate_adjp} function.
 #'
-#' @slot pval A data frame with features as rows and methods as columns,
+#' @param pval A data frame with features as rows and methods as columns,
 #'   containing nominal p-values. Missing values (\code{NA}s) are allowed. The
 #'   row names should be feature names.
-#' @slot padj A data frame with features as rows and methods as columns,
+#' @param padj A data frame with features as rows and methods as columns,
 #'   containing adjusted p-values. Missing values (\code{NA}s) are allowed. The
 #'   row names should be feature names.
-#' @slot score A data frame with features as rows and methods as columns,
+#' @param score A data frame with features as rows and methods as columns,
 #'   containing generic scores. In case of comparison to a binary truth, larger
 #'   values of the scores should correspond to 'more significant' features.
 #'   Missing values (\code{NA}s) are allowed. The row names should be feature
 #'   names.
-#' @slot truth A data frame with features as rows columns containing feature
+#' @param truth A data frame with features as rows columns containing feature
 #'   annotations such as, e.g., binary and continuous truths and additional
 #'   annotations that can be used to stratify the performance calculations. The
 #'   row names should be feature names.
+#' @param object_to_extend An IBRAData object
+#'
+#' @return An IBRAData object
+#'
+#' @aliases IBRAData IBRAData-class
 #'
 #' @docType class
-#' @name IBRAData-class
-#' @export .IBRAData
-#' @exportClass IBRAData
-#' @author Charlotte Soneson
-.IBRAData <- setClass("IBRAData",
-                      slots = c(pval = "data.frame", # "df_or_null",
-                                padj = "data.frame", # "df_or_null",
-                                score = "data.frame", # "df_or_null",
-                                truth = "data.frame"))# "df_or_null"))
-
-#' Constructor function for IBRAData class
-#' @param pval A data frame
-#' @param padj A data frame
-#' @param score A data frame
-#' @param truth A data frame
-#' @param object_to_extend An IBRAData object
+#'
 #' @export
 #' @rdname IBRAData
 #' @author Charlotte Soneson
@@ -51,8 +47,6 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
                      score = data.frame(), truth = data.frame(),
                      object_to_extend = NULL) {
 
-# IBRAData <- function(pval = NULL, padj = NULL, score = NULL, truth = NULL,
-#                      object_to_extend = NULL) {
   if (!(is.null(object_to_extend))) {
     if (!(class(object_to_extend) == "IBRAData")) {
       stop("object_to_extend must be a IBRAData object")
