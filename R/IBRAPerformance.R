@@ -1,4 +1,3 @@
-methods::setClassUnion("num", c("numeric", "integer"))
 methods::setClassUnion("list_df", c("list", "data.frame"))
 
 #' A class to hold performance measures
@@ -51,20 +50,17 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #' @export .IBRAPerformance
 #' @exportClass IBRAPerformance
 #' @author Charlotte Soneson
+#' @import methods
 .IBRAPerformance <- setClass("IBRAPerformance",
-                             slots = c(fdrtpr = "data.frame", # "df_or_null",
-                                       fdrtprcurve = "data.frame", # "df_or_null",
-                                       fdrnbr = "data.frame", # "df_or_null",
-                                       fdrnbrcurve = "data.frame", # "df_or_null",
-                                       tpr = "data.frame", # "df_or_null",
-                                       fpr = "data.frame", # "df_or_null",
-                                       roc = "data.frame", # "df_or_null",
-                                       scatter = "data.frame", # "df_or_null",
-                                       fpc = "data.frame", # "df_or_null",
-                                       overlap = "list_df", # "list_df_or_null",
-                                       corr = "data.frame", # "df_or_null",
-                                       maxsplit = "num", # "num_or_null",
-                                       splv = "character"))# "char_or_null"))
+                             slots = c(fdrtpr = "data.frame",
+                                       fdrtprcurve = "data.frame",
+                                       fdrnbr = "data.frame",
+                                       fdrnbrcurve = "data.frame",
+                                       tpr = "data.frame", fpr = "data.frame",
+                                       roc = "data.frame", scatter = "data.frame",
+                                       fpc = "data.frame", overlap = "list_df",
+                                       corr = "data.frame", maxsplit = "numeric",
+                                       splv = "character"))
 
 #' Constructor function for IBRAPerformance class
 #' @param fdrtpr A data frame
@@ -423,7 +419,7 @@ setReplaceMethod("splv", signature(x = "IBRAPerformance", value = "character"),
 #' @docType methods
 #' @name maxsplit
 #' @rdname maxsplit
-#' @aliases maxsplit maxsplit,IBRAPerformance-method maxsplit<-,IBRAPerformance,num-method maxsplit,IBRAPlot-method maxsplit<-,IBRAPlot,num-method
+#' @aliases maxsplit maxsplit,IBRAPerformance-method maxsplit<-,IBRAPerformance,numeric-method maxsplit,IBRAPlot-method maxsplit<-,IBRAPlot,numeric-method
 #'
 #' @param x An IBRAPerformance object
 #' @param ... Additional arguments
@@ -434,7 +430,7 @@ setMethod("maxsplit", "IBRAPerformance", function(x) x@maxsplit)
 #' @name maxsplit
 #' @rdname maxsplit
 #' @exportMethod "maxsplit<-"
-setReplaceMethod("maxsplit", signature(x = "IBRAPerformance", value = "num"),
+setReplaceMethod("maxsplit", signature(x = "IBRAPerformance", value = "numeric"),
                  function(x, value) {
                    x@maxsplit <- value
                    if (validObject(x))

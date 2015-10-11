@@ -14,7 +14,7 @@
 #'   facetted plot (separating different stratification levels into different
 #'   panels) or for displaying all values in one plot panel.
 #'
-#' @inheritParams IBRAPerformance
+#' @inheritParams .IBRAPerformance
 #' @include IBRAPerformance.R
 #' @docType class
 #' @name IBRAPlot-class
@@ -22,8 +22,8 @@
 #' @exportClass IBRAPlot
 #' @author Charlotte Soneson
 .IBRAPlot <- setClass("IBRAPlot",
-                      slots = c(plotcolors = "character",# "char_or_null",
-                                facetted = "logical"),# "log_or_null"),
+                      slots = c(plotcolors = "character",
+                                facetted = "logical"),
                       contains = "IBRAPerformance")
 
 #' Constructor function for IBRAPlot class

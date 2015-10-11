@@ -1,4 +1,10 @@
+#' Run interactive shiny app to visualize results
+#'
+#' @param ibradata An (optional) IBRAData object. If not given, the user can
+#'   load results from text files.
+#' @author Charlotte Soneson
 #' @import shiny
+#' @export
 IBRAapp <- function(ibradata = NULL) {
   ## Define UI
   p_layout <-

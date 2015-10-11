@@ -6,8 +6,8 @@
 \alias{maxsplit,IBRAPerformance-method}
 \alias{maxsplit,IBRAPlot-method}
 \alias{maxsplit<-}
-\alias{maxsplit<-,IBRAPerformance,num-method}
-\alias{maxsplit<-,IBRAPlot,num-method}
+\alias{maxsplit<-,IBRAPerformance,numeric-method}
+\alias{maxsplit<-,IBRAPlot,numeric-method}
 \title{Accessors for the 'maxsplit' slot of an IBRAPerformance object}
 \usage{
 maxsplit(x, ...)
@@ -16,7 +16,7 @@ maxsplit(x, ...) <- value
 
 \S4method{maxsplit}{IBRAPerformance}(x)
 
-\S4method{maxsplit}{IBRAPerformance,num}(x) <- value
+\S4method{maxsplit}{IBRAPerformance,numeric}(x) <- value
 }
 \arguments{
 \item{x}{An IBRAPerformance object}
