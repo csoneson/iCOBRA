@@ -7,6 +7,7 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
                                        fdrtprcurve = "data.frame",
                                        fdrnbr = "data.frame",
                                        fdrnbrcurve = "data.frame",
+                                       deviation = "data.frame",
                                        tpr = "data.frame", fpr = "data.frame",
                                        roc = "data.frame", scatter = "data.frame",
                                        fpc = "data.frame", overlap = "list_df",
@@ -53,6 +54,8 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #'   corresponds to one level of a stratifying factor.
 #' @param corr A data frame containing observed (Pearson and Spearman)
 #'   correlation values between observed and true scores.
+#' @param deviation A data frame containing deviations between observed scores
+#'   and true scores.
 #' @param maxsplit A numeric value indicating the largest number of levels to
 #'   retain if the results have been stratified by an annotation.
 #' @param splv A character string giving the name of the stratification factor,
@@ -74,6 +77,7 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                             fdrnbr = data.frame(), fdrnbrcurve = data.frame(),
                             tpr = data.frame(), fpr = data.frame(), splv = "",
                             roc = data.frame(), fpc = data.frame(),
+                            deviation = data.frame(),
                             overlap = data.frame(), maxsplit = 3,
                             corr = data.frame(), scatter = data.frame(),
                             object_to_extend = NULL) {
@@ -101,6 +105,8 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
         fpc <- object_to_extend@fpc
       if (length(object_to_extend@corr) != 0)
         corr <- object_to_extend@corr
+      if (length(object_to_extend@deviation) != 0)
+        deviation <- object_to_extend@deviation
       if (length(object_to_extend@scatter) != 0)
         scatter <- object_to_extend@scatter
       if (length(object_to_extend@overlap) != 0)
@@ -112,6 +118,7 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
     }
   }
   .IBRAPerformance(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
+                   deviation = deviation,
                    fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, scatter = scatter,
                    tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, corr = corr,
                    overlap = overlap, splv = splv, maxsplit = maxsplit)
@@ -183,6 +190,36 @@ setMethod("fdrtprcurve", "IBRAPerformance", function(x) x@fdrtprcurve)
 setReplaceMethod("fdrtprcurve", signature(x = "IBRAPerformance", value = "data.frame"),
                  function(x, value) {
                    x@fdrtprcurve <- value
+                   if (validObject(x))
+                     return(x)
+                 })
+
+#' Accessor and replacement functions for \code{deviation} slot
+#'
+#' Accessor and replacement functions for the \code{deviation} slot in an
+#' \code{IBRAPerformance} or \code{IBRAPlot} object.
+#'
+#' @docType methods
+#' @name deviation
+#' @rdname deviation
+#' @aliases deviation deviation,IBRAPerformance-method
+#'   deviation<-,IBRAPerformance,data.frame-method deviation,IBRAPlot-method
+#'   deviation<-,IBRAPlot,data.frame-method
+#'
+#' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
+#' @param ... Additional arguments.
+#' @param value A data frame giving information necessary to plots of deviations
+#'   between observed and true scores for each method and each stratification
+#'   level.
+#' @author Charlotte Soneson
+#' @export
+setMethod("deviation", "IBRAPerformance", function(x) x@deviation)
+#' @name deviation
+#' @rdname deviation
+#' @exportMethod "deviation<-"
+setReplaceMethod("deviation", signature(x = "IBRAPerformance", value = "data.frame"),
+                 function(x, value) {
+                   x@deviation <- value
                    if (validObject(x))
                      return(x)
                  })
@@ -604,6 +641,8 @@ setMethod("[", "IBRAPerformance",
               x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
             if (length(x@fdrnbr) != 0)
               x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
+            if (length(x@deviation) != 0)
+              x@deviation <- x@deviation[which(x@deviation$basemethod %in% j), ]
             if (length(x@fdrtprcurve) != 0)
               x@fdrtprcurve <-
                 x@fdrtprcurve[which(x@fdrtprcurve$basemethod %in% j), ]

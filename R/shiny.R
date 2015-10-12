@@ -307,6 +307,22 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("scatter_click_info"), value = "scatter"),
 
+          tabPanel("Deviations",
+                   uiOutput("plot.deviation"),
+                   fluidRow(
+                     column(2, checkboxInput("dojitter", "Include jittered points", FALSE)),
+                     column(2, radioButtons(inputId = "devtype", label = "Plot type",
+                                            choices = c("boxplot", "violinplot"),
+                                            selected = "violinplot")),
+                     column(2, br(), downloadButton("export.deviation",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.deviation.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.deviation.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("deviation_click_info"), value = "deviation"),
+
           tabPanel("Venn diagram", shinyBS::bsAlert("overlap_message"),
                    uiOutput("plot.overlap"),
                    fluidRow(
@@ -681,7 +697,21 @@ IBRAapp <- function(ibradata = NULL) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        #        NULL
+        return(IBRAPerformance())
+      }
+    })
+
+    plotvalues_deviation <- reactive({
+      if (input$goButton > 0 & input$cont_truth != "none") {
+        return(calculate_performance(values$my_ibradata,
+                                     binary_truth = NULL,
+                                     cont_truth = input$cont_truth,
+                                     aspects = "deviation", thrs = NULL,
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
+      } else {
         return(IBRAPerformance())
       }
     })
@@ -703,7 +733,8 @@ IBRAapp <- function(ibradata = NULL) {
                                         maxsplit = input$maxsplit,
                                         splv = input$splv,
                                         corr = corr(plotvalues_corr()),
-                                        scatter = scatter(plotvalues_scatter()))
+                                        scatter = scatter(plotvalues_scatter()),
+                                        deviation = deviation(plotvalues_deviation()))
 
             all_vals <- prepare_data_for_plot(ibraperf = all_vals,
                                               keepmethods = input$cols,
@@ -846,11 +877,11 @@ IBRAapp <- function(ibradata = NULL) {
         res <- nearPoints(all_data, input$tpr_plot_click,
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, panelvar1 = "splitval",
-                          yvar = "num_method")
+                          yvar = "num_method", xvar = "TPR")
       } else {
         res <- nearPoints(all_data, input$tpr_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, yvar = "num_method")
+                          addDist = TRUE, yvar = "num_method", xvar = "TPR")
       }
       fix_res(res, methodcol = "fullmethod", aspcts = c("TPR"), tabtype = "large")
     })
@@ -913,13 +944,84 @@ IBRAapp <- function(ibradata = NULL) {
         res <- nearPoints(all_data, input$corr_plot_click,
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, panelvar1 = "splitval",
-                          yvar = "num_method")
+                          yvar = "num_method", xvar = toupper(input$corrtype))
       } else {
         res <- nearPoints(all_data, input$corr_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, yvar = "num_method")
+                          addDist = TRUE, yvar = "num_method",
+                          xvar = toupper(input$corrtype))
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = toupper(input$corrtype), tabtype = "corr")
+      fix_res(res, methodcol = "fullmethod", aspcts = toupper(input$corrtype),
+              tabtype = "corr")
+    })
+
+    ## -------------------------- DEVIATION ---------------------------- ##
+    output$plot.deviation <- renderUI({
+      plotOutput("deviation", width = "100%", height = paste0(input$plotheight, "px"),
+                 hover = "deviation_plot_click")
+    })
+
+    ## Figure for exporting
+    output$export.deviation <- downloadHandler(
+      filename = "shiny-plot.pdf",
+      content = function(file) {
+        pdf(file, width = 12, height = input$plotheight/67)
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+          return(NULL)
+        print(plot_deviation(ibraplot = plotvalues()$all_vals,
+                             title = plotvalues()$title,
+                             stripsize = input$stripsize, titlecol = "white",
+                             plottype = input$devtype,
+                             dojitter = input$dojitter))
+        dev.off()
+      })
+
+    ## Data for exporting
+    output$export.deviation.df.rdata <- downloadHandler(
+      filename = "deviation-data.Rdata",
+      content = function(file) {
+        ibraplot <- isolate(plotvalues()$all_vals)
+        save(ibraplot, file = file)
+      })
+
+    output$export.deviation.df.tsv <- downloadHandler(
+      filename = "deviation-data.tsv",
+      content = function(file) {
+        deviation_df <- isolate(deviation(plotvalues()$all_vals))
+        write.table(deviation_df, file = file, quote = FALSE, row.names = FALSE,
+                    col.names = TRUE, sep = "\t")
+      })
+
+    output$deviation <- renderPlot({
+      withProgress(message = "Updating plot...", value = 0, {
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+          return(NULL)
+        plot_deviation(ibraplot = plotvalues()$all_vals,
+                       title = plotvalues()$title,
+                       stripsize = input$stripsize, titlecol = "white",
+                       plottype = input$devtype, dojitter = input$dojitter)
+      })
+    })
+
+    output$deviation_click_info <- DT::renderDataTable({
+      if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+          input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+        return(NULL)
+      all_data <- isolate(deviation(plotvalues()$all_vals))
+      if ("split" %in% isolate(input$facet_opt)) {
+        res <- nearPoints2(all_data, input$deviation_plot_click,
+                           threshold = 50, maxpoints = 100,
+                           addDist = TRUE, panelvar1 = "splitval",
+                           yvar = "num_method", xvar = "DEVIATION")
+      } else {
+        res <- nearPoints2(all_data, input$deviation_plot_click,
+                           threshold = 50, maxpoints = 100,
+                           addDist = TRUE, yvar = "num_method",
+                           xvar = "DEVIATION")
+      }
+      fix_res(res, methodcol = "fullmethod", aspcts = "DEVIATION", tabtype = "scatter")
     })
 
     ## ---------------------------- FPR -------------------------------- ##
@@ -978,11 +1080,11 @@ IBRAapp <- function(ibradata = NULL) {
         res <- nearPoints(all_data, input$fpr_plot_click,
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, panelvar1 = "splitval",
-                          yvar = "num_method")
+                          yvar = "num_method", xvar = "FPR")
       } else {
         res <- nearPoints(all_data, input$fpr_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, yvar = "num_method")
+                          addDist = TRUE, yvar = "num_method", xvar = "FPR")
       }
       fix_res(res, methodcol = "fullmethod", aspcts = c("FPR"), tabtype = "large")
     })
@@ -1043,11 +1145,12 @@ IBRAapp <- function(ibradata = NULL) {
       if ("split" %in% isolate(input$facet_opt)) {
         res <- nearPoints(all_data, input$roc_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, panelvar1 = "splitval")
+                          addDist = TRUE, panelvar1 = "splitval",
+                          xvar = "FPR", yvar = "TPR")
       } else {
         res <- nearPoints(all_data, input$roc_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE)
+                          addDist = TRUE, xvar = "FPR", yvar = "TPR")
       }
       fix_res(res, methodcol = "fullmethod", aspcts = c("FPR", "TPR"), tabtype = "small")
     })
@@ -1111,12 +1214,13 @@ IBRAapp <- function(ibradata = NULL) {
       if ("split" %in% isolate(input$facet_opt)) {
         res <- nearPoints(all_data, input$scatter_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE)
+                          addDist = TRUE, xvar = "OBSERVATION",
+                          yvar = "TRUTH")
       } else {
         print(input$scatter_plot_click)
         res <- nearPoints(all_data, input$scatter_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE)
+                          addDist = TRUE, xvar = "OBSERVATION", yvar = "TRUTH")
       }
       fix_res(res, methodcol = "fullmethod", aspcts = c("observation", "truth"),
               tabtype = "scatter")
@@ -1177,11 +1281,12 @@ IBRAapp <- function(ibradata = NULL) {
       if ("split" %in% isolate(input$facet_opt)) {
         res <- nearPoints(all_data, input$fpc_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, panelvar1 = "splitval")
+                          addDist = TRUE, panelvar1 = "splitval",
+                          xvar = "topN", yvar = "FP")
       } else {
         res <- nearPoints(all_data, input$fpc_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE)
+                          addDist = TRUE, xvar = "topN", yvar = "FP")
       }
       fix_res(res, methodcol = "fullmethod", aspcts = c("Number of detections", "FP"),
               tabtype = "small")
@@ -1265,13 +1370,15 @@ IBRAapp <- function(ibradata = NULL) {
       if ("split" %in% isolate(input$facet_opt)) {
         res <- nearPoints(tab_data, input$fdrtprcurve_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, panelvar1 = "splitval")
+                          addDist = TRUE, panelvar1 = "splitval",
+                          xvar = "FDR", yvar = "TPR")
       } else {
         res <- nearPoints(tab_data, input$fdrtprcurve_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE)
+                          addDist = TRUE, xvar = "FDR", yvar = "TPR")
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = c("FDR", "TPR"), tabtype = "large")
+      fix_res(res, methodcol = "fullmethod", aspcts = c("FDR", "TPR"),
+              tabtype = "large")
     })
 
     ## -------------------------- FDRNBR ------------------------------- ##
@@ -1353,11 +1460,12 @@ IBRAapp <- function(ibradata = NULL) {
       if ("split" %in% input$facet_opt) {
         res <- nearPoints(tab_data, input$fdrnbrcurve_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE, panelvar1 = "splitval")
+                          addDist = TRUE, panelvar1 = "splitval",
+                          xvar = "FDR", yvar = "NBR")
       } else {
         res <- nearPoints(tab_data, input$fdrnbrcurve_plot_click,
                           threshold = 5, maxpoints = 100,
-                          addDist = TRUE)
+                          addDist = TRUE, xvar = "FDR", yvar = "NBR")
       }
       methodcol <- "fullmethod"
       fix_res(res, methodcol = methodcol, aspcts = c("FDR", "Number of detections"),

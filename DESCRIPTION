@@ -18,6 +18,7 @@ Collate:
     'IBRAPlot.R'
     'calculate_performance.R'
     'helpers_general.R'
+    'nearPoints2.R'
     'plot_methods.R'
     'printHead.R'
     'shiny.R'

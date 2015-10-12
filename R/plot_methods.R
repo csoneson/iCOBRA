@@ -120,9 +120,9 @@ plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @author Charlotte Soneson
 #' @examples
 #' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
+#' score <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
 #' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
+#' ibradata <- IBRAData(score = score, truth = truth)
 #' ibraperf <- calculate_performance(ibradata, cont_truth = "status", aspects = "corr")
 #' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
 #'                                   colorscheme = "Dark2", facetted = FALSE)
@@ -259,9 +259,9 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @author Charlotte Soneson
 #' @examples
 #' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
+#' score <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
 #' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
+#' ibradata <- IBRAData(score = score, truth = truth)
 #' ibraperf <- calculate_performance(ibradata, cont_truth = "status",
 #'                                   aspects = "scatter")
 #' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
@@ -525,3 +525,70 @@ plot_overlap <- function(ibraplot, ...) {
     par(mfrow = c(1, 1), mar = c(5, 4, 4, 2))
   }
 }
+
+## -------------------------- Deviation ------------------------------ ##
+#' Plot deviations
+#'
+#' Plot the deviations between observed scores and the continuous truth
+#' variable.
+#'
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
+#' @param stripsize A numeric value giving the size of the strip text, when the
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param plottype Either "boxplot" or "violin", indicating what type of plot to
+#'   make.
+#' @param dojitter A logical indicating whether to include jittered data points
+#'   or not.
+#'
+#' @return A ggplot object
+#'
+#' @import ggplot2
+#' @export
+#' @author Charlotte Soneson
+#' @examples
+#' set.seed(123)
+#' score <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                     row.names = paste0("G", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("G", 1:100))
+#' ibradata <- IBRAData(score = score, truth = truth)
+#' ibraperf <- calculate_performance(ibradata, cont_truth = "status",
+#'                                   aspects = "deviation", thrs = c(0.05, 0.1))
+#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
+#'                                   colorscheme = "Dark2", facetted = FALSE)
+#' plot_deviation(ibraplot)
+plot_deviation <- function(ibraplot, title = "", stripsize = 15,
+                           titlecol = "black", plottype = "boxplot",
+                           dojitter = TRUE) {
+  plot_data <- deviation(ibraplot)
+
+  if (!(isTRUE(facetted(ibraplot)))) {
+    plot_data$method <- plot_data$fullmethod
+  }
+
+  pp <-ggplot(plot_data, aes_string(x = "method", y = "DEVIATION",
+                                    group = "method", colour = "method")) +
+    coord_flip() +
+    scale_color_manual(values = plotcolors(ibraplot), name = "") +
+    plot_theme(stripsize = stripsize, titlecol = titlecol) +
+    ggtitle(title)
+  if (plottype == "boxplot") {
+    if (isTRUE(dojitter))
+      pp <- pp + geom_boxplot(outlier.size = 0)
+    else
+      pp <- pp + geom_boxplot()
+  }
+  else if (plottype == "violinplot")
+    pp <- pp + geom_violin()
+  if (isTRUE(dojitter))
+    pp <- pp + geom_jitter(position = position_jitter(width = 0.1, height = 0),
+                           size = 1.5)
+  if (isTRUE(facetted(ibraplot))) {
+    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
+  } else {
+    pp
+  }
+}
+

@@ -10,8 +10,8 @@
 IBRAPerformance(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   fdrnbr = data.frame(), fdrnbrcurve = data.frame(), tpr = data.frame(),
   fpr = data.frame(), splv = "", roc = data.frame(), fpc = data.frame(),
-  overlap = data.frame(), maxsplit = 3, corr = data.frame(),
-  scatter = data.frame(), object_to_extend = NULL)
+  deviation = data.frame(), overlap = data.frame(), maxsplit = 3,
+  corr = data.frame(), scatter = data.frame(), object_to_extend = NULL)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various
@@ -47,6 +47,9 @@ generate a ROC curve.}
 findings among the N top-ranked features (ranked by p-values, adjusted
 p-values or more general scores), for a (potentially large) number of Ns,
 which can be used to generate a false positive curve.}
+
+\item{deviation}{A data frame containing deviations between observed scores
+and true scores.}
 
 \item{overlap}{A data frame or list of data frames with binary values
 indicating, for each of a number of methods and number of features, whether

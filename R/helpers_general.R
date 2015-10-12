@@ -268,7 +268,7 @@ select_measure <- function(ibradata, method, asp) {
     if (method %in% names(score(ibradata))) ret <- "score"
     else if (method %in% names(pval(ibradata))) ret <- "pval"
     else ret <- "padj"
-  } else if (asp %in% c("corr", "scatter")) {
+  } else if (asp %in% c("corr", "scatter", "deviation")) {
     if (method %in% names(score(ibradata))) ret <- "score"
     else ret <- NULL
   }

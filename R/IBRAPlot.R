@@ -39,7 +39,7 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      fdrnbrcurve = data.frame(), tpr = data.frame(),
                      fpr = data.frame(), roc = data.frame(), scatter = data.frame(),
                      fpc = data.frame(), overlap = data.frame(),
-                     plotcolors = c(), splv = "",
+                     plotcolors = c(), splv = "", deviation = data.frame(),
                      maxsplit = NA_integer_, facetted = TRUE, object_to_extend = NULL) {
 
   if (!(is.null(object_to_extend))) {
@@ -66,6 +66,8 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
         corr <- object_to_extend@corr
       if (length(object_to_extend@scatter) != 0)
         scatter <- object_to_extend@scatter
+      if (length(object_to_extend@deviation) != 0)
+        deviation <- object_to_extend@deviation
       if (length(object_to_extend@overlap) != 0)
         overlap <- object_to_extend@overlap
       if (length(object_to_extend@plotcolors) != 0)
@@ -80,7 +82,7 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
     }
   }
   .IBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
-            fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve,
+            fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, deviation = deviation,
             tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
             overlap = overlap, plotcolors = plotcolors, corr = corr,
             splv = splv, maxsplit = maxsplit, facetted = facetted)
@@ -181,6 +183,8 @@ setMethod("[", "IBRAPlot",
               x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
             if (length(x@fdrnbr) != 0)
               x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
+            if (length(x@deviation) != 0)
+              x@deviation <- x@deviation[which(x@deviation$basemethod %in% j), ]
             if (length(x@fdrtprcurve) != 0)
               x@fdrtprcurve <-
                 x@fdrtprcurve[which(x@fdrtprcurve$basemethod %in% j), ]
@@ -248,7 +252,7 @@ setAs("IBRAPerformance", "IBRAPlot",
         .IBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                   fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
                   tpr = from@tpr, fpr = from@fpr, roc = from@roc, fpc = from@fpc,
-                  scatter = from@scatter,
+                  scatter = from@scatter, deviation = from@deviation,
                   overlap = from@overlap, plotcolors = "", corr = from@corr,
                   splv = from@splv, maxsplit = from@maxsplit, facetted = TRUE)
       })
@@ -263,7 +267,8 @@ setAs("IBRAPlot", "IBRAPerformance",
         .IBRAPerformance(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                          fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
                          tpr = from@tpr, fpr = from@fpr, roc = from@roc,
-                         fpc = from@fpc, corr = from@corr,
+                         fpc = from@fpc, deviation = from@deviation,
+                         corr = from@corr,
                          scatter = from@scatter, overlap = from@overlap,
                          splv = from@splv, maxsplit = from@maxsplit)
       })

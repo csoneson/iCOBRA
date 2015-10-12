@@ -6,8 +6,9 @@
 \usage{
 calculate_performance(ibradata, binary_truth, cont_truth,
   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr",
-  "roc", "fpc", "overlap", "corr", "scatter"), thrs = c(0.01, 0.05, 0.1),
-  splv = "none", maxsplit = 3, onlyshared = FALSE, thr_venn = 0.05)
+  "roc", "fpc", "overlap", "corr", "scatter", "deviation"), thrs = c(0.01,
+  0.05, 0.1), splv = "none", maxsplit = 3, onlyshared = FALSE,
+  thr_venn = 0.05)
 }
 \arguments{
 \item{ibradata}{An IBRAData object.}
@@ -22,7 +23,8 @@ the observations can be compared to).}
 
 \item{aspects}{A character vector giving the types of performance measures to
 calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
-"fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter").}
+"fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
+"deviation").}
 
 \item{thrs}{A numeric vector of adjusted p-value thresholds for which to
 calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
@@ -65,9 +67,10 @@ nominal p-values will be used, given that they are monotonically associated
 with the adjusted p-values (if provided). In other cases, the adjusted
 p-values will be used also for these aspects. For \code{roc} and \code{fpc},
 the \code{score} observations will be used if they are provided, otherwise
-p-values and, as a last instance, adjusted p-values. Finally, for \code{corr}
-and \code{scatter} aspects, the \code{score} observations will be used if
-they are provided, otherwise no results will be calculated.
+p-values and, as a last instance, adjusted p-values. Finally, for the
+\code{corr}, \code{scatter} and \code{deviation} aspects, the \code{score}
+observations will be used if they are provided, otherwise no results will be
+calculated.
 }
 \examples{
 set.seed(123)

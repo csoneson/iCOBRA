@@ -83,9 +83,10 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' with the adjusted p-values (if provided). In other cases, the adjusted
 #' p-values will be used also for these aspects. For \code{roc} and \code{fpc},
 #' the \code{score} observations will be used if they are provided, otherwise
-#' p-values and, as a last instance, adjusted p-values. Finally, for \code{corr}
-#' and \code{scatter} aspects, the \code{score} observations will be used if
-#' they are provided, otherwise no results will be calculated.
+#' p-values and, as a last instance, adjusted p-values. Finally, for the
+#' \code{corr}, \code{scatter} and \code{deviation} aspects, the \code{score}
+#' observations will be used if they are provided, otherwise no results will be
+#' calculated.
 #'
 #' @param ibradata An IBRAData object.
 #' @param binary_truth A character string giving the name of the column of
@@ -96,7 +97,8 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   the observations can be compared to).
 #' @param aspects A character vector giving the types of performance measures to
 #'   calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
-#'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter").
+#'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
+#'   "deviation").
 #' @param thrs A numeric vector of adjusted p-value thresholds for which to
 #'   calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 #'   "fpr".
@@ -132,7 +134,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                               "fdrnbrcurve", "tpr", "fpr",
                                               "roc", "fpc", "overlap",
-                                              "corr", "scatter"),
+                                              "corr", "scatter", "deviation"),
                                   thrs = c(0.01, 0.05, 0.1), splv = "none",
                                   maxsplit = 3, onlyshared = FALSE,
                                   thr_venn = 0.05) {
@@ -799,6 +801,64 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
     scatters <- data.frame()
   }
 
+  ## --------------------------- DEVIATION ------------------------------- ##
+  if ("deviation" %in% aspects) {
+    outDEVIATION <- list()
+
+    for (i in all_methods) {
+      inpcol <- select_measure(ibradata, i, asp = "deviation")
+      if (!is.null(inpcol)) {
+        tmp <- slot(ibradata, inpcol)[i]
+        if (onlyshared == FALSE) {
+          allg <- rownames(truth(ibradata))
+        } else {
+          allg <- intersect(rownames(truth(ibradata)),
+                            rownames(tmp)[which(!is.na(tmp[i]))])
+        }
+        tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = NULL, maxsplit = maxsplit)
+
+        DEVIATION <- list()
+        DEVIATION[[paste0(i, "_overall", "__", inpcol)]] <-
+          list(basemethod = i, meas_type = inpcol,
+               deviation = data.frame(vals = tmp[[i]] - truth[, cont_truth],
+                                      row.names = rownames(tmp),
+                                      stringsAsFactors = FALSE))
+        if (splv != "none") {
+          for (j in keeplevels) {
+            s <- which(truth[[splv]] == j)
+            DEVIATION[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
+              list(basemethod = i, meas_type = inpcol,
+                   deviation = data.frame(vals = tmp[[i]][s] - truth[s, cont_truth],
+                                          row.names = rownames(tmp)[s],
+                                          stringsAsFactors = FALSE))
+          }
+        }
+      } else {
+        DEVIATION <- NULL
+      }
+      outDEVIATION <- c(outDEVIATION, DEVIATION)
+    }
+
+    if (any(sapply(lapply(outDEVIATION, function(w) w$deviation), length) > 0)) {
+      vdv <- sapply(outDEVIATION, function(w) w$basemethod)
+      deviations <- do.call(rbind, lapply(names(outDEVIATION), function(s) {
+        data.frame(DEVIATION = outDEVIATION[[s]]$deviation[, "vals"],
+                   feature = rownames(outDEVIATION[[s]]$deviation),
+                   method = s)
+      }))
+      deviations <- extend_resulttable(deviations, splv, keeplevels, NULL,
+                                       vdv, domelt = FALSE)
+    } else {
+      deviations <- data.frame()
+    }
+  } else {
+    deviations <- data.frame()
+  }
+
   ## ----------------------------- FPC ---------------------------------- ##
   if ("fpc" %in% aspects) {
     outFPC <- list()
@@ -938,7 +998,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   if (!("fdrnbrcurve" %in% aspects)) fdrnbrcurve <- data.frame()
 
   IBRAPerformance(tpr = tprs, fpr = fprs, fdrtprcurve = fdrtprs,
-                  fdrnbrcurve = fdrnbrs,
+                  fdrnbrcurve = fdrnbrs, deviation = deviations,
                   roc = rocs, fpc = fpcs, fdrtpr = fdrtpr, fdrnbr = fdrnbr,
                   maxsplit = maxsplit, overlap = overlap, splv = splv,
                   corr = corrs, scatter = scatters)
@@ -1040,7 +1100,7 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
                               facetted = facetted, incloverall = incloverall)
 
   ## Exclude overall level
-  for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter",
+  for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
                "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr")) {
     if (splv(ibraperf) != "none") {
       if (!(isTRUE(incloverall))) {

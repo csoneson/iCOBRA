@@ -104,6 +104,13 @@ setGeneric("overlap", function(x, ...) standardGeneric("overlap"))
 #' @export
 setGeneric("overlap<-", function(x, ..., value) standardGeneric("overlap<-"))
 
+#' @rdname deviation
+#' @export
+setGeneric("deviation", function(x, ...) standardGeneric("deviation"))
+#' @rdname deviation
+#' @export
+setGeneric("deviation<-", function(x, ..., value) standardGeneric("deviation<-"))
+
 #' @rdname splv
 #' @export
 setGeneric("splv", function(x, ...) standardGeneric("splv"))

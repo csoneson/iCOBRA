@@ -11,8 +11,8 @@ IBRAPlot(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   fdrnbr = data.frame(), corr = data.frame(), fdrnbrcurve = data.frame(),
   tpr = data.frame(), fpr = data.frame(), roc = data.frame(),
   scatter = data.frame(), fpc = data.frame(), overlap = data.frame(),
-  plotcolors = c(), splv = "", maxsplit = NA_integer_, facetted = TRUE,
-  object_to_extend = NULL)
+  plotcolors = c(), splv = "", deviation = data.frame(),
+  maxsplit = NA_integer_, facetted = TRUE, object_to_extend = NULL)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various
@@ -64,6 +64,9 @@ method-stratification level combination).}
 
 \item{splv}{A character string giving the name of the stratification factor,
 "none" if the results are not stratified.}
+
+\item{deviation}{A data frame containing deviations between observed scores
+and true scores.}
 
 \item{maxsplit}{A numeric value indicating the largest number of levels to
 retain if the results have been stratified by an annotation.}
