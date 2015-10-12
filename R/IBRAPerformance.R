@@ -592,18 +592,28 @@ setMethod("[", "IBRAPerformance",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
               stop("None of the provided method found in the object. No subsetting done.")
-            if (length(x@tpr) != 0) x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
-            if (length(x@fpr) != 0) x@fpr <- x@fpr[which(x@fpr$basemethod %in% j), ]
-            if (length(x@roc) != 0) x@roc <- x@roc[which(x@roc$basemethod %in% j), ]
-            if (length(x@fpc) != 0) x@fpc <- x@fpc[which(x@fpc$basemethod %in% j), ]
-            if (length(x@fdrtpr) != 0) x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
-            if (length(x@fdrnbr) != 0) x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
-            if (length(x@fdrtprcurve) != 0) x@fdrtprcurve <-
+            if (length(x@tpr) != 0)
+              x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
+            if (length(x@fpr) != 0)
+              x@fpr <- x@fpr[which(x@fpr$basemethod %in% j), ]
+            if (length(x@roc) != 0)
+              x@roc <- x@roc[which(x@roc$basemethod %in% j), ]
+            if (length(x@fpc) != 0)
+              x@fpc <- x@fpc[which(x@fpc$basemethod %in% j), ]
+            if (length(x@fdrtpr) != 0)
+              x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
+            if (length(x@fdrnbr) != 0)
+              x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
+            if (length(x@fdrtprcurve) != 0)
+              x@fdrtprcurve <-
                 x@fdrtprcurve[which(x@fdrtprcurve$basemethod %in% j), ]
-            if (length(x@fdrnbrcurve) != 0) x@fdrnbrcurve <-
+            if (length(x@fdrnbrcurve) != 0)
+              x@fdrnbrcurve <-
                 x@fdrnbrcurve[which(x@fdrnbrcurve$basemethod %in% j), ]
-            if (length(x@corr) != 0) x@corr <- x@corr[which(x@corr$basemethod %in% j), ]
-            if (length(x@scatter) != 0) x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
+            if (length(x@corr) != 0)
+              x@corr <- x@corr[which(x@corr$basemethod %in% j), ]
+            if (length(x@scatter) != 0)
+              x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
             if (length(x@overlap) != 0) {
               if (class(x@overlap) == "list") {
                 x@overlap <-
@@ -612,7 +622,8 @@ setMethod("[", "IBRAPerformance",
                   })
               } else {
                   x@overlap <-
-                    x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")), drop = FALSE]
+                    x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),
+                              drop = FALSE]
               }
             }
             x

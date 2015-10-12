@@ -169,18 +169,28 @@ setMethod("[", "IBRAPlot",
               keepcols <- paste0(combs[, 1], combs[, 2], combs[, 3])
               x@plotcolors <- x@plotcolors[names(x@plotcolors) %in% keepcols]
             }
-            if (length(x@tpr) != 0) x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
-            if (length(x@fpr) != 0) x@fpr <- x@fpr[which(x@fpr$basemethod %in% j), ]
-            if (length(x@roc) != 0) x@roc <- x@roc[which(x@roc$basemethod %in% j), ]
-            if (length(x@fpc) != 0) x@fpc <- x@fpc[which(x@fpc$basemethod %in% j), ]
-            if (length(x@fdrtpr) != 0) x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
-            if (length(x@fdrnbr) != 0) x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
-            if (length(x@fdrtprcurve) != 0) x@fdrtprcurve <-
+            if (length(x@tpr) != 0)
+              x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
+            if (length(x@fpr) != 0)
+              x@fpr <- x@fpr[which(x@fpr$basemethod %in% j), ]
+            if (length(x@roc) != 0)
+              x@roc <- x@roc[which(x@roc$basemethod %in% j), ]
+            if (length(x@fpc) != 0)
+              x@fpc <- x@fpc[which(x@fpc$basemethod %in% j), ]
+            if (length(x@fdrtpr) != 0)
+              x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
+            if (length(x@fdrnbr) != 0)
+              x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
+            if (length(x@fdrtprcurve) != 0)
+              x@fdrtprcurve <-
                 x@fdrtprcurve[which(x@fdrtprcurve$basemethod %in% j), ]
-            if (length(x@fdrnbrcurve) != 0) x@fdrnbrcurve <-
+            if (length(x@fdrnbrcurve) != 0)
+              x@fdrnbrcurve <-
                 x@fdrnbrcurve[which(x@fdrnbrcurve$basemethod %in% j), ]
-            if (length(x@corr) != 0) x@corr <- x@corr[which(x@corr$basemethod %in% j), ]
-            if (length(x@scatter) != 0) x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
+            if (length(x@corr) != 0)
+              x@corr <- x@corr[which(x@corr$basemethod %in% j), ]
+            if (length(x@scatter) != 0)
+              x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
             if (length(x@overlap) != 0) {
               if (class(x@overlap) == "list") {
                 x@overlap <-
@@ -189,7 +199,8 @@ setMethod("[", "IBRAPlot",
                   })
               } else {
                 x@overlap <-
-                  x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")), drop = FALSE]
+                  x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),
+                            drop = FALSE]
               }
             }
             x
@@ -209,15 +220,18 @@ setValidity("IBRAPlot",
 #' @docType methods
 #' @name coerce
 #' @rdname coerce
-#' @aliases coerce coerce,IBRAPerformance,IBRAPlot-method coerce, IBRAPlot,IBRAPerformance-method
+#' @aliases coerce coerce,IBRAPerformance,IBRAPlot-method coerce,
+#'   IBRAPlot,IBRAPerformance-method
 #'
 #' @param from The object that is to be coerced into another class.
 #' @author Charlotte Soneson
 #' @export
 #' @examples
 #' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                    row.names = paste0("G", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("G", 1:100))
 #' ibradata <- IBRAData(padj = padj, truth = truth)
 #' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
@@ -248,7 +262,8 @@ setAs("IBRAPlot", "IBRAPerformance",
       function(from) {
         .IBRAPerformance(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                          fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
-                         tpr = from@tpr, fpr = from@fpr, roc = from@roc, fpc = from@fpc,
-                         scatter = from@scatter, overlap = from@overlap, corr = from@corr,
+                         tpr = from@tpr, fpr = from@fpr, roc = from@roc,
+                         fpc = from@fpc, corr = from@corr,
+                         scatter = from@scatter, overlap = from@overlap,
                          splv = from@splv, maxsplit = from@maxsplit)
       })

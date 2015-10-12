@@ -54,22 +54,26 @@ p-values and scores provided in an \code{IBRAData} object.
 \details{
 Depending on the collection of observations that are available for a given
 method, the appropriate one will be chosen for each performance measure. For
-\code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr}, \code{overlap} aspects,
-results will only be calculated for methods where adjusted p-values are
-included in the \code{IBRAData} object, since these calculations make use of
-specific adjusted p-value cutoffs. For \code{fdrtprcurve},
-\code{fdrnbrcurve}, \code{roc}, \code{fpc}, \code{corr}, \code{scatter}
-aspects, the \code{score} observations will be preferentially used, given
-that they are monotonically associated with the adjusted p-values (if
-provided). If the \code{score} is not provided, the nominal p-values will be
-used, given that they are monotonically associated with the adjusted p-values
-(if provided). In other cases, the adjusted p-values will be used also for
-these aspects.
+\code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr} and \code{overlap}
+aspects, results will only be calculated for methods where adjusted p-values
+are included in the \code{IBRAData} object, since these calculations make use
+of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
+\code{fdrnbrcurve} aspects, the \code{score} observations will be
+preferentially used, given that they are monotonically associated with the
+adjusted p-values (if provided). If the \code{score} is not provided, the
+nominal p-values will be used, given that they are monotonically associated
+with the adjusted p-values (if provided). In other cases, the adjusted
+p-values will be used also for these aspects. Finally, for \code{roc},
+\code{fpc}, \code{corr} and \code{scatter} aspects, the \code{score}
+observations will be used if they are provided, otherwise p-values and, as a
+last instance, adjusted p-values.
 }
 \examples{
 set.seed(123)
-padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+padj <- data.frame(m1 = runif(100), m2 = runif(100),
+                   row.names = paste0("G", 1:100))
+truth <- data.frame(status = round(runif(100)),
+                    row.names = paste0("G", 1:100))
 ibradata <- IBRAData(padj = padj, truth = truth)
 ibraperf <- calculate_performance(ibradata, binary_truth = "status",
                                   aspects = c("fdrtpr", "fdrtprcurve",

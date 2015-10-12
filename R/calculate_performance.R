@@ -72,17 +72,19 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'
 #' Depending on the collection of observations that are available for a given
 #' method, the appropriate one will be chosen for each performance measure. For
-#' \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr}, \code{overlap} aspects,
-#' results will only be calculated for methods where adjusted p-values are
-#' included in the \code{IBRAData} object, since these calculations make use of
-#' specific adjusted p-value cutoffs. For \code{fdrtprcurve},
-#' \code{fdrnbrcurve}, \code{roc}, \code{fpc}, \code{corr}, \code{scatter}
-#' aspects, the \code{score} observations will be preferentially used, given
-#' that they are monotonically associated with the adjusted p-values (if
-#' provided). If the \code{score} is not provided, the nominal p-values will be
-#' used, given that they are monotonically associated with the adjusted p-values
-#' (if provided). In other cases, the adjusted p-values will be used also for
-#' these aspects.
+#' \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr} and \code{overlap}
+#' aspects, results will only be calculated for methods where adjusted p-values
+#' are included in the \code{IBRAData} object, since these calculations make use
+#' of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
+#' \code{fdrnbrcurve} aspects, the \code{score} observations will be
+#' preferentially used, given that they are monotonically associated with the
+#' adjusted p-values (if provided). If the \code{score} is not provided, the
+#' nominal p-values will be used, given that they are monotonically associated
+#' with the adjusted p-values (if provided). In other cases, the adjusted
+#' p-values will be used also for these aspects. Finally, for \code{roc},
+#' \code{fpc}, \code{corr} and \code{scatter} aspects, the \code{score}
+#' observations will be used if they are provided, otherwise p-values and, as a
+#' last instance, adjusted p-values.
 #'
 #' @param ibradata An IBRAData object.
 #' @param binary_truth A character string giving the name of the column of
@@ -116,8 +118,10 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' @author Charlotte Soneson
 #' @examples
 #' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                    row.names = paste0("G", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("G", 1:100))
 #' ibradata <- IBRAData(padj = padj, truth = truth)
 #' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
@@ -126,17 +130,21 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 calculate_performance <- function(ibradata, binary_truth, cont_truth,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                               "fdrnbrcurve", "tpr", "fpr",
-                                              "roc", "fpc", "overlap", "corr", "scatter"),
+                                              "roc", "fpc", "overlap",
+                                              "corr", "scatter"),
                                   thrs = c(0.01, 0.05, 0.1), splv = "none",
-                                  maxsplit = 3, onlyshared = FALSE, thr_venn = 0.05) {
+                                  maxsplit = 3, onlyshared = FALSE,
+                                  thr_venn = 0.05) {
 
-  ## Get all methods represented in the test result object (with at least one type of result)
+  ## Get all methods represented in the test result object
+  ## (with at least one type of result)
   all_methods <- unique(c(colnames(pval(ibradata)), colnames(padj(ibradata)),
                           colnames(score(ibradata))))
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
   if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects)) {
-    outNBR <- outFP <- outTP <- outFN <- outTN <- outTOT_CALLED <- outDS <- outNONDS <- list()
+    outNBR <- outFP <- outTP <- outFN <- outTN <- outTOT_CALLED <-
+      outDS <- outNONDS <- list()
     for (i in all_methods) {
       inpcol <- select_measure(ibradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
@@ -149,8 +157,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (inpcol == "padj") {
           NBR <- list()
@@ -165,7 +176,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
               nbr <- gen_thr_vec(thrs)
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
-                nbr[paste0("thr", thr)] <- length(intersect(g, rownames(tmp)[which(tmp[i] <= thr)]))
+                nbr[paste0("thr", thr)] <-
+                  length(intersect(g, rownames(tmp)[which(tmp[i] <= thr)]))
               }
               NBR[[paste0(i, "_", splv, ":", j, "__",
                           inpcol)]] <- list(basemethod = i,
@@ -192,7 +204,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
               length(intersect(nonsignif,
                                rownames(truth)[which(truth[, binary_truth] == 0)]))
             tot_called[paste0("thr", thr)] <-
-              length(intersect(rownames(tmp)[which(!is.na(tmp[i]))], rownames(truth)))
+              length(intersect(rownames(tmp)[which(!is.na(tmp[i]))],
+                               rownames(truth)))
             ds[paste0("thr", thr)] <- length(which(truth[, binary_truth] == 1))
             nonds[paste0("thr", thr)] <- length(which(truth[, binary_truth] == 0))
           }
@@ -234,7 +247,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
               TOT_CALLED[[idx]] <- list(basemethod = i, meas_type = inpcol,
                                         tot_called = tot_called)
               DS[[idx]] <- list(basemethod = i, meas_type = inpcol, ds = ds)
-              NONDS[[idx]] <- list(basemethod = i, meas_type = inpcol, nonds = nonds)
+              NONDS[[idx]] <- list(basemethod = i, meas_type = inpcol,
+                                   nonds = nonds)
             }
           }
 
@@ -297,27 +311,29 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = NULL, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = NULL, maxsplit = maxsplit)
 
         PEARSON <- list()
         SPEARMAN <- list()
-        isf <- intersect(which(is.finite(tmp[[i]])), which(is.finite(truth[, cont_truth])))
-        pearson <- cor(tmp[[i]][isf], truth[, cont_truth][isf], use = "complete.obs",
-                       method = "pearson")
-        spearman <- cor(tmp[[i]][isf], truth[, cont_truth][isf], use = "complete.obs",
-                        method = "spearman")
-        PEARSON[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
-                                                               meas_type = inpcol,
-                                                               pearson = pearson)
-        SPEARMAN[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
-                                                                meas_type = inpcol,
-                                                                spearman = spearman)
+        isf <- intersect(which(is.finite(tmp[[i]])),
+                         which(is.finite(truth[, cont_truth])))
+        pearson <- cor(tmp[[i]][isf], truth[, cont_truth][isf],
+                       use = "complete.obs", method = "pearson")
+        spearman <- cor(tmp[[i]][isf], truth[, cont_truth][isf],
+                        use = "complete.obs", method = "spearman")
+        PEARSON[[paste0(i, "_overall", "__", inpcol)]] <-
+          list(basemethod = i, meas_type = inpcol, pearson = pearson)
+        SPEARMAN[[paste0(i, "_overall", "__", inpcol)]] <-
+          list(basemethod = i, meas_type = inpcol, spearman = spearman)
         if (splv != "none") {
           for (j in keeplevels) {
             g <- rownames(truth)[which(truth[[splv]] == j)]
             isf <- intersect(which(is.finite(tmp[match(g, rownames(tmp)), i])),
-                             which(is.finite(truth[match(g, rownames(truth)), cont_truth])))
+                             which(is.finite(truth[match(g, rownames(truth)),
+                                                   cont_truth])))
             pearson <- cor(tmp[match(g, rownames(tmp)), i][isf],
                            truth[match(g, rownames(truth)), cont_truth][isf],
                            use = "complete.obs", method = "pearson")
@@ -340,8 +356,10 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
     spearmans <- t(do.call(rbind, lapply(outSPEARMAN, function(w) w$spearman)))
     vp <- sapply(outPEARSON, function(w) w$basemethod)
     vs <- sapply(outSPEARMAN, function(w) w$basemethod)
-    pearsons <- extend_resulttable(pearsons, splv, keeplevels, "PEARSON", vp, domelt = TRUE)
-    spearmans <- extend_resulttable(spearmans, splv, keeplevels, "SPEARMAN", vs, domelt = TRUE)
+    pearsons <- extend_resulttable(pearsons, splv, keeplevels, "PEARSON",
+                                   vp, domelt = TRUE)
+    spearmans <- extend_resulttable(spearmans, splv, keeplevels, "SPEARMAN",
+                                    vs, domelt = TRUE)
     corrs <- merge(pearsons, spearmans)
   } else {
     corrs <- data.frame()
@@ -362,8 +380,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (inpcol == "padj") {
           TPR <- list()
@@ -376,7 +397,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
               length(which(truth[, binary_truth] == 1))
           }
           TPR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
-                                                             meas_type = inpcol, tpr = tpr)
+                                                             meas_type = inpcol,
+                                                             tpr = tpr)
 
           if (splv != "none") {
             for (j in keeplevels) {
@@ -420,8 +442,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (inpcol == "padj") {
           FDR <- list()
@@ -438,7 +463,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
             }
           }
           FDR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
-                                                             meas_type = inpcol, fdr = fdr)
+                                                             meas_type = inpcol,
+                                                             fdr = fdr)
 
           if (splv != "none" & any(truth[, binary_truth] == 0)) {
             for (j in keeplevels) {
@@ -490,8 +516,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (inpcol == "padj") {
           FPR <- list()
@@ -504,7 +533,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
               length(which(truth[, binary_truth] == 0))
           }
           FPR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
-                                                             meas_type = inpcol, fpr = fpr)
+                                                             meas_type = inpcol,
+                                                             fpr = fpr)
 
           if (splv != "none" & any(truth[, binary_truth] == 0)) {
             for (j in keeplevels) {
@@ -549,8 +579,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (!is.null(inpcol)) {
           if (any(truth[, binary_truth] == 0) & any(truth[, binary_truth] == 1)) {
@@ -603,7 +636,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                    NONDIFF = outFDRTPR[[s]]$fdrtpr[, "NONDIFF"],
                    method = s)
       }))
-      fdrtprs <- extend_resulttable(fdrtprs, splv, keeplevels, NULL, vftp, domelt = FALSE)
+      fdrtprs <- extend_resulttable(fdrtprs, splv, keeplevels, NULL,
+                                    vftp, domelt = FALSE)
     }
   } else {
     fdrtprs <- data.frame()
@@ -625,8 +659,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (!is.null(inpcol)) {
           if (any(truth[, binary_truth] == 0) & any(truth[, binary_truth] == 1)) {
@@ -636,7 +673,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
             vals <- tmp[[i]]
             names(vals) <- rownames(tmp)
             roc <- get_curve(bintruth = bintruth, vals = vals,
-                             revr = ifelse(inpcol == "score", FALSE, TRUE), aspc = "roc")
+                             revr = ifelse(inpcol == "score", FALSE, TRUE),
+                             aspc = "roc")
             ROC[[paste0(i, "_overall", "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol, roc = roc)
             if (splv != "none") {
@@ -644,7 +682,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                 bintruth <- truth[which(truth[[splv]] == j), binary_truth]
                 names(bintruth) <- rownames(truth)[which(truth[[splv]] == j)]
                 roc <- get_curve(bintruth = bintruth, vals = vals,
-                                 revr = ifelse(inpcol == "score", FALSE, TRUE), aspc = "roc")
+                                 revr = ifelse(inpcol == "score", FALSE, TRUE),
+                                 aspc = "roc")
                 if (!is.null(roc)) {
                   ROC[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
                     list(basemethod = i, meas_type = inpcol, roc = roc)
@@ -669,7 +708,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                    ROC_CUTOFF = outROC[[s]]$roc[, "ROC_CUTOFF"],
                    method = s)
       }))
-      rocs <- extend_resulttable(rocs, splv, keeplevels, NULL, vr, domelt = FALSE)
+      rocs <- extend_resulttable(rocs, splv, keeplevels, NULL,
+                                 vr, domelt = FALSE)
     } else {
       rocs <- data.frame()
     }
@@ -692,8 +732,10 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = NULL, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = NULL, maxsplit = maxsplit)
 
         SCATTER <- list()
         SCATTER[[paste0(i, "_overall", "__", inpcol)]] <-
@@ -706,7 +748,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
             s <- which(truth[[splv]] == j)
             SCATTER[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol,
-                   scatter = data.frame(vals = tmp[[i]][s], truth = truth[s, cont_truth],
+                   scatter = data.frame(vals = tmp[[i]][s],
+                                        truth = truth[s, cont_truth],
                                         row.names = rownames(tmp)[s],
                                         stringsAsFactors = FALSE))
           }
@@ -725,7 +768,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                    feature = rownames(outSCATTER[[s]]$scatter),
                    method = s)
       }))
-      scatters <- extend_resulttable(scatters, splv, keeplevels, NULL, vsc, domelt = FALSE)
+      scatters <- extend_resulttable(scatters, splv, keeplevels, NULL,
+                                     vsc, domelt = FALSE)
     } else {
       scatters <- data.frame()
     }
@@ -748,8 +792,11 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                             rownames(tmp)[which(!is.na(tmp[i]))])
         }
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), , drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv, binary_truth = binary_truth, maxsplit = maxsplit)
+        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+                                 drop = FALSE]
+        keeplevels <- get_keeplevels(truth = truth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
 
         if (!is.null(inpcol)) {
           if (any(truth[, binary_truth] == 0) & any(truth[, binary_truth] == 1)) {
@@ -759,7 +806,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
             vals <- tmp[[i]]
             names(vals) <- rownames(tmp)
             fpc <- get_curve(bintruth = bintruth, vals = vals,
-                             revr = ifelse(inpcol == "score", FALSE, TRUE), aspc = "fpc")
+                             revr = ifelse(inpcol == "score", FALSE, TRUE),
+                             aspc = "fpc")
             FPC[[paste0(i, "_overall", "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol, fpc = fpc)
             if (splv != "none") {
@@ -767,7 +815,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                 bintruth <- truth[which(truth[[splv]] == j), binary_truth]
                 names(bintruth) <- rownames(truth)[which(truth[[splv]] == j)]
                 fpc <- get_curve(bintruth = bintruth, vals = vals,
-                                 revr = ifelse(inpcol == "score", FALSE, TRUE), aspc = "fpc")
+                                 revr = ifelse(inpcol == "score", FALSE, TRUE),
+                                 aspc = "fpc")
                 if (!is.null(fpc)) {
                   FPC[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
                     list(basemethod = i, meas_type = inpcol, fpc = fpc)
@@ -792,7 +841,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                    FPC_CUTOFF = outFPC[[s]]$fpc[, "FPC_CUTOFF"],
                    method = s)
       }))
-      fpcs <- extend_resulttable(fpcs, splv, keeplevels, NULL, vfc, domelt = FALSE)
+      fpcs <- extend_resulttable(fpcs, splv, keeplevels, NULL,
+                                 vfc, domelt = FALSE)
     } else {
       fpcs <- data.frame()
     }
@@ -861,7 +911,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   if (!("fdrtprcurve" %in% aspects)) fdrtprcurve <- data.frame()
   if (!("fdrnbrcurve" %in% aspects)) fdrnbrcurve <- data.frame()
 
-  IBRAPerformance(tpr = tprs, fpr = fprs, fdrtprcurve = fdrtprs, fdrnbrcurve = fdrnbrs,
+  IBRAPerformance(tpr = tprs, fpr = fprs, fdrtprcurve = fdrtprs,
+                  fdrnbrcurve = fdrnbrs,
                   roc = rocs, fpc = fpcs, fdrtpr = fdrtpr, fdrnbr = fdrnbr,
                   maxsplit = maxsplit, overlap = overlap, splv = splv,
                   corr = corrs, scatter = scatters)
@@ -914,10 +965,13 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
 #' @author Charlotte Soneson
 #' @examples
 #' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                    row.names = paste0("G", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("G", 1:100))
 #' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status", cont_truth = "none",
+#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+#'                                   cont_truth = "none",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
 #'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
@@ -927,8 +981,10 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
 #' ## User-specified colors
 #' ibraplot2 <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
 #'                                    colorscheme = c("blue", "red"))
-prepare_data_for_plot <- function(ibraperf, keepmethods = NULL, incloverall = TRUE,
-                                  colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE) {
+prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
+                                  incloverall = TRUE,
+                                  colorscheme = "hue_pal", facetted = TRUE,
+                                  incltruth = TRUE) {
   splitval <- NULL
 
   if (is.null(keepmethods)) {
@@ -947,7 +1003,8 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL, incloverall = TR
         })
       } else {
         overlap(ibraperf) <-
-          overlap(ibraperf)[, setdiff(colnames(overlap(ibraperf)), "truth"), drop = FALSE]
+          overlap(ibraperf)[, setdiff(colnames(overlap(ibraperf)), "truth"),
+                            drop = FALSE]
       }
     }
   }
@@ -967,9 +1024,11 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL, incloverall = TR
     }
     if (!is.null(slot(ibraperf, sl))) {
       if (isTRUE(facetted))
-        slot(ibraperf, sl)$num_method <- as.numeric(as.factor(slot(ibraperf, sl)$method))
+        slot(ibraperf, sl)$num_method <-
+          as.numeric(as.factor(slot(ibraperf, sl)$method))
       else
-        slot(ibraperf, sl)$num_method <- as.numeric(as.factor(slot(ibraperf, sl)$fullmethod))
+        slot(ibraperf, sl)$num_method <-
+          as.numeric(as.factor(slot(ibraperf, sl)$fullmethod))
     }
   }
 

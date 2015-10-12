@@ -94,26 +94,34 @@ fix_duplicates <- function(res_df, method_name) {
 #' @param method A character string giving the method (selected from
 #'   \code{p.adjust.methods()}) that will be used to perform the adjustment.
 #'
-#' @return An \code{IBRAData} object, extended with the calculated adjusted p-values.
+#' @return An \code{IBRAData} object, extended with the calculated adjusted
+#'   p-values.
 #'
 #' @export
 #' @author Charlotte Soneson
 #' @examples
 #' set.seed(123)
-#' pval <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+#' pval <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                    row.names = paste0("G", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("G", 1:100))
 #' ibradata <- IBRAData(pval = pval, truth = truth)
 #' ibradata <- calculate_adjp(ibradata, method = "BH")
 calculate_adjp <- function(ibradata, method = "BH") {
   sf <- setdiff(colnames(pval(ibradata)), colnames(padj(ibradata)))
   if (length(sf) > 0) {
-      pa <- as.data.frame(apply(pval(ibradata)[, sf, drop = FALSE], 2, p.adjust, method = method))
+      pa <- as.data.frame(apply(pval(ibradata)[, sf, drop = FALSE], 2, p.adjust,
+                                method = method))
       missing_genes <- setdiff(rownames(pa), rownames(padj(ibradata)))
       if (length(padj(ibradata)) != 0) {
-        tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(padj(ibradata)),
-                                       dimnames = list(missing_genes, colnames(padj(ibradata)))))
+        tmpadd <- as.data.frame(matrix(NA, length(missing_genes),
+                                       ncol(padj(ibradata)),
+                                       dimnames = list(missing_genes,
+                                                       colnames(padj(ibradata)))))
         padj(ibradata) <- rbind(padj(ibradata), tmpadd)
-        padj(ibradata) <- cbind(padj(ibradata), pa[match(rownames(padj(ibradata)), rownames(pa)), , drop = FALSE])
+        padj(ibradata) <- cbind(padj(ibradata),
+                                pa[match(rownames(padj(ibradata)),
+                                         rownames(pa)), , drop = FALSE])
       } else {
         padj(ibradata) <- pa
       }
@@ -144,8 +152,10 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
     tmp_methods <- unique(inp_methods$basemethod)
     ncolors <- length(unique(tmp_methods))
   } else {
-    tmp_methods <- unique(subset(inp_methods, levs != "" & basemethod != "truth")$fullmethod)
-    if ("truth" %in% inp_methods$basemethod) tmp_methods <- c(tmp_methods, "truth")
+    tmp_methods <- unique(subset(inp_methods, levs != "" &
+                                   basemethod != "truth")$fullmethod)
+    if ("truth" %in% inp_methods$basemethod)
+      tmp_methods <- c(tmp_methods, "truth")
     ncolors <- length(tmp_methods)
   }
 
@@ -159,7 +169,10 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
     } else if (length(palette) < ncolors) {
       warning(paste0("Too few colors provided. ", ncolors - length(palette),
                      " random colors will be added."))
-      use_colors1 <- c(palette, setdiff(colors(), c("white", palette))[1:(ncolors - length(palette))])
+      use_colors1 <- c(palette,
+                       setdiff(colors(),
+                               c("white",
+                                 palette))[1:(ncolors - length(palette))])
     } else {
       use_colors1 <- palette
     }
@@ -170,7 +183,10 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
                      "cm", "Accent", "Dark2", "Paired", "Pastel1",
                      "Pastel2", "Set1", "Set2", "Set3"))) {
       warning("Invalid palette, will consider it a color.")
-      use_colors1 <- c(palette, setdiff(colors(), c("white", palette))[1:(ncolors - length(palette))])
+      use_colors1 <- c(palette,
+                       setdiff(colors(),
+                               c("white",
+                                 palette))[1:(ncolors - length(palette))])
     } else {
       ## Pre-defined palette
       maxnbr <- c(Accent = 8, Dark2 = 8, Paired = 12, Pastel1 = 9,
@@ -192,9 +208,11 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
   names(use_colors1) <- tmp_methods
 
   if (facetted == TRUE) {
-    inp_methods$color <- use_colors1[match(inp_methods$basemethod, names(use_colors1))]
+    inp_methods$color <- use_colors1[match(inp_methods$basemethod,
+                                           names(use_colors1))]
   } else {
-    inp_methods$color <- use_colors1[match(inp_methods$fullmethod, names(use_colors1))]
+    inp_methods$color <- use_colors1[match(inp_methods$fullmethod,
+                                           names(use_colors1))]
     inp_methods$color[inp_methods$basemethod == "truth"] <- use_colors1["truth"]
     if ("_overall" %in% inp_methods$levs) {
       for (m in unique(inp_methods$basemethod)) {
@@ -254,9 +272,11 @@ select_measure <- function(ibradata, method, asp) {
   ret
 }
 
-extend_resulttable <- function(df, splv, keeplevels, valuename, basemethod, domelt = TRUE) {
+extend_resulttable <- function(df, splv, keeplevels, valuename,
+                               basemethod, domelt = TRUE) {
   if (isTRUE(domelt)) {
-    df <- reshape2::melt(df, varnames = c("thr", "method"), value.name = valuename)
+    df <- reshape2::melt(df, varnames = c("thr", "method"),
+                         value.name = valuename)
     df <- fixcolname(df, prevv = "value", newv = valuename)
   }
   df$basemethod <- basemethod[match(df$method, names(basemethod))]
@@ -264,7 +284,8 @@ extend_resulttable <- function(df, splv, keeplevels, valuename, basemethod, dome
     a <- strsplit(as.character(w), "__")[[1]]
     paste0("__", a[length(a)])
   })
-  df$method <- gsub("__padj$", "", gsub("__pval$", "", gsub("__score", "", df$method)))
+  df$method <- gsub("__padj$", "", gsub("__pval$", "",
+                                        gsub("__score", "", df$method)))
 
   df$fullmethod <- df$method
   if (splv == "none") {
@@ -308,11 +329,13 @@ fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
     }
   }
   idx <- match(c("thr", methodcol, "dist_", "NBR", "CUTOFF",
-                 "FPC_CUTOFF", "ROC_CUTOFF", "topN", "OBSERVATION", "TRUTH"), colnames(res))
-  colnames(res)[idx[!is.na(idx)]] <- c("Threshold", "Method", "Distance from cursor",
-                                       "Number of detections", "Cutoff", "Cutoff",
-                                       "Cutoff", "Number of detections", "observation",
-                                       "truth")[!is.na(idx)]
+                 "FPC_CUTOFF", "ROC_CUTOFF", "topN", "OBSERVATION",
+                 "TRUTH"), colnames(res))
+  colnames(res)[idx[!is.na(idx)]] <-
+    c("Threshold", "Method", "Distance from cursor",
+      "Number of detections", "Cutoff", "Cutoff",
+      "Cutoff", "Number of detections", "observation",
+      "truth")[!is.na(idx)]
 
   if ("Threshold" %in% colnames(res)) {
     res$Threshold <- gsub("thr", "", res$Threshold)
@@ -321,14 +344,16 @@ fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
   if (tabtype == "large") {
     res[, c("TP", "FP", "FN", "TN", "TOT_CALLED", "DIFF", "NONDIFF")] <-
       round(res[, c("TP", "FP", "FN", "TN", "TOT_CALLED", "DIFF", "NONDIFF")])
-    DT::datatable(res[, c(ifelse("Threshold" %in% colnames(res), "Threshold", "Cutoff"),
+    DT::datatable(res[, c(ifelse("Threshold" %in% colnames(res),
+                                 "Threshold", "Cutoff"),
                           "Method_m", aspcts, "TP", "FP",
                           "FN", "TN", "TOT_CALLED", "DIFF", "NONDIFF",
                           "Distance from cursor")])
   } else if (tabtype == "corr") {
     DT::datatable(res[, c("Method_m", aspcts, "Distance from cursor")])
   } else if (tabtype == "scatter") {
-    DT::datatable(res[, c("Method_m", "feature", aspcts, "Distance from cursor")])
+    DT::datatable(res[, c("Method_m", "feature", aspcts,
+                          "Distance from cursor")])
   } else {
     DT::datatable(res[, c("Method_m", aspcts, "Cutoff",
                           "Distance from cursor")])

@@ -6,15 +6,17 @@
 #' of the app for formatting instructions). Properly formatted text files can
 #' also be obtained using the function \code{\link{IBRAData_to_text}}.
 #'
-#' @param ibradata An (optional) \code{IBRAData} object. If not given, the user can
-#'   load results from text files.
+#' @param ibradata An (optional) \code{IBRAData} object. If not given, the user
+#'   can load results from text files.
 #' @author Charlotte Soneson
 #' @import shiny
 #' @export
 #' @examples
 #' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                    row.names = paste0("G", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("G", 1:100))
 #' ibradata <- IBRAData(padj = padj, truth = truth)
 #' \dontrun{
 #' IBRAapp(ibradata)
@@ -39,7 +41,8 @@ IBRAapp <- function(ibradata = NULL) {
                                            "tab for formatting instructions."),
                            "right", options = list(container = "body")),
 
-                 ## Define the column giving the feature identifier (for both truth and results)
+                 ## Define the column giving the feature identifier
+                 ## (for both truth and results)
                  uiOutput("choose_feature_id"),
 
                  ## Define the column giving the (binary) truth
@@ -51,17 +54,19 @@ IBRAapp <- function(ibradata = NULL) {
                  ## Define the variable used to stratify the results,
                  ## based on the columns available in the truth file.
                  uiOutput("splitvar"),
-                 shinyBS::bsTooltip("splitvar", paste0("Select the attribute by which to stratify ",
-                                              "the result representations."),
+                 shinyBS::bsTooltip("splitvar",
+                                    paste0("Select the attribute ",
+                                           "by which to stratify ",
+                                           "the result representations."),
                            "right", options = list(container = "body")),
 
                  ## Define the maximal number of categories to keep in stratification.
                  uiOutput("choosemaxsplit"),
                  shinyBS::bsTooltip("choosemaxsplit",
-                           paste0("The number of categories to show if the results ",
-                                  "are stratified by a variable annotation. The most ",
-                                  "frequent categories with both positive and negative ",
-                                  "instances will be kept."),
+                                    paste0("The number of categories to show if the results ",
+                                           "are stratified by a variable annotation. The most ",
+                                           "frequent categories with both positive and negative ",
+                                           "instances will be kept."),
                            "right", options = list(container = "body")),
 
                  ## Decide whether or not to include the "overall" category when
@@ -145,7 +150,8 @@ IBRAapp <- function(ibradata = NULL) {
                            "right", options = list(container = "body")),
 
                  ## Define the pointsize used in the plots.
-                 numericInput(inputId = "pointsize", label = "Point size", value = 5),
+                 numericInput(inputId = "pointsize", label = "Point size",
+                              value = 5),
                  shinyBS::bsTooltip("pointsize",
                            paste0("The point size used in the plots."),
                            "right", options = list(container = "body")),
@@ -159,139 +165,175 @@ IBRAapp <- function(ibradata = NULL) {
       ),
 
       shinydashboard::dashboardBody(fluidRow(
-        shinydashboard::tabBox(width = 12,
-               tabPanel("Instructions", ##includeMarkdown("instructions.md"),
-                        value = "instructions"),
+        shinydashboard::tabBox(
+          width = 12,
+          tabPanel("Instructions", ##includeMarkdown("instructions.md"),
+                   value = "instructions"),
 
-               tabPanel("TPR vs FDR", uiOutput("plot.fdrtprcurve"),
-                        fluidRow(
-                          column(3, sliderInput(inputId = "xrange_fdrtpr", label = "x-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(3, sliderInput(inputId = "yrange_fdrtpr", label = "y-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(2, br(), downloadButton("export.fdrtprcurve", label = "Download plot")),
-                          column(2, br(), downloadButton("export.fdrtpr.df.rdata",
-                                                         label = "Download Rdata")),
-                          column(2, br(), uiOutput("fdrtpr.df.tsv.button"))
-                        ),
-                        DT::dataTableOutput("fdrtprcurve_click_info"),
-                        textOutput("message"),
-                        textOutput("duplication_alert"),
-                        value = "fdrtprcurve"),
+          tabPanel("TPR vs FDR", uiOutput("plot.fdrtprcurve"),
+                   fluidRow(
+                     column(3, sliderInput(inputId = "xrange_fdrtpr",
+                                           label = "x-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(3, sliderInput(inputId = "yrange_fdrtpr",
+                                           label = "y-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(2, br(), downloadButton("export.fdrtprcurve",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.fdrtpr.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), uiOutput("fdrtpr.df.tsv.button"))
+                   ),
+                   DT::dataTableOutput("fdrtprcurve_click_info"),
+                   textOutput("message"),
+                   textOutput("duplication_alert"),
+                   value = "fdrtprcurve"),
 
-               tabPanel("NBR vs FDR", uiOutput("plot.fdrnbrcurve"),
-                        fluidRow(
-                          column(4, sliderInput(inputId = "xrange_fdrnbr", label = "x-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(2, br(), downloadButton("export.fdrnbrcurve", label = "Download plot")),
-                          column(2, br(), downloadButton("export.fdrnbr.df.rdata",
-                                                         label = "Download Rdata")),
-                          column(2, br(), uiOutput("fdrnbr.df.tsv.button"))
-                        ),
-                        DT::dataTableOutput("fdrnbrcurve_click_info"),
-                        value = "fdrnbrcurve"),
+          tabPanel("NBR vs FDR", uiOutput("plot.fdrnbrcurve"),
+                   fluidRow(
+                     column(4, sliderInput(inputId = "xrange_fdrnbr",
+                                           label = "x-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(2, br(), downloadButton("export.fdrnbrcurve",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.fdrnbr.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), uiOutput("fdrnbr.df.tsv.button"))
+                   ),
+                   DT::dataTableOutput("fdrnbrcurve_click_info"),
+                   value = "fdrnbrcurve"),
 
-               tabPanel("TPR", uiOutput("plot.tpr"),
-                        fluidRow(
-                          column(4, sliderInput(inputId = "xrange_tpr", label = "x-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(2, br(), downloadButton("export.tpr", label = "Download plot")),
-                          column(2, br(), downloadButton("export.tpr.df.rdata", label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.tpr.df.tsv", label = "Download tsv"))
-                        ),
-                        DT::dataTableOutput("tpr_click_info"), value = "tpr"),
+          tabPanel("TPR", uiOutput("plot.tpr"),
+                   fluidRow(
+                     column(4, sliderInput(inputId = "xrange_tpr",
+                                           label = "x-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(2, br(), downloadButton("export.tpr",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.tpr.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.tpr.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("tpr_click_info"), value = "tpr"),
 
-               tabPanel("FPR", uiOutput("plot.fpr"),
-                        fluidRow(
-                          column(4, sliderInput(inputId = "xrange_fpr", label = "x-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(2, br(), downloadButton("export.fpr", label = "Download plot")),
-                          column(2, br(), downloadButton("export.fpr.df.rdata", label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.fpr.df.tsv", label = "Download tsv"))
-                        ),
-                        DT::dataTableOutput("fpr_click_info"), value = "fpr"),
+          tabPanel("FPR", uiOutput("plot.fpr"),
+                   fluidRow(
+                     column(4, sliderInput(inputId = "xrange_fpr",
+                                           label = "x-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(2, br(), downloadButton("export.fpr",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.fpr.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.fpr.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("fpr_click_info"), value = "fpr"),
 
-               tabPanel("ROC",
-                        uiOutput("plot.roc"),
-                        fluidRow(
-                          column(3, sliderInput(inputId = "xrange_roc", label = "x-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(3, sliderInput(inputId = "yrange_roc", label = "y-axis limits",
-                                                min = 0, max = 1, value = c(0, 1), step = 0.01)),
-                          column(2, br(), downloadButton("export.roc", label = "Download plot")),
-                          column(2, br(), downloadButton("export.roc.df.rdata", label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.roc.df.tsv", label = "Download tsv"))
-                        ),
-                        DT::dataTableOutput("roc_click_info"), value = "roc"),
+          tabPanel("ROC",
+                   uiOutput("plot.roc"),
+                   fluidRow(
+                     column(3, sliderInput(inputId = "xrange_roc",
+                                           label = "x-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(3, sliderInput(inputId = "yrange_roc",
+                                           label = "y-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(2, br(), downloadButton("export.roc",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.roc.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.roc.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("roc_click_info"), value = "roc"),
 
-               tabPanel("False discovery curves",
-                        uiOutput("plot.fpc"),
-                        fluidRow(
-                          ## Define the maximal number of genes shown in the FDC plots.
-                          ## Save in variable "input$maxnfdc". Add tooltip description.
-                          column(3, numericInput(inputId = "maxnfdc",
-                                                 label = "Maximal rank to display",
-                                                 value = 500, min = 10, max = 10000, step = 10)),
-                          column(2, br(), downloadButton("export.fpc", label = "Download plot")),
-                          column(2, br(), downloadButton("export.fpc.df.rdata", label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.fpc.df.tsv", label = "Download tsv"))
-                        ),
-                        DT::dataTableOutput("fpc_click_info"), value = "fpc"),
+          tabPanel("False discovery curves",
+                   uiOutput("plot.fpc"),
+                   fluidRow(
+                     ## Define the maximal number of genes shown in the FDC plots.
+                     ## Save in variable "input$maxnfdc". Add tooltip description.
+                     column(3, numericInput(inputId = "maxnfdc",
+                                            label = "Maximal rank to display",
+                                            value = 500, min = 10, max = 10000,
+                                            step = 10)),
+                     column(2, br(), downloadButton("export.fpc",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.fpc.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.fpc.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("fpc_click_info"), value = "fpc"),
 
-               tabPanel("Correlation",
-                        uiOutput("plot.corr"),
-                        fluidRow(
-                          column(3, sliderInput(inputId = "xrange_corr",
-                                                label = "x-axis limits",
-                                                min = -1, max = 1, value = c(-1, 1), step = 0.01)),
-                          column(2, radioButtons(inputId = "corrtype", label = "Correlation measure",
-                                                 choices = c("pearson", "spearman"),
-                                                 selected = "spearman")),
-                          column(2, br(), downloadButton("export.corr", label = "Download plot")),
-                          column(2, br(), downloadButton("export.corr.df.rdata", label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.corr.df.tsv", label = "Download tsv"))
-                        ),
-                        DT::dataTableOutput("corr_click_info"), value = "corr"),
+          tabPanel("Correlation",
+                   uiOutput("plot.corr"),
+                   fluidRow(
+                     column(3, sliderInput(inputId = "xrange_corr",
+                                           label = "x-axis limits",
+                                           min = -1, max = 1, value = c(-1, 1),
+                                           step = 0.01)),
+                     column(2, radioButtons(inputId = "corrtype", label = "Correlation measure",
+                                            choices = c("pearson", "spearman"),
+                                            selected = "spearman")),
+                     column(2, br(), downloadButton("export.corr",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.corr.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.corr.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("corr_click_info"), value = "corr"),
 
-               tabPanel("Scatter",
-                        uiOutput("plot.scatter"),
-                        fluidRow(
-                          column(2, checkboxInput("doflip", "Flip axes", FALSE),
-                                 checkboxInput("dolog", "Log-transform", FALSE)),
-                          column(2, br(), downloadButton("export.scatter",
-                                                         label = "Download plot")),
-                          column(2, br(), downloadButton("export.scatter.df.rdata",
-                                                         label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.scatter.df.tsv",
-                                                         label = "Download tsv"))
-                        ),
-                        DT::dataTableOutput("scatter_click_info"), value = "scatter"),
+          tabPanel("Scatter",
+                   uiOutput("plot.scatter"),
+                   fluidRow(
+                     column(2, checkboxInput("doflip", "Flip axes", FALSE),
+                            checkboxInput("dolog", "Log-transform", FALSE)),
+                     column(2, br(), downloadButton("export.scatter",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.scatter.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.scatter.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   DT::dataTableOutput("scatter_click_info"), value = "scatter"),
 
-               tabPanel("Venn diagram", shinyBS::bsAlert("overlap_message"),
-                        uiOutput("plot.overlap"),
-                        fluidRow(
-                          column(1, radioButtons(inputId = "incltruth", label = "Include truth",
-                                                 choices = c("yes", "no"), selected = "yes")),
-                          shinyBS::bsTooltip("incltruth",
-                                    paste0("Whether or nor to include the truth as a (perfect) ",
-                                           "method in the Venn diagrams. Note that maximally ",
-                                           "five methods (including the truth) can be included."),
-                                    "bottom", options = list(container = "body")),
-                          column(3, numericInput(inputId = "adjpVenn",
-                                                 label = "Adjusted p-value threshold",
-                                                 value = 0.05, min = 0, max = 1, step = 0.01)),
-                          shinyBS::bsTooltip("adjpVenn",
-                                    paste0("The adjusted p-value threshold used to extract ",
-                                           "the sets of significant variables to use for the ",
-                                           "Venn diagram. "),
-                                    "bottom", options = list(container = "body")),
-                          column(2, br(), downloadButton("export.overlap", label = "Download plot")),
-                          column(2, br(), downloadButton("export.overlap.df.rdata",
-                                                         label = "Download Rdata")),
-                          column(2, br(), downloadButton("export.overlap.df.tsv", label = "Download tsv"))
-                        ),
-                        value = "overlap"),
-               selected = "fdrtprcurve"
+          tabPanel("Venn diagram", shinyBS::bsAlert("overlap_message"),
+                   uiOutput("plot.overlap"),
+                   fluidRow(
+                     column(1, radioButtons(inputId = "incltruth", label = "Include truth",
+                                            choices = c("yes", "no"), selected = "yes")),
+                     shinyBS::bsTooltip("incltruth",
+                                        paste0("Whether or nor to include the truth as a (perfect) ",
+                                               "method in the Venn diagrams. Note that maximally ",
+                                               "five methods (including the truth) can be included."),
+                                        "bottom", options = list(container = "body")),
+                     column(3, numericInput(inputId = "adjpVenn",
+                                            label = "Adjusted p-value threshold",
+                                            value = 0.05, min = 0, max = 1, step = 0.01)),
+                     shinyBS::bsTooltip("adjpVenn",
+                                        paste0("The adjusted p-value threshold used to extract ",
+                                               "the sets of significant variables to use for the ",
+                                               "Venn diagram. "),
+                                        "bottom", options = list(container = "body")),
+                     column(2, br(), downloadButton("export.overlap",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.overlap.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.overlap.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   value = "overlap"),
+          selected = "fdrtprcurve"
         )
       ))
     )

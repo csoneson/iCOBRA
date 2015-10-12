@@ -7,8 +7,8 @@
 IBRAapp(ibradata = NULL)
 }
 \arguments{
-\item{ibradata}{An (optional) \code{IBRAData} object. If not given, the user can
-load results from text files.}
+\item{ibradata}{An (optional) \code{IBRAData} object. If not given, the user
+can load results from text files.}
 }
 \description{
 Interactive shiny app for visualization of results. The app can be
@@ -19,8 +19,10 @@ also be obtained using the function \code{\link{IBRAData_to_text}}.
 }
 \examples{
 set.seed(123)
-padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+padj <- data.frame(m1 = runif(100), m2 = runif(100),
+                   row.names = paste0("G", 1:100))
+truth <- data.frame(status = round(runif(100)),
+                    row.names = paste0("G", 1:100))
 ibradata <- IBRAData(padj = padj, truth = truth)
 \dontrun{
 IBRAapp(ibradata)

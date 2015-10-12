@@ -22,7 +22,8 @@ if applicable) can be compared.
 }
 \examples{
 set.seed(123)
-padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
+padj <- data.frame(m1 = runif(100), m2 = runif(100),
+                   row.names = paste0("G", 1:100))
 truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
 ibradata <- IBRAData(padj = padj, truth = truth)
 ibraperf <- calculate_performance(ibradata, binary_truth = "status",

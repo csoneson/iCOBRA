@@ -13,7 +13,8 @@ calculate_adjp(ibradata, method = "BH")
   \code{p.adjust.methods()}) that will be used to perform the adjustment.}
 }
 \value{
-An \code{IBRAData} object, extended with the calculated adjusted p-values.
+An \code{IBRAData} object, extended with the calculated adjusted
+  p-values.
 }
 \description{
 Calculate adjusted p-values for methods where only nominal p-values are
@@ -21,8 +22,10 @@ available in an \code{IBRAData} object.
 }
 \examples{
 set.seed(123)
-pval <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+pval <- data.frame(m1 = runif(100), m2 = runif(100),
+                   row.names = paste0("G", 1:100))
+truth <- data.frame(status = round(runif(100)),
+                    row.names = paste0("G", 1:100))
 ibradata <- IBRAData(pval = pval, truth = truth)
 ibradata <- calculate_adjp(ibradata, method = "BH")
 }
