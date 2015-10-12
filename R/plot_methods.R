@@ -249,6 +249,8 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @param doflip A logical indicating whether to flip the axes when results are
 #'   stratified by an annotation. By default (\code{doflip = FALSE}),
 #'   stratification levels are shown as columns and methods as rows in the plot.
+#' @param dolog A logical indicating whether to log10-transform values before
+#'   plotting.
 #'
 #' @return A ggplot object
 #'
@@ -266,7 +268,7 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #'                                   colorscheme = "Dark2", facetted = TRUE)
 #' plot_scatter(ibraplot, doflip = TRUE)
 plot_scatter <- function(ibraplot, title = "", stripsize = 10, titlecol = "black",
-                         pointsize = 3, doflip = FALSE) {
+                         pointsize = 3, doflip = FALSE, dolog = FALSE) {
   plot_data <- scatter(ibraplot)
 
   if (isTRUE(facetted(ibraplot))) {
@@ -280,12 +282,15 @@ plot_scatter <- function(ibraplot, title = "", stripsize = 10, titlecol = "black
     ggtitle(title)
   if (isTRUE(facetted(ibraplot))) {
     if (isTRUE(doflip))
-      pp + facet_grid(splitval ~ method)
+      pp <- pp + facet_grid(splitval ~ method)
     else
-      pp + facet_grid(method ~ splitval)
+      pp <- pp + facet_grid(method ~ splitval)
   } else {
-    pp + facet_wrap(~ method)
+    pp <- pp + facet_wrap(~ method)
   }
+  if (isTRUE(dolog))
+    pp <- pp + scale_x_log10() + scale_y_log10()
+  pp
 }
 
 

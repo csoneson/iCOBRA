@@ -5,7 +5,7 @@
 \title{Plot scatter plots}
 \usage{
 plot_scatter(ibraplot, title = "", stripsize = 10, titlecol = "black",
-  pointsize = 3, doflip = FALSE)
+  pointsize = 3, doflip = FALSE, dolog = FALSE)
 }
 \arguments{
 \item{ibraplot}{An \code{IBRAPlot} object.}
@@ -20,8 +20,11 @@ results are stratified by an annotation.}
 \item{pointsize}{A numeric value giving the size of the plot characters.}
 
 \item{doflip}{A logical indicating whether to flip the axes when results are
-  stratified by an annotation. By default (\code{doflip = FALSE}),
-  stratification levels are shown as columns and methods as rows in the plot.}
+stratified by an annotation. By default (\code{doflip = FALSE}),
+stratification levels are shown as columns and methods as rows in the plot.}
+
+\item{dolog}{A logical indicating whether to log10-transform values before
+  plotting.}
 }
 \value{
 A ggplot object

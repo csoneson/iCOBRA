@@ -222,7 +222,7 @@ select_measure <- function(ibradata, method, asp) {
   if (asp %in% c("nbr", "fpr", "fdr", "tpr")) {
     if (method %in% names(padj(ibradata))) ret <- "padj"
     else ret <- NULL
-  } else if (asp %in% c("fdrtpr", "roc", "fpc", "fdrnbr", "corr", "scatter")) {
+  } else if (asp %in% c("fdrtpr", "fdrnbr")) {
     if (method %in% names(score(ibradata))) {
       if (method %in% names(padj(ibradata))) {
         tmp1 <- padj(ibradata)[method]
@@ -246,6 +246,10 @@ select_measure <- function(ibradata, method, asp) {
         else ret <- "padj"
       } else ret <- "pval"
     } else ret <- "padj"
+  } else if (asp %in% c("roc", "fpc", "corr", "scatter")) {
+    if (method %in% names(score(ibradata))) ret <- "score"
+    else if (method %in% names(pval(ibradata))) ret <- "pval"
+    else ret <- "padj"
   }
   ret
 }

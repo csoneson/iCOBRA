@@ -256,7 +256,8 @@ IBRAapp <- function(ibradata = NULL) {
                tabPanel("Scatter",
                         uiOutput("plot.scatter"),
                         fluidRow(
-                          column(2, checkboxInput("doflip", "Flip axes", FALSE)),
+                          column(2, checkboxInput("doflip", "Flip axes", FALSE),
+                                 checkboxInput("dolog", "Log-transform", FALSE)),
                           column(2, br(), downloadButton("export.scatter",
                                                          label = "Download plot")),
                           column(2, br(), downloadButton("export.scatter.df.rdata",
@@ -608,7 +609,7 @@ IBRAapp <- function(ibradata = NULL) {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth, cont_truth = NULL,
                                      aspects = "overlap", thrs = NULL,
-                                     splv = input$splv, maxsplit = 3,
+                                     splv = input$splv, maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
                                      thr_venn = input$adjpVenn))
       } else {
@@ -621,7 +622,7 @@ IBRAapp <- function(ibradata = NULL) {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL, cont_truth = input$cont_truth,
                                      aspects = "corr", thrs = NULL,
-                                     splv = input$splv, maxsplit = 3,
+                                     splv = input$splv, maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
@@ -634,7 +635,7 @@ IBRAapp <- function(ibradata = NULL) {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL, cont_truth = input$cont_truth,
                                      aspects = "scatter", thrs = NULL,
-                                     splv = input$splv, maxsplit = 3,
+                                     splv = input$splv, maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
@@ -1026,7 +1027,8 @@ IBRAapp <- function(ibradata = NULL) {
         print(plot_scatter(ibraplot = plotvalues()$all_vals,
                            title = plotvalues()$title,
                            stripsize = input$stripsize, titlecol = "white",
-                           pointsize = input$pointsize, doflip = input$doflip))
+                           pointsize = input$pointsize, doflip = input$doflip,
+                           dolog = input$dolog))
         dev.off()
       })
 
@@ -1053,7 +1055,8 @@ IBRAapp <- function(ibradata = NULL) {
           return(NULL)
         plot_scatter(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                      stripsize = input$stripsize, titlecol = "white",
-                     pointsize = input$pointsize, doflip = input$doflip)
+                     pointsize = input$pointsize, doflip = input$doflip,
+                     dolog = input$dolog)
       })
     })
 
