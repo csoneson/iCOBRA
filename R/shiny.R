@@ -1239,7 +1239,11 @@ IBRAapp <- function(ibradata = NULL) {
     output$fdrtprcurve <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+            input$goButton == 0)
+          return(NULL)
+        if ("curve" %in% input$plottype & !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+          return(NULL)
+        if ("points" %in% input$plottype & !is_plottable(fdrtpr(plotvalues()$all_vals)))
           return(NULL)
         plot_fdrtprcurve(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                          stripsize = input$stripsize, titlecol = "white",
@@ -1250,7 +1254,11 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fdrtprcurve_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+          input$goButton == 0)
+        return(NULL)
+      if ("curve" %in% input$plottype & !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+        return(NULL)
+      if ("points" %in% input$plottype & !is_plottable(fdrtpr(plotvalues()$all_vals)))
         return(NULL)
       if ("curve" %in% input$plottype) tab_data <- isolate(fdrtprcurve(plotvalues()$all_vals))
       else tab_data <- isolate(fdrtpr(plotvalues()$all_vals))
@@ -1319,7 +1327,11 @@ IBRAapp <- function(ibradata = NULL) {
     output$fdrnbrcurve <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+            input$goButton == 0)
+          return(NULL)
+        if ("curve" %in% input$plottype & !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+          return(NULL)
+        if ("points" %in% input$plottype & !is_plottable(fdrnbr(plotvalues()$all_vals)))
           return(NULL)
         plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                          stripsize = input$stripsize, titlecol = "white",
@@ -1330,7 +1342,11 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fdrnbrcurve_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+          input$goButton == 0)
+        return(NULL)
+      if ("curve" %in% input$plottype & !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+        return(NULL)
+      if ("points" %in% input$plottype & !is_plottable(fdrnbr(plotvalues()$all_vals)))
         return(NULL)
       if ("curve" %in% input$plottype) tab_data <- isolate(fdrnbrcurve(plotvalues()$all_vals))
       else tab_data <- isolate(fdrnbr(plotvalues()$all_vals))

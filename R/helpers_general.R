@@ -264,10 +264,13 @@ select_measure <- function(ibradata, method, asp) {
         else ret <- "padj"
       } else ret <- "pval"
     } else ret <- "padj"
-  } else if (asp %in% c("roc", "fpc", "corr", "scatter")) {
+  } else if (asp %in% c("roc", "fpc")) {
     if (method %in% names(score(ibradata))) ret <- "score"
     else if (method %in% names(pval(ibradata))) ret <- "pval"
     else ret <- "padj"
+  } else if (asp %in% c("corr", "scatter")) {
+    if (method %in% names(score(ibradata))) ret <- "score"
+    else ret <- NULL
   }
   ret
 }

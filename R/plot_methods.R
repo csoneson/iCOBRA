@@ -492,7 +492,7 @@ plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
 plot_overlap <- function(ibraplot, ...) {
   overlap_table <- overlap(ibraplot)
   circle.col <- plotcolors(ibraplot)
-  if (is.null(overlap_table))
+  if (length(overlap_table) == 0)
     return(NULL)
 
   if (class(overlap_table) != "list") {

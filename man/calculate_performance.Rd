@@ -63,10 +63,11 @@ preferentially used, given that they are monotonically associated with the
 adjusted p-values (if provided). If the \code{score} is not provided, the
 nominal p-values will be used, given that they are monotonically associated
 with the adjusted p-values (if provided). In other cases, the adjusted
-p-values will be used also for these aspects. Finally, for \code{roc},
-\code{fpc}, \code{corr} and \code{scatter} aspects, the \code{score}
-observations will be used if they are provided, otherwise p-values and, as a
-last instance, adjusted p-values.
+p-values will be used also for these aspects. For \code{roc} and \code{fpc},
+the \code{score} observations will be used if they are provided, otherwise
+p-values and, as a last instance, adjusted p-values. Finally, for \code{corr}
+and \code{scatter} aspects, the \code{score} observations will be used if
+they are provided, otherwise no results will be calculated.
 }
 \examples{
 set.seed(123)

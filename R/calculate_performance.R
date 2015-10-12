@@ -81,10 +81,11 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' adjusted p-values (if provided). If the \code{score} is not provided, the
 #' nominal p-values will be used, given that they are monotonically associated
 #' with the adjusted p-values (if provided). In other cases, the adjusted
-#' p-values will be used also for these aspects. Finally, for \code{roc},
-#' \code{fpc}, \code{corr} and \code{scatter} aspects, the \code{score}
-#' observations will be used if they are provided, otherwise p-values and, as a
-#' last instance, adjusted p-values.
+#' p-values will be used also for these aspects. For \code{roc} and \code{fpc},
+#' the \code{score} observations will be used if they are provided, otherwise
+#' p-values and, as a last instance, adjusted p-values. Finally, for \code{corr}
+#' and \code{scatter} aspects, the \code{score} observations will be used if
+#' they are provided, otherwise no results will be calculated.
 #'
 #' @param ibradata An IBRAData object.
 #' @param binary_truth A character string giving the name of the column of
@@ -265,34 +266,38 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
         }
       }
     }
-    nbrs <- t(do.call(rbind, lapply(outNBR, function(w) w$nbr)))
-    vn <- sapply(outNBR, function(w) w$basemethod)
-    tps <- t(do.call(rbind, lapply(outTP, function(w) w$tp)))
-    vtp <- sapply(outTP, function(w) w$basemethod)
-    fps <- t(do.call(rbind, lapply(outFP, function(w) w$fp)))
-    vfp <- sapply(outFP, function(w) w$basemethod)
-    tns <- t(do.call(rbind, lapply(outTN, function(w) w$tn)))
-    vtn <- sapply(outTN, function(w) w$basemethod)
-    fns <- t(do.call(rbind, lapply(outFN, function(w) w$fn)))
-    vfn <- sapply(outFN, function(w) w$basemethod)
-    tcs <- t(do.call(rbind, lapply(outTOT_CALLED, function(w) w$tot_called)))
-    vtc <- sapply(outTOT_CALLED, function(w) w$basemethod)
-    dss <- t(do.call(rbind, lapply(outDS, function(w) w$ds)))
-    vds <- sapply(outDS, function(w) w$basemethod)
-    nds <- t(do.call(rbind, lapply(outNONDS, function(w) w$nonds)))
-    vnds <- sapply(outNONDS, function(w) w$basemethod)
+    if (any(sapply(lapply(outNBR, function(w) w$nbr), length) > 0)) {
+      nbrs <- t(do.call(rbind, lapply(outNBR, function(w) w$nbr)))
+      vn <- sapply(outNBR, function(w) w$basemethod)
+      tps <- t(do.call(rbind, lapply(outTP, function(w) w$tp)))
+      vtp <- sapply(outTP, function(w) w$basemethod)
+      fps <- t(do.call(rbind, lapply(outFP, function(w) w$fp)))
+      vfp <- sapply(outFP, function(w) w$basemethod)
+      tns <- t(do.call(rbind, lapply(outTN, function(w) w$tn)))
+      vtn <- sapply(outTN, function(w) w$basemethod)
+      fns <- t(do.call(rbind, lapply(outFN, function(w) w$fn)))
+      vfn <- sapply(outFN, function(w) w$basemethod)
+      tcs <- t(do.call(rbind, lapply(outTOT_CALLED, function(w) w$tot_called)))
+      vtc <- sapply(outTOT_CALLED, function(w) w$basemethod)
+      dss <- t(do.call(rbind, lapply(outDS, function(w) w$ds)))
+      vds <- sapply(outDS, function(w) w$basemethod)
+      nds <- t(do.call(rbind, lapply(outNONDS, function(w) w$nonds)))
+      vnds <- sapply(outNONDS, function(w) w$basemethod)
 
-    nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR", vn, domelt = TRUE)
-    tps <- extend_resulttable(tps, splv, keeplevels, "TP", vtp, domelt = TRUE)
-    fps <- extend_resulttable(fps, splv, keeplevels, "FP", vfp, domelt = TRUE)
-    fns <- extend_resulttable(fns, splv, keeplevels, "FN", vfn, domelt = TRUE)
-    tns <- extend_resulttable(tns, splv, keeplevels, "TN", vtn, domelt = TRUE)
-    tcs <- extend_resulttable(tcs, splv, keeplevels, "TOT_CALLED", vtc, domelt = TRUE)
-    dss <- extend_resulttable(dss, splv, keeplevels, "DIFF", vds, domelt = TRUE)
-    nds <- extend_resulttable(nds, splv, keeplevels, "NONDIFF", vnds, domelt = TRUE)
+      nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR", vn, domelt = TRUE)
+      tps <- extend_resulttable(tps, splv, keeplevels, "TP", vtp, domelt = TRUE)
+      fps <- extend_resulttable(fps, splv, keeplevels, "FP", vfp, domelt = TRUE)
+      fns <- extend_resulttable(fns, splv, keeplevels, "FN", vfn, domelt = TRUE)
+      tns <- extend_resulttable(tns, splv, keeplevels, "TN", vtn, domelt = TRUE)
+      tcs <- extend_resulttable(tcs, splv, keeplevels, "TOT_CALLED", vtc, domelt = TRUE)
+      dss <- extend_resulttable(dss, splv, keeplevels, "DIFF", vds, domelt = TRUE)
+      nds <- extend_resulttable(nds, splv, keeplevels, "NONDIFF", vnds, domelt = TRUE)
 
-    all_nbr <- Reduce(function(...) merge(..., all = TRUE),
-                      list(nbrs, tps, fps, tns, fns, tcs, dss, nds))
+      all_nbr <- Reduce(function(...) merge(..., all = TRUE),
+                        list(nbrs, tps, fps, tns, fns, tcs, dss, nds))
+    } else {
+      all_nbr <- data.frame()
+    }
   }
 
   ## ----------------------------- CORR --------------------------------- ##
@@ -352,15 +357,20 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
         message(paste0("Column ", i, " is being ignored for correlation calculations."))
       }
     }
-    pearsons <- t(do.call(rbind, lapply(outPEARSON, function(w) w$pearson)))
-    spearmans <- t(do.call(rbind, lapply(outSPEARMAN, function(w) w$spearman)))
-    vp <- sapply(outPEARSON, function(w) w$basemethod)
-    vs <- sapply(outSPEARMAN, function(w) w$basemethod)
-    pearsons <- extend_resulttable(pearsons, splv, keeplevels, "PEARSON",
-                                   vp, domelt = TRUE)
-    spearmans <- extend_resulttable(spearmans, splv, keeplevels, "SPEARMAN",
-                                    vs, domelt = TRUE)
-    corrs <- merge(pearsons, spearmans)
+
+    if (any(sapply(lapply(outPEARSON, function(w) w$pearson), length) > 0)) {
+      pearsons <- t(do.call(rbind, lapply(outPEARSON, function(w) w$pearson)))
+      spearmans <- t(do.call(rbind, lapply(outSPEARMAN, function(w) w$spearman)))
+      vp <- sapply(outPEARSON, function(w) w$basemethod)
+      vs <- sapply(outSPEARMAN, function(w) w$basemethod)
+      pearsons <- extend_resulttable(pearsons, splv, keeplevels, "PEARSON",
+                                     vp, domelt = TRUE)
+      spearmans <- extend_resulttable(spearmans, splv, keeplevels, "SPEARMAN",
+                                      vs, domelt = TRUE)
+      corrs <- merge(pearsons, spearmans)
+    } else {
+      corrs <- data.frame()
+    }
   } else {
     corrs <- data.frame()
   }
@@ -420,9 +430,13 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
         }
       }
     }
-    tprs <- t(do.call(rbind, lapply(outTPR, function(w) w$tpr)))
-    vt <- sapply(outTPR, function(w) w$basemethod)
-    tprs <- extend_resulttable(tprs, splv, keeplevels, "TPR", vt, domelt = TRUE)
+    if (any(sapply(lapply(outTPR, function(w) w$tpr), length) > 0)) {
+      tprs <- t(do.call(rbind, lapply(outTPR, function(w) w$tpr)))
+      vt <- sapply(outTPR, function(w) w$basemethod)
+      tprs <- extend_resulttable(tprs, splv, keeplevels, "TPR", vt, domelt = TRUE)
+    } else {
+      tprs <- data.frame()
+    }
   } else {
     tprs <- data.frame()
   }
@@ -490,13 +504,17 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
         }
       }
     }
-    fdrs <- t(do.call(rbind, lapply(outFDR, function(w) w$fdr)))
-    vf <- sapply(outFDR, function(w) w$basemethod)
+    if (any(sapply(lapply(outFDR, function(w) w$fdr), length) > 0)) {
+      fdrs <- t(do.call(rbind, lapply(outFDR, function(w) w$fdr)))
+      vf <- sapply(outFDR, function(w) w$basemethod)
 
-    fdrs <- extend_resulttable(fdrs, splv, keeplevels, "FDR", vf, domelt = TRUE)
-    fdrs$satis <- ifelse(fdrs$FDR < as.numeric(gsub("thr", "", fdrs$thr)),
-                         "yes", "no")
-    fdrs$method.satis <- paste0(fdrs$fullmethod, fdrs$satis)
+      fdrs <- extend_resulttable(fdrs, splv, keeplevels, "FDR", vf, domelt = TRUE)
+      fdrs$satis <- ifelse(fdrs$FDR < as.numeric(gsub("thr", "", fdrs$thr)),
+                           "yes", "no")
+      fdrs$method.satis <- paste0(fdrs$fullmethod, fdrs$satis)
+    } else {
+      fdrs <- data.frame()
+    }
   } else {
     fdrs <- data.frame()
   }
@@ -556,10 +574,14 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
         }
       }
     }
-    fprs <- t(do.call(rbind, lapply(outFPR, function(w) w$fpr)))
-    vff <- sapply(outFPR, function(w) w$basemethod)
+    if (any(sapply(lapply(outFPR, function(w) w$fpr), length) > 0)) {
+      fprs <- t(do.call(rbind, lapply(outFPR, function(w) w$fpr)))
+      vff <- sapply(outFPR, function(w) w$basemethod)
 
-    fprs <- extend_resulttable(fprs, splv, keeplevels, "FPR", vff, domelt = TRUE)
+      fprs <- extend_resulttable(fprs, splv, keeplevels, "FPR", vff, domelt = TRUE)
+    } else {
+      fprs <- data.frame()
+    }
   } else {
     fprs <- data.frame()
   }
@@ -853,32 +875,36 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   ## --------------------------- OVERLAP -------------------------------- ##
   if ("overlap" %in% aspects) {
     tmplist <- padj(ibradata)
-    ## Add 'truth' to list of results
-    tmp2 <- 1 - truth(ibradata)[, binary_truth, drop = FALSE]
-    colnames(tmp2) <- "truth"
-    missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
-    tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
-                                   dimnames = list(missing_genes, colnames(tmplist))))
-    tmplist <- rbind(tmplist, tmpadd)
-    tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
+    if (length(tmplist) > 0) {
+      ## Add 'truth' to list of results
+      tmp2 <- 1 - truth(ibradata)[, binary_truth, drop = FALSE]
+      colnames(tmp2) <- "truth"
+      missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
+      tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
+                                     dimnames = list(missing_genes, colnames(tmplist))))
+      tmplist <- rbind(tmplist, tmpadd)
+      tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
 
-    overlap <- apply(tmplist, 2, function(w) {
-      as.numeric(w <= thr_venn)
-    })
-    common_genes <- rownames(tmplist)
-    rownames(overlap) <- common_genes
-    overlap <- overlap[, which(colSums(is.na(overlap)) != nrow(overlap))]
+      overlap <- apply(tmplist, 2, function(w) {
+        as.numeric(w <= thr_venn)
+      })
+      common_genes <- rownames(tmplist)
+      rownames(overlap) <- common_genes
+      overlap <- overlap[, which(colSums(is.na(overlap)) != nrow(overlap))]
 
-    ## Assume that if we don't have information about a gene, it is "negative"
-    overlap[is.na(overlap)] <- 0
-    overlap <- data.frame(overlap, stringsAsFactors = FALSE)
+      ## Assume that if we don't have information about a gene, it is "negative"
+      overlap[is.na(overlap)] <- 0
+      overlap <- data.frame(overlap, stringsAsFactors = FALSE)
 
-    ## If splv is not "none", split overlap matrix
-    if (splv != "none") {
-      keep <- intersect(rownames(overlap), rownames(truth(ibradata)))
-      tth <- truth(ibradata)[match(keep, rownames(truth(ibradata))), ]
-      overlap <- overlap[match(keep, rownames(overlap)), ]
-      overlap <- split(overlap, tth[, splv])
+      ## If splv is not "none", split overlap matrix
+      if (splv != "none") {
+        keep <- intersect(rownames(overlap), rownames(truth(ibradata)))
+        tth <- truth(ibradata)[match(keep, rownames(truth(ibradata))), ]
+        overlap <- overlap[match(keep, rownames(overlap)), ]
+        overlap <- split(overlap, tth[, splv])
+      }
+    } else {
+      overlap <- data.frame()
     }
   } else {
     overlap <- data.frame()
