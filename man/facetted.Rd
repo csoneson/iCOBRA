@@ -6,7 +6,7 @@
 \alias{facetted,IBRAPlot-method}
 \alias{facetted<-}
 \alias{facetted<-,IBRAPlot,logical-method}
-\title{Accessors for the 'facetted' slot of an IBRAPlot object}
+\title{Accessor and replacement functions for \code{facetted} slot}
 \usage{
 facetted(x, ...)
 
@@ -17,14 +17,17 @@ facetted(x, ...) <- value
 \S4method{facetted}{IBRAPlot,logical}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPlot object}
+\item{x}{An \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A logical}
+\item{value}{A logical value, indicating whether the object is formatted for
+facetted plots (visualizing each stratification level in a separate panel)
+or not.}
 }
 \description{
-Accessors for the 'facetted' slot of an IBRAPlot object
+Accessor and replacement functions for the \code{facetted} slot in an
+\code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

@@ -5,19 +5,33 @@
 \alias{stratiflevels}
 \alias{stratiflevels,IBRAPerformance-method}
 \alias{stratiflevels,IBRAPlot-method}
-\title{Accessors for the stratification levels contained in an IBRAPerformance object}
+\title{Accessor function for stratification levels}
 \usage{
 stratiflevels(x, ...)
 
 \S4method{stratiflevels}{IBRAPerformance}(x)
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object}
 
 \item{...}{Additional arguments}
 }
+\value{
+A character vector of all stratification levels represented in the
+  object
+}
 \description{
-Accessors for the stratification levels contained in an IBRAPerformance object
+Accessor function to extract the stratification levels that are represented
+in an \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+set.seed(123)
+padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
+truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+ibradata <- IBRAData(padj = padj, truth = truth)
+ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+                                  aspects = "fpr", thrs = c(0.05, 0.1))
+stratiflevels(ibraperf)
 }
 \author{
 Charlotte Soneson

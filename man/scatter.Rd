@@ -8,7 +8,7 @@
 \alias{scatter<-}
 \alias{scatter<-,IBRAPerformance,data.frame-method}
 \alias{scatter<-,IBRAPlot,data.frame-method}
-\title{Accessors for the 'scatter' slot of an IBRAPerformance object}
+\title{Accessor and replacement functions for \code{scatter} slot}
 \usage{
 scatter(x, ...)
 
@@ -19,14 +19,17 @@ scatter(x, ...) <- value
 \S4method{scatter}{IBRAPerformance,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame giving information necessary to generate scatter
+plots of observed vs true values for each method and each stratification
+level.}
 }
 \description{
-Accessors for the 'scatter' slot of an IBRAPerformance object
+Accessor and replacement functions for the \code{scatter} slot in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

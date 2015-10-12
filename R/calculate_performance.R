@@ -68,18 +68,32 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' Calculate performance measures
 #'
 #' Calculate performance measures from a given collection of p-values, adjusted
-#' p-values and scores.
+#' p-values and scores provided in an \code{IBRAData} object.
 #'
-#' @param ibradata An object of class IBRAData.
+#' Depending on the collection of observations that are available for a given
+#' method, the appropriate one will be chosen for each performance measure. For
+#' \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr}, \code{overlap} aspects,
+#' results will only be calculated for methods where adjusted p-values are
+#' included in the \code{IBRAData} object, since these calculations make use of
+#' specific adjusted p-value cutoffs. For \code{fdrtprcurve},
+#' \code{fdrnbrcurve}, \code{roc}, \code{fpc}, \code{corr}, \code{scatter}
+#' aspects, the \code{score} observations will be preferentially used, given
+#' that they are monotonically associated with the adjusted p-values (if
+#' provided). If the \code{score} is not provided, the nominal p-values will be
+#' used, given that they are monotonically associated with the adjusted p-values
+#' (if provided). In other cases, the adjusted p-values will be used also for
+#' these aspects.
+#'
+#' @param ibradata An IBRAData object.
 #' @param binary_truth A character string giving the name of the column of
 #'   truth(ibradata) that contains the binary truth (true assignment of
 #'   variables into two classes, represented by 0/1).
 #' @param cont_truth A character string giving the name of the column of
-#'   truth(ibradata) that contains the continuous truth (the value that the
-#'   observed data will be compared to).
+#'   truth(ibradata) that contains the continuous truth (a continuous value that
+#'   the observations can be compared to).
 #' @param aspects A character vector giving the types of performance measures to
 #'   calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
-#'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap").
+#'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter").
 #' @param thrs A numeric vector of adjusted p-value thresholds for which to
 #'   calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 #'   "fpr".
@@ -94,9 +108,9 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   score) is given. If FALSE, all features contained in the truth table are
 #'   used.
 #' @param thr_venn A numeric value giving the adjusted p-value threshold to use
-#'   to create the Venn diagrams.
+#'   to create Venn diagrams.
 #'
-#' @return An object of class IBRAPerformance
+#' @return An IBRAPerformance object
 #'
 #' @export
 #' @author Charlotte Soneson
@@ -856,44 +870,45 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
 
 #' Prepare data for plotting
 #'
-#' Prepare performance data (obtained by calculate_performance) for plotting.
+#' Prepare performance data provided in an \code{IBRAPerformance} object
+#' (obtained by \code{\link{calculate_performance}}) for plotting.
 #'
-#' @param ibraperf An object of class IBRAPerformance.
+#' @param ibraperf An \code{IBRAPerformance} object.
 #' @param keepmethods A character vector consisting of methods to retain for
-#'   plotting (these should correspond to the names given in the "basemethod"
-#'   column of the slots of ibraperf), or NULL (indicating that all methods
-#'   represented in ibraperf should be retained).
+#'   plotting (these should be a subset of \code{basemethods(ibraperf)}), or
+#'   NULL (indicating that all methods represented in ibraperf should be
+#'   retained).
 #' @param incloverall A logical indicating whether the "overall" results should
 #'   be included if the results are stratified by an annotation.
 #' @param colorscheme Either a character string giving the color palette to use
 #'   to define colors for the different methods, or a character vector with
 #'   colors to use. The available pre-defined palettes depend on the number of
 #'   different methods to distinguish. The choices are:
-#' \describe{
-#' \item{\code{Accent}}{(max 8 methods)}
-#' \item{\code{Dark2}}{(max 8 methods)}
-#' \item{\code{Paired}}{(max 12 methods)}
-#' \item{\code{Pastel1}}{(max 9 methods)}
-#' \item{\code{Pastel2}}{(max 8 methods)}
-#' \item{\code{Set1}}{(max 9 methods)}
-#' \item{\code{Set2}}{(max 8 methods)}
-#' \item{\code{Set3}}{{max 12 methods}}
-#' \item{\code{hue_pal}}{}
-#' \item{\code{rainbow}}{}
-#' \item{\code{heat}}{}
-#' \item{\code{terrain}}{}
-#' \item{\code{topo}}{}
-#' \item{\code{cm}}{}
-#' }
-#' If the number of allowed methods is exceeded, the colorscheme defaults to
-#' \code{hue_pal}.
+#'   \describe{
+#'   \item{- \code{Accent}}{(max 8 methods)}
+#'   \item{- \code{Dark2}}{(max 8 methods)}
+#'   \item{- \code{Paired}}{(max 12 methods)}
+#'   \item{- \code{Pastel1}}{(max 9 methods)}
+#'   \item{- \code{Pastel2}}{(max 8 methods)}
+#'   \item{- \code{Set1}}{(max 9 methods)}
+#'   \item{- \code{Set2}}{(max 8 methods)}
+#'   \item{- \code{Set3}}{(max 12 methods)}
+#'   \item{- \code{hue_pal}}{}
+#'   \item{- \code{rainbow}}{}
+#'   \item{- \code{heat}}{}
+#'   \item{- \code{terrain}}{}
+#'   \item{- \code{topo}}{}
+#'   \item{- \code{cm}}{}
+#'   }
+#'   If the number of allowed methods is exceeded, the colorscheme defaults to
+#'   \code{hue_pal}.
 #' @param facetted A logical indicating whether the results should be split into
-#'   subpanels when stratified by an annotation (TRUE), or kept in the same
-#'   panel but shown with different colors (FALSE).
+#'   subpanels when stratified by an annotation (\code{TRUE}), or kept in the same
+#'   panel but shown with different colors (\code{FALSE}).
 #' @param incltruth A logical indicating whether the truth should be included in
 #'   Venn diagrams.
 #'
-#' @return An object of class IBRAPlot
+#' @return An \code{IBRAPlot} object
 #'
 #' @export
 #' @author Charlotte Soneson

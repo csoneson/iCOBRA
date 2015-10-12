@@ -6,7 +6,7 @@
 \alias{padj,IBRAData-method}
 \alias{padj<-}
 \alias{padj<-,IBRAData,data.frame-method}
-\title{Accessors for the 'padj' slot of an IBRAData object}
+\title{Accessor and replacement functions for \code{padj} slot}
 \usage{
 padj(x, ...)
 
@@ -17,14 +17,16 @@ padj(x, ...) <- value
 \S4method{padj}{IBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAData object}
+\item{x}{An \code{IBRAData} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame containing adjusted p-values for each feature and
+each method.}
 }
 \description{
-Accessors for the 'padj' slot of an IBRAData object
+Accessor and replacement functions for the \code{padj} slot in an
+\code{IBRAData} object.
 }
 \author{
 Charlotte Soneson

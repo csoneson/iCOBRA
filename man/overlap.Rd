@@ -8,7 +8,7 @@
 \alias{overlap<-}
 \alias{overlap<-,IBRAPerformance,list_df-method}
 \alias{overlap<-,IBRAPlot,list_df-method}
-\title{Accessors for the 'overlap' slot of an IBRAPerformance object}
+\title{Accessor and replacement functions for \code{overlap} slot}
 \usage{
 overlap(x, ...)
 
@@ -19,14 +19,17 @@ overlap(x, ...) <- value
 \S4method{overlap}{IBRAPerformance,list_df}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame or a list}
+\item{value}{A data frame or a list, giving information about which feature
+that are classified as 'positive' by each method and for each
+stratification level.}
 }
 \description{
-Accessors for the 'overlap' slot of an IBRAPerformance object
+Accessor and replacement functions for the \code{overlap} slot in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

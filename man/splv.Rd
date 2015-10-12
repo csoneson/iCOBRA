@@ -8,7 +8,7 @@
 \alias{splv<-}
 \alias{splv<-,IBRAPerformance,character-method}
 \alias{splv<-,IBRAPlot,character-method}
-\title{Accessors for the 'splv' slot of an IBRAPerformance object}
+\title{Accessor and replacement functions for \code{splv} slot}
 \usage{
 splv(x, ...)
 
@@ -19,14 +19,16 @@ splv(x, ...) <- value
 \S4method{splv}{IBRAPerformance,character}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A character string}
+\item{value}{A character string giving the name of a feature annotation to
+use for stratification.}
 }
 \description{
-Accessors for the 'splv' slot of an IBRAPerformance object
+Accessor and replacement functions for the \code{splv} slot in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

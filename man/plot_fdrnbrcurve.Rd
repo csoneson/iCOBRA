@@ -8,19 +8,19 @@ plot_fdrnbrcurve(ibraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(0, 1), plottype = c("curve", "points"))
 }
 \arguments{
-\item{ibraplot}{An object of class IBRAPlot}
+\item{ibraplot}{An \code{IBRAPlot} object.}
 
-\item{title}{A character string giving the title of the plot}
+\item{title}{A character string giving the title of the plot.}
 
 \item{stripsize}{A numeric value giving the size of the strip text, when the
-results are stratified by an annotation}
+results are stratified by an annotation.}
 
-\item{titlecol}{A character string giving the color of the title}
+\item{titlecol}{A character string giving the color of the title.}
 
-\item{pointsize}{A numeric value giving the size of the plot characters}
+\item{pointsize}{A numeric value giving the size of the plot characters.}
 
 \item{xaxisrange}{A numeric vector with two elements, giving the lower and
-upper boundary of the x-axis, respectively}
+upper boundary of the x-axis, respectively.}
 
 \item{plottype}{A character vector giving the type of plot to construct. Can
   be any combination of the two elements "curve" and "points".}

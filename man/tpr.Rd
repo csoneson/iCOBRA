@@ -8,7 +8,7 @@
 \alias{tpr<-}
 \alias{tpr<-,IBRAPerformance,data.frame-method}
 \alias{tpr<-,IBRAPlot,data.frame-method}
-\title{Accessors for the 'tpr' slot of an IBRAPerformance object}
+\title{Accessor and replacement functions for \code{tpr} slot}
 \usage{
 tpr(x, ...)
 
@@ -19,14 +19,17 @@ tpr(x, ...) <- value
 \S4method{tpr}{IBRAPerformance,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame giving information about the observed TPR for each
+method and each stratification level, at various adjusted p-value
+thresholds.}
 }
 \description{
-Accessors for the 'tpr' slot of an IBRAPerformance object
+Accessor and replacement functions for the \code{tpr} slot in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

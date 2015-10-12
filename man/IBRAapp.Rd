@@ -2,16 +2,29 @@
 % Please edit documentation in R/shiny.R
 \name{IBRAapp}
 \alias{IBRAapp}
-\title{Run interactive shiny app to visualize results}
+\title{Interactive shiny app to visualize results}
 \usage{
 IBRAapp(ibradata = NULL)
 }
 \arguments{
-\item{ibradata}{An (optional) IBRAData object. If not given, the user can
+\item{ibradata}{An (optional) \code{IBRAData} object. If not given, the user can
 load results from text files.}
 }
 \description{
-Run interactive shiny app to visualize results
+Interactive shiny app for visualization of results. The app can be
+initialized with an \code{IBRAData} object. If no object is provided, truth
+and results are loaded into the app from text files (see the Instructions tab
+of the app for formatting instructions). Properly formatted text files can
+also be obtained using the function \code{\link{IBRAData_to_text}}.
+}
+\examples{
+set.seed(123)
+padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
+truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+ibradata <- IBRAData(padj = padj, truth = truth)
+\dontrun{
+IBRAapp(ibradata)
+}
 }
 \author{
 Charlotte Soneson

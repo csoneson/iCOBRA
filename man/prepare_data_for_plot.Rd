@@ -8,51 +8,52 @@ prepare_data_for_plot(ibraperf, keepmethods = NULL, incloverall = TRUE,
   colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE)
 }
 \arguments{
-\item{ibraperf}{An object of class IBRAPerformance.}
+\item{ibraperf}{An \code{IBRAPerformance} object.}
 
 \item{keepmethods}{A character vector consisting of methods to retain for
-plotting (these should correspond to the names given in the "basemethod"
-column of the slots of ibraperf), or NULL (indicating that all methods
-represented in ibraperf should be retained).}
+plotting (these should be a subset of \code{basemethods(ibraperf)}), or
+NULL (indicating that all methods represented in ibraperf should be
+retained).}
 
 \item{incloverall}{A logical indicating whether the "overall" results should
 be included if the results are stratified by an annotation.}
 
 \item{colorscheme}{Either a character string giving the color palette to use
-  to define colors for the different methods, or a character vector with
-  colors to use. The available pre-defined palettes depend on the number of
-  different methods to distinguish. The choices are:
+to define colors for the different methods, or a character vector with
+colors to use. The available pre-defined palettes depend on the number of
+different methods to distinguish. The choices are:
 \describe{
-\item{\code{Accent}}{(max 8 methods)}
-\item{\code{Dark2}}{(max 8 methods)}
-\item{\code{Paired}}{(max 12 methods)}
-\item{\code{Pastel1}}{(max 9 methods)}
-\item{\code{Pastel2}}{(max 8 methods)}
-\item{\code{Set1}}{(max 9 methods)}
-\item{\code{Set2}}{(max 8 methods)}
-\item{\code{Set3}}{{max 12 methods}}
-\item{\code{hue_pal}}{}
-\item{\code{rainbow}}{}
-\item{\code{heat}}{}
-\item{\code{terrain}}{}
-\item{\code{topo}}{}
-\item{\code{cm}}{}
+\item{- \code{Accent}}{(max 8 methods)}
+\item{- \code{Dark2}}{(max 8 methods)}
+\item{- \code{Paired}}{(max 12 methods)}
+\item{- \code{Pastel1}}{(max 9 methods)}
+\item{- \code{Pastel2}}{(max 8 methods)}
+\item{- \code{Set1}}{(max 9 methods)}
+\item{- \code{Set2}}{(max 8 methods)}
+\item{- \code{Set3}}{(max 12 methods)}
+\item{- \code{hue_pal}}{}
+\item{- \code{rainbow}}{}
+\item{- \code{heat}}{}
+\item{- \code{terrain}}{}
+\item{- \code{topo}}{}
+\item{- \code{cm}}{}
 }
 If the number of allowed methods is exceeded, the colorscheme defaults to
 \code{hue_pal}.}
 
 \item{facetted}{A logical indicating whether the results should be split into
-subpanels when stratified by an annotation (TRUE), or kept in the same
-panel but shown with different colors (FALSE).}
+subpanels when stratified by an annotation (\code{TRUE}), or kept in the same
+panel but shown with different colors (\code{FALSE}).}
 
 \item{incltruth}{A logical indicating whether the truth should be included in
   Venn diagrams.}
 }
 \value{
-An object of class IBRAPlot
+An \code{IBRAPlot} object
 }
 \description{
-Prepare performance data (obtained by calculate_performance) for plotting.
+Prepare performance data provided in an \code{IBRAPerformance} object
+(obtained by \code{\link{calculate_performance}}) for plotting.
 }
 \examples{
 set.seed(123)

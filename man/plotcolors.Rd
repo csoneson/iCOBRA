@@ -6,7 +6,7 @@
 \alias{plotcolors,IBRAPlot-method}
 \alias{plotcolors<-}
 \alias{plotcolors<-,IBRAPlot,character-method}
-\title{Accessors for the 'plotcolors' slot of an IBRAPlot object}
+\title{Accessor and replacement functions for \code{plotcolors} slot}
 \usage{
 plotcolors(x, ...)
 
@@ -17,14 +17,17 @@ plotcolors(x, ...) <- value
 \S4method{plotcolors}{IBRAPlot,character}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPlot object}
+\item{x}{An \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A character vector}
+\item{value}{A character vector giving the colors assigned to each of the
+methods (or method/stratification level combinations) represented in the
+\code{IBRAPlot} object.}
 }
 \description{
-Accessors for the 'plotcolors' slot of an IBRAPlot object
+Accessor and replacement functions for the \code{plotcolors} slot in an
+\code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

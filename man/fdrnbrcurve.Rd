@@ -8,7 +8,7 @@
 \alias{fdrnbrcurve<-}
 \alias{fdrnbrcurve<-,IBRAPerformance,data.frame-method}
 \alias{fdrnbrcurve<-,IBRAPlot,data.frame-method}
-\title{Accessors for the 'fdrnbrcurve' slot of an IBRAPerformance object}
+\title{Accessor and replacement functions for \code{fdrnbrcurve} slot}
 \usage{
 fdrnbrcurve(x, ...)
 
@@ -19,14 +19,17 @@ fdrnbrcurve(x, ...) <- value
 \S4method{fdrnbrcurve}{IBRAPerformance,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame giving information necessary to generate curves of
+observed FDR vs number of features called positive for each method and each
+stratification level.}
 }
 \description{
-Accessors for the 'fdrnbrcurve' slot of an IBRAPerformance object
+Accessor and replacement functions for the \code{fdrnbrcurve} slot in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

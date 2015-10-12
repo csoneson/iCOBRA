@@ -5,19 +5,32 @@
 \alias{basemethods}
 \alias{basemethods,IBRAPerformance-method}
 \alias{basemethods,IBRAPlot-method}
-\title{Accessors for the basemethods contained in an IBRAPerformance object}
+\title{Accessor function for basemethods}
 \usage{
 basemethods(x, ...)
 
 \S4method{basemethods}{IBRAPerformance}(x)
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
+}
+\value{
+A character vector of all methods represented in the object.
 }
 \description{
-Accessors for the basemethods contained in an IBRAPerformance object
+Accessor function to extract the methods that are represented in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+set.seed(123)
+padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
+truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
+ibradata <- IBRAData(padj = padj, truth = truth)
+ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+                                  aspects = "fpr", thrs = c(0.05, 0.1))
+basemethods(ibraperf)
 }
 \author{
 Charlotte Soneson

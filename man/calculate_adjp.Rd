@@ -7,17 +7,17 @@
 calculate_adjp(ibradata, method = "BH")
 }
 \arguments{
-\item{ibradata}{An object of class IBRAData}
+\item{ibradata}{An \code{IBRAData} object.}
 
 \item{method}{A character string giving the method (selected from
-  p.adjust.methods()) to use for the adjustment}
+  \code{p.adjust.methods()}) that will be used to perform the adjustment.}
 }
 \value{
-An IBRAData object, extended with the calculated adjusted p-values
+An \code{IBRAData} object, extended with the calculated adjusted p-values.
 }
 \description{
 Calculate adjusted p-values for methods where only nominal p-values are
-available.
+available in an \code{IBRAData} object.
 }
 \examples{
 set.seed(123)

@@ -32,14 +32,14 @@ plot_fpr_tpr <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' Plot observed false positive rate (FPR) for given adjusted p-value
 #' thresholds.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param pointsize A numeric value giving the size of the plot characters
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the x-axis, respectively
+#'   upper boundary of the x-axis, respectively.
 #'
 #' @return A ggplot object
 #'
@@ -67,14 +67,14 @@ plot_fpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #'
 #' Plot observed true positive rate (TPR) for given adjusted p-value thresholds.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param pointsize A numeric value giving the size of the plot characters
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the x-axis, respectively
+#'   upper boundary of the x-axis, respectively.
 #'
 #' @return A ggplot object
 #'
@@ -100,18 +100,18 @@ plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 
 #' Plot correlations
 #'
-#' Plot correlations between observations and a continuous truth value
+#' Plot correlations between observations and a continuous truth value.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param pointsize A numeric value giving the size of the plot characters
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the x-axis, respectively
+#'   upper boundary of the x-axis, respectively.
 #' @param corrtype A character string giving the type of correlation to show.
-#'   Either "pearson" or "spearman"
+#'   Either "pearson" or "spearman".
 #'
 #' @return A ggplot object
 #'
@@ -168,15 +168,15 @@ plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
 #'
 #' Plot receiver operating characteristics (ROC) curves.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the x-axis, respectively
+#'   upper boundary of the x-axis, respectively.
 #' @param yaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the y-axis, respectively
+#'   upper boundary of the y-axis, respectively.
 #'
 #' @return A ggplot object
 #'
@@ -205,12 +205,12 @@ plot_roc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' Plot false positive curves, indicating the number of false positives among
 #' the top-ranked N variables, for varying values of N.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param maxnfdc A numeric value giving the largest N to consider
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param maxnfdc A numeric value giving the largest N to consider.
 #'
 #' @return A ggplot object
 #'
@@ -240,15 +240,15 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' Plot scatter plots, indicating the relationship between observed values and a
 #' continuous truth.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param pointsize A numeric value giving the size of the plot characters
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
 #' @param doflip A logical indicating whether to flip the axes when results are
-#'   stratified by an annotation. By default (doflip = FALSE), stratification
-#'   levels are shown as columns and methods as rows in the plot.
+#'   stratified by an annotation. By default (\code{doflip = FALSE}),
+#'   stratification levels are shown as columns and methods as rows in the plot.
 #'
 #' @return A ggplot object
 #'
@@ -378,16 +378,16 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' (FDR), for given adjusted p-value thresholds and/or as curves traced out by
 #' considering all threshold values.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param pointsize A numeric value giving the size of the plot characters
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the x-axis, respectively
+#'   upper boundary of the x-axis, respectively.
 #' @param yaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the y-axis, respectively
+#'   upper boundary of the y-axis, respectively.
 #' @param plottype A character vector giving the type of plot to construct. Can
 #'   be any combination of the two elements "curve" and "points".
 #'
@@ -420,14 +420,14 @@ plot_fdrtprcurve <- function(ibraplot, title = "", stripsize = 15,
 #' discovery rate (FDR), for given adjusted p-value thresholds and/or as curves
 #' traced out by considering all threshold values.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param title A character string giving the title of the plot
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
-#'   results are stratified by an annotation
-#' @param titlecol A character string giving the color of the title
-#' @param pointsize A numeric value giving the size of the plot characters
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
-#'   upper boundary of the x-axis, respectively
+#'   upper boundary of the x-axis, respectively.
 #' @param plottype A character vector giving the type of plot to construct. Can
 #'   be any combination of the two elements "curve" and "points".
 #'
@@ -462,8 +462,8 @@ plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
 #' as a "perfect" method. Note that maximally five methods (including the truth,
 #' if applicable) can be compared.
 #'
-#' @param ibraplot An object of class IBRAPlot
-#' @param ... Additional arguments to limma::vennDiagram
+#' @param ibraplot An \code{IBRAPlot} object.
+#' @param ... Additional arguments to \code{limma::vennDiagram}.
 #'
 #' @return Nothing, displays a graph
 #'

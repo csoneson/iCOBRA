@@ -88,13 +88,13 @@ fix_duplicates <- function(res_df, method_name) {
 #' Calculate adjusted p-values
 #'
 #' Calculate adjusted p-values for methods where only nominal p-values are
-#' available.
+#' available in an \code{IBRAData} object.
 #'
-#' @param ibradata An object of class IBRAData
+#' @param ibradata An \code{IBRAData} object.
 #' @param method A character string giving the method (selected from
-#'   p.adjust.methods()) to use for the adjustment
+#'   \code{p.adjust.methods()}) that will be used to perform the adjustment.
 #'
-#' @return An IBRAData object, extended with the calculated adjusted p-values
+#' @return An \code{IBRAData} object, extended with the calculated adjusted p-values.
 #'
 #' @export
 #' @author Charlotte Soneson

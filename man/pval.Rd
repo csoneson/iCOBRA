@@ -6,7 +6,7 @@
 \alias{pval,IBRAData-method}
 \alias{pval<-}
 \alias{pval<-,IBRAData,data.frame-method}
-\title{Accessors for the 'pval' slot of an IBRAData object}
+\title{Accessor and replacement functions for \code{pval} slot}
 \usage{
 pval(x, ...)
 
@@ -17,14 +17,16 @@ pval(x, ...) <- value
 \S4method{pval}{IBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAData object}
+\item{x}{An \code{IBRAData} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame containing p-values for each feature and each
+method.}
 }
 \description{
-Accessors for the 'pval' slot of an IBRAData object
+Accessor and replacement functions for the \code{pval} slot in an
+\code{IBRAData} object.
 }
 \author{
 Charlotte Soneson

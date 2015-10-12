@@ -8,20 +8,20 @@ plot_scatter(ibraplot, title = "", stripsize = 10, titlecol = "black",
   pointsize = 3, doflip = FALSE)
 }
 \arguments{
-\item{ibraplot}{An object of class IBRAPlot}
+\item{ibraplot}{An \code{IBRAPlot} object.}
 
-\item{title}{A character string giving the title of the plot}
+\item{title}{A character string giving the title of the plot.}
 
 \item{stripsize}{A numeric value giving the size of the strip text, when the
-results are stratified by an annotation}
+results are stratified by an annotation.}
 
-\item{titlecol}{A character string giving the color of the title}
+\item{titlecol}{A character string giving the color of the title.}
 
-\item{pointsize}{A numeric value giving the size of the plot characters}
+\item{pointsize}{A numeric value giving the size of the plot characters.}
 
 \item{doflip}{A logical indicating whether to flip the axes when results are
-  stratified by an annotation. By default (doflip = FALSE), stratification
-  levels are shown as columns and methods as rows in the plot.}
+  stratified by an annotation. By default (\code{doflip = FALSE}),
+  stratification levels are shown as columns and methods as rows in the plot.}
 }
 \value{
 A ggplot object

@@ -6,7 +6,7 @@
 \alias{truth,IBRAData-method}
 \alias{truth<-}
 \alias{truth<-,IBRAData,data.frame-method}
-\title{Accessors for the 'truth' slot of an IBRAData object}
+\title{Accessor and replacement functions for \code{truth} slot}
 \usage{
 truth(x, ...)
 
@@ -17,14 +17,17 @@ truth(x, ...) <- value
 \S4method{truth}{IBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAData object}
+\item{x}{An \code{IBRAData} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame containing true assignments and/or scores for
+features, together with other feature annotations to use for stratification
+of performance calculations.}
 }
 \description{
-Accessors for the 'truth' slot of an IBRAData object
+Accessor and replacement functions for the \code{truth} slot in an
+\code{IBRAData} object.
 }
 \author{
 Charlotte Soneson

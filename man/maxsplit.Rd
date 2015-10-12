@@ -8,7 +8,7 @@
 \alias{maxsplit<-}
 \alias{maxsplit<-,IBRAPerformance,numeric-method}
 \alias{maxsplit<-,IBRAPlot,numeric-method}
-\title{Accessors for the 'maxsplit' slot of an IBRAPerformance object}
+\title{Accessor and replacement functions for \code{maxsplit} slot}
 \usage{
 maxsplit(x, ...)
 
@@ -19,14 +19,15 @@ maxsplit(x, ...) <- value
 \S4method{maxsplit}{IBRAPerformance,numeric}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAPerformance object}
+\item{x}{An \code{IBRAPerformance} or \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A numeric value}
+\item{value}{A numeric value giving the maximal number of strata to retain.}
 }
 \description{
-Accessors for the 'maxsplit' slot of an IBRAPerformance object
+Accessor and replacement functions for the \code{maxsplit} slot in an
+\code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \author{
 Charlotte Soneson

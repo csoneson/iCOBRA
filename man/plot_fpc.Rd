@@ -8,16 +8,16 @@ plot_fpc(ibraplot, title = "", stripsize = 15, titlecol = "black",
   maxnfdc = 500)
 }
 \arguments{
-\item{ibraplot}{An object of class IBRAPlot}
+\item{ibraplot}{An \code{IBRAPlot} object.}
 
-\item{title}{A character string giving the title of the plot}
+\item{title}{A character string giving the title of the plot.}
 
 \item{stripsize}{A numeric value giving the size of the strip text, when the
-results are stratified by an annotation}
+results are stratified by an annotation.}
 
-\item{titlecol}{A character string giving the color of the title}
+\item{titlecol}{A character string giving the color of the title.}
 
-\item{maxnfdc}{A numeric value giving the largest N to consider}
+\item{maxnfdc}{A numeric value giving the largest N to consider.}
 }
 \value{
 A ggplot object

@@ -8,28 +8,28 @@ plot_corr(ibraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(-1, 1), corrtype = "pearson")
 }
 \arguments{
-\item{ibraplot}{An object of class IBRAPlot}
+\item{ibraplot}{An \code{IBRAPlot} object.}
 
-\item{title}{A character string giving the title of the plot}
+\item{title}{A character string giving the title of the plot.}
 
 \item{stripsize}{A numeric value giving the size of the strip text, when the
-results are stratified by an annotation}
+results are stratified by an annotation.}
 
-\item{titlecol}{A character string giving the color of the title}
+\item{titlecol}{A character string giving the color of the title.}
 
-\item{pointsize}{A numeric value giving the size of the plot characters}
+\item{pointsize}{A numeric value giving the size of the plot characters.}
 
 \item{xaxisrange}{A numeric vector with two elements, giving the lower and
-upper boundary of the x-axis, respectively}
+upper boundary of the x-axis, respectively.}
 
 \item{corrtype}{A character string giving the type of correlation to show.
-  Either "pearson" or "spearman"}
+  Either "pearson" or "spearman".}
 }
 \value{
 A ggplot object
 }
 \description{
-Plot correlations between observations and a continuous truth value
+Plot correlations between observations and a continuous truth value.
 }
 \examples{
 set.seed(123)

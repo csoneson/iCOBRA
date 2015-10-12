@@ -6,7 +6,7 @@
 \alias{score,IBRAData-method}
 \alias{score<-}
 \alias{score<-,IBRAData,data.frame-method}
-\title{Accessors for the 'score' slot of an IBRAData object}
+\title{Accessor and replacement functions for \code{score} slot}
 \usage{
 score(x, ...)
 
@@ -17,14 +17,15 @@ score(x, ...) <- value
 \S4method{score}{IBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An IBRAData object}
+\item{x}{An \code{IBRAData} object.}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments.}
 
-\item{value}{A data frame}
+\item{value}{A data frame containing scores for each feature and each method.}
 }
 \description{
-Accessors for the 'score' slot of an IBRAData object
+Accessor and replacement functions for the \code{score} slot in an
+\code{IBRAData} object.
 }
 \author{
 Charlotte Soneson

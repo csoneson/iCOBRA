@@ -10,19 +10,19 @@ calculate_performance(ibradata, binary_truth, cont_truth,
   splv = "none", maxsplit = 3, onlyshared = FALSE, thr_venn = 0.05)
 }
 \arguments{
-\item{ibradata}{An object of class IBRAData.}
+\item{ibradata}{An IBRAData object.}
 
 \item{binary_truth}{A character string giving the name of the column of
 truth(ibradata) that contains the binary truth (true assignment of
 variables into two classes, represented by 0/1).}
 
 \item{cont_truth}{A character string giving the name of the column of
-truth(ibradata) that contains the continuous truth (the value that the
-observed data will be compared to).}
+truth(ibradata) that contains the continuous truth (a continuous value that
+the observations can be compared to).}
 
 \item{aspects}{A character vector giving the types of performance measures to
 calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
-"fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap").}
+"fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter").}
 
 \item{thrs}{A numeric vector of adjusted p-value thresholds for which to
 calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
@@ -42,14 +42,29 @@ score) is given. If FALSE, all features contained in the truth table are
 used.}
 
 \item{thr_venn}{A numeric value giving the adjusted p-value threshold to use
-  to create the Venn diagrams.}
+  to create Venn diagrams.}
 }
 \value{
-An object of class IBRAPerformance
+An IBRAPerformance object
 }
 \description{
 Calculate performance measures from a given collection of p-values, adjusted
-p-values and scores.
+p-values and scores provided in an \code{IBRAData} object.
+}
+\details{
+Depending on the collection of observations that are available for a given
+method, the appropriate one will be chosen for each performance measure. For
+\code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr}, \code{overlap} aspects,
+results will only be calculated for methods where adjusted p-values are
+included in the \code{IBRAData} object, since these calculations make use of
+specific adjusted p-value cutoffs. For \code{fdrtprcurve},
+\code{fdrnbrcurve}, \code{roc}, \code{fpc}, \code{corr}, \code{scatter}
+aspects, the \code{score} observations will be preferentially used, given
+that they are monotonically associated with the adjusted p-values (if
+provided). If the \code{score} is not provided, the nominal p-values will be
+used, given that they are monotonically associated with the adjusted p-values
+(if provided). In other cases, the adjusted p-values will be used also for
+these aspects.
 }
 \examples{
 set.seed(123)

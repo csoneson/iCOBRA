@@ -7,9 +7,9 @@
 plot_overlap(ibraplot, ...)
 }
 \arguments{
-\item{ibraplot}{An object of class IBRAPlot}
+\item{ibraplot}{An \code{IBRAPlot} object.}
 
-\item{...}{Additional arguments to limma::vennDiagram}
+\item{...}{Additional arguments to \code{limma::vennDiagram}.}
 }
 \value{
 Nothing, displays a graph

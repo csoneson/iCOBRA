@@ -10,7 +10,7 @@
 \alias{\S4method{[}{IBRAData,ANY,ANY}}
 \alias{\S4method{[}{IBRAPerformance,ANY,ANY}}
 \alias{\S4method{[}{IBRAPlot,ANY,ANY}}
-\title{Subsetting an IBRAData, IBRAPerformance or IBRAPlot object}
+\title{Subsetting \code{IBRAData}, \code{IBRAPerformance} or \code{IBRAPlot} objects}
 \usage{
 \S4method{[}{IBRAData,ANY,ANY}(x, i, j = "missing", drop = "missing")
 
@@ -19,16 +19,22 @@
 \S4method{[}{IBRAPlot,ANY,ANY}(x, i = "missing", j, drop = "missing")
 }
 \arguments{
-\item{x}{An IBRAData, IBRAPerformance or IBRAPlot object}
+\item{x}{An \code{IBRAData}, \code{IBRAPerformance} or \code{IBRAPlot}
+object.}
 
-\item{i}{For IBRAData objects, a character vector of feature names to retain}
+\item{i}{For \code{IBRAData} objects, a character vector of feature names to
+retain.}
 
-\item{j}{For IBRAPerformance and IBRAPlot objects, a character vector with
-method names to retain}
+\item{j}{For \code{IBRAPerformance} and \code{IBRAPlot} objects, a character
+vector with method names to retain.}
 
-\item{drop}{not used}
+\item{drop}{not used.}
 }
 \description{
-Subsetting an IBRAData, IBRAPerformance or IBRAPlot object
+Functions to subset \code{IBRAData}, \code{IBRAPerformance} or
+\code{IBRAPlot} objects. \code{IBRAData} objects are subset by features
+(rows), while \code{IBRAPerformance} and \code{IBRAPlot} objects are subset
+by methods (columns). Numeric indices are not allowed, since not all slots
+may be arranged in the same order.
 }
 

@@ -34,5 +34,6 @@ Imports:
     limma,
     methods
 Suggests:
-    knitr
+    knitr,
+    benchmarkR
 VignetteBuilder: knitr
