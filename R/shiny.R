@@ -1034,23 +1034,26 @@ IBRAapp <- function(ibradata = NULL) {
       all_data <- isolate(deviation(plotvalues()$all_vals))
       if (isTRUE(input$dosquare))
         all_data$sqDEVIATION <- all_data$DEVIATION^2
+      tmp_click <- input$deviation_plot_click
+      if (!is.null(tmp_click))
+        tmp_click$y <- round(tmp_click$y)
       if ("split" %in% isolate(input$facet_opt)) {
-        res <- nearPoints2(all_data, input$deviation_plot_click,
-                           threshold = 50, maxpoints = 100,
-                           addDist = TRUE, panelvar1 = "splitval",
-                           yvar = "num_method",
-                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-                                         "DEVIATION"))
+        res <- nearPoints(all_data, tmp_click,
+                          threshold = 50, maxpoints = 100,
+                          addDist = TRUE, panelvar1 = "splitval",
+                          yvar = "num_method",
+                          xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+                                        "DEVIATION"))
       } else {
-        res <- nearPoints2(all_data, input$deviation_plot_click,
-                           threshold = 50, maxpoints = 100,
-                           addDist = TRUE, yvar = "num_method",
-                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-                                         "DEVIATION"))
+        res <- nearPoints(all_data, tmp_click,
+                          threshold = 50, maxpoints = 100,
+                          addDist = TRUE, yvar = "num_method",
+                          xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+                                        "DEVIATION"))
       }
       fix_res(res, methodcol = "fullmethod",
               aspcts = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-                              "DEVIATION"), tabtype = "scatter")
+                              "DEVIATION"), tabtype = "deviation")
     })
 
     ## ---------------------------- FPR -------------------------------- ##

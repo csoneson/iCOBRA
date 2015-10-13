@@ -357,6 +357,11 @@ fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
   } else if (tabtype == "scatter") {
     DT::datatable(res[, c("Method_m", "feature", aspcts,
                           "Distance from cursor")])
+  } else if (tabtype == "deviation") {
+    res[, "Horizontal distance from cursor"] <-
+      res[, "Distance from cursor"]
+    DT::datatable(res[, c("Method_m", "feature", aspcts,
+                          "Horizontal distance from cursor")])
   } else {
     DT::datatable(res[, c("Method_m", aspcts, "Cutoff",
                           "Distance from cursor")])
