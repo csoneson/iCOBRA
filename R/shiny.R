@@ -1135,7 +1135,7 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(roc(plotvalues()$all_values)))
+            input$goButton == 0 || !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
         print(plot_roc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
@@ -1201,7 +1201,7 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(scatter(plotvalues()$all_values)))
+            input$goButton == 0 || !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
         print(plot_scatter(ibraplot = plotvalues()$all_vals,
                            title = plotvalues()$title,

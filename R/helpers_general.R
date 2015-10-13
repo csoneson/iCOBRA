@@ -13,6 +13,8 @@ is_plottable <- function(obj) {
     FALSE
   else if (nrow(obj) == 0)
     FALSE
+  else if (length(obj) == 0)
+    FALSE
   else
     TRUE
 }

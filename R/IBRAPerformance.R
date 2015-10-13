@@ -78,7 +78,7 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                             tpr = data.frame(), fpr = data.frame(), splv = "",
                             roc = data.frame(), fpc = data.frame(),
                             deviation = data.frame(),
-                            overlap = data.frame(), maxsplit = 3,
+                            overlap = data.frame(), maxsplit = NA_integer_,
                             corr = data.frame(), scatter = data.frame(),
                             object_to_extend = NULL) {
   ## TODO: add some checks of the input arguments
@@ -111,7 +111,7 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
         scatter <- object_to_extend@scatter
       if (length(object_to_extend@overlap) != 0)
         overlap <- object_to_extend@overlap
-      if (!is.null(object_to_extend@maxsplit))
+      if (!is.na(object_to_extend@maxsplit))
         maxsplit <- object_to_extend@maxsplit
       if ((object_to_extend@splv) != "")
         splv <- object_to_extend@splv

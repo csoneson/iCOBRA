@@ -1108,7 +1108,7 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
           slot(ibraperf, sl) <- subset(slot(ibraperf, sl), splitval != "overall")
       }
     }
-    if (!is.null(slot(ibraperf, sl))) {
+    if (length(slot(ibraperf, sl)) != 0) {
       if (isTRUE(facetted))
         slot(ibraperf, sl)$num_method <-
           as.numeric(as.factor(slot(ibraperf, sl)$method))
