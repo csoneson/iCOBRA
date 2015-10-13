@@ -331,13 +331,11 @@ fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
       res <- res[match(um, res[, methodcol]), ]
     }
   }
-  idx <- match(c("thr", methodcol, "dist_", "NBR", "CUTOFF",
-                 "FPC_CUTOFF", "ROC_CUTOFF", "topN", "OBSERVATION",
-                 "TRUTH"), colnames(res))
+  idx <- match(c("thr", methodcol, "dist_", "NBR", "CUTOFF", "FPC_CUTOFF",
+                 "ROC_CUTOFF", "topN", "OBSERVATION", "TRUTH"), colnames(res))
   colnames(res)[idx[!is.na(idx)]] <-
-    c("Threshold", "Method", "Distance from cursor",
-      "Number of detections", "Cutoff", "Cutoff",
-      "Cutoff", "Number of detections", "observation",
+    c("Threshold", "Method", "Distance from cursor", "Number of detections",
+      "Cutoff", "Cutoff", "Cutoff", "Number of detections", "observation",
       "truth")[!is.na(idx)]
 
   if ("Threshold" %in% colnames(res)) {
