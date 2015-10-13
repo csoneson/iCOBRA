@@ -10,8 +10,9 @@
 IBRAPerformance(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   fdrnbr = data.frame(), fdrnbrcurve = data.frame(), tpr = data.frame(),
   fpr = data.frame(), splv = "", roc = data.frame(), fpc = data.frame(),
-  deviation = data.frame(), overlap = data.frame(), maxsplit = 3,
-  corr = data.frame(), scatter = data.frame(), object_to_extend = NULL)
+  deviation = data.frame(), overlap = data.frame(),
+  maxsplit = NA_integer_, corr = data.frame(), scatter = data.frame(),
+  object_to_extend = NULL)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various

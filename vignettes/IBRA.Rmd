@@ -23,15 +23,16 @@ The starting point for an evaluation is typically a collection of feature 'score
 
 ```{r}
 library(IBRA)
-load(system.file("extdata", "IBRAData_ex1.Rdata", package = "IBRA"))
-class(ibradata)
-ibradata
+data(ibradata_example)
+#load(system.file("extdata", "IBRAData_ex1.Rdata", package = "IBRA"))
+class(ibradata_example)
+ibradata_example
 ```
 
 For the methods that don't have adjusted p-values, we will calculate adjusted p-values from nominal p-values.
 
 ```{r}
-ibradata <- calculate_adjp(ibradata)
+ibradata_example <- calculate_adjp(ibradata_example)
 ```
 
 
@@ -39,7 +40,7 @@ ibradata <- calculate_adjp(ibradata)
 Next, we calculate the performance scores using the IBRAData object. We can perform both assignment-based and correlation-based evaluations, and thus we have to provide information about which columns in the truth data frame that are to be interpreted as the binary (assignment) truth and continuous truth score, respectively. Here, we let the "status" column (indicating the true differential expression status of the genes) represent the true classification, and the true log-fold change represent the true score, to which the observed scores will be compared. 
 
 ```{r}
-ibraperf <- calculate_performance(ibradata, binary_truth = "status", maxsplit = 4,
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status", maxsplit = 4,
                                   cont_truth = "logFC", splv = "none")
 slotNames(ibraperf)
 ```
@@ -71,7 +72,7 @@ plot_overlap(ibraplot)
 All results can be stratified by any annotation provided in the truth slot of the IBRAData object. Note that only the largest categories will be retained (the number of retained categories is determined by the maxsplit argument), and thus stratifying by continuous annotations is not supported (each category would likely contain just one observation). Here, we show how the stratification is performed, and how it changes the plots generated above.
 
 ```{r, fig.width = 7, fig.height = 5, warning = FALSE}
-ibraperf <- calculate_performance(ibradata, binary_truth = "status", 
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status", 
                                   cont_truth = "status", splv = "expr_cat")
 ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2", facetted = TRUE)
 plot_tpr(ibraplot)
@@ -129,7 +130,7 @@ pp + theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
 IBRA contains an interactive shiny application, for interactive exploration of results. It can be called with an IBRAData object, or with no arguments. In the latter case, results can be loaded into the app from text files (see the Instructions tab for formatting instructions, or the IBRAData_to_text() function). 
 
 ```{r, eval = FALSE}
-IBRAapp(ibradata)
+IBRAapp(ibradata_example)
 IBRAapp()
 ```
 

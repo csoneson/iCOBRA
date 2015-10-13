@@ -12,11 +12,11 @@
 \alias{\S4method{[}{IBRAPlot,ANY,ANY}}
 \title{Subsetting \code{IBRAData}, \code{IBRAPerformance} or \code{IBRAPlot} objects}
 \usage{
-\S4method{[}{IBRAData,ANY,ANY}(x, i, j = "missing", drop = "missing")
+\S4method{[}{IBRAData}(x, i, j = "missing", drop = "missing")
 
-\S4method{[}{IBRAPerformance,ANY,ANY}(x, i = "missing", j, drop = "missing")
+\S4method{[}{IBRAPerformance}(x, i = "missing", j, drop = "missing")
 
-\S4method{[}{IBRAPlot,ANY,ANY}(x, i = "missing", j, drop = "missing")
+\S4method{[}{IBRAPlot}(x, i = "missing", j, drop = "missing")
 }
 \arguments{
 \item{x}{An \code{IBRAData}, \code{IBRAPerformance} or \code{IBRAPlot}
