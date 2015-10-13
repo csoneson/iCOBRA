@@ -168,6 +168,8 @@ IBRAapp <- function(ibradata = NULL) {
         shinydashboard::tabBox(
           width = 12,
           tabPanel("Instructions", ##includeMarkdown("instructions.md"),
+                   includeMarkdown(system.file("extdata", "instructions.md",
+                                               package = "IBRA")),
                    value = "instructions"),
 
           tabPanel("TPR vs FDR", uiOutput("plot.fdrtprcurve"),
