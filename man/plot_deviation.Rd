@@ -5,7 +5,8 @@
 \title{Plot deviations}
 \usage{
 plot_deviation(ibraplot, title = "", stripsize = 15, titlecol = "black",
-  plottype = "boxplot", dojitter = TRUE)
+  xaxisrange = NULL, plottype = "boxplot", dojitter = TRUE,
+  squaredevs = FALSE)
 }
 \arguments{
 \item{ibraplot}{An \code{IBRAPlot} object.}
@@ -17,11 +18,17 @@ results are stratified by an annotation.}
 
 \item{titlecol}{A character string giving the color of the title.}
 
+\item{xaxisrange}{A numeric vector with two elements, giving the lower and
+upper boundary of the x-axis, respectively.}
+
 \item{plottype}{Either "boxplot" or "violin", indicating what type of plot to
 make.}
 
 \item{dojitter}{A logical indicating whether to include jittered data points
-  or not.}
+or not.}
+
+\item{squaredevs}{A logical indicating whether to square deviations before
+  plotting or not.}
 }
 \value{
 A ggplot object

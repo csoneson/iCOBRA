@@ -537,10 +537,14 @@ plot_overlap <- function(ibraplot, ...) {
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
 #' @param titlecol A character string giving the color of the title.
+#' @param xaxisrange A numeric vector with two elements, giving the lower and
+#'   upper boundary of the x-axis, respectively.
 #' @param plottype Either "boxplot" or "violin", indicating what type of plot to
 #'   make.
 #' @param dojitter A logical indicating whether to include jittered data points
 #'   or not.
+#' @param squaredevs A logical indicating whether to square deviations before
+#'   plotting or not.
 #'
 #' @return A ggplot object
 #'
@@ -560,15 +564,21 @@ plot_overlap <- function(ibraplot, ...) {
 #'                                   colorscheme = "Dark2", facetted = FALSE)
 #' plot_deviation(ibraplot)
 plot_deviation <- function(ibraplot, title = "", stripsize = 15,
-                           titlecol = "black", plottype = "boxplot",
-                           dojitter = TRUE) {
+                           titlecol = "black", xaxisrange = NULL,
+                           plottype = "boxplot",
+                           dojitter = TRUE, squaredevs = FALSE) {
   plot_data <- deviation(ibraplot)
+  if (isTRUE(squaredevs)) {
+    plot_data$sqDEVIATION <- plot_data$DEVIATION^2
+  }
 
   if (!(isTRUE(facetted(ibraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
 
-  pp <-ggplot(plot_data, aes_string(x = "method", y = "DEVIATION",
+  pp <-ggplot(plot_data, aes_string(x = "method",
+                                    y = ifelse(isTRUE(squaredevs),
+                                               "sqDEVIATION", "DEVIATION"),
                                     group = "method", colour = "method")) +
     coord_flip() +
     scale_color_manual(values = plotcolors(ibraplot), name = "") +
@@ -586,9 +596,10 @@ plot_deviation <- function(ibraplot, title = "", stripsize = 15,
     pp <- pp + geom_jitter(position = position_jitter(width = 0.1, height = 0),
                            size = 1.5)
   if (isTRUE(facetted(ibraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
-  } else {
-    pp
+    pp <- pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
   }
+  if (!is.null(xaxisrange))
+    pp <- pp + ylim(xaxisrange[1], xaxisrange[2])
+  pp
 }
 

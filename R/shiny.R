@@ -310,10 +310,12 @@ IBRAapp <- function(ibradata = NULL) {
           tabPanel("Deviations",
                    uiOutput("plot.deviation"),
                    fluidRow(
-                     column(2, checkboxInput("dojitter", "Include jittered points", FALSE)),
-                     column(2, radioButtons(inputId = "devtype", label = "Plot type",
+                     column(2, checkboxInput("dojitter", "Include jittered points", FALSE),
+                            checkboxInput("dosquare", "Square deviations", FALSE)),
+                     column(1, radioButtons(inputId = "devtype", label = "Plot type",
                                             choices = c("boxplot", "violinplot"),
                                             selected = "violinplot")),
+                     column(3, uiOutput("axislimitsdeviation")),
                      column(2, br(), downloadButton("export.deviation",
                                                     label = "Download plot")),
                      column(2, br(), downloadButton("export.deviation.df.rdata",
@@ -956,6 +958,22 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     ## -------------------------- DEVIATION ---------------------------- ##
+    output$axislimitsdeviation <- renderUI({
+      if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+          input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+        return(NULL)
+      else {
+        if (isTRUE(input$dosquare))
+          tmp <- (deviation(plotvalues()$all_vals))$DEVIATION^2
+        else
+          tmp <- (deviation(plotvalues()$all_vals))$DEVIATION
+        mn <- signif(min(tmp[is.finite(tmp)]), 3)
+        mx <- signif(max(tmp[is.finite(tmp)]), 3)
+        sliderInput(inputId = "xrange_deviation", label = "x-axis limits",
+                    min = mn, max = mx, value = c(mn, mx), step = 0.01)
+      }
+    })
+
     output$plot.deviation <- renderUI({
       plotOutput("deviation", width = "100%", height = paste0(input$plotheight, "px"),
                  hover = "deviation_plot_click")
@@ -972,8 +990,10 @@ IBRAapp <- function(ibradata = NULL) {
         print(plot_deviation(ibraplot = plotvalues()$all_vals,
                              title = plotvalues()$title,
                              stripsize = input$stripsize, titlecol = "white",
+                             xaxisrange = input$xrange_deviation,
                              plottype = input$devtype,
-                             dojitter = input$dojitter))
+                             dojitter = input$dojitter,
+                             squaredevs = input$dosquare))
         dev.off()
       })
 
@@ -1001,7 +1021,9 @@ IBRAapp <- function(ibradata = NULL) {
         plot_deviation(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
-                       plottype = input$devtype, dojitter = input$dojitter)
+                       xaxisrange = input$xrange_deviation,
+                       plottype = input$devtype, dojitter = input$dojitter,
+                       squaredevs = input$dosquare)
       })
     })
 
@@ -1010,18 +1032,25 @@ IBRAapp <- function(ibradata = NULL) {
           input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(deviation(plotvalues()$all_vals))
+      if (isTRUE(input$dosquare))
+        all_data$sqDEVIATION <- all_data$DEVIATION^2
       if ("split" %in% isolate(input$facet_opt)) {
         res <- nearPoints2(all_data, input$deviation_plot_click,
                            threshold = 50, maxpoints = 100,
                            addDist = TRUE, panelvar1 = "splitval",
-                           yvar = "num_method", xvar = "DEVIATION")
+                           yvar = "num_method",
+                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+                                         "DEVIATION"))
       } else {
         res <- nearPoints2(all_data, input$deviation_plot_click,
                            threshold = 50, maxpoints = 100,
                            addDist = TRUE, yvar = "num_method",
-                           xvar = "DEVIATION")
+                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+                                         "DEVIATION"))
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = "DEVIATION", tabtype = "scatter")
+      fix_res(res, methodcol = "fullmethod",
+              aspcts = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+                              "DEVIATION"), tabtype = "scatter")
     })
 
     ## ---------------------------- FPR -------------------------------- ##
