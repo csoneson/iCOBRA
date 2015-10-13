@@ -958,10 +958,18 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
 
       ## If splv is not "none", split overlap matrix
       if (splv != "none") {
+        overlap_overall <- overlap
         keep <- intersect(rownames(overlap), rownames(truth(ibradata)))
         tth <- truth(ibradata)[match(keep, rownames(truth(ibradata))), ]
+        keeplevels <- get_keeplevels(truth = tth, splv = splv,
+                                     binary_truth = binary_truth,
+                                     maxsplit = maxsplit)
         overlap <- overlap[match(keep, rownames(overlap)), ]
         overlap <- split(overlap, tth[, splv])
+        ## Keep only the top "maxsplit" categories
+        overlap <- overlap[keeplevels]
+        ## Add the overall category
+        overlap$overall <- overlap_overall
       }
     } else {
       overlap <- data.frame()
@@ -1115,6 +1123,13 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
       else
         slot(ibraperf, sl)$num_method <-
           as.numeric(as.factor(slot(ibraperf, sl)$fullmethod))
+    }
+  }
+
+  if (splv(ibraperf) != "none") {
+    if (!(isTRUE(incloverall))) {
+      if (length(overlap(ibraperf)) != 0)
+        overlap(ibraperf)$overall <- NULL
     }
   }
 
