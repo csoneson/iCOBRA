@@ -18,17 +18,21 @@
 #' truth <- data.frame(status = round(runif(100)),
 #'                     row.names = paste0("G", 1:100))
 #' ibradata <- IBRAData(padj = padj, truth = truth)
+#'
 #' \dontrun{
 #' IBRAapp(ibradata)
 #' }
 IBRAapp <- function(ibradata = NULL) {
-  ## Define UI
+  ## ------------------------------------------------------------------ ##
+  ##                          Define UI                                 ##
+  ## ------------------------------------------------------------------ ##
+
   p_layout <-
     shinydashboard::dashboardPage(
       skin = "blue",
       shinydashboard::dashboardHeader(
         title = paste0("IBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.0)"),
+                       "of methods for ranking and binary assignment (v0.3.1)"),
         titleWidth = 800),
       shinydashboard::dashboardSidebar(
         width = 350,
@@ -36,10 +40,11 @@ IBRAapp <- function(ibradata = NULL) {
         shinydashboard::menuItem("Truth", icon = icon("database"),
                  ## Load the file containing the truth.
                  uiOutput("choose_truth_file"),
-                 shinyBS::bsTooltip("truth", paste0("Select the file containing the true ",
-                                           "status of each feature. See the Instructions ",
-                                           "tab for formatting instructions."),
-                           "right", options = list(container = "body")),
+                 shinyBS::bsTooltip(
+                   "truth", paste0("Select the file containing the true status",
+                                   " of each feature. See the Instructions ",
+                                   "tab for formatting instructions."),
+                   "right", options = list(container = "body")),
 
                  ## Define the column giving the feature identifier
                  ## (for both truth and results)
@@ -54,90 +59,110 @@ IBRAapp <- function(ibradata = NULL) {
                  ## Define the variable used to stratify the results,
                  ## based on the columns available in the truth file.
                  uiOutput("splitvar"),
-                 shinyBS::bsTooltip("splitvar",
-                                    paste0("Select the attribute ",
-                                           "by which to stratify ",
-                                           "the result representations."),
+                 shinyBS::bsTooltip(
+                   "splitvar",
+                   paste0("Select a feature attribute by which to stratify ",
+                          "the result representations."),
                            "right", options = list(container = "body")),
 
-                 ## Define the maximal number of categories to keep in stratification.
+                 ## Define the maximal number of categories to keep
+                 ## in stratification.
                  uiOutput("choosemaxsplit"),
-                 shinyBS::bsTooltip("choosemaxsplit",
-                                    paste0("The number of categories to show if the results ",
-                                           "are stratified by a variable annotation. The most ",
-                                           "frequent categories with both positive and negative ",
-                                           "instances will be kept."),
-                           "right", options = list(container = "body")),
+                 shinyBS::bsTooltip(
+                   "choosemaxsplit",
+                   paste0("Set the number of categories to show if the results",
+                          " are stratified by a variable annotation. The most ",
+                          "frequent categories with both positive and negative",
+                          " instances will be retained"),
+                   "right", options = list(container = "body")),
 
                  ## Decide whether or not to include the "overall" category when
                  ## stratifying the results.
                  uiOutput("chooseincludeoverall"),
-                 shinyBS::bsTooltip("includeoverall",
-                           paste0("Whether or nor to include the 'overall' class ",
-                                  "when stratifying on an annotation. Affects the ",
-                                  "FDR/TPR, FDR/NBR, ROC and FPC figures."),
-                           "right", options = list(container = "body"))),
+                 shinyBS::bsTooltip(
+                   "includeoverall",
+                   paste0("Select whether or not to include the 'overall' ",
+                          "class when showing stratified results."),
+                   "right", options = list(container = "body"))),
 
         ## Settings and inputs for results
         shinydashboard::menuItem("Results", icon = icon("folder-o"),
                  ## Load the file containing the results.
                  uiOutput("choose_result_file"),
-                 shinyBS::bsTooltip("file1", paste0("Select file containing results from ",
-                                           "one or multiple methods. See the Instructions ",
-                                           "tab for formatting instructions."),
-                           "right", options = list(container = "body")),
+                 shinyBS::bsTooltip(
+                   "file1", paste0("Select file containing results from one or",
+                                   " multiple methods. See the Instructions ",
+                                   "tab for formatting instructions."),
+                   "right", options = list(container = "body")),
 
-                 ## Decide which methods to include in the results. Depends on the
-                 ## loaded result files.
+                 ## Decide which methods to include in the results.
+                 ## Depends on the loaded result files.
                  uiOutput("columns"),
-                 shinyBS::bsTooltip("columns",
-                           paste0("Select the methods to show in the results. "),
-                           "right", options = list(container = "body")),
+                 shinyBS::bsTooltip(
+                   "columns",
+                   paste0("Select the methods for which to show the results."),
+                   "right", options = list(container = "body")),
 
-                 ## Decide whether to base evaluations on all genes in truth table, or
-                 ## only on variables for which both a truth value and a result is
-                 ## provided
-                 checkboxInput(inputId = "onlyshared",
-                               label = paste0("Calculate performance based only on ",
-                                              "feature shared between truth and result tables"),
-                               value = FALSE),
-                 shinyBS::bsTooltip("onlyshared",
-                           paste0("Whether to calculate performance based on all ",
-                                  "feature in truth table, or only based on ",
-                                  "feature for which both truth and a result is provided."),
-                           "right", options = list(container = "body")),
+                 ## Decide whether to base evaluations on all genes in
+                 ## truth table, or only on variables for which both a truth
+                 ## value and a result is provided
+                 checkboxInput(
+                   inputId = "onlyshared",
+                   label = paste0("Calculate performance based only on ",
+                                  "features shared between truth and result ",
+                                  "tables."),
+                   value = FALSE),
+                 shinyBS::bsTooltip(
+                   "onlyshared",
+                   paste0("Calculate performance based only on ",
+                          "features shared between truth and result ",
+                          "tables. Otherwise, all features in the ",
+                          "truth table will be used."),
+                   "right", options = list(container = "body")),
 
-                 actionButton("goButton", "Start calculation!", icon = icon("plane"))),
+                 actionButton("goButton", "Start calculation!",
+                              icon = icon("plane"))),
 
+        ## Plot settings
         shinydashboard::menuItem("Plot settings", icon = icon("paint-brush"),
                  ## Choose color scheme
-                 selectInput("colorscheme", "Select color palette",
-                             c("hue_pal", "Accent (max 7 methods)", "Dark2 (max 7 methods)",
-                               "Paired (max 11 methods)", "Pastel1 (max 8 methods)",
-                               "Pastel2 (max 7 methods)", "Set1 (max 8 methods)",
-                               "Set2 (max 7 methods)", "Set3 (max 11 methods)",
-                               "rainbow", "heat", "terrain", "topo", "cm"),
-                             selectize = TRUE),
-                 shinyBS::bsTooltip("colorscheme",
-                           paste0("Choose color palette. Note that some palettes are only ",
-                                  "applicable if the number of methods is below a certain ",
-                                  "threshold. If this threshold is exceeded, hue_pal will be used."),
-                           "right", options = list(container = "body")),
+                 selectInput(
+                   "colorscheme", "Select color palette",
+                   c("hue_pal", "Accent (max 7 methods)",
+                     "Dark2 (max 7 methods)", "Paired (max 11 methods)",
+                     "Pastel1 (max 8 methods)", "Pastel2 (max 7 methods)",
+                     "Set1 (max 8 methods)", "Set2 (max 7 methods)",
+                     "Set3 (max 11 methods)", "rainbow", "heat", "terrain",
+                     "topo", "cm"),
+                   selectize = TRUE),
+                 shinyBS::bsTooltip(
+                   "colorscheme",
+                   paste0("Choose color palette. Some palettes are only ",
+                          "applicable if the number of methods ",
+                          "(or method/stratification level combinations) is ",
+                          "below a certain threshold. If this threshold is ",
+                          "exceeded, the colorscheme will default to hue_pal."),
+                   "right", options = list(container = "body")),
 
                  ## Decide what to include in FDR/TPR plots.
-                 checkboxGroupInput("plottype",
-                                    "Display full curve and/or points in FDR/TPR and FDR/NBR plots",
-                                    c("curve", "points"), c("points")),
+                 checkboxGroupInput(
+                   "plottype",
+                   paste0("Display full curve and/or points in FDR/TPR and ",
+                          "FDR/NBR plots"),
+                   c("curve", "points"), c("points")),
 
                  ## Decide whether or not to facet plots.
-                 checkboxGroupInput("facet_opt", "Split plots by stratifying variable",
-                                    "split", "split"),
+                 checkboxGroupInput(
+                   "facet_opt",
+                   "Split plots into panels by stratifying variable",
+                   "split", "split"),
 
                  ## Define the q-value thresholds to use in the plots.
                  textInput(inputId = "fdrthresholds", label = "FDR thresholds",
                            value = "0.01, 0.05, 0.1"),
                  shinyBS::bsTooltip("fdrthresholds",
-                           paste0("FDR thresholds at which the performance will be evaluated. ",
+                           paste0("Specific FDR thresholds at which the ",
+                                  "performance will be evaluated. ",
                                   "Separate multiple values with comma"),
                            "right", options = list(container = "body")),
 
@@ -146,7 +171,8 @@ IBRAapp <- function(ibradata = NULL) {
                               label = "Plot height (numeric, in pixels)",
                               value = 600, min = 200, max = 2000, step = 10),
                  shinyBS::bsTooltip("plotheight",
-                           paste0("The height of the plots (in pixels). Default 800."),
+                           paste0("The height of the plots (in pixels). ",
+                                  "Default 800."),
                            "right", options = list(container = "body")),
 
                  ## Define the pointsize used in the plots.
@@ -158,12 +184,15 @@ IBRAapp <- function(ibradata = NULL) {
 
                  ## Define the fontsize used in the panel headers.
                  numericInput(inputId = "stripsize",
-                              label = "Font size for panel headers", value = 15),
+                              label = "Font size for panel headers",
+                              value = 15),
                  shinyBS::bsTooltip("stripsize",
-                           paste0("The font size used for panel headers in facetted plots."),
+                           paste0("The font size used for panel headers in",
+                                  " facetted plots."),
                            "right", options = list(container = "body")))
       ),
 
+      ## Outputs
       shinydashboard::dashboardBody(fluidRow(
         shinydashboard::tabBox(
           width = 12,
@@ -191,7 +220,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("fdrtprcurve_click_info"),
                    textOutput("message"),
-                   textOutput("duplication_alert"),
+                   #textOutput("duplication_alert"),
                    value = "fdrtprcurve"),
 
           tabPanel("NBR vs FDR", shinyBS::bsAlert("fdrnbr_message"),
@@ -262,8 +291,6 @@ IBRAapp <- function(ibradata = NULL) {
           tabPanel("False discovery curves", shinyBS::bsAlert("fpc_message"),
                    uiOutput("plot.fpc"),
                    fluidRow(
-                     ## Define the maximal number of genes shown in the FDC plots.
-                     ## Save in variable "input$maxnfdc". Add tooltip description.
                      column(3, numericInput(inputId = "maxnfdc",
                                             label = "Maximal rank to display",
                                             value = 500, min = 10, max = 10000,
@@ -284,7 +311,8 @@ IBRAapp <- function(ibradata = NULL) {
                                            label = "x-axis limits",
                                            min = -1, max = 1, value = c(-1, 1),
                                            step = 0.01)),
-                     column(2, radioButtons(inputId = "corrtype", label = "Correlation measure",
+                     column(2, radioButtons(inputId = "corrtype",
+                                            label = "Correlation measure",
                                             choices = c("pearson", "spearman"),
                                             selected = "spearman")),
                      column(2, br(), downloadButton("export.corr",
@@ -308,16 +336,20 @@ IBRAapp <- function(ibradata = NULL) {
                      column(2, br(), downloadButton("export.scatter.df.tsv",
                                                     label = "Download tsv"))
                    ),
-                   DT::dataTableOutput("scatter_click_info"), value = "scatter"),
+                   DT::dataTableOutput("scatter_click_info"),
+                   value = "scatter"),
 
           tabPanel("Deviations", shinyBS::bsAlert("deviation_message"),
                    uiOutput("plot.deviation"),
                    fluidRow(
-                     column(2, checkboxInput("dojitter", "Include jittered points", FALSE),
-                            checkboxInput("dosquare", "Square deviations", FALSE)),
-                     column(1, radioButtons(inputId = "devtype", label = "Plot type",
-                                            choices = c("boxplot", "violinplot"),
-                                            selected = "violinplot")),
+                     column(2, checkboxInput("dojitter",
+                                             "Include jittered points", FALSE),
+                            checkboxInput("dosquare",
+                                          "Square deviations", FALSE)),
+                     column(1, radioButtons(
+                       inputId = "devtype", label = "Plot type",
+                       choices = c("boxplot", "violinplot"),
+                       selected = "violinplot")),
                      column(3, uiOutput("axislimitsdeviation")),
                      column(2, br(), downloadButton("export.deviation",
                                                     label = "Download plot")),
@@ -326,26 +358,33 @@ IBRAapp <- function(ibradata = NULL) {
                      column(2, br(), downloadButton("export.deviation.df.tsv",
                                                     label = "Download tsv"))
                    ),
-                   DT::dataTableOutput("deviation_click_info"), value = "deviation"),
+                   DT::dataTableOutput("deviation_click_info"),
+                   value = "deviation"),
 
           tabPanel("Venn diagram", shinyBS::bsAlert("overlap_message"),
                    uiOutput("plot.overlap"),
                    fluidRow(
-                     column(1, radioButtons(inputId = "incltruth", label = "Include truth",
-                                            choices = c("yes", "no"), selected = "yes")),
-                     shinyBS::bsTooltip("incltruth",
-                                        paste0("Whether or nor to include the truth as a (perfect) ",
-                                               "method in the Venn diagrams. Note that maximally ",
-                                               "five methods (including the truth) can be included."),
-                                        "bottom", options = list(container = "body")),
-                     column(3, numericInput(inputId = "adjpVenn",
-                                            label = "Adjusted p-value threshold",
-                                            value = 0.05, min = 0, max = 1, step = 0.01)),
-                     shinyBS::bsTooltip("adjpVenn",
-                                        paste0("The adjusted p-value threshold used to extract ",
-                                               "the sets of significant variables to use for the ",
-                                               "Venn diagram. "),
-                                        "bottom", options = list(container = "body")),
+                     column(1, radioButtons(inputId = "incltruth",
+                                            label = "Include truth",
+                                            choices = c("yes", "no"),
+                                            selected = "yes")),
+                     shinyBS::bsTooltip(
+                       "incltruth",
+                       paste0("Whether or nor to include the truth as a ",
+                              "(perfect) method in the Venn diagrams. Note ",
+                              "that maximally five methods (including the ",
+                              "truth) can be included."),
+                       "bottom", options = list(container = "body")),
+                     column(3, numericInput(
+                       inputId = "adjpVenn",
+                       label = "Adjusted p-value threshold",
+                       value = 0.05, min = 0, max = 1, step = 0.01)),
+                     shinyBS::bsTooltip(
+                       "adjpVenn",
+                       paste0("The adjusted p-value threshold used to extract ",
+                              "the sets of significant variables to use for ",
+                              "the Venn diagram. "),
+                       "bottom", options = list(container = "body")),
                      column(2, br(), downloadButton("export.overlap",
                                                     label = "Download plot")),
                      column(2, br(), downloadButton("export.overlap.df.rdata",
@@ -360,6 +399,9 @@ IBRAapp <- function(ibradata = NULL) {
     )
 
   options(shiny.maxRequestSize = 15*1024^2)
+  ## ------------------------------------------------------------------ ##
+  ##                          Define server                             ##
+  ## ------------------------------------------------------------------ ##
 
   server_function <- function(input, output, session) {
     values <- reactiveValues()
@@ -381,12 +423,13 @@ IBRAapp <- function(ibradata = NULL) {
         return(NULL)
       trf <- read.delim(input$truth$datapath, header = TRUE, as.is = TRUE,
                         sep = "\t", quote = "", check.names = FALSE)
-      isolate(values$my_ibradata <- IBRAData(truth = trf,
-                                                 object_to_extend = values$my_ibradata))
+      isolate(values$my_ibradata <-
+                IBRAData(truth = trf,
+                         object_to_extend = values$my_ibradata))
       return(trf)
     })
 
-    ## Render the UI element to choose the column containing the feature identifier
+    ## Render the UI element to choose the column containing the feature ID
     output$choose_feature_id <- renderUI({
       if (is.null(truthFile()))
         return(NULL)
@@ -412,7 +455,8 @@ IBRAapp <- function(ibradata = NULL) {
           else "notbinary"
         })
       }
-      keepcols <- intersect(which(ccl %in% c("numeric", "integer")), which(only01 == "binary"))
+      keepcols <- intersect(which(ccl %in% c("numeric", "integer")),
+                            which(only01 == "binary"))
       if (length(keepcols) == 0) {
         isolate(values$message <- "No binary truth column")
       }
@@ -471,7 +515,7 @@ IBRAapp <- function(ibradata = NULL) {
     ## Render the UI element to choose how many categories to include.
     output$choosemaxsplit <- renderUI({
       numericInput(inputId = "maxsplit",
-                   label = "Maximum number of categories to show when stratifying",
+                   label = "Maximum number of levels to show when stratifying",
                    value = 3, min = 1)
     })
 
@@ -502,12 +546,6 @@ IBRAapp <- function(ibradata = NULL) {
       }
     })
 
-    ## Initialise messages to show in Venn diagram and tab when the
-    ## plots are not generated (because there are too many methods). Also for the alert
-    ## regarding duplicated method names.
-    #output$overlap_message <- renderText({NULL})
-    output$duplication_alert <- renderText({NULL})
-
     ## Generate the UI object for selecting methods to include, based on the
     ## uploaded result files.
     output$columns <- renderUI({
@@ -520,9 +558,11 @@ IBRAapp <- function(ibradata = NULL) {
 
         ## Create the UI element for selecting methods to include.
         checkboxGroupInput("cols", "Select methods",
-                                  isolate(values$all_methods), isolate(values$all_methods))
+                           isolate(values$all_methods),
+                           isolate(values$all_methods))
       } else {
-        rownames(truth(values$my_ibradata)) <- truth(values$my_ibradata)[, input$feature_id]
+        rownames(truth(values$my_ibradata)) <-
+          truth(values$my_ibradata)[, input$feature_id]
 
         ## Read file
         inFile <- input$file1
@@ -546,24 +586,24 @@ IBRAapp <- function(ibradata = NULL) {
               i <- gsub(":score$", "", gsub(":adjP$", "", gsub(":P$", "", i)))
               colnames(tmp) <- i
 
-              ## If a gene is present multiple times, keep only the smallest p-value
+              ## If a gene is present multiple times, keep only the smallest p
               ## (excluding missing/NaN values).
               tmp <- fix_duplicates(tmp, i)
 
               isolate(values$all_methods <- unique(c(values$all_methods, i)))
 
-              #           if (i %in% colnames(slot(isolate(values$my_ibradata), coltype))) {
-              #             ## If the method was already present, create an alert.
-              #             print(paste0("Method ", i, " and score type ", coltype, " already present."))
-              #             shinyBS::closeAlert(session, alertId = "alert_duplication")
-              #             shinyBS::createAlert(session, anchorId = "duplication_alert",
-              #                         alertId = "alert_duplication",
-              #                         content = paste0("Method ", i, " and score type ",
-              #                                          coltype, " already present."),
-              #                         style = "info", append = TRUE,
-              #                         dismiss = TRUE)
-              #           }
-
+#               if (i %in% colnames(slot(isolate(values$my_ibradata), coltype))) {
+#                 ## If the method was already present, create an alert.
+#                 print(paste0("Method ", i, " and score type ", coltype, " already present."))
+#                 shinyBS::closeAlert(session, alertId = "alert_duplication")
+#                 shinyBS::createAlert(session, anchorId = "duplication_alert",
+#                                      alertId = "alert_duplication",
+#                                      content = paste0("Method ", i, " and score type ",
+#                                                       coltype, " already present."),
+#                                      style = "info", append = TRUE,
+#                                      dismiss = TRUE)
+#               }
+#
               if (coltype == "pval") {
                 isolate(values$my_ibradata <-
                           IBRAData(pval = tmp,
@@ -584,7 +624,8 @@ IBRAapp <- function(ibradata = NULL) {
 
           ## Create the UI element for selecting methods to include.
           checkboxGroupInput("cols", "Select methods",
-                                    isolate(values$all_methods), isolate(values$all_methods))
+                             isolate(values$all_methods),
+                             isolate(values$all_methods))
         }
       }
     })
@@ -592,12 +633,16 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_TPR <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
-                                            unlist(strsplit(input$fdrthresholds, ","))))))
+                                            unlist(strsplit(input$fdrthresholds,
+                                                            ","))))))
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "tpr", thrs = thrs,
-                                     splv = input$splv, maxsplit = input$maxsplit,
-                                     onlyshared = input$onlyshared, thr_venn = NULL))
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
       } else {
         return(IBRAPerformance())
       }
@@ -606,12 +651,16 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_FDR <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
-                                            unlist(strsplit(input$fdrthresholds, ","))))))
+                                            unlist(strsplit(input$fdrthresholds,
+                                                            ","))))))
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "fdrtpr", thrs = thrs,
-                                     splv = input$splv, maxsplit = input$maxsplit,
-                                     onlyshared = input$onlyshared, thr_venn = NULL))
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
       } else {
         return(IBRAPerformance())
       }
@@ -620,12 +669,16 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_FPR <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
-                                            unlist(strsplit(input$fdrthresholds, ","))))))
+                                            unlist(strsplit(input$fdrthresholds,
+                                                            ","))))))
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "fpr", thrs = thrs,
-                                     splv = input$splv, maxsplit = input$maxsplit,
-                                     onlyshared = input$onlyshared, thr_venn = NULL))
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
       } else {
         return(IBRAPerformance())
       }
@@ -634,10 +687,13 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_ROC <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "roc", thrs = NULL,
-                                     splv = input$splv, maxsplit = input$maxsplit,
-                                     onlyshared = input$onlyshared, thr_venn = NULL))
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
       } else {
         return(IBRAPerformance())
       }
@@ -646,10 +702,13 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_FPC <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "fpc", thrs = thrs,
-                                     splv = input$splv, maxsplit = input$maxsplit,
-                                     onlyshared = input$onlyshared, thr_venn = NULL))
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
       } else {
         return(IBRAPerformance())
       }
@@ -658,10 +717,13 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_FDRTPR <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "fdrtprcurve", thrs = thrs,
-                                     splv = input$splv, maxsplit = input$maxsplit,
-                                     onlyshared = input$onlyshared, thr_venn = NULL))
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL))
       } else {
         return(IBRAPerformance())
       }
@@ -670,9 +732,11 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_overlap <- reactive({
       if (input$goButton > 0 & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = input$binary_truth, cont_truth = NULL,
+                                     binary_truth = input$binary_truth,
+                                     cont_truth = NULL,
                                      aspects = "overlap", thrs = NULL,
-                                     splv = input$splv, maxsplit = input$maxsplit,
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
                                      thr_venn = input$adjpVenn))
       } else {
@@ -683,9 +747,11 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_corr <- reactive({
       if (input$goButton > 0 & input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = NULL, cont_truth = input$cont_truth,
+                                     binary_truth = NULL,
+                                     cont_truth = input$cont_truth,
                                      aspects = "corr", thrs = NULL,
-                                     splv = input$splv, maxsplit = input$maxsplit,
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
@@ -696,9 +762,11 @@ IBRAapp <- function(ibradata = NULL) {
     plotvalues_scatter <- reactive({
       if (input$goButton > 0 & input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
-                                     binary_truth = NULL, cont_truth = input$cont_truth,
+                                     binary_truth = NULL,
+                                     cont_truth = input$cont_truth,
                                      aspects = "scatter", thrs = NULL,
-                                     splv = input$splv, maxsplit = input$maxsplit,
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
@@ -726,33 +794,36 @@ IBRAapp <- function(ibradata = NULL) {
         ## Put together results for current methods
         if (length(input$cols) != 0) {
           withProgress(message = "Calculating...", value = 0, {
-            all_vals <- IBRAPerformance(tpr = tpr(plotvalues_TPR()),
-                                        fdrtpr = fdrtpr(plotvalues_FDR()),
-                                        fdrnbr = fdrtpr(plotvalues_FDR()),
-                                        fdrtprcurve = fdrtprcurve(plotvalues_FDRTPR()),
-                                        fdrnbrcurve = fdrnbrcurve(plotvalues_FDRTPR()),
-                                        fpr = fpr(plotvalues_FPR()),
-                                        roc = roc(plotvalues_ROC()),
-                                        fpc = fpc(plotvalues_FPC()),
-                                        overlap = overlap(plotvalues_overlap()),
-                                        maxsplit = input$maxsplit,
-                                        splv = input$splv,
-                                        corr = corr(plotvalues_corr()),
-                                        scatter = scatter(plotvalues_scatter()),
-                                        deviation = deviation(plotvalues_deviation()))
+            all_vals <-
+              IBRAPerformance(tpr = tpr(plotvalues_TPR()),
+                              fdrtpr = fdrtpr(plotvalues_FDR()),
+                              fdrnbr = fdrtpr(plotvalues_FDR()),
+                              fdrtprcurve = fdrtprcurve(plotvalues_FDRTPR()),
+                              fdrnbrcurve = fdrnbrcurve(plotvalues_FDRTPR()),
+                              fpr = fpr(plotvalues_FPR()),
+                              roc = roc(plotvalues_ROC()),
+                              fpc = fpc(plotvalues_FPC()),
+                              overlap = overlap(plotvalues_overlap()),
+                              maxsplit = input$maxsplit,
+                              splv = input$splv,
+                              corr = corr(plotvalues_corr()),
+                              scatter = scatter(plotvalues_scatter()),
+                              deviation = deviation(plotvalues_deviation()))
 
-            all_vals <- prepare_data_for_plot(ibraperf = all_vals,
-                                              keepmethods = input$cols,
-                                              incloverall = (input$includeoverall == "yes"),
-                                              colorscheme = input$colorscheme,
-                                              facetted = ("split" %in% input$facet_opt),
-                                              incltruth = (input$incltruth == "yes"))
+            all_vals <- prepare_data_for_plot(
+              ibraperf = all_vals,
+              keepmethods = input$cols,
+              incloverall = (input$includeoverall == "yes"),
+              colorscheme = input$colorscheme,
+              facetted = ("split" %in% input$facet_opt),
+              incltruth = (input$incltruth == "yes"))
 
-            ## This is a bit of a hack, just to make the plots directly depend on the truth input.
-            ## Otherwise, they will not be automatically updated if the truth file is changed
-            ## (not until something else that directly affects the plots is changed as well,
-            ## like the FDR thresholds or plot size etc). The title is rendered in
-            ## white, so it is not visible.
+            ## This is a bit of a hack, just to make the plots directly
+            ## depend on the truth input. Otherwise, they will not be
+            ## automatically updated if the truth file is changed
+            ## (not until something else that directly affects the plots
+            ## is changed as well, like the FDR thresholds or plot size etc).
+            ## The title is rendered in white, so it is not visible.
             title <- input$truth$name
 
             list(all_vals = all_vals, title = title)
@@ -766,7 +837,8 @@ IBRAapp <- function(ibradata = NULL) {
     ## -------------------------- OVERLAP ------------------------------ ##
     ## Generate Venn diagram plot
     output$plot.overlap <- renderUI({
-      plotOutput("overlap", width = "100%", height = paste0(input$plotheight, "px"))
+      plotOutput("overlap", width = "100%",
+                 height = paste0(input$plotheight, "px"))
     })
 
     ## Figure for exporting
@@ -793,7 +865,8 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         overlap_df <- overlap(plotvalues()$all_vals)
         if (class(overlap_df) == "list") {
-          overlap_df <- lapply(overlap_df, function(w) cbind(feature = rownames(w), w))
+          overlap_df <- lapply(overlap_df,
+                               function(w) cbind(feature = rownames(w), w))
           for (i in 1:length(overlap_df)) {
              overlap_df[[i]]$featureclass <- names(overlap_df)[i]
           }
@@ -820,7 +893,9 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "overlap_message",
             alertId = "message_overlap",
-            content = paste0("Venn diagram are not plotted (either binary_truth = 'none' or adjusted p-values are not provided)."),
+            content = paste0("Venn diagrams can not be displayed (check that ",
+                             "binary_truth is not 'none', and that adjusted ",
+                             " p-values are provided)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else if ((class(overlap(plotvalues()$all_vals)) == "list" &&
                     ncol(overlap(plotvalues()$all_vals)[[1]]) > 5) |
@@ -830,8 +905,9 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "overlap_message",
             alertId = "message_overlap",
-            content = paste0("Venn diagram are not constructed if  ",
-                             "more than five methods are selected (including the truth)."),
+            content = paste0("Venn diagrams can not be constructed if ",
+                             "more than five methods are selected ",
+                             "(including the truth, if applicable)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_overlap")
@@ -860,9 +936,11 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(tpr(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_tpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_tpr(ibraplot = plotvalues()$all_vals,
+                       title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
-                       pointsize = input$pointsize, xaxisrange = input$xrange_tpr))
+                       pointsize = input$pointsize,
+                       xaxisrange = input$xrange_tpr))
         dev.off()
       })
 
@@ -896,8 +974,9 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "tpr_message",
             alertId = "message_tpr",
-            content = paste0("TPR is not calculated (either binary_truth =",
-                             " 'none' or adjusted p-values are not provided)."),
+            content = paste0("TPR can not be displayed (check that ",
+                             "binary_truth is not 'none', and that adjusted ",
+                             "p-values are provided)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_tpr")
@@ -929,12 +1008,14 @@ IBRAapp <- function(ibradata = NULL) {
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, yvar = "num_method", xvar = "TPR")
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = c("TPR"), tabtype = "large")
+      fix_res(res, methodcol = "fullmethod", aspcts = c("TPR"),
+              tabtype = "large")
     })
 
     ## ---------------------------- CORR ------------------------------- ##
     output$plot.corr <- renderUI({
-      plotOutput("corr", width = "100%", height = paste0(input$plotheight, "px"),
+      plotOutput("corr", width = "100%",
+                 height = paste0(input$plotheight, "px"),
                  hover = "corr_plot_click")
     })
 
@@ -946,9 +1027,11 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_corr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_corr(ibraplot = plotvalues()$all_vals,
+                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
-                       pointsize = input$pointsize, xaxisrange = input$xrange_corr,
+                       pointsize = input$pointsize,
+                       xaxisrange = input$xrange_corr,
                        corrtype = input$corrtype))
         dev.off()
       })
@@ -983,8 +1066,9 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "corr_message",
             alertId = "message_corr",
-            content = paste0("Correlation plots are not calculated (probably cont_truth =",
-                             " 'none' or scores are not provided)."),
+            content = paste0("Correlation plots can not be displayed (check ",
+                             "that cont_truth is not 'none', and that scores ",
+                             "are provided)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_corr")
@@ -1024,7 +1108,8 @@ IBRAapp <- function(ibradata = NULL) {
     ## -------------------------- DEVIATION ---------------------------- ##
     output$axislimitsdeviation <- renderUI({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+          input$goButton == 0 ||
+          !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       else {
         if (isTRUE(input$dosquare))
@@ -1039,7 +1124,8 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     output$plot.deviation <- renderUI({
-      plotOutput("deviation", width = "100%", height = paste0(input$plotheight, "px"),
+      plotOutput("deviation", width = "100%",
+                 height = paste0(input$plotheight, "px"),
                  hover = "deviation_plot_click")
     })
 
@@ -1049,7 +1135,8 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+            input$goButton == 0 ||
+            !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
         print(plot_deviation(ibraplot = plotvalues()$all_vals,
                              title = plotvalues()$title,
@@ -1084,22 +1171,25 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::closeAlert(session, alertId = "message_deviation")
           shinyBS::createAlert(
             session, anchorId = "deviation_message",
-            alertId = "message_deviation", content = paste0("No input provided."),
+            alertId = "message_deviation",
+            content = paste0("No input provided."),
             style = "danger", append = FALSE, dismiss = FALSE)
         } else if (!is_plottable(deviation(plotvalues()$all_vals))) {
           shinyBS::closeAlert(session, alertId = "message_deviation")
           shinyBS::createAlert(
             session, anchorId = "deviation_message",
             alertId = "message_deviation",
-            content = paste0("Deviation plots are not calculated (probably cont_truth =",
-                             " 'none' or scores are not provided)."),
+            content = paste0("Deviation plots can not be displayed (check ",
+                             "that cont_truth is not 'none', and that scores ",
+                             "are provided)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_deviation")
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+            input$goButton == 0 ||
+            !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
         plot_deviation(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
@@ -1112,7 +1202,8 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$deviation_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
+          input$goButton == 0 ||
+          !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(deviation(plotvalues()$all_vals))
       if (isTRUE(input$dosquare))
@@ -1153,9 +1244,11 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_fpr(ibraplot = plotvalues()$all_vals,
+                       title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
-                       pointsize = input$pointsize, xaxisrange = input$xrange_fpr))
+                       pointsize = input$pointsize,
+                       xaxisrange = input$xrange_fpr))
         dev.off()
       })
 
@@ -1189,8 +1282,9 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "fpr_message",
             alertId = "message_fpr",
-            content = paste0("FPR is not calculated (either binary_truth =",
-                             " 'none' or adjusted p-values are not provided)."),
+            content = paste0("FPR can not be displayed (check that ",
+                             "binary_truth is not 'none', and that adjusted ",
+                             "p-values are provided)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_fpr")
@@ -1220,7 +1314,8 @@ IBRAapp <- function(ibradata = NULL) {
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, yvar = "num_method", xvar = "FPR")
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = c("FPR"), tabtype = "large")
+      fix_res(res, methodcol = "fullmethod", aspcts = c("FPR"),
+              tabtype = "large")
     })
 
     ## ---------------------------- ROC -------------------------------- ##
@@ -1237,9 +1332,11 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_roc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_roc(ibraplot = plotvalues()$all_vals,
+                       title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
-                       xaxisrange = input$xrange_roc, yaxisrange = input$yrange_roc))
+                       xaxisrange = input$xrange_roc,
+                       yaxisrange = input$yrange_roc))
         dev.off()
       })
 
@@ -1273,7 +1370,8 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "roc_message",
             alertId = "message_roc",
-            content = paste0("ROC curves are not calculated (probably cont_truth = 'none')."),
+            content = paste0("ROC curves can not be displayed (check that ",
+                             "binary_truth is not 'none')."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_roc")
@@ -1304,12 +1402,14 @@ IBRAapp <- function(ibradata = NULL) {
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, xvar = "FPR", yvar = "TPR")
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = c("FPR", "TPR"), tabtype = "small")
+      fix_res(res, methodcol = "fullmethod", aspcts = c("FPR", "TPR"),
+              tabtype = "small")
     })
 
     ## -------------------------- SCATTER ------------------------------ ##
     output$plot.scatter <- renderUI({
-      plotOutput("scatter", width = "100%", height = paste0(input$plotheight, "px"),
+      plotOutput("scatter", width = "100%",
+                 height = paste0(input$plotheight, "px"),
                  hover = "scatter_plot_click")
     })
 
@@ -1319,7 +1419,8 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(scatter(plotvalues()$all_vals)))
+            input$goButton == 0 ||
+            !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
         print(plot_scatter(ibraplot = plotvalues()$all_vals,
                            title = plotvalues()$title,
@@ -1359,17 +1460,20 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "scatter_message",
             alertId = "message_scatter",
-            content = paste0("Scatter plots are not calculated (either cont_truth =",
-                             " 'none' or scores are not provided)."),
+            content = paste0("Scatter plots can not be displayed (check that ",
+                             "cont_truth is not 'none', and that scores are ",
+                             "provided)."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_scatter")
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(scatter(plotvalues()$all_vals)))
+            input$goButton == 0 ||
+            !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
-        plot_scatter(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        plot_scatter(ibraplot = plotvalues()$all_vals,
+                     title = plotvalues()$title,
                      stripsize = input$stripsize, titlecol = "white",
                      pointsize = input$pointsize, doflip = input$doflip,
                      dolog = input$dolog)
@@ -1410,7 +1514,8 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fpc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_fpc(ibraplot = plotvalues()$all_vals,
+                       title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        maxnfdc = input$maxnfdc))
         dev.off()
@@ -1446,8 +1551,8 @@ IBRAapp <- function(ibradata = NULL) {
           shinyBS::createAlert(
             session, anchorId = "fpc_message",
             alertId = "message_fpc",
-            content = paste0("False discovery curves are not calculated (probably binary_truth =",
-                             " 'none')."),
+            content = paste0("False discovery curves can not be displayed ",
+                             "(check that binary_truth is not 'none')."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_fpc")
@@ -1478,13 +1583,14 @@ IBRAapp <- function(ibradata = NULL) {
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, xvar = "topN", yvar = "FP")
       }
-      fix_res(res, methodcol = "fullmethod", aspcts = c("Number of detections", "FP"),
-              tabtype = "small")
+      fix_res(res, methodcol = "fullmethod",
+              aspcts = c("Number of detections", "FP"), tabtype = "small")
     })
 
     ## -------------------------- FDRTPR ------------------------------- ##
     output$plot.fdrtprcurve <- renderUI({
-      plotOutput("fdrtprcurve", width = "100%", height = paste0(input$plotheight, "px"),
+      plotOutput("fdrtprcurve", width = "100%",
+                 height = paste0(input$plotheight, "px"),
                  hover = "fdrtprcurve_plot_click")
     })
 
@@ -1494,12 +1600,16 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+            input$goButton == 0 ||
+            !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fdrtprcurve(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_fdrtprcurve(ibraplot = plotvalues()$all_vals,
+                               title = plotvalues()$title,
                                stripsize = input$stripsize, titlecol = "white",
-                               pointsize = input$pointsize, xaxisrange = input$xrange_fdrtpr,
-                               yaxisrange = input$yrange_fdrtpr, plottype = input$plottype))
+                               pointsize = input$pointsize,
+                               xaxisrange = input$xrange_fdrtpr,
+                               yaxisrange = input$yrange_fdrtpr,
+                               plottype = input$plottype))
         dev.off()
       })
 
@@ -1524,11 +1634,11 @@ IBRAapp <- function(ibradata = NULL) {
         fdrtpr_curve_df <- isolate(fdrtprcurve(plotvalues()$all_vals))
         fdrtpr_point_df <- isolate(fdrtpr(plotvalues()$all_vals))
         if ("curve" %in% input$plottype)
-          write.table(fdrtpr_curve_df, file = file, quote = FALSE, row.names = FALSE,
-                      col.names = TRUE, sep = "\t")
+          write.table(fdrtpr_curve_df, file = file, quote = FALSE,
+                      row.names = FALSE, col.names = TRUE, sep = "\t")
         else if ("points" %in% input$plottype)
-          write.table(fdrtpr_point_df, file = file, quote = FALSE, row.names = FALSE,
-                      col.names = TRUE, sep = "\t")
+          write.table(fdrtpr_point_df, file = file, quote = FALSE,
+                      row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$fdrtprcurve <- renderPlot({
@@ -1540,21 +1650,32 @@ IBRAapp <- function(ibradata = NULL) {
             session, anchorId = "fdrtpr_message",
             alertId = "message_fdrtpr", content = paste0("No input provided."),
             style = "danger", append = FALSE, dismiss = FALSE)
-        } else if ("curve" %in% input$plottype & !is_plottable(fdrtprcurve(plotvalues()$all_vals))) {
+        } else if ("curve" %in% input$plottype &
+                   !is_plottable(fdrtprcurve(plotvalues()$all_vals))) {
           shinyBS::closeAlert(session, alertId = "message_fdrtpr")
           shinyBS::createAlert(
             session, anchorId = "fdrtpr_message",
             alertId = "message_fdrtpr",
-            content = paste0("FDR/TPR curves are not calculated (probably binary_truth =",
-                             " 'none')."),
+            content = paste0("FDR/TPR curves can not be displayed (check ",
+                             "that binary_truth is not 'none')."),
             style = "info", append = FALSE, dismiss = FALSE)
-        } else if ("points" %in% input$plottype & !is_plottable(fdrtpr(plotvalues()$all_vals))) {
+        } else if ("points" %in% input$plottype &
+                   !is_plottable(fdrtpr(plotvalues()$all_vals))) {
           shinyBS::closeAlert(session, alertId = "message_fdrtpr")
           shinyBS::createAlert(
             session, anchorId = "fdrtpr_message",
             alertId = "message_fdrtpr",
-            content = paste0("FDR/TPR points are not calculated (probably binary_truth =",
-                             " 'none' or adjusted p-values are not provided)."),
+            content = paste0("FDR/TPR at specified adjusted p-value ",
+                             "thresholds can not be displayed (check that ",
+                             "binary_truth is not 'none', and that adjusted ",
+                             "p-values are provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else if (!any(c("points", "curve") %in% input$plottype)) {
+          shinyBS::closeAlert(session, alertId = "message_fdrtpr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrtpr_message",
+            alertId = "message_fdrtpr",
+            content = paste0("No plot type selected."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_fdrtpr")
@@ -1563,14 +1684,21 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0)
           return(NULL)
-        if ("curve" %in% input$plottype & !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+        if ("curve" %in% input$plottype &
+            !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
           return(NULL)
-        if ("points" %in% input$plottype & !is_plottable(fdrtpr(plotvalues()$all_vals)))
+        if ("points" %in% input$plottype &
+            !is_plottable(fdrtpr(plotvalues()$all_vals)))
           return(NULL)
-        plot_fdrtprcurve(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        if (!any(c("curve", "points") %in% input$plottype))
+          return(NULL)
+        plot_fdrtprcurve(ibraplot = plotvalues()$all_vals,
+                         title = plotvalues()$title,
                          stripsize = input$stripsize, titlecol = "white",
-                         pointsize = input$pointsize, xaxisrange = input$xrange_fdrtpr,
-                         yaxisrange = input$yrange_fdrtpr, plottype = input$plottype)
+                         pointsize = input$pointsize,
+                         xaxisrange = input$xrange_fdrtpr,
+                         yaxisrange = input$yrange_fdrtpr,
+                         plottype = input$plottype)
       })
     })
 
@@ -1578,11 +1706,14 @@ IBRAapp <- function(ibradata = NULL) {
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
           input$goButton == 0)
         return(NULL)
-      if ("curve" %in% input$plottype & !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
+      if ("curve" %in% input$plottype &
+          !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
         return(NULL)
-      if ("points" %in% input$plottype & !is_plottable(fdrtpr(plotvalues()$all_vals)))
+      if ("points" %in% input$plottype &
+          !is_plottable(fdrtpr(plotvalues()$all_vals)))
         return(NULL)
-      if ("curve" %in% input$plottype) tab_data <- isolate(fdrtprcurve(plotvalues()$all_vals))
+      if ("curve" %in% input$plottype)
+        tab_data <- isolate(fdrtprcurve(plotvalues()$all_vals))
       else tab_data <- isolate(fdrtpr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
         res <- nearPoints(tab_data, input$fdrtprcurve_plot_click,
@@ -1600,7 +1731,8 @@ IBRAapp <- function(ibradata = NULL) {
 
     ## -------------------------- FDRNBR ------------------------------- ##
     output$plot.fdrnbrcurve <- renderUI({
-      plotOutput("fdrnbrcurve", width = "100%", height = paste0(input$plotheight, "px"),
+      plotOutput("fdrnbrcurve", width = "100%",
+                 height = paste0(input$plotheight, "px"),
                  hover = "fdrnbrcurve_plot_click")
     })
 
@@ -1610,11 +1742,14 @@ IBRAapp <- function(ibradata = NULL) {
       content = function(file) {
         pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+            input$goButton == 0 ||
+            !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        print(plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals,
+                               title = plotvalues()$title,
                                stripsize = input$stripsize, titlecol = "white",
-                               pointsize = input$pointsize, xaxisrange = input$xrange_fdrnbr,
+                               pointsize = input$pointsize,
+                               xaxisrange = input$xrange_fdrnbr,
                                plottype = input$plottype))
         dev.off()
       })
@@ -1640,11 +1775,11 @@ IBRAapp <- function(ibradata = NULL) {
         fdrnbr_curve_df <- isolate(fdrnbrcurve(plotvalues()$all_vals))
         fdrnbr_point_df <- isolate(fdrnbr(plotvalues()$all_vals))
         if ("curve" %in% input$plottype)
-          write.table(fdrnbr_curve_df, file = file, quote = FALSE, row.names = FALSE,
-                      col.names = TRUE, sep = "\t")
+          write.table(fdrnbr_curve_df, file = file, quote = FALSE,
+                      row.names = FALSE, col.names = TRUE, sep = "\t")
         else if ("points" %in% input$plottype)
-          write.table(fdrnbr_point_df, file = file, quote = FALSE, row.names = FALSE,
-                      col.names = TRUE, sep = "\t")
+          write.table(fdrnbr_point_df, file = file, quote = FALSE,
+                      row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
 
@@ -1657,21 +1792,32 @@ IBRAapp <- function(ibradata = NULL) {
             session, anchorId = "fdrnbr_message",
             alertId = "message_fdrnbr", content = paste0("No input provided."),
             style = "danger", append = FALSE, dismiss = FALSE)
-        } else if ("curve" %in% input$plottype & !is_plottable(fdrnbrcurve(plotvalues()$all_vals))) {
+        } else if ("curve" %in% input$plottype &
+                   !is_plottable(fdrnbrcurve(plotvalues()$all_vals))) {
           shinyBS::closeAlert(session, alertId = "message_fdrnbr")
           shinyBS::createAlert(
             session, anchorId = "fdrnbr_message",
             alertId = "message_fdrnbr",
-            content = paste0("FDR/NBR curves are not calculated (probably binary_truth =",
-                             " 'none')."),
+            content = paste0("FDR/NBR curves can not be displayed (check ",
+                             "that binary_truth is not 'none')."),
             style = "info", append = FALSE, dismiss = FALSE)
-        } else if ("points" %in% input$plottype & !is_plottable(fdrnbr(plotvalues()$all_vals))) {
+        } else if ("points" %in% input$plottype &
+                   !is_plottable(fdrnbr(plotvalues()$all_vals))) {
           shinyBS::closeAlert(session, alertId = "message_fdrnbr")
           shinyBS::createAlert(
             session, anchorId = "fdrnbr_message",
             alertId = "message_fdrnbr",
-            content = paste0("FDR/NBR points are not calculated (probably binary_truth =",
-                             " 'none' or adjusted p-values are not provided)."),
+            content = paste0("FDR/NBR at specified adjusted p-value ",
+                             "thresholds can not be displayed (check that ",
+                             "binary_truth is not 'none', and that adjusted ",
+                             "p-values are provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else if (!any(c("points", "curve") %in% input$plottype)) {
+          shinyBS::closeAlert(session, alertId = "message_fdrnbr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrnbr_message",
+            alertId = "message_fdrnbr",
+            content = paste0("No plot type selected."),
             style = "info", append = FALSE, dismiss = FALSE)
         } else {
           shinyBS::closeAlert(session, alertId = "message_fdrnbr")
@@ -1680,13 +1826,19 @@ IBRAapp <- function(ibradata = NULL) {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0)
           return(NULL)
-        if ("curve" %in% input$plottype & !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+        if ("curve" %in% input$plottype &
+            !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
           return(NULL)
-        if ("points" %in% input$plottype & !is_plottable(fdrnbr(plotvalues()$all_vals)))
+        if ("points" %in% input$plottype &
+            !is_plottable(fdrnbr(plotvalues()$all_vals)))
           return(NULL)
-        plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        if (!any(c("curve", "points") %in% input$plottype))
+          return(NULL)
+        plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals,
+                         title = plotvalues()$title,
                          stripsize = input$stripsize, titlecol = "white",
-                         pointsize = input$pointsize, xaxisrange = input$xrange_fdrnbr,
+                         pointsize = input$pointsize,
+                         xaxisrange = input$xrange_fdrnbr,
                          plottype = input$plottype)
       })
     })
@@ -1695,11 +1847,14 @@ IBRAapp <- function(ibradata = NULL) {
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
           input$goButton == 0)
         return(NULL)
-      if ("curve" %in% input$plottype & !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
+      if ("curve" %in% input$plottype &
+          !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
         return(NULL)
-      if ("points" %in% input$plottype & !is_plottable(fdrnbr(plotvalues()$all_vals)))
+      if ("points" %in% input$plottype &
+          !is_plottable(fdrnbr(plotvalues()$all_vals)))
         return(NULL)
-      if ("curve" %in% input$plottype) tab_data <- isolate(fdrnbrcurve(plotvalues()$all_vals))
+      if ("curve" %in% input$plottype)
+        tab_data <- isolate(fdrnbrcurve(plotvalues()$all_vals))
       else tab_data <- isolate(fdrnbr(plotvalues()$all_vals))
       if ("split" %in% input$facet_opt) {
         res <- nearPoints(tab_data, input$fdrnbrcurve_plot_click,
@@ -1712,8 +1867,8 @@ IBRAapp <- function(ibradata = NULL) {
                           addDist = TRUE, xvar = "FDR", yvar = "NBR")
       }
       methodcol <- "fullmethod"
-      fix_res(res, methodcol = methodcol, aspcts = c("FDR", "Number of detections"),
-              tabtype = "large")
+      fix_res(res, methodcol = methodcol,
+              aspcts = c("FDR", "Number of detections"), tabtype = "large")
     })
   }
   shinyApp(ui = p_layout, server = server_function)
