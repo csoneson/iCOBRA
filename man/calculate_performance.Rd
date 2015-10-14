@@ -4,7 +4,7 @@
 \alias{calculate_performance}
 \title{Calculate performance measures}
 \usage{
-calculate_performance(ibradata, binary_truth, cont_truth,
+calculate_performance(ibradata, binary_truth = NULL, cont_truth = NULL,
   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr",
   "roc", "fpc", "overlap", "corr", "scatter", "deviation"), thrs = c(0.01,
   0.05, 0.1), splv = "none", maxsplit = 3, onlyshared = FALSE,
