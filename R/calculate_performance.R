@@ -139,6 +139,9 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
                                   maxsplit = 3, onlyshared = FALSE,
                                   thr_venn = 0.05) {
 
+  if (is.null(binary_truth) & is.null(cont_truth))
+    stop("Either binary_truth or cont_truth must be given!")
+
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
   all_methods <- unique(c(colnames(pval(ibradata)), colnames(padj(ibradata)),
@@ -982,23 +985,23 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
 
   ## --------------------------- RETURNS -------------------------------- ##
   ## Put data together
-  if ("fdrtpr" %in% aspects) {
+  if ("fdrtpr" %in% aspects & !is.null(binary_truth)) {
     fdrtpr <- Reduce(function(...) merge(..., all = TRUE),
                      list(all_nbr, tprs, fdrs))
   } else {
     fdrtpr <- data.frame()
   }
-  if ("fdrnbr" %in% aspects) {
+  if ("fdrnbr" %in% aspects & !is.null(binary_truth)) {
     fdrnbr <- Reduce(function(...) merge(..., all = TRUE),
                      list(all_nbr, tprs, fdrs))
   } else {
     fdrnbr <- data.frame()
   }
-  if ("tpr" %in% aspects) {
+  if ("tpr" %in% aspects & !is.null(binary_truth)) {
     tprs <- Reduce(function(...) merge(..., all = TRUE),
                    list(all_nbr, tprs))
   }
-  if ("fpr" %in% aspects) {
+  if ("fpr" %in% aspects & !is.null(binary_truth)) {
     fprs <- Reduce(function(...) merge(..., all = TRUE),
                    list(all_nbr, fprs))
   }
