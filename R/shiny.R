@@ -167,12 +167,13 @@ IBRAapp <- function(ibradata = NULL) {
       shinydashboard::dashboardBody(fluidRow(
         shinydashboard::tabBox(
           width = 12,
-          tabPanel("Instructions", ##includeMarkdown("instructions.md"),
+          tabPanel("Instructions",
                    includeMarkdown(system.file("extdata", "instructions.md",
                                                package = "IBRA")),
                    value = "instructions"),
 
-          tabPanel("TPR vs FDR", uiOutput("plot.fdrtprcurve"),
+          tabPanel("TPR vs FDR", shinyBS::bsAlert("fdrtpr_message"),
+                   uiOutput("plot.fdrtprcurve"),
                    fluidRow(
                      column(3, sliderInput(inputId = "xrange_fdrtpr",
                                            label = "x-axis limits",
@@ -193,7 +194,8 @@ IBRAapp <- function(ibradata = NULL) {
                    textOutput("duplication_alert"),
                    value = "fdrtprcurve"),
 
-          tabPanel("NBR vs FDR", uiOutput("plot.fdrnbrcurve"),
+          tabPanel("NBR vs FDR", shinyBS::bsAlert("fdrnbr_message"),
+                   uiOutput("plot.fdrnbrcurve"),
                    fluidRow(
                      column(4, sliderInput(inputId = "xrange_fdrnbr",
                                            label = "x-axis limits",
@@ -208,7 +210,7 @@ IBRAapp <- function(ibradata = NULL) {
                    DT::dataTableOutput("fdrnbrcurve_click_info"),
                    value = "fdrnbrcurve"),
 
-          tabPanel("TPR", uiOutput("plot.tpr"),
+          tabPanel("TPR", shinyBS::bsAlert("tpr_message"), uiOutput("plot.tpr"),
                    fluidRow(
                      column(4, sliderInput(inputId = "xrange_tpr",
                                            label = "x-axis limits",
@@ -223,7 +225,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("tpr_click_info"), value = "tpr"),
 
-          tabPanel("FPR", uiOutput("plot.fpr"),
+          tabPanel("FPR", shinyBS::bsAlert("fpr_message"), uiOutput("plot.fpr"),
                    fluidRow(
                      column(4, sliderInput(inputId = "xrange_fpr",
                                            label = "x-axis limits",
@@ -238,8 +240,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("fpr_click_info"), value = "fpr"),
 
-          tabPanel("ROC",
-                   uiOutput("plot.roc"),
+          tabPanel("ROC", shinyBS::bsAlert("roc_message"), uiOutput("plot.roc"),
                    fluidRow(
                      column(3, sliderInput(inputId = "xrange_roc",
                                            label = "x-axis limits",
@@ -258,7 +259,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("roc_click_info"), value = "roc"),
 
-          tabPanel("False discovery curves",
+          tabPanel("False discovery curves", shinyBS::bsAlert("fpc_message"),
                    uiOutput("plot.fpc"),
                    fluidRow(
                      ## Define the maximal number of genes shown in the FDC plots.
@@ -276,7 +277,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("fpc_click_info"), value = "fpc"),
 
-          tabPanel("Correlation",
+          tabPanel("Correlation", shinyBS::bsAlert("corr_message"),
                    uiOutput("plot.corr"),
                    fluidRow(
                      column(3, sliderInput(inputId = "xrange_corr",
@@ -295,7 +296,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("corr_click_info"), value = "corr"),
 
-          tabPanel("Scatter",
+          tabPanel("Scatter", shinyBS::bsAlert("scatter_message"),
                    uiOutput("plot.scatter"),
                    fluidRow(
                      column(2, checkboxInput("doflip", "Flip axes", FALSE),
@@ -309,7 +310,7 @@ IBRAapp <- function(ibradata = NULL) {
                    ),
                    DT::dataTableOutput("scatter_click_info"), value = "scatter"),
 
-          tabPanel("Deviations",
+          tabPanel("Deviations", shinyBS::bsAlert("deviation_message"),
                    uiOutput("plot.deviation"),
                    fluidRow(
                      column(2, checkboxInput("dojitter", "Include jittered points", FALSE),
@@ -504,7 +505,7 @@ IBRAapp <- function(ibradata = NULL) {
     ## Initialise messages to show in Venn diagram and tab when the
     ## plots are not generated (because there are too many methods). Also for the alert
     ## regarding duplicated method names.
-    output$overlap_message <- renderText({NULL})
+    #output$overlap_message <- renderText({NULL})
     output$duplication_alert <- renderText({NULL})
 
     ## Generate the UI object for selecting methods to include, based on the
@@ -747,17 +748,6 @@ IBRAapp <- function(ibradata = NULL) {
                                               facetted = ("split" %in% input$facet_opt),
                                               incltruth = (input$incltruth == "yes"))
 
-            if (length(input$cols) > 5) {
-              shinyBS::createAlert(session, anchorId = "overlap_message",
-                          alertId = "message_overlap",
-                          content = paste0("Venn diagram are not constructed if there ",
-                                           "are more than five methods."),
-                          style = "info", append = FALSE,
-                          dismiss = FALSE)
-            } else {
-              shinyBS::closeAlert(session, alertId = "message_overlap")
-            }
-
             ## This is a bit of a hack, just to make the plots directly depend on the truth input.
             ## Otherwise, they will not be automatically updated if the truth file is changed
             ## (not until something else that directly affects the plots is changed as well,
@@ -805,8 +795,7 @@ IBRAapp <- function(ibradata = NULL) {
         if (class(overlap_df) == "list") {
           overlap_df <- lapply(overlap_df, function(w) cbind(feature = rownames(w), w))
           for (i in 1:length(overlap_df)) {
-            #overlap_df[[i]]$feature <- paste0(overlap_df[[i]]$feature, "_", names(overlap_df)[i])
-            overlap_df[[i]]$featureclass <- names(overlap_df)[i]
+             overlap_df[[i]]$featureclass <- names(overlap_df)[i]
           }
           overlap_df <- do.call(rbind, overlap_df)
         }
@@ -819,8 +808,40 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$overlap <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
-        if (length(values$all_methods) == 0 | length(input$cols) == 0)
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_overlap")
+          shinyBS::createAlert(
+            session, anchorId = "overlap_message",
+            alertId = "message_overlap", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(overlap(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_overlap")
+          shinyBS::createAlert(
+            session, anchorId = "overlap_message",
+            alertId = "message_overlap",
+            content = paste0("Venn diagram are not plotted (either binary_truth = 'none' or adjusted p-values are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else if ((class(overlap(plotvalues()$all_vals)) == "list" &&
+                    ncol(overlap(plotvalues()$all_vals)[[1]]) > 5) |
+                   (class(overlap(plotvalues()$all_vals)) == "data.frame" &&
+                    ncol(overlap(plotvalues()$all_vals)) > 5)) {
+          shinyBS::closeAlert(session, alertId = "message_overlap")
+          shinyBS::createAlert(
+            session, anchorId = "overlap_message",
+            alertId = "message_overlap",
+            content = paste0("Venn diagram are not constructed if  ",
+                             "more than five methods are selected (including the truth)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_overlap")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
           return(NULL)
+        }
+
         plot_overlap(plotvalues()$all_vals)
       })
     })
@@ -864,8 +885,29 @@ IBRAapp <- function(ibradata = NULL) {
     output$tpr <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(tpr(plotvalues()$all_vals)))
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_tpr")
+          shinyBS::createAlert(
+            session, anchorId = "tpr_message",
+            alertId = "message_tpr", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(tpr(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_tpr")
+          shinyBS::createAlert(
+            session, anchorId = "tpr_message",
+            alertId = "message_tpr",
+            content = paste0("TPR is not calculated (either binary_truth =",
+                             " 'none' or adjusted p-values are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_tpr")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0 || !is_plottable(tpr(plotvalues()$all_vals))) {
           return(NULL)
+        }
+
         plot_tpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  pointsize = input$pointsize, xaxisrange = input$xrange_tpr)
@@ -930,8 +972,28 @@ IBRAapp <- function(ibradata = NULL) {
     output$corr <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_corr")
+          shinyBS::createAlert(
+            session, anchorId = "corr_message",
+            alertId = "message_corr", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(corr(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_corr")
+          shinyBS::createAlert(
+            session, anchorId = "corr_message",
+            alertId = "message_corr",
+            content = paste0("Correlation plots are not calculated (probably cont_truth =",
+                             " 'none' or scores are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_corr")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
+
         plot_corr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  pointsize = input$pointsize, xaxisrange = input$xrange_corr,
@@ -1018,6 +1080,25 @@ IBRAapp <- function(ibradata = NULL) {
     output$deviation <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_deviation")
+          shinyBS::createAlert(
+            session, anchorId = "deviation_message",
+            alertId = "message_deviation", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(deviation(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_deviation")
+          shinyBS::createAlert(
+            session, anchorId = "deviation_message",
+            alertId = "message_deviation",
+            content = paste0("Deviation plots are not calculated (probably cont_truth =",
+                             " 'none' or scores are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_deviation")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
         plot_deviation(ibraplot = plotvalues()$all_vals,
@@ -1097,6 +1178,25 @@ IBRAapp <- function(ibradata = NULL) {
     output$fpr <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_fpr")
+          shinyBS::createAlert(
+            session, anchorId = "fpr_message",
+            alertId = "message_fpr", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(fpr(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_fpr")
+          shinyBS::createAlert(
+            session, anchorId = "fpr_message",
+            alertId = "message_fpr",
+            content = paste0("FPR is not calculated (either binary_truth =",
+                             " 'none' or adjusted p-values are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_fpr")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
         plot_fpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
@@ -1161,6 +1261,24 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$roc <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_roc")
+          shinyBS::createAlert(
+            session, anchorId = "roc_message",
+            alertId = "message_roc", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(roc(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_roc")
+          shinyBS::createAlert(
+            session, anchorId = "roc_message",
+            alertId = "message_roc",
+            content = paste0("ROC curves are not calculated (probably cont_truth = 'none')."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_roc")
+        }
+
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
@@ -1230,6 +1348,25 @@ IBRAapp <- function(ibradata = NULL) {
     output$scatter <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_scatter")
+          shinyBS::createAlert(
+            session, anchorId = "scatter_message",
+            alertId = "message_scatter", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(scatter(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_scatter")
+          shinyBS::createAlert(
+            session, anchorId = "scatter_message",
+            alertId = "message_scatter",
+            content = paste0("Scatter plots are not calculated (either cont_truth =",
+                             " 'none' or scores are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_scatter")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
         plot_scatter(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
@@ -1251,7 +1388,6 @@ IBRAapp <- function(ibradata = NULL) {
                           addDist = TRUE, xvar = "OBSERVATION",
                           yvar = "TRUTH")
       } else {
-        print(input$scatter_plot_click)
         res <- nearPoints(all_data, input$scatter_plot_click,
                           threshold = 5, maxpoints = 100,
                           addDist = TRUE, xvar = "OBSERVATION", yvar = "TRUTH")
@@ -1299,8 +1435,28 @@ IBRAapp <- function(ibradata = NULL) {
     output$fpc <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_fpc")
+          shinyBS::createAlert(
+            session, anchorId = "fpc_message",
+            alertId = "message_fpc", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if (!is_plottable(fpc(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_fpc")
+          shinyBS::createAlert(
+            session, anchorId = "fpc_message",
+            alertId = "message_fpc",
+            content = paste0("False discovery curves are not calculated (probably binary_truth =",
+                             " 'none')."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_fpc")
+        }
+
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0 || !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
+
         plot_fpc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  maxnfdc = input$maxnfdc)
@@ -1377,6 +1533,33 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fdrtprcurve <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_fdrtpr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrtpr_message",
+            alertId = "message_fdrtpr", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if ("curve" %in% input$plottype & !is_plottable(fdrtprcurve(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_fdrtpr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrtpr_message",
+            alertId = "message_fdrtpr",
+            content = paste0("FDR/TPR curves are not calculated (probably binary_truth =",
+                             " 'none')."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else if ("points" %in% input$plottype & !is_plottable(fdrtpr(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_fdrtpr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrtpr_message",
+            alertId = "message_fdrtpr",
+            content = paste0("FDR/TPR points are not calculated (probably binary_truth =",
+                             " 'none' or adjusted p-values are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_fdrtpr")
+        }
+
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0)
           return(NULL)
@@ -1467,6 +1650,33 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fdrnbrcurve <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            input$goButton == 0) {
+          shinyBS::closeAlert(session, alertId = "message_fdrnbr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrnbr_message",
+            alertId = "message_fdrnbr", content = paste0("No input provided."),
+            style = "danger", append = FALSE, dismiss = FALSE)
+        } else if ("curve" %in% input$plottype & !is_plottable(fdrnbrcurve(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_fdrnbr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrnbr_message",
+            alertId = "message_fdrnbr",
+            content = paste0("FDR/NBR curves are not calculated (probably binary_truth =",
+                             " 'none')."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else if ("points" %in% input$plottype & !is_plottable(fdrnbr(plotvalues()$all_vals))) {
+          shinyBS::closeAlert(session, alertId = "message_fdrnbr")
+          shinyBS::createAlert(
+            session, anchorId = "fdrnbr_message",
+            alertId = "message_fdrnbr",
+            content = paste0("FDR/NBR points are not calculated (probably binary_truth =",
+                             " 'none' or adjusted p-values are not provided)."),
+            style = "info", append = FALSE, dismiss = FALSE)
+        } else {
+          shinyBS::closeAlert(session, alertId = "message_fdrnbr")
+        }
+
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
             input$goButton == 0)
           return(NULL)

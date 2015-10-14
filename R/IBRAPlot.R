@@ -39,7 +39,7 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      fdrnbrcurve = data.frame(), tpr = data.frame(),
                      fpr = data.frame(), roc = data.frame(), scatter = data.frame(),
                      fpc = data.frame(), overlap = data.frame(),
-                     plotcolors = c(), splv = "", deviation = data.frame(),
+                     plotcolors = "", splv = "", deviation = data.frame(),
                      maxsplit = NA_integer_, facetted = TRUE, object_to_extend = NULL) {
 
   if (!(is.null(object_to_extend))) {

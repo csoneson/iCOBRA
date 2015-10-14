@@ -130,7 +130,7 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
 #'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
-calculate_performance <- function(ibradata, binary_truth, cont_truth,
+calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NULL,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                               "fdrnbrcurve", "tpr", "fpr",
                                               "roc", "fpc", "overlap",
@@ -145,7 +145,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
                           colnames(score(ibradata))))
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
-  if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects)) {
+  if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects) &
+      !is.null(binary_truth)) {
     outNBR <- outFP <- outTP <- outFN <- outTN <- outTOT_CALLED <-
       outDS <- outNONDS <- list()
     for (i in all_methods) {
@@ -303,7 +304,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ----------------------------- CORR --------------------------------- ##
-  if ("corr" %in% aspects) {
+  if ("corr" %in% aspects & !is.null(cont_truth)) {
     outPEARSON <- list()
     outSPEARMAN <- list()
     for (i in all_methods) {
@@ -378,7 +379,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ----------------------------- TPR ---------------------------------- ##
-  if (any(c("tpr", "fdrtpr", "fdrnbr") %in% aspects)) {
+  if (any(c("tpr", "fdrtpr", "fdrnbr") %in% aspects) & !is.null(binary_truth)) {
     outTPR <- list()
     for (i in all_methods) {
       inpcol <- select_measure(ibradata, i, asp = "tpr")
@@ -444,7 +445,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ----------------------------- FDR ---------------------------------- ##
-  if (any(c("fdrtpr", "fdrnbr") %in% aspects)) {
+  if (any(c("fdrtpr", "fdrnbr") %in% aspects) & !is.null(binary_truth)) {
     outFDR <- list()
     for (i in all_methods) {
       inpcol <- select_measure(ibradata, i, asp = "fdr")
@@ -522,7 +523,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ----------------------------- FPR ---------------------------------- ##
-  if ("fpr" %in% aspects) {
+  if ("fpr" %in% aspects & !is.null(binary_truth)) {
     outFPR <- list()
     for (i in all_methods) {
       inpcol <- select_measure(ibradata, i, asp = "fpr")
@@ -589,7 +590,8 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ------------------------- FDRTPRcurve ------------------------------ ##
-  if (any(c("fdrtprcurve", "fdrnbrcurve") %in% aspects)) {
+  if (any(c("fdrtprcurve", "fdrnbrcurve") %in% aspects) &
+      !is.null(binary_truth)) {
     outFDRTPR <- list()
     for (i in all_methods) {
       inpcol <- select_measure(ibradata, i, asp = "fdrtpr")
@@ -669,7 +671,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   fdrnbrs <- fdrtprs
 
   ## ----------------------------- ROC ---------------------------------- ##
-  if ("roc" %in% aspects) {
+  if ("roc" %in% aspects & !is.null(binary_truth)) {
     outROC <- list()
 
     for (i in all_methods) {
@@ -742,7 +744,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ---------------------------- SCATTER -------------------------------- ##
-  if ("scatter" %in% aspects) {
+  if ("scatter" %in% aspects & !is.null(cont_truth)) {
     outSCATTER <- list()
 
     for (i in all_methods) {
@@ -802,7 +804,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## --------------------------- DEVIATION ------------------------------- ##
-  if ("deviation" %in% aspects) {
+  if ("deviation" %in% aspects & !is.null(cont_truth)) {
     outDEVIATION <- list()
 
     for (i in all_methods) {
@@ -860,7 +862,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## ----------------------------- FPC ---------------------------------- ##
-  if ("fpc" %in% aspects) {
+  if ("fpc" %in% aspects & !is.null(binary_truth)) {
     outFPC <- list()
 
     for (i in all_methods) {
@@ -933,7 +935,7 @@ calculate_performance <- function(ibradata, binary_truth, cont_truth,
   }
 
   ## --------------------------- OVERLAP -------------------------------- ##
-  if ("overlap" %in% aspects) {
+  if ("overlap" %in% aspects & !is.null(binary_truth)) {
     tmplist <- padj(ibradata)
     if (length(tmplist) > 0) {
       ## Add 'truth' to list of results
@@ -1080,10 +1082,12 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
                                   colorscheme = "hue_pal", facetted = TRUE,
                                   incltruth = TRUE) {
   splitval <- NULL
-
   if (is.null(keepmethods)) {
     keepmethods <- basemethods(ibraperf)
   }
+
+  if (length(intersect(basemethods(ibraperf), keepmethods)) == 0)
+    return(IBRAPlot())
 
   ## Subset ibraperf object
   ibraperf <- ibraperf[, keepmethods]
