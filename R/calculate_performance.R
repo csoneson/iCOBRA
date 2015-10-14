@@ -43,7 +43,8 @@ get_curve <- function(bintruth, vals, revr, aspc) {
       return(roc)
     } else if (aspc == "fpc") {
       fpc = cbind(topN = unlist(mes@x.values) * length(kg),
-                  FP = unlist(mes@y.values) * length(which(bintruth[match(kg, names(bintruth))] == 0)),
+                  FP = unlist(mes@y.values) *
+                    length(which(bintruth[match(kg, names(bintruth))] == 0)),
                   FPC_CUTOFF = alphas)
       return(fpc)
     } else if (aspc == "fdrtpr") {
@@ -51,11 +52,15 @@ get_curve <- function(bintruth, vals, revr, aspc) {
                      TPR = unlist(mes@y.values) / tpcorr,
                      NBR = unlist(mes2@x.values) * length(kg),
                      CUTOFF = alphas,
-                     FP = unlist(mes2@y.values) * length(which(bintruth[match(kg, names(bintruth))] == 0)),
+                     FP = unlist(mes2@y.values) *
+                       length(which(bintruth[match(kg, names(bintruth))] == 0)),
                      TOT_CALLED = length(kg))
-      fdrtpr = cbind(fdrtpr, TP = fdrtpr[, "TPR"] * length(which(bintruth == 1)))
-      fdrtpr = cbind(fdrtpr, FN = length(which(bintruth[match(kg, names(bintruth))] == 1)) - fdrtpr[, "TP"])
-      fdrtpr = cbind(fdrtpr, TN = fdrtpr[, "TOT_CALLED"] - fdrtpr[, "TP"] - fdrtpr[, "FN"] - fdrtpr[, "FP"])
+      fdrtpr = cbind(fdrtpr,
+                     TP = fdrtpr[, "TPR"] * length(which(bintruth == 1)))
+      fdrtpr = cbind(fdrtpr, FN = length(
+        which(bintruth[match(kg, names(bintruth))] == 1)) - fdrtpr[, "TP"])
+      fdrtpr = cbind(fdrtpr, TN = fdrtpr[, "TOT_CALLED"] - fdrtpr[, "TP"] -
+                       fdrtpr[, "FN"] - fdrtpr[, "FP"])
       fdrtpr = cbind(fdrtpr, DIFF = length(which(bintruth == 1)))
       fdrtpr = cbind(fdrtpr, NONDIFF = length(which(bintruth == 0)))
       return(fdrtpr)
@@ -130,7 +135,8 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
 #'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
-calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NULL,
+calculate_performance <- function(ibradata, binary_truth = NULL,
+                                  cont_truth = NULL,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                               "fdrnbrcurve", "tpr", "fpr",
                                               "roc", "fpc", "overlap",
@@ -199,22 +205,23 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
             signif <- rownames(tmp)[which(tmp[i] <= thr)]
             nonsignif <- rownames(tmp)[which(tmp[i] > thr)]
             fp[paste0("thr", thr)] <-
-              length(intersect(signif,
-                               rownames(truth)[which(truth[, binary_truth] == 0)]))
+              length(intersect(
+                signif, rownames(truth)[which(truth[, binary_truth] == 0)]))
             tp[paste0("thr", thr)] <-
-              length(intersect(signif,
-                               rownames(truth)[which(truth[, binary_truth] == 1)]))
+              length(intersect(
+                signif, rownames(truth)[which(truth[, binary_truth] == 1)]))
             fn[paste0("thr", thr)] <-
-              length(intersect(nonsignif,
-                               rownames(truth)[which(truth[, binary_truth] == 1)]))
+              length(intersect(
+                nonsignif, rownames(truth)[which(truth[, binary_truth] == 1)]))
             tn[paste0("thr", thr)] <-
-              length(intersect(nonsignif,
-                               rownames(truth)[which(truth[, binary_truth] == 0)]))
+              length(intersect(
+                nonsignif, rownames(truth)[which(truth[, binary_truth] == 0)]))
             tot_called[paste0("thr", thr)] <-
               length(intersect(rownames(tmp)[which(!is.na(tmp[i]))],
                                rownames(truth)))
             ds[paste0("thr", thr)] <- length(which(truth[, binary_truth] == 1))
-            nonds[paste0("thr", thr)] <- length(which(truth[, binary_truth] == 0))
+            nonds[paste0("thr", thr)] <-
+              length(which(truth[, binary_truth] == 0))
           }
           idx <- paste0(i, "_overall", "__", inpcol)
           FP[[idx]] <- list(basemethod = i, meas_type = inpcol, fp = fp)
@@ -224,17 +231,21 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           TOT_CALLED[[idx]] <- list(basemethod = i, meas_type = inpcol,
                                     tot_called = tot_called)
           DS[[idx]] <- list(basemethod = i, meas_type = inpcol, ds = ds)
-          NONDS[[idx]] <- list(basemethod = i, meas_type = inpcol, nonds = nonds)
+          NONDS[[idx]] <- list(basemethod = i,
+                               meas_type = inpcol, nonds = nonds)
 
           if (splv != "none" & any(truth[, binary_truth] == 0)) {
             for (j in keeplevels) {
-              fp <- tp <- fn <- tn <- tot_called <- ds <- nonds <- gen_thr_vec(thrs)
+              fp <- tp <- fn <- tn <- tot_called <- ds <- nonds <-
+                gen_thr_vec(thrs)
               for (thr in thrs) {
                 signif <- rownames(tmp)[which(tmp[i] <= thr)]
                 nonsignif <- rownames(tmp)[which(tmp[i] > thr)]
                 g <- rownames(truth)[which(truth[[splv]] == j)]
-                gt <- intersect(g, rownames(truth)[which(truth[, binary_truth] == 0)])
-                gtt <- intersect(g, rownames(truth)[which(truth[, binary_truth] == 1)])
+                gt <- intersect(
+                  g, rownames(truth)[which(truth[, binary_truth] == 0)])
+                gtt <- intersect(
+                  g, rownames(truth)[which(truth[, binary_truth] == 1)])
                 gf <- intersect(g, signif)
                 gnf <- intersect(g, nonsignif)
                 fp[paste0("thr", thr)] <- length(intersect(gf, gt))
@@ -268,7 +279,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           outDS <- c(outDS, DS)
           outNONDS <- c(outNONDS, NONDS)
         } else {
-          message(paste0("Column ", i, " is being ignored for NBRS calculations."))
+          message(paste0("Column ", i,
+                         " is being ignored for NBRS calculations."))
         }
       }
     }
@@ -290,14 +302,22 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
       nds <- t(do.call(rbind, lapply(outNONDS, function(w) w$nonds)))
       vnds <- sapply(outNONDS, function(w) w$basemethod)
 
-      nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR", vn, domelt = TRUE)
-      tps <- extend_resulttable(tps, splv, keeplevels, "TP", vtp, domelt = TRUE)
-      fps <- extend_resulttable(fps, splv, keeplevels, "FP", vfp, domelt = TRUE)
-      fns <- extend_resulttable(fns, splv, keeplevels, "FN", vfn, domelt = TRUE)
-      tns <- extend_resulttable(tns, splv, keeplevels, "TN", vtn, domelt = TRUE)
-      tcs <- extend_resulttable(tcs, splv, keeplevels, "TOT_CALLED", vtc, domelt = TRUE)
-      dss <- extend_resulttable(dss, splv, keeplevels, "DIFF", vds, domelt = TRUE)
-      nds <- extend_resulttable(nds, splv, keeplevels, "NONDIFF", vnds, domelt = TRUE)
+      nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR",
+                                 vn, domelt = TRUE)
+      tps <- extend_resulttable(tps, splv, keeplevels, "TP",
+                                vtp, domelt = TRUE)
+      fps <- extend_resulttable(fps, splv, keeplevels, "FP",
+                                vfp, domelt = TRUE)
+      fns <- extend_resulttable(fns, splv, keeplevels, "FN",
+                                vfn, domelt = TRUE)
+      tns <- extend_resulttable(tns, splv, keeplevels, "TN",
+                                vtn, domelt = TRUE)
+      tcs <- extend_resulttable(tcs, splv, keeplevels, "TOT_CALLED",
+                                vtc, domelt = TRUE)
+      dss <- extend_resulttable(dss, splv, keeplevels, "DIFF",
+                                vds, domelt = TRUE)
+      nds <- extend_resulttable(nds, splv, keeplevels, "NONDIFF",
+                                vnds, domelt = TRUE)
 
       all_nbr <- Reduce(function(...) merge(..., all = TRUE),
                         list(nbrs, tps, fps, tns, fns, tcs, dss, nds))
@@ -360,13 +380,15 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
         outPEARSON <- c(outPEARSON, PEARSON)
         outSPEARMAN <- c(outSPEARMAN, SPEARMAN)
       } else {
-        message(paste0("Column ", i, " is being ignored for correlation calculations."))
+        message(paste0("Column ", i,
+                       " is being ignored for correlation calculations."))
       }
     }
 
     if (any(sapply(lapply(outPEARSON, function(w) w$pearson), length) > 0)) {
       pearsons <- t(do.call(rbind, lapply(outPEARSON, function(w) w$pearson)))
-      spearmans <- t(do.call(rbind, lapply(outSPEARMAN, function(w) w$spearman)))
+      spearmans <- t(do.call(rbind,
+                             lapply(outSPEARMAN, function(w) w$spearman)))
       vp <- sapply(outPEARSON, function(w) w$basemethod)
       vs <- sapply(outSPEARMAN, function(w) w$basemethod)
       pearsons <- extend_resulttable(pearsons, splv, keeplevels, "PEARSON",
@@ -408,8 +430,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           for (thr in thrs) {
             signif <- rownames(tmp)[which(tmp[i] <= thr)]
             tpr[paste0("thr", thr)] <-
-              length(intersect(signif,
-                               rownames(truth)[which(truth[, binary_truth] == 1)]))/
+              length(intersect(
+                signif, rownames(truth)[which(truth[, binary_truth] == 1)]))/
               length(which(truth[, binary_truth] == 1))
           }
           TPR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
@@ -422,7 +444,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
                 signif <- intersect(g, rownames(tmp)[which(tmp[i] <= thr)])
-                gt <- intersect(g, rownames(truth)[which(truth[, binary_truth] == 1)])
+                gt <- intersect(
+                  g, rownames(truth)[which(truth[, binary_truth] == 1)])
                 gf <- intersect(g, signif)
                 tpr[paste0("thr", thr)] <- length(intersect(gf, gt))/length(gt)
               }
@@ -432,14 +455,16 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           }
           outTPR <- c(outTPR, TPR)
         } else {
-          message(paste0("Column ", i, " is being ignored for TPR calculations."))
+          message(paste0("Column ", i,
+                         " is being ignored for TPR calculations."))
         }
       }
     }
     if (any(sapply(lapply(outTPR, function(w) w$tpr), length) > 0)) {
       tprs <- t(do.call(rbind, lapply(outTPR, function(w) w$tpr)))
       vt <- sapply(outTPR, function(w) w$basemethod)
-      tprs <- extend_resulttable(tprs, splv, keeplevels, "TPR", vt, domelt = TRUE)
+      tprs <- extend_resulttable(tprs, splv, keeplevels, "TPR",
+                                 vt, domelt = TRUE)
     } else {
       tprs <- data.frame()
     }
@@ -477,8 +502,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
               fdr[paste0("thr", thr)] <- 0
             } else {
               fdr[paste0("thr", thr)] <-
-                length(setdiff(signif,
-                               rownames(truth)[which(truth[, binary_truth] == 1)]))/
+                length(setdiff(
+                  signif, rownames(truth)[which(truth[, binary_truth] == 1)]))/
                 length(signif)
             }
           }
@@ -492,12 +517,14 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
                 signif <- intersect(g, rownames(tmp)[which(tmp[i] <= thr)])
-                gt <- intersect(g, rownames(truth)[which(truth[, binary_truth] == 0)])
+                gt <- intersect(
+                  g, rownames(truth)[which(truth[, binary_truth] == 0)])
                 gf <- intersect(g, signif)
                 if (length(gf) == 0) {
                   fdr[paste0("thr", thr)] <- 0
                 } else {
-                  fdr[paste0("thr", thr)] <- length(intersect(gf, gt))/length(gf)
+                  fdr[paste0("thr", thr)] <-
+                    length(intersect(gf, gt))/length(gf)
                 }
               }
               FDR[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
@@ -506,7 +533,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           }
           outFDR <- c(outFDR, FDR)
         } else {
-          message(paste0("Column ", i, " is being ignored for FDR calculations."))
+          message(paste0("Column ", i,
+                         " is being ignored for FDR calculations."))
         }
       }
     }
@@ -514,7 +542,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
       fdrs <- t(do.call(rbind, lapply(outFDR, function(w) w$fdr)))
       vf <- sapply(outFDR, function(w) w$basemethod)
 
-      fdrs <- extend_resulttable(fdrs, splv, keeplevels, "FDR", vf, domelt = TRUE)
+      fdrs <- extend_resulttable(fdrs, splv, keeplevels, "FDR",
+                                 vf, domelt = TRUE)
       fdrs$satis <- ifelse(fdrs$FDR < as.numeric(gsub("thr", "", fdrs$thr)),
                            "yes", "no")
       fdrs$method.satis <- paste0(fdrs$fullmethod, fdrs$satis)
@@ -552,8 +581,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           for (thr in thrs) {
             signif <- rownames(tmp)[which(tmp[i] <= thr)]
             fpr[paste0("thr", thr)] <-
-              length(intersect(signif,
-                               rownames(truth)[which(truth[, binary_truth] == 0)]))/
+              length(intersect(
+                signif, rownames(truth)[which(truth[, binary_truth] == 0)]))/
               length(which(truth[, binary_truth] == 0))
           }
           FPR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
@@ -566,7 +595,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
                 signif <- intersect(g, rownames(tmp)[which(tmp[i] <= thr)])
-                gt <- intersect(g, rownames(truth)[which(truth[, binary_truth] == 0)])
+                gt <- intersect(
+                  g, rownames(truth)[which(truth[, binary_truth] == 0)])
                 gf <- intersect(g, signif)
                 fpr[paste0("thr", thr)] <- length(intersect(gf, gt))/length(gt)
               }
@@ -576,7 +606,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           }
           outFPR <- c(outFPR, FPR)
         } else {
-          message(paste0("Column ", i, " is being ignored for FPR calculations."))
+          message(paste0("Column ", i,
+                         " is being ignored for FPR calculations."))
         }
       }
     }
@@ -584,7 +615,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
       fprs <- t(do.call(rbind, lapply(outFPR, function(w) w$fpr)))
       vff <- sapply(outFPR, function(w) w$basemethod)
 
-      fprs <- extend_resulttable(fprs, splv, keeplevels, "FPR", vff, domelt = TRUE)
+      fprs <- extend_resulttable(fprs, splv, keeplevels, "FPR",
+                                 vff, domelt = TRUE)
     } else {
       fprs <- data.frame()
     }
@@ -615,7 +647,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
                                      maxsplit = maxsplit)
 
         if (!is.null(inpcol)) {
-          if (any(truth[, binary_truth] == 0) & any(truth[, binary_truth] == 1)) {
+          if (any(truth[, binary_truth] == 0) &
+              any(truth[, binary_truth] == 1)) {
             FDRTPR <- list()
             bintruth <- truth[, binary_truth]
             names(bintruth) <- rownames(truth)
@@ -631,7 +664,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
                 bintruth <- truth[which(truth[[splv]] == j), binary_truth]
                 names(bintruth) <- rownames(truth)[which(truth[[splv]] ==  j)]
                 fdrtpr <- get_curve(bintruth = bintruth, vals = vals,
-                                    revr = ifelse(inpcol == "score", FALSE, TRUE),
+                                    revr = ifelse(inpcol == "score",
+                                                  FALSE, TRUE),
                                     aspc = "fdrtpr")
                 if (!is.null(fdrtpr)) {
                   FDRTPR[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
@@ -644,7 +678,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
           }
           outFDRTPR <- c(outFDRTPR, FDRTPR)
         } else {
-          message(paste0("Column ", i, " is being ignored for FDRTPR calculations."))
+          message(paste0("Column ", i,
+                         " is being ignored for FDRTPR calculations."))
         }
       }
     }
@@ -695,7 +730,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
                                      maxsplit = maxsplit)
 
         if (!is.null(inpcol)) {
-          if (any(truth[, binary_truth] == 0) & any(truth[, binary_truth] == 1)) {
+          if (any(truth[, binary_truth] == 0) &
+              any(truth[, binary_truth] == 1)) {
             ROC <- list()
             bintruth <- truth[, binary_truth]
             names(bintruth) <- rownames(truth)
@@ -769,7 +805,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
         SCATTER <- list()
         SCATTER[[paste0(i, "_overall", "__", inpcol)]] <-
           list(basemethod = i, meas_type = inpcol,
-               scatter = data.frame(vals = tmp[[i]], truth = truth[, cont_truth],
+               scatter = data.frame(vals = tmp[[i]],
+                                    truth = truth[, cont_truth],
                                     row.names = rownames(tmp),
                                     stringsAsFactors = FALSE))
         if (splv != "none") {
@@ -837,7 +874,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
             s <- which(truth[[splv]] == j)
             DEVIATION[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol,
-                   deviation = data.frame(vals = tmp[[i]][s] - truth[s, cont_truth],
+                   deviation = data.frame(vals = tmp[[i]][s] -
+                                            truth[s, cont_truth],
                                           row.names = rownames(tmp)[s],
                                           stringsAsFactors = FALSE))
           }
@@ -848,7 +886,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
       outDEVIATION <- c(outDEVIATION, DEVIATION)
     }
 
-    if (any(sapply(lapply(outDEVIATION, function(w) w$deviation), length) > 0)) {
+    if (any(sapply(lapply(outDEVIATION,
+                          function(w) w$deviation), length) > 0)) {
       vdv <- sapply(outDEVIATION, function(w) w$basemethod)
       deviations <- do.call(rbind, lapply(names(outDEVIATION), function(s) {
         data.frame(DEVIATION = outDEVIATION[[s]]$deviation[, "vals"],
@@ -886,7 +925,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
                                      maxsplit = maxsplit)
 
         if (!is.null(inpcol)) {
-          if (any(truth[, binary_truth] == 0) & any(truth[, binary_truth] == 1)) {
+          if (any(truth[, binary_truth] == 0) &
+              any(truth[, binary_truth] == 1)) {
             FPC <- list()
             bintruth <- truth[, binary_truth]
             names(bintruth) <- rownames(truth)
@@ -946,7 +986,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
       colnames(tmp2) <- "truth"
       missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
       tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
-                                     dimnames = list(missing_genes, colnames(tmplist))))
+                                     dimnames = list(missing_genes,
+                                                     colnames(tmplist))))
       tmplist <- rbind(tmplist, tmpadd)
       tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
 
@@ -1053,8 +1094,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL, cont_truth = NU
 #'   If the number of allowed methods is exceeded, the colorscheme defaults to
 #'   \code{hue_pal}.
 #' @param facetted A logical indicating whether the results should be split into
-#'   subpanels when stratified by an annotation (\code{TRUE}), or kept in the same
-#'   panel but shown with different colors (\code{FALSE}).
+#'   subpanels when stratified by an annotation (\code{TRUE}), or kept in the
+#'   same panel but shown with different colors (\code{FALSE}).
 #' @param incltruth A logical indicating whether the truth should be included in
 #'   Venn diagrams.
 #'
@@ -1120,7 +1161,8 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
     if (splv(ibraperf) != "none") {
       if (!(isTRUE(incloverall))) {
         if (length(slot(ibraperf, sl)) != 0)
-          slot(ibraperf, sl) <- subset(slot(ibraperf, sl), splitval != "overall")
+          slot(ibraperf, sl) <- subset(slot(ibraperf, sl),
+                                       splitval != "overall")
       }
     }
     if (length(slot(ibraperf, sl)) != 0) {

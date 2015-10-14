@@ -24,12 +24,9 @@ Accessor function to extract the methods that are represented in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
 }
 \examples{
-set.seed(123)
-padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-ibradata <- IBRAData(padj = padj, truth = truth)
-ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-                                  aspects = "fpr", thrs = c(0.05, 0.1))
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtprcurve")
 basemethods(ibraperf)
 }
 \author{

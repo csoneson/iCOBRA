@@ -10,6 +10,9 @@ IBRAapp(ibradata = NULL)
 \item{ibradata}{An (optional) \code{IBRAData} object. If not given, the user
 can load results from text files.}
 }
+\value{
+Returns (and runs) an object representing the shiny app.
+}
 \description{
 Interactive shiny app for visualization of results. The app can be
 initialized with an \code{IBRAData} object. If no object is provided, truth

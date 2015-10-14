@@ -20,6 +20,9 @@
 \usage{
 ibradata_example
 }
+\value{
+An \code{IBRAData} object.
+}
 \description{
 A data set consisting of p-values, adjusted p-values and estimated log fold
 changes (in the 'scores' slot) obtained by three methods for differential

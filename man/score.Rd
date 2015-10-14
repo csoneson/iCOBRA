@@ -23,9 +23,17 @@ score(x, ...) <- value
 
 \item{value}{A data frame containing scores for each feature and each method.}
 }
+\value{
+The accessor function regurns a data frame containing scores for each
+  feature and each method.
+}
 \description{
 Accessor and replacement functions for the \code{score} slot in an
 \code{IBRAData} object.
+}
+\examples{
+data(ibradata_example)
+head(score(ibradata_example))
 }
 \author{
 Charlotte Soneson

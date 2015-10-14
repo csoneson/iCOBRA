@@ -47,20 +47,17 @@ plot_fpr_tpr <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = "fpr", thrs = c(0.05, 0.1))
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
-#' plot_fpr(ibraplot, xaxisrange = c(0, 0.5))
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fpr")
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
+#' plot_fpr(ibraplot, xaxisrange = c(0, 0.25))
 plot_fpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
                      pointsize = 5, xaxisrange = c(0, 1)) {
   plot_fpr_tpr(ibraplot = ibraplot, title = title, stripsize = stripsize,
-               titlecol = titlecol, pointsize = pointsize, xaxisrange = xaxisrange,
-               aspc = "FPR")
+               titlecol = titlecol, pointsize = pointsize,
+               xaxisrange = xaxisrange, aspc = "FPR")
 }
 
 #' Plot TPR
@@ -82,20 +79,17 @@ plot_fpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = "tpr", thrs = c(0.05, 0.1))
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
-#' plot_tpr(ibraplot, xaxisrange = c(0, 0.5))
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "tpr")
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
+#' plot_tpr(ibraplot)
 plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
                      pointsize = 5, xaxisrange = c(0, 1)) {
   plot_fpr_tpr(ibraplot = ibraplot, title = title, stripsize = stripsize,
-               titlecol = titlecol, pointsize = pointsize, xaxisrange = xaxisrange,
-               aspc = "TPR")
+               titlecol = titlecol, pointsize = pointsize,
+               xaxisrange = xaxisrange, aspc = "TPR")
 }
 
 #' Plot correlations
@@ -119,19 +113,18 @@ plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' score <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(score = score, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, cont_truth = "status", aspects = "corr")
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
-#' plot_corr(ibraplot, corrtype = "pearson")
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#'                                   aspects = "corr")
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
+#' plot_corr(ibraplot, corrtype = "spearman")
 plot_corr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
-                      pointsize = 5, xaxisrange = c(-1, 1), corrtype = "pearson") {
+                      pointsize = 5, xaxisrange = c(-1, 1),
+                      corrtype = "pearson") {
   plot_fpr_tpr(ibraplot = ibraplot, title = title, stripsize = stripsize,
-               titlecol = titlecol, pointsize = pointsize, xaxisrange = xaxisrange,
-               aspc = toupper(corrtype))
+               titlecol = titlecol, pointsize = pointsize,
+               xaxisrange = xaxisrange, aspc = toupper(corrtype))
 }
 
 ## ---------------------- ROC or FPC --------------------------------- ##
@@ -151,8 +144,8 @@ plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
     geom_path(size = 1) +
     scale_color_manual(values = plotcolors(ibraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
-    xlim(ifelse(aspc == "roc", xaxisrange[1], 0), ifelse(aspc == "roc",
-                                                         xaxisrange[2], maxnfdc)) +
+    xlim(ifelse(aspc == "roc", xaxisrange[1], 0),
+         ifelse(aspc == "roc", xaxisrange[2], maxnfdc)) +
     ylim(ifelse(aspc == "roc", yaxisrange[1], 0),
          ifelse(aspc == "roc", yaxisrange[2],
                 max(plot_data$FP[plot_data$topN <= maxnfdc]))) +
@@ -184,20 +177,17 @@ plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
 #'                                   aspects = "roc")
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
-#' plot_roc(ibraplot, xaxisrange = c(0, 1), yaxisrange = c(0, 1))
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
+#' plot_roc(ibraplot)
 plot_roc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
                      xaxisrange = c(0, 1), yaxisrange = c(0, 1)) {
   plot_roc_fpc(ibraplot = ibraplot, title = title, stripsize = stripsize,
-               titlecol = titlecol, xaxisrange = xaxisrange, yaxisrange = yaxisrange,
-               maxnfdc = NULL, aspc = "roc")
+               titlecol = titlecol, xaxisrange = xaxisrange,
+               yaxisrange = yaxisrange, maxnfdc = NULL, aspc = "roc")
 }
 
 #' Plot FP curves
@@ -218,15 +208,12 @@ plot_roc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
 #'                                   aspects = "fpc")
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
-#' plot_fpc(ibraplot, maxnfdc = 100)
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
+#' plot_fpc(ibraplot, maxnfdc = 750)
 plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
                      maxnfdc = 500) {
   plot_roc_fpc(ibraplot = ibraplot, title = title, stripsize = stripsize,
@@ -258,17 +245,15 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' score <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(score = score, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, cont_truth = "status",
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
 #'                                   aspects = "scatter")
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = TRUE)
-#' plot_scatter(ibraplot, doflip = TRUE)
-plot_scatter <- function(ibraplot, title = "", stripsize = 10, titlecol = "black",
-                         pointsize = 3, doflip = FALSE, dolog = FALSE) {
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
+#' plot_scatter(ibraplot)
+plot_scatter <- function(ibraplot, title = "", stripsize = 10,
+                         titlecol = "black", pointsize = 3, doflip = FALSE,
+                         dolog = FALSE) {
   plot_data <- scatter(ibraplot)
 
   if (isTRUE(facetted(ibraplot))) {
@@ -319,7 +304,8 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
 
   if ("curve" %in% plottype & "points" %in% plottype) {
     pp <- ggplot(plot_data_lines, aes_string(x = "FDR", y = aspc,
-                                             group = "method", colour = "method")) +
+                                             group = "method",
+                                             colour = "method")) +
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
@@ -327,30 +313,38 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
       geom_point(data = plot_data_points, size = pointsize + 1,
                  aes_string(colour = "method"), shape = 19) +
       geom_point(data = plot_data_points, size = pointsize,
-                 aes_string(fill = "method2.satis", colour = "method"), shape = 21) +
-      scale_fill_manual(values = plotcolors(ibraplot), guide = FALSE, name = "") +
+                 aes_string(fill = "method2.satis", colour = "method"),
+                 shape = 21) +
+      scale_fill_manual(values = plotcolors(ibraplot), guide = FALSE,
+                        name = "") +
       scale_color_manual(values = plotcolors(ibraplot), name = "") +
       ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
            ifelse(aspc == "TPR", yaxisrange[2],
-                  max(plot_data_lines$NBR[plot_data_lines$FDR <= xaxisrange[2]]))) +
-      scale_x_continuous(breaks = c(0, thresholds, seq(0.1, xaxisrange[2], 0.1)),
-                         labels = c("", thresholds, seq(0.1, xaxisrange[2], 0.1)),
+                  max(plot_data_lines$NBR[plot_data_lines$FDR <=
+                                            xaxisrange[2]]))) +
+      scale_x_continuous(breaks = c(0, thresholds,
+                                    seq(0.1, xaxisrange[2], 0.1)),
+                         labels = c("", thresholds,
+                                    seq(0.1, xaxisrange[2], 0.1)),
                          limits = c(xaxisrange[1], xaxisrange[2])) +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("curve" %in% plottype) {
-    pp <- ggplot(plot_data_lines, aes_string(x = "FDR", y = aspc,
-                                             group = "method", colour = "method")) +
+    pp <- ggplot(plot_data_lines,
+                 aes_string(x = "FDR", y = aspc,
+                            group = "method", colour = "method")) +
       geom_path(size = 1) +
       xlim(xaxisrange[1], xaxisrange[2]) +
       ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
            ifelse(aspc == "TPR", yaxisrange[2],
-                  max(plot_data_lines$NBR[plot_data_lines$FDR <= xaxisrange[2]]))) +
+                  max(plot_data_lines$NBR[plot_data_lines$FDR <=
+                                            xaxisrange[2]]))) +
       scale_color_manual(values = plotcolors(ibraplot), name = "") +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("points" %in% plottype) {
-    pp <- ggplot(plot_data_points, aes_string(x = "FDR", y = aspc, group = "method")) +
+    pp <- ggplot(plot_data_points, aes_string(x = "FDR", y = aspc,
+                                              group = "method")) +
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
@@ -358,14 +352,19 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
       geom_point(size = pointsize + 1,
                  aes_string(colour = "method"), shape = 19) +
       geom_point(size = pointsize,
-                 aes_string(fill = "method2.satis", colour = "method"), shape = 21) +
-      scale_fill_manual(values = plotcolors(ibraplot), guide = FALSE, name = "") +
+                 aes_string(fill = "method2.satis", colour = "method"),
+                 shape = 21) +
+      scale_fill_manual(values = plotcolors(ibraplot), guide = FALSE,
+                        name = "") +
       scale_color_manual(values = plotcolors(ibraplot), name = "") +
       ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
            ifelse(aspc == "TPR", yaxisrange[2],
-                  max(plot_data_lines$NBR[plot_data_lines$FDR <= xaxisrange[2]]))) +
-      scale_x_continuous(breaks = c(0, thresholds, seq(0.1, xaxisrange[2], 0.1)),
-                         labels = c("", thresholds, seq(0.1, xaxisrange[2], 0.1)),
+                  max(plot_data_lines$NBR[plot_data_lines$FDR <=
+                                            xaxisrange[2]]))) +
+      scale_x_continuous(breaks = c(0, thresholds,
+                                    seq(0.1, xaxisrange[2], 0.1)),
+                         labels = c("", thresholds,
+                                    seq(0.1, xaxisrange[2], 0.1)),
                          limits = c(xaxisrange[1], xaxisrange[2])) +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
@@ -402,23 +401,20 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = c("fdrtpr", "fdrtprcurve"),
-#'                                   thrs = c(0.05, 0.1))
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = c("fdrtpr", "fdrtprcurve"))
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
 #' plot_fdrtprcurve(ibraplot, plottype = c("curve", "points"))
 plot_fdrtprcurve <- function(ibraplot, title = "", stripsize = 15,
-                             titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
-                             yaxisrange = c(0, 1), plottype = c("curve", "points")) {
+                             titlecol = "black", pointsize = 5,
+                             xaxisrange = c(0, 1), yaxisrange = c(0, 1),
+                             plottype = c("curve", "points")) {
   plot_fdrcurve(ibraplot = ibraplot, title = title, stripsize = stripsize,
-                titlecol = titlecol, pointsize = pointsize, xaxisrange = xaxisrange,
-                yaxisrange = yaxisrange, plottype = plottype, aspc = "TPR")
+                titlecol = titlecol, pointsize = pointsize,
+                xaxisrange = xaxisrange, yaxisrange = yaxisrange,
+                plottype = plottype, aspc = "TPR")
 }
 
 #' Plot number of significant features vs FDR
@@ -444,23 +440,20 @@ plot_fdrtprcurve <- function(ibraplot, title = "", stripsize = 15,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = c("fdrnbr", "fdrnbrcurve"),
-#'                                   thrs = c(0.05, 0.1))
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = c("fdrnbr", "fdrnbrcurve"))
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
 #' plot_fdrnbrcurve(ibraplot, plottype = c("curve", "points"))
 plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
-                             titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
+                             titlecol = "black", pointsize = 5,
+                             xaxisrange = c(0, 1),
                              plottype = c("curve", "points")) {
   plot_fdrcurve(ibraplot = ibraplot, title = title, stripsize = stripsize,
-                titlecol = titlecol, pointsize = pointsize, xaxisrange = xaxisrange,
-                yaxisrange = NULL, plottype = plottype, aspc = "NBR")
+                titlecol = titlecol, pointsize = pointsize,
+                xaxisrange = xaxisrange, yaxisrange = NULL,
+                plottype = plottype, aspc = "NBR")
 }
 
 ## ------------------------ OVERLAP ---------------------------------- ##
@@ -479,15 +472,11 @@ plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = "overlap", thr_venn = 0.1)
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", incltruth = TRUE)
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "overlap")
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
 #' plot_overlap(ibraplot)
 plot_overlap <- function(ibraplot, ...) {
   overlap_table <- overlap(ibraplot)
@@ -552,16 +541,11 @@ plot_overlap <- function(ibraplot, ...) {
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' score <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                     row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)),
-#'                     row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(score = score, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, cont_truth = "status",
-#'                                   aspects = "deviation", thrs = c(0.05, 0.1))
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-#'                                   colorscheme = "Dark2", facetted = FALSE)
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#'                                   aspects = "deviation")
+#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#'                                   incltruth = TRUE)
 #' plot_deviation(ibraplot)
 plot_deviation <- function(ibraplot, title = "", stripsize = 15,
                            titlecol = "black", xaxisrange = NULL,
@@ -596,7 +580,8 @@ plot_deviation <- function(ibraplot, title = "", stripsize = 15,
     pp <- pp + geom_jitter(position = position_jitter(width = 0.1, height = 0),
                            size = 1.5)
   if (isTRUE(facetted(ibraplot))) {
-    pp <- pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
+    pp <- pp + facet_wrap(~ splitval,
+                          nrow = ceiling((maxsplit(ibraplot) + 1)/3))
   }
   if (!is.null(xaxisrange))
     pp <- pp + ylim(xaxisrange[1], xaxisrange[2])

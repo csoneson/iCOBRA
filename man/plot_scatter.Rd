@@ -34,15 +34,12 @@ Plot scatter plots, indicating the relationship between observed values and a
 continuous truth.
 }
 \examples{
-set.seed(123)
-score <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-ibradata <- IBRAData(score = score, truth = truth)
-ibraperf <- calculate_performance(ibradata, cont_truth = "status",
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
                                   aspects = "scatter")
-ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-                                  colorscheme = "Dark2", facetted = TRUE)
-plot_scatter(ibraplot, doflip = TRUE)
+ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+                                  incltruth = TRUE)
+plot_scatter(ibraplot)
 }
 \author{
 Charlotte Soneson

@@ -27,9 +27,20 @@ fpr(x, ...) <- value
 method and each stratification level, at various adjusted p-value
 thresholds.}
 }
+\value{
+The accessor function returns a data frame giving information about
+  the observed FPR for each method and each stratification level, at various
+  adjusted p-value thresholds.
+}
 \description{
 Accessor and replacement functions for the \code{fpr} slot in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fpr")
+head(fpr(ibraperf))
 }
 \author{
 Charlotte Soneson

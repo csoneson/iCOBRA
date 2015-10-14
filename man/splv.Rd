@@ -26,9 +26,19 @@ splv(x, ...) <- value
 \item{value}{A character string giving the name of a feature annotation to
 use for stratification.}
 }
+\value{
+The accessor function returns a character string giving the name of a
+  feature annotation to use for stratification.
+}
 \description{
 Accessor and replacement functions for the \code{splv} slot in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtpr", splv = "expr_cat")
+splv(ibraperf)
 }
 \author{
 Charlotte Soneson

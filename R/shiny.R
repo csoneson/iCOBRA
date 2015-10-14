@@ -9,6 +9,7 @@
 #' @param ibradata An (optional) \code{IBRAData} object. If not given, the user
 #'   can load results from text files.
 #' @author Charlotte Soneson
+#' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny
 #' @export
 #' @examples
@@ -592,18 +593,6 @@ IBRAapp <- function(ibradata = NULL) {
 
               isolate(values$all_methods <- unique(c(values$all_methods, i)))
 
-#               if (i %in% colnames(slot(isolate(values$my_ibradata), coltype))) {
-#                 ## If the method was already present, create an alert.
-#                 print(paste0("Method ", i, " and score type ", coltype, " already present."))
-#                 shinyBS::closeAlert(session, alertId = "alert_duplication")
-#                 shinyBS::createAlert(session, anchorId = "duplication_alert",
-#                                      alertId = "alert_duplication",
-#                                      content = paste0("Method ", i, " and score type ",
-#                                                       coltype, " already present."),
-#                                      style = "info", append = TRUE,
-#                                      dismiss = TRUE)
-#               }
-#
               if (coltype == "pval") {
                 isolate(values$my_ibradata <-
                           IBRAData(pval = tmp,

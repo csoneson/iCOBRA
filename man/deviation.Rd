@@ -27,9 +27,20 @@ deviation(x, ...) <- value
 between observed and true scores for each method and each stratification
 level.}
 }
+\value{
+The accessor function returns a data frame giving information
+  necessary to plots of deviations between observed and true scores for each
+  method and each stratification level.
+}
 \description{
 Accessor and replacement functions for the \code{deviation} slot in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+                                  aspects = "deviation")
+head(deviation(ibraperf))
 }
 \author{
 Charlotte Soneson

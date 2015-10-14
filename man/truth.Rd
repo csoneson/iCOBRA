@@ -25,9 +25,18 @@ truth(x, ...) <- value
 features, together with other feature annotations to use for stratification
 of performance calculations.}
 }
+\value{
+The accessor function returns a data frame containing true
+  assignments and/or scores for features, together with other feature
+  annotations to use for stratification of performance calculations.
+}
 \description{
 Accessor and replacement functions for the \code{truth} slot in an
 \code{IBRAData} object.
+}
+\examples{
+data(ibradata_example)
+head(truth(ibradata_example))
 }
 \author{
 Charlotte Soneson

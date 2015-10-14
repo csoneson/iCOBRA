@@ -9,9 +9,11 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
                                        fdrnbrcurve = "data.frame",
                                        deviation = "data.frame",
                                        tpr = "data.frame", fpr = "data.frame",
-                                       roc = "data.frame", scatter = "data.frame",
+                                       roc = "data.frame",
+                                       scatter = "data.frame",
                                        fpc = "data.frame", overlap = "list_df",
-                                       corr = "data.frame", maxsplit = "numeric",
+                                       corr = "data.frame",
+                                       maxsplit = "numeric",
                                        splv = "character"))
 
 #' \code{IBRAPerformance} object and constructor
@@ -64,6 +66,7 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #'   provided information.
 #'
 #' @include IBRAData.R
+#' @return An \code{IBRAPerformance} object.
 #'
 #' @aliases IBRAPerformance IBRAPerformance-class
 #'
@@ -73,6 +76,9 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #' @rdname IBRAPerformance
 #' @author Charlotte Soneson
 #' @import methods
+#' @examples
+#' ## Empty IBRAPerformance object
+#' IBRAPerformance()
 IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                             fdrnbr = data.frame(), fdrnbrcurve = data.frame(),
                             tpr = data.frame(), fpr = data.frame(), splv = "",
@@ -118,8 +124,8 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
     }
   }
   .IBRAPerformance(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
-                   deviation = deviation,
-                   fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, scatter = scatter,
+                   deviation = deviation, fdrnbr = fdrnbr,
+                   fdrnbrcurve = fdrnbrcurve, scatter = scatter,
                    tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, corr = corr,
                    overlap = overlap, splv = splv, maxsplit = maxsplit)
 }
@@ -145,6 +151,9 @@ setMethod("show", "IBRAPerformance", function(object) {
 #' @aliases fdrtpr fdrtpr,IBRAPerformance-method
 #'   fdrtpr<-,IBRAPerformance,data.frame-method fdrtpr,IBRAPlot-method
 #'   fdrtpr<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information about
+#'   the observed FPR and TPR for each method and each stratification level, at
+#'   various adjusted p-value thresholds.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -153,12 +162,17 @@ setMethod("show", "IBRAPerformance", function(object) {
 #'   thresholds.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' head(fdrtpr(ibraperf))
 setMethod("fdrtpr", signature(x = "IBRAPerformance"), function(x) x@fdrtpr)
-
 #' @name fdrtpr
 #' @rdname fdrtpr
 #' @exportMethod "fdrtpr<-"
-setReplaceMethod("fdrtpr", signature(x = "IBRAPerformance", value = "data.frame"),
+setReplaceMethod("fdrtpr", signature(x = "IBRAPerformance",
+                                     value = "data.frame"),
                  function(x, value) {
                    x@fdrtpr <- value
                    if (validObject(x))
@@ -176,6 +190,9 @@ setReplaceMethod("fdrtpr", signature(x = "IBRAPerformance", value = "data.frame"
 #' @aliases fdrtprcurve fdrtprcurve,IBRAPerformance-method
 #'   fdrtprcurve<-,IBRAPerformance,data.frame-method fdrtprcurve,IBRAPlot-method
 #'   fdrtprcurve<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information
+#'   necessary to generate curves of observed FDR vs TPR for each method and
+#'   each stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -183,11 +200,17 @@ setReplaceMethod("fdrtpr", signature(x = "IBRAPerformance", value = "data.frame"
 #'   observed FDR vs TPR for each method and each stratification level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtprcurve")
+#' head(fdrtprcurve(ibraperf))
 setMethod("fdrtprcurve", "IBRAPerformance", function(x) x@fdrtprcurve)
 #' @name fdrtprcurve
 #' @rdname fdrtprcurve
 #' @exportMethod "fdrtprcurve<-"
-setReplaceMethod("fdrtprcurve", signature(x = "IBRAPerformance", value = "data.frame"),
+setReplaceMethod("fdrtprcurve", signature(x = "IBRAPerformance",
+                                          value = "data.frame"),
                  function(x, value) {
                    x@fdrtprcurve <- value
                    if (validObject(x))
@@ -205,6 +228,9 @@ setReplaceMethod("fdrtprcurve", signature(x = "IBRAPerformance", value = "data.f
 #' @aliases deviation deviation,IBRAPerformance-method
 #'   deviation<-,IBRAPerformance,data.frame-method deviation,IBRAPlot-method
 #'   deviation<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information
+#'   necessary to plots of deviations between observed and true scores for each
+#'   method and each stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -213,11 +239,17 @@ setReplaceMethod("fdrtprcurve", signature(x = "IBRAPerformance", value = "data.f
 #'   level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#'                                   aspects = "deviation")
+#' head(deviation(ibraperf))
 setMethod("deviation", "IBRAPerformance", function(x) x@deviation)
 #' @name deviation
 #' @rdname deviation
 #' @exportMethod "deviation<-"
-setReplaceMethod("deviation", signature(x = "IBRAPerformance", value = "data.frame"),
+setReplaceMethod("deviation", signature(x = "IBRAPerformance",
+                                        value = "data.frame"),
                  function(x, value) {
                    x@deviation <- value
                    if (validObject(x))
@@ -235,6 +267,9 @@ setReplaceMethod("deviation", signature(x = "IBRAPerformance", value = "data.fra
 #' @aliases fdrnbr fdrnbr,IBRAPerformance-method
 #'   fdrnbr<-,IBRAPerformance,data.frame-method fdrnbr,IBRAPlot-method
 #'   fdrnbr<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information about
+#'   the observed FPR and the number of features called positive for each method
+#'   and each stratification level, at various adjusted p-value thresholds.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -243,11 +278,17 @@ setReplaceMethod("deviation", signature(x = "IBRAPerformance", value = "data.fra
 #'   level, at various adjusted p-value thresholds.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrnbr")
+#' head(fdrnbr(ibraperf))
 setMethod("fdrnbr", "IBRAPerformance", function(x) x@fdrnbr)
 #' @name fdrnbr
 #' @rdname fdrnbr
 #' @exportMethod "fdrnbr<-"
-setReplaceMethod("fdrnbr", signature(x = "IBRAPerformance", value = "data.frame"),
+setReplaceMethod("fdrnbr", signature(x = "IBRAPerformance",
+                                     value = "data.frame"),
                  function(x, value) {
                    x@fdrnbr <- value
                    if (validObject(x))
@@ -265,6 +306,9 @@ setReplaceMethod("fdrnbr", signature(x = "IBRAPerformance", value = "data.frame"
 #' @aliases fdrnbrcurve fdrnbrcurve,IBRAPerformance-method
 #'   fdrnbrcurve<-,IBRAPerformance,data.frame-method fdrnbrcurve,IBRAPlot-method
 #'   fdrnbrcurve<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information
+#'   necessary to generate curves of observed FDR vs number of features called
+#'   positive for each method and each stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -273,11 +317,17 @@ setReplaceMethod("fdrnbr", signature(x = "IBRAPerformance", value = "data.frame"
 #'   stratification level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrnbrcurve")
+#' head(fdrnbrcurve(ibraperf))
 setMethod("fdrnbrcurve", "IBRAPerformance", function(x) x@fdrnbrcurve)
 #' @name fdrnbrcurve
 #' @rdname fdrnbrcurve
 #' @exportMethod "fdrnbrcurve<-"
-setReplaceMethod("fdrnbrcurve", signature(x = "IBRAPerformance", value = "data.frame"),
+setReplaceMethod("fdrnbrcurve", signature(x = "IBRAPerformance",
+                                          value = "data.frame"),
                  function(x, value) {
                    x@fdrnbrcurve <- value
                    if (validObject(x))
@@ -295,6 +345,9 @@ setReplaceMethod("fdrnbrcurve", signature(x = "IBRAPerformance", value = "data.f
 #' @aliases scatter scatter,IBRAPerformance-method
 #'   scatter<-,IBRAPerformance,data.frame-method scatter,IBRAPlot-method
 #'   scatter<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information
+#'   necessary to generate scatter plots of observed vs true values for each
+#'   method and each stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -303,11 +356,17 @@ setReplaceMethod("fdrnbrcurve", signature(x = "IBRAPerformance", value = "data.f
 #'   level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#'                                   aspects = "scatter")
+#' head(scatter(ibraperf))
 setMethod("scatter", "IBRAPerformance", function(x) x@scatter)
 #' @name scatter
 #' @rdname scatter
 #' @exportMethod "scatter<-"
-setReplaceMethod("scatter", signature(x = "IBRAPerformance", value = "data.frame"),
+setReplaceMethod("scatter", signature(x = "IBRAPerformance",
+                                      value = "data.frame"),
                  function(x, value) {
                    x@scatter <- value
                    if (validObject(x))
@@ -325,6 +384,9 @@ setReplaceMethod("scatter", signature(x = "IBRAPerformance", value = "data.frame
 #' @aliases tpr tpr,IBRAPerformance-method
 #'   tpr<-,IBRAPerformance,data.frame-method tpr,IBRAPlot-method
 #'   tpr<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information about
+#'   the observed TPR for each method and each stratification level, at various
+#'   adjusted p-value thresholds.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -333,6 +395,11 @@ setReplaceMethod("scatter", signature(x = "IBRAPerformance", value = "data.frame
 #'   thresholds.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "tpr")
+#' head(tpr(ibraperf))
 setMethod("tpr", "IBRAPerformance", function(x) x@tpr)
 #' @name tpr
 #' @rdname tpr
@@ -355,6 +422,9 @@ setReplaceMethod("tpr", signature(x = "IBRAPerformance", value = "data.frame"),
 #' @aliases fpr fpr,IBRAPerformance-method
 #'   fpr<-,IBRAPerformance,data.frame-method fpr,IBRAPlot-method
 #'   fpr<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information about
+#'   the observed FPR for each method and each stratification level, at various
+#'   adjusted p-value thresholds.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -363,6 +433,11 @@ setReplaceMethod("tpr", signature(x = "IBRAPerformance", value = "data.frame"),
 #'   thresholds.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fpr")
+#' head(fpr(ibraperf))
 setMethod("fpr", "IBRAPerformance", function(x) x@fpr)
 #' @name fpr
 #' @rdname fpr
@@ -385,6 +460,9 @@ setReplaceMethod("fpr", signature(x = "IBRAPerformance", value = "data.frame"),
 #' @aliases roc roc,IBRAPerformance-method
 #'   roc<-,IBRAPerformance,data.frame-method roc,IBRAPlot-method
 #'   roc<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information
+#'   necessary to generate ROC curves for each method and each stratification
+#'   level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -392,6 +470,11 @@ setReplaceMethod("fpr", signature(x = "IBRAPerformance", value = "data.frame"),
 #'   for each method and each stratification level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "roc")
+#' head(roc(ibraperf))
 setMethod("roc", "IBRAPerformance", function(x) x@roc)
 #' @name roc
 #' @rdname roc
@@ -414,6 +497,9 @@ setReplaceMethod("roc", signature(x = "IBRAPerformance", value = "data.frame"),
 #' @aliases fpc fpc,IBRAPerformance-method
 #'   fpc<-,IBRAPerformance,data.frame-method fpc,IBRAPlot-method
 #'   fpc<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a data frame giving information
+#'   necessary to generate false positive curves for each method and each
+#'   stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -421,6 +507,11 @@ setReplaceMethod("roc", signature(x = "IBRAPerformance", value = "data.frame"),
 #'   positive curves for each method and each stratification level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fpc")
+#' head(fpc(ibraperf))
 setMethod("fpc", "IBRAPerformance", function(x) x@fpc)
 #' @name fpc
 #' @rdname fpc
@@ -442,6 +533,8 @@ setReplaceMethod("fpc", signature(x = "IBRAPerformance", value = "data.frame"),
 #' @rdname corr
 #' @aliases corr corr,IBRAPerformance-method
 #'   corr<-,IBRAPerformance,data.frame-method
+#' @return The accessor function returns a data frame giving correlation values
+#'   for each method and each stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -449,6 +542,11 @@ setReplaceMethod("fpc", signature(x = "IBRAPerformance", value = "data.frame"),
 #'   stratification level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#'                                   aspects = "corr")
+#' head(corr(ibraperf))
 setMethod("corr", "IBRAPerformance", function(x) x@corr)
 #' @name corr
 #' @rdname corr
@@ -471,6 +569,9 @@ setReplaceMethod("corr", signature(x = "IBRAPerformance", value = "data.frame"),
 #' @aliases overlap overlap,IBRAPerformance-method
 #'   overlap<-,IBRAPerformance,list_df-method overlap,IBRAPlot-method
 #'   overlap<-,IBRAPlot,list_df-method
+#' @return The accessor function returns a data frame or a list, giving
+#'   information about which feature that are classified as 'positive' by each
+#'   method and for each stratification level.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -479,6 +580,11 @@ setReplaceMethod("corr", signature(x = "IBRAPerformance", value = "data.frame"),
 #'   stratification level.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "overlap")
+#' head(overlap(ibraperf))
 setMethod("overlap", "IBRAPerformance", function(x) x@overlap)
 #' @name overlap
 #' @rdname overlap
@@ -501,6 +607,8 @@ setReplaceMethod("overlap", signature(x = "IBRAPerformance", value = "list_df"),
 #' @aliases splv splv,IBRAPerformance-method
 #'   splv<-,IBRAPerformance,character-method splv,IBRAPlot-method
 #'   splv<-,IBRAPlot,character-method
+#' @return The accessor function returns a character string giving the name of a
+#'   feature annotation to use for stratification.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -508,6 +616,11 @@ setReplaceMethod("overlap", signature(x = "IBRAPerformance", value = "list_df"),
 #'   use for stratification.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr", splv = "expr_cat")
+#' splv(ibraperf)
 setMethod("splv", "IBRAPerformance", function(x) x@splv)
 #' @name splv
 #' @rdname splv
@@ -530,17 +643,26 @@ setReplaceMethod("splv", signature(x = "IBRAPerformance", value = "character"),
 #' @aliases maxsplit maxsplit,IBRAPerformance-method
 #'   maxsplit<-,IBRAPerformance,numeric-method maxsplit,IBRAPlot-method
 #'   maxsplit<-,IBRAPlot,numeric-method
+#' @return The accessor function returns a numeric value giving the maximal
+#'   number of strata to retain.
 #'
 #' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
 #' @param ... Additional arguments.
 #' @param value A numeric value giving the maximal number of strata to retain.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr", splv = "expr_cat",
+#'                                   maxsplit = 3)
+#' maxsplit(ibraperf)
 setMethod("maxsplit", "IBRAPerformance", function(x) x@maxsplit)
 #' @name maxsplit
 #' @rdname maxsplit
 #' @exportMethod "maxsplit<-"
-setReplaceMethod("maxsplit", signature(x = "IBRAPerformance", value = "numeric"),
+setReplaceMethod("maxsplit", signature(x = "IBRAPerformance",
+                                       value = "numeric"),
                  function(x, value) {
                    x@maxsplit <- value
                    if (validObject(x))
@@ -564,12 +686,9 @@ setReplaceMethod("maxsplit", signature(x = "IBRAPerformance", value = "numeric")
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = "fpr", thrs = c(0.05, 0.1))
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtprcurve")
 #' basemethods(ibraperf)
 setMethod("basemethods", "IBRAPerformance", function(x) {
   x1 <- unlist(lapply(slotNames(x), function(w) {
@@ -601,12 +720,10 @@ setMethod("basemethods", "IBRAPerformance", function(x) {
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100), row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)), row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = "fpr", thrs = c(0.05, 0.1))
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr", splv = "expr_cat",
+#'                                   maxsplit = 4)
 #' stratiflevels(ibraperf)
 setMethod("stratiflevels", "IBRAPerformance", function(x) {
   x1 <- unlist(lapply(slotNames(x), function(w) {
@@ -624,11 +741,18 @@ setMethod("stratiflevels", "IBRAPerformance", function(x) {
 #' @name Extract
 #' @rdname Extract
 #' @aliases [ [,IBRAPerformance-method \S4method{[}{IBRAPerformance,ANY,ANY}
+#' @return A subset of the original object, of the same class
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' ibraperf[, c("voom")]
 setMethod("[", "IBRAPerformance",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
-              stop("None of the provided method found in the object. No subsetting done.")
+              stop(paste0("None of the provided method found in the object. ",
+                          "No subsetting done."))
             if (length(x@tpr) != 0)
               x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
             if (length(x@fpr) != 0)

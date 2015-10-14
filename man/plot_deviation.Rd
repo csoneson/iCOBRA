@@ -38,16 +38,11 @@ Plot the deviations between observed scores and the continuous truth
 variable.
 }
 \examples{
-set.seed(123)
-score <- data.frame(m1 = runif(100), m2 = runif(100),
-                    row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)),
-                    row.names = paste0("G", 1:100))
-ibradata <- IBRAData(score = score, truth = truth)
-ibraperf <- calculate_performance(ibradata, cont_truth = "status",
-                                  aspects = "deviation", thrs = c(0.05, 0.1))
-ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = c("m1", "m2"),
-                                  colorscheme = "Dark2", facetted = FALSE)
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+                                  aspects = "deviation")
+ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+                                  incltruth = TRUE)
 plot_deviation(ibraplot)
 }
 \author{

@@ -30,11 +30,25 @@ vector with method names to retain.}
 
 \item{drop}{not used.}
 }
+\value{
+A subset of the original object, of the same class
+}
 \description{
 Functions to subset \code{IBRAData}, \code{IBRAPerformance} or
 \code{IBRAPlot} objects. \code{IBRAData} objects are subset by features
 (rows), while \code{IBRAPerformance} and \code{IBRAPlot} objects are subset
 by methods (columns). Numeric indices are not allowed, since not all slots
 may be arranged in the same order.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtpr")
+ibraperf[, c("voom")]
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtpr")
+ibraplot <- prepare_data_for_plot(ibraperf)
+ibraplot[, c("voom")]
 }
 

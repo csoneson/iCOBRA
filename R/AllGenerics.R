@@ -39,7 +39,8 @@ setGeneric("fdrtpr<-", function(x, ..., value) standardGeneric("fdrtpr<-"))
 setGeneric("fdrtprcurve", function(x, ...) standardGeneric("fdrtprcurve"))
 #' @rdname fdrtprcurve
 #' @export
-setGeneric("fdrtprcurve<-", function(x, ..., value) standardGeneric("fdrtprcurve<-"))
+setGeneric("fdrtprcurve<-", function(x, ..., value)
+  standardGeneric("fdrtprcurve<-"))
 
 #' @rdname fdrnbr
 #' @export
@@ -53,7 +54,8 @@ setGeneric("fdrnbr<-", function(x, ..., value) standardGeneric("fdrnbr<-"))
 setGeneric("fdrnbrcurve", function(x, ...) standardGeneric("fdrnbrcurve"))
 #' @rdname fdrnbrcurve
 #' @export
-setGeneric("fdrnbrcurve<-", function(x, ..., value) standardGeneric("fdrnbrcurve<-"))
+setGeneric("fdrnbrcurve<-", function(x, ..., value)
+  standardGeneric("fdrnbrcurve<-"))
 
 #' @rdname scatter
 #' @export
@@ -109,7 +111,8 @@ setGeneric("overlap<-", function(x, ..., value) standardGeneric("overlap<-"))
 setGeneric("deviation", function(x, ...) standardGeneric("deviation"))
 #' @rdname deviation
 #' @export
-setGeneric("deviation<-", function(x, ..., value) standardGeneric("deviation<-"))
+setGeneric("deviation<-", function(x, ..., value)
+  standardGeneric("deviation<-"))
 
 #' @rdname splv
 #' @export
@@ -140,7 +143,8 @@ setGeneric("plotcolors", function(x, ...) standardGeneric("plotcolors"))
 
 #' @rdname plotcolors
 #' @export
-setGeneric("plotcolors<-", function(x, ..., value) standardGeneric("plotcolors<-"))
+setGeneric("plotcolors<-", function(x, ..., value)
+  standardGeneric("plotcolors<-"))
 
 #' @rdname facetted
 #' @export

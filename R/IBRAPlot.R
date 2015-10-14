@@ -24,6 +24,7 @@
 #' @param object_to_extend An \code{IBRAPlot} object to extend with the provided
 #'   information.
 #'
+#' @return An \code{IBRAPlot} object.
 #' @inheritParams IBRAPerformance
 #' @include IBRAPerformance.R
 #'
@@ -34,13 +35,18 @@
 #' @export
 #' @rdname IBRAPlot
 #' @author Charlotte Soneson
+#' @examples
+#' ## Empty IBRAPlot object
+#' ibraplot <- IBRAPlot()
 IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      fdrnbr = data.frame(), corr = data.frame(),
                      fdrnbrcurve = data.frame(), tpr = data.frame(),
-                     fpr = data.frame(), roc = data.frame(), scatter = data.frame(),
+                     fpr = data.frame(), roc = data.frame(),
+                     scatter = data.frame(),
                      fpc = data.frame(), overlap = data.frame(),
                      plotcolors = "", splv = "", deviation = data.frame(),
-                     maxsplit = NA_integer_, facetted = TRUE, object_to_extend = NULL) {
+                     maxsplit = NA_integer_, facetted = TRUE,
+                     object_to_extend = NULL) {
 
   if (!(is.null(object_to_extend))) {
     if (!(class(object_to_extend) == "IBRAPlot")) {
@@ -108,6 +114,9 @@ setMethod("show", "IBRAPlot", function(object) {
 #' @rdname plotcolors
 #' @aliases plotcolors plotcolors,IBRAPlot-method
 #'   plotcolors<-,IBRAPlot,character-method
+#' @return The accessor function returns a character vector giving the colors
+#'   assigned to each of the methods (or method/stratification level
+#'   combinations) represented in the \code{IBRAPlot} object.
 #'
 #' @param x An \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -116,8 +125,13 @@ setMethod("show", "IBRAPlot", function(object) {
 #'   \code{IBRAPlot} object.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' ibraplot <- prepare_data_for_plot(ibraperf)
+#' plotcolors(ibraplot)
 setMethod("plotcolors", "IBRAPlot", function(x) x@plotcolors)
-
 #'@name plotcolors
 #'@rdname plotcolors
 #'@exportMethod "plotcolors<-"
@@ -137,6 +151,9 @@ setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
 #' @name facetted
 #' @rdname facetted
 #' @aliases facetted facetted,IBRAPlot-method facetted<-,IBRAPlot,logical-method
+#' @return The accessor function returns a logical value, indicating whether the
+#'   object is formatted for facetted plots (visualizing each stratification
+#'   level in a separate panel) or not.
 #'
 #' @param x An \code{IBRAPlot} object.
 #' @param ... Additional arguments.
@@ -145,8 +162,13 @@ setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
 #'   or not.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' ibraplot <- prepare_data_for_plot(ibraperf)
+#' facetted(ibraplot)
 setMethod("facetted", "IBRAPlot", function(x) x@facetted)
-
 #'@name facetted
 #'@rdname facetted
 #'@exportMethod "facetted<-"
@@ -162,12 +184,21 @@ setReplaceMethod("facetted", signature(x = "IBRAPlot", value = "logical"),
 #' @rdname Extract
 #' @aliases [ [,IBRAPlot-method \S4method{[}{IBRAPlot,ANY,ANY}
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' ibraplot <- prepare_data_for_plot(ibraperf)
+#' ibraplot[, c("voom")]
 setMethod("[", "IBRAPlot",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
-              stop("None of the provided method found in the object. No subsetting done.")
+              stop(paste0("None of the provided method found in the object. ",
+                          "No subsetting done."))
             if (length(x@plotcolors) != 0) {
-              combs <- expand.grid(c(j, "truth"), c("", paste0("_", stratiflevels(x))), c("", "yes", "no"))
+              combs <-
+                expand.grid(c(j, "truth"), c("", paste0("_", stratiflevels(x))),
+                            c("", "yes", "no"))
               keepcols <- paste0(combs[, 1], combs[, 2], combs[, 3])
               x@plotcolors <- x@plotcolors[names(x@plotcolors) %in% keepcols]
             }
@@ -231,27 +262,22 @@ setValidity("IBRAPlot",
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)),
-#'                     row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-#'                                   aspects = c("fdrtpr", "fdrtprcurve",
-#'                                               "tpr", "roc"),
-#'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' ibraplot <- prepare_data_for_plot(ibraperf)
 #'
 #' ## Coerce IBRAPerformance object into IBRAPlot object
-#' ibraplot <- as(ibraperf, "IBRAPlot")
+#' as(ibraperf, "IBRAPlot")
 #'
 #' ## Coerce IBRAPlot object into IBRAPerformance object
-#' ibraperf2 <- as(ibraplot, "IBRAPerformance")
+#' as(ibraplot, "IBRAPerformance")
 setAs("IBRAPerformance", "IBRAPlot",
       function(from) {
         .IBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                   fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
-                  tpr = from@tpr, fpr = from@fpr, roc = from@roc, fpc = from@fpc,
+                  tpr = from@tpr, fpr = from@fpr, roc = from@roc,
+                  fpc = from@fpc,
                   scatter = from@scatter, deviation = from@deviation,
                   overlap = from@overlap, plotcolors = "", corr = from@corr,
                   splv = from@splv, maxsplit = from@maxsplit, facetted = TRUE)

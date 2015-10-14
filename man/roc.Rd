@@ -26,9 +26,20 @@ roc(x, ...) <- value
 \item{value}{A data frame giving information necessary to generate ROC curves
 for each method and each stratification level.}
 }
+\value{
+The accessor function returns a data frame giving information
+  necessary to generate ROC curves for each method and each stratification
+  level.
+}
 \description{
 Accessor and replacement functions for the \code{roc} slot in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "roc")
+head(roc(ibraperf))
 }
 \author{
 Charlotte Soneson

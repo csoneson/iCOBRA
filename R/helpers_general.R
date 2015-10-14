@@ -1,4 +1,5 @@
-## Function to perform some checks on the input (result) files. Return TRUE if everything seems ok,
+## Function to perform some checks on the input (result) files.
+## Return TRUE if everything seems ok,
 ## otherwise print a message and return FALSE.
 res_check <- function(dfr) {
   if (ncol(dfr) == 1) {
@@ -23,10 +24,11 @@ is_plottable <- function(obj) {
 get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
   if (splv != "none") {
     if (!is.null(binary_truth)) {
-      nbrtrulydiff <- as.data.frame(truth %>% group_by_(splv) %>%
-                                      summarise_(nbrdiff = paste0("length(which(",
-                                                                  binary_truth, "== 1))")),
-                                    stringsAsFactors = FALSE)
+      nbrtrulydiff <-
+        as.data.frame(truth %>% group_by_(splv) %>%
+                        summarise_(nbrdiff = paste0("length(which(",
+                                                    binary_truth, "== 1))")),
+                      stringsAsFactors = FALSE)
       tokeep <- nbrtrulydiff[nbrtrulydiff$nbrdiff > 0, splv]
       tbl <- table(truth[[splv]])
       tbl <- tbl[as.character(tokeep)]
@@ -60,9 +62,11 @@ plot_theme <- function(stripsize, titlecol) {
 get_coltype <- function(col_name) {
   if (substr(col_name, nchar(col_name) - 1, nchar(col_name)) == ":P") {
     coltype <- "pval"
-  } else if (substr(col_name, nchar(col_name) - 4, nchar(col_name)) == ":adjP") {
+  } else if (substr(col_name, nchar(col_name) - 4,
+                    nchar(col_name)) == ":adjP") {
     coltype <- "padj"
-  } else if (substr(col_name, nchar(col_name) - 5, nchar(col_name)) == ":score") {
+  } else if (substr(col_name, nchar(col_name) - 5,
+                    nchar(col_name)) == ":score") {
     coltype <- "score"
   } else {
     coltype <- NULL
@@ -116,10 +120,11 @@ calculate_adjp <- function(ibradata, method = "BH") {
                                 method = method))
       missing_genes <- setdiff(rownames(pa), rownames(padj(ibradata)))
       if (length(padj(ibradata)) != 0) {
-        tmpadd <- as.data.frame(matrix(NA, length(missing_genes),
-                                       ncol(padj(ibradata)),
-                                       dimnames = list(missing_genes,
-                                                       colnames(padj(ibradata)))))
+        tmpadd <-
+          as.data.frame(matrix(NA, length(missing_genes),
+                               ncol(padj(ibradata)),
+                               dimnames = list(missing_genes,
+                                               colnames(padj(ibradata)))))
         padj(ibradata) <- rbind(padj(ibradata), tmpadd)
         padj(ibradata) <- cbind(padj(ibradata),
                                 pa[match(rownames(padj(ibradata)),
@@ -215,7 +220,8 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
   } else {
     inp_methods$color <- use_colors1[match(inp_methods$fullmethod,
                                            names(use_colors1))]
-    inp_methods$color[inp_methods$basemethod == "truth"] <- use_colors1["truth"]
+    inp_methods$color[inp_methods$basemethod == "truth"] <-
+      use_colors1["truth"]
     if ("_overall" %in% inp_methods$levs) {
       for (m in unique(inp_methods$basemethod)) {
         inp_methods$color[inp_methods$fullmethod == m] <-

@@ -42,8 +42,8 @@ If the number of allowed methods is exceeded, the colorscheme defaults to
 \code{hue_pal}.}
 
 \item{facetted}{A logical indicating whether the results should be split into
-subpanels when stratified by an annotation (\code{TRUE}), or kept in the same
-panel but shown with different colors (\code{FALSE}).}
+subpanels when stratified by an annotation (\code{TRUE}), or kept in the
+same panel but shown with different colors (\code{FALSE}).}
 
 \item{incltruth}{A logical indicating whether the truth should be included in
   Venn diagrams.}

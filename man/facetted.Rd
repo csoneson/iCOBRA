@@ -25,9 +25,21 @@ facetted(x, ...) <- value
 facetted plots (visualizing each stratification level in a separate panel)
 or not.}
 }
+\value{
+The accessor function returns a logical value, indicating whether the
+  object is formatted for facetted plots (visualizing each stratification
+  level in a separate panel) or not.
+}
 \description{
 Accessor and replacement functions for the \code{facetted} slot in an
 \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtpr")
+ibraplot <- prepare_data_for_plot(ibraperf)
+facetted(ibraplot)
 }
 \author{
 Charlotte Soneson

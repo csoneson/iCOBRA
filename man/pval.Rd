@@ -24,9 +24,17 @@ pval(x, ...) <- value
 \item{value}{A data frame containing p-values for each feature and each
 method.}
 }
+\value{
+The accessor function returns a data frame containing p-values for
+  each feature and each method.
+}
 \description{
 Accessor and replacement functions for the \code{pval} slot in an
 \code{IBRAData} object.
+}
+\examples{
+data(ibradata_example)
+head(pval(ibradata_example))
 }
 \author{
 Charlotte Soneson

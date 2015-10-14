@@ -39,12 +39,25 @@
 #'   information.
 #'
 #' @aliases IBRAData IBRAData-class
+#' @return \code{IBRAData}, \code{IBRAData_from_text} and
+#'   \code{IBRAData_from_simres} return an \code{IBRAData} object.
 #'
 #' @docType class
 #'
 #' @export
 #' @rdname IBRAData
 #' @author Charlotte Soneson
+#' @examples
+#' ## Empty IBRAData object:
+#' IBRAData()
+#'
+#' ## IBRAData object from individual data frames
+#' set.seed(123)
+#' pval <- data.frame(m1 = runif(100), m2 = runif(100),
+#'                    row.names = paste0("F", 1:100))
+#' truth <- data.frame(status = round(runif(100)),
+#'                     row.names = paste0("F", 1:100))
+#' ibradata <- IBRAData(pval = pval, truth = truth)
 IBRAData <- function(pval = data.frame(), padj = data.frame(),
                      score = data.frame(), truth = data.frame(),
                      object_to_extend = NULL) {
@@ -54,8 +67,11 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
       stop("object_to_extend must be a IBRAData object")
     } else {
       if (length(object_to_extend@pval) != 0) {
-        if (length(pval) != 0 && length(setdiff(colnames(pval), colnames(object_to_extend@pval))) > 0) {
-          pval <- pval[, setdiff(colnames(pval), colnames(object_to_extend@pval)), drop = FALSE]
+        if (length(pval) != 0 &&
+            length(setdiff(colnames(pval),
+                           colnames(object_to_extend@pval))) > 0) {
+          pval <- pval[, setdiff(colnames(pval),
+                                 colnames(object_to_extend@pval)), drop = FALSE]
           pval <- merge(object_to_extend@pval, pval, by = 0, all = TRUE)
           rownames(pval) <- pval$Row.names
           pval$Row.names <- NULL
@@ -65,8 +81,11 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
       }
 
       if (length(object_to_extend@padj) != 0) {
-        if (length(padj) != 0 && length(setdiff(colnames(padj), colnames(object_to_extend@padj))) > 0) {
-          padj <- padj[, setdiff(colnames(padj), colnames(object_to_extend@padj)), drop = FALSE]
+        if (length(padj) != 0 &&
+            length(setdiff(colnames(padj),
+                           colnames(object_to_extend@padj))) > 0) {
+          padj <- padj[, setdiff(colnames(padj),
+                                 colnames(object_to_extend@padj)), drop = FALSE]
           padj <- merge(object_to_extend@padj, padj, by = 0, all = TRUE)
           rownames(padj) <- padj$Row.names
           padj$Row.names <- NULL
@@ -76,8 +95,12 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
       }
 
       if (length(object_to_extend@score) != 0) {
-        if (length(score) != 0 && length(setdiff(colnames(score), colnames(object_to_extend@score))) > 0) {
-          score <- score[, setdiff(colnames(score), colnames(object_to_extend@score)), drop = FALSE]
+        if (length(score) != 0 &&
+            length(setdiff(colnames(score),
+                           colnames(object_to_extend@score))) > 0) {
+          score <- score[, setdiff(colnames(score),
+                                   colnames(object_to_extend@score)),
+                         drop = FALSE]
           score <- merge(object_to_extend@score, score, by = 0, all = TRUE)
           rownames(score) <- score$Row.names
           score$Row.names <- NULL
@@ -110,9 +133,12 @@ IBRAData_from_text <- function(truth_file, result_files, feature_id) {
     f <- read.delim(f, header = TRUE, as.is = TRUE, check.names = FALSE)
   })
   RF <- Reduce(function(...) merge(..., by = feature_id, all = TRUE), RF)
-  pval <- RF[, c(feature_id, grep(":P$", colnames(RF), value = TRUE)), drop = FALSE]
-  padj <- RF[, c(feature_id, grep(":adjP$", colnames(RF), value = TRUE)), drop = FALSE]
-  score <- RF[, c(feature_id, grep(":score$", colnames(RF), value = TRUE)), drop = FALSE]
+  pval <- RF[, c(feature_id,
+                 grep(":P$", colnames(RF), value = TRUE)), drop = FALSE]
+  padj <- RF[, c(feature_id,
+                 grep(":adjP$", colnames(RF), value = TRUE)), drop = FALSE]
+  score <- RF[, c(feature_id,
+                  grep(":score$", colnames(RF), value = TRUE)), drop = FALSE]
 
   if (nrow(pval) == 1) {
     pval <- data.frame()
@@ -134,7 +160,8 @@ IBRAData_from_text <- function(truth_file, result_files, feature_id) {
     score <- data.frame()
   } else {
     rownames(score) <- score[, feature_id]
-    score <- score[, grep(":score$", colnames(score), value = TRUE), drop = FALSE]
+    score <- score[, grep(":score$", colnames(score), value = TRUE),
+                   drop = FALSE]
     colnames(score) <- gsub(":score$", "", colnames(score))
   }
 
@@ -148,7 +175,8 @@ IBRAData_to_text <- function(ibradata, truth_file, result_files, feature_id) {
   ## Write truth to file
   truth <- truth(ibradata)
   truth[, feature_id] <- rownames(truth)
-  truth <- truth[, c(feature_id, setdiff(colnames(truth), feature_id)), drop = FALSE]
+  truth <- truth[, c(feature_id,
+                     setdiff(colnames(truth), feature_id)), drop = FALSE]
   write.table(truth, file = truth_file, quote = FALSE,
               sep = "\t", row.names = FALSE, col.names = TRUE)
 
@@ -193,12 +221,17 @@ setMethod("show", "IBRAData",
 #' @name pval
 #' @rdname pval
 #' @aliases pval pval,IBRAData-method pval<-,IBRAData,data.frame-method
+#' @return The accessor function returns a data frame containing p-values for
+#'   each feature and each method.
 #' @param x An \code{IBRAData} object.
 #' @param ... Additional arguments.
 #' @param value A data frame containing p-values for each feature and each
 #'   method.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' head(pval(ibradata_example))
 setMethod("pval", "IBRAData", function(x) x@pval)
 #' @name pval
 #' @rdname pval
@@ -219,12 +252,17 @@ setReplaceMethod("pval", signature(x = "IBRAData", value = "data.frame"),
 #' @name padj
 #' @rdname padj
 #' @aliases padj padj,IBRAData-method padj<-,IBRAData,data.frame-method
+#' @return The accessor function returns a data frame containing adjusted
+#'   p-values for each feature and each method.
 #' @param x An \code{IBRAData} object.
 #' @param ... Additional arguments.
 #' @param value A data frame containing adjusted p-values for each feature and
 #'   each method.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' head(padj(ibradata_example))
 setMethod("padj", "IBRAData", function(x) x@padj)
 #' @name padj
 #' @rdname padj
@@ -245,11 +283,16 @@ setReplaceMethod("padj", signature(x = "IBRAData", value = "data.frame"),
 #' @name score
 #' @rdname score
 #' @aliases score score,IBRAData-method score<-,IBRAData,data.frame-method
+#' @return The accessor function regurns a data frame containing scores for each
+#'   feature and each method.
 #' @param x An \code{IBRAData} object.
 #' @param ... Additional arguments.
 #' @param value A data frame containing scores for each feature and each method.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' head(score(ibradata_example))
 setMethod("score", "IBRAData", function(x) x@score)
 #' @name score
 #' @rdname score
@@ -270,6 +313,9 @@ setReplaceMethod("score", signature(x = "IBRAData", value = "data.frame"),
 #' @name truth
 #' @rdname truth
 #' @aliases truth truth,IBRAData-method truth<-,IBRAData,data.frame-method
+#' @return The accessor function returns a data frame containing true
+#'   assignments and/or scores for features, together with other feature
+#'   annotations to use for stratification of performance calculations.
 #' @param x An \code{IBRAData} object.
 #' @param ... Additional arguments.
 #' @param value A data frame containing true assignments and/or scores for
@@ -277,6 +323,9 @@ setReplaceMethod("score", signature(x = "IBRAData", value = "data.frame"),
 #'   of performance calculations.
 #' @author Charlotte Soneson
 #' @export
+#' @examples
+#' data(ibradata_example)
+#' head(truth(ibradata_example))
 setMethod("truth", "IBRAData", function(x) x@truth)
 #' @name truth
 #' @rdname truth
@@ -310,13 +359,17 @@ setReplaceMethod("truth", signature(x = "IBRAData", value = "data.frame"),
 #' @export
 setMethod("[", "IBRAData",
           function(x, i, j = "missing", drop = "missing") {
-            if (length(x@pval) != 0 & length(intersect(rownames(x@pval), i)) == 0)
+            if (length(x@pval) != 0 &
+                length(intersect(rownames(x@pval), i)) == 0)
               stop("None of the provided features found in the pval slot.")
-            if (length(x@padj) != 0 & length(intersect(rownames(x@padj), i)) == 0)
+            if (length(x@padj) != 0 &
+                length(intersect(rownames(x@padj), i)) == 0)
               stop("None of the provided features found in the padj slot.")
-            if (length(x@score) != 0 & length(intersect(rownames(x@score), i)) == 0)
+            if (length(x@score) != 0 &
+                length(intersect(rownames(x@score), i)) == 0)
               stop("None of the provided features found in the score slot.")
-            if (length(x@truth) != 0 & length(intersect(rownames(x@truth), i)) == 0)
+            if (length(x@truth) != 0 &
+                length(intersect(rownames(x@truth), i)) == 0)
               stop("None of the provided features found in the truth slot.")
             .pval <- x@pval[match(i, rownames(x@pval)), , drop = FALSE]
             .padj <- x@padj[match(i, rownames(x@padj)), , drop = FALSE]
@@ -335,19 +388,22 @@ setValidity("IBRAData",
                   length(intersect(rownames(object@pval),
                                    rownames(object@truth))) == 0) {
                 valid <- FALSE
-                msg <- c(msg, "pval slot does not share any features with truth slot")
+                msg <- c(msg, paste0("pval slot does not share any features",
+                                     " with truth slot"))
               }
               if (length(object@padj) != 0 & length(object@truth) != 0 &
                   length(intersect(rownames(object@padj),
                                    rownames(object@truth))) == 0) {
                 valid <- FALSE
-                msg <- c(msg, "padj slot does not share any features with truth slot")
+                msg <- c(msg, paste0("padj slot does not share any features",
+                                     " with truth slot"))
               }
               if (length(object@score) != 0 & length(object@truth) != 0 &
                   length(intersect(rownames(object@score),
                                    rownames(object@truth))) == 0) {
                 valid <- FALSE
-                msg <- c(msg, "score slot does not share any features with truth slot")
+                msg <- c(msg, paste0("score slot does not share any features",
+                                     " with truth slot"))
               }
               if (valid) TRUE else msg
             })
@@ -386,7 +442,8 @@ IBRAData_from_simresults <- function(simres) {
 #' @rdname IBRAData
 #' @export
 IBRAData_to_simresults <- function(ibradata, binary_truth, strat = NULL) {
-  if (length(pval(ibradata)) == 0) stop("ibradata must have non-empty slot pval")
+  if (length(pval(ibradata)) == 0)
+    stop("ibradata must have non-empty slot pval")
   if (all(colnames(pval(ibradata)) != colnames(padj(ibradata)))) {
     padj <- NULL
     pval <- pval(ibradata)

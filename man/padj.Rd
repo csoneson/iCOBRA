@@ -24,9 +24,17 @@ padj(x, ...) <- value
 \item{value}{A data frame containing adjusted p-values for each feature and
 each method.}
 }
+\value{
+The accessor function returns a data frame containing adjusted
+  p-values for each feature and each method.
+}
 \description{
 Accessor and replacement functions for the \code{padj} slot in an
 \code{IBRAData} object.
+}
+\examples{
+data(ibradata_example)
+head(padj(ibradata_example))
 }
 \author{
 Charlotte Soneson

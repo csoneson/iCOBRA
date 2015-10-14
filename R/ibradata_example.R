@@ -22,4 +22,5 @@
 #'   log fold change (logFC and logFC_cat columns) and average expression level
 #'   (expr and expr_cat columns) for 3,858 genes.}
 #'   }
+#' @return An \code{IBRAData} object.
 "ibradata_example"

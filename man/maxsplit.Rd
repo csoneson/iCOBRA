@@ -25,9 +25,20 @@ maxsplit(x, ...) <- value
 
 \item{value}{A numeric value giving the maximal number of strata to retain.}
 }
+\value{
+The accessor function returns a numeric value giving the maximal
+  number of strata to retain.
+}
 \description{
 Accessor and replacement functions for the \code{maxsplit} slot in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtpr", splv = "expr_cat",
+                                  maxsplit = 3)
+maxsplit(ibraperf)
 }
 \author{
 Charlotte Soneson

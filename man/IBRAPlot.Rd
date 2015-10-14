@@ -78,6 +78,9 @@ panels) or for displaying all values in one plot panel.}
 \item{object_to_extend}{An \code{IBRAPlot} object to extend with the provided
   information.}
 }
+\value{
+An \code{IBRAPlot} object.
+}
 \description{
 The \code{IBRAPlot} class is similar to the \code{IBRAPerformance} class in
 that it holds various types of calculated performance measures. However, it
@@ -87,6 +90,10 @@ assignments. Several \code{IBRAPlot} objects can be generated from the same
 time consuming task of recalculating all performance measures. Objects from
 this class are typically generated from an \code{IBRAPerformance} object by
 means of the function \code{\link{prepare_data_for_plot}}.
+}
+\examples{
+## Empty IBRAPlot object
+ibraplot <- IBRAPlot()
 }
 \author{
 Charlotte Soneson

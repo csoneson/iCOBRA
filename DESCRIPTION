@@ -3,7 +3,8 @@ Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
 Version: 0.3.1
 Date: 2015-10-10
-Authors@R: c(person(given = "Charlotte", family = "Soneson", role = c("aut", "cre"),
+Authors@R: c(person(given = "Charlotte", family = "Soneson", 
+    role = c("aut", "cre"),
     email = "charlottesoneson@gmail.com"))
 Description: This package provides functions for calculation and visualization
     of performance metrics for evaluation of ranking and binary classification
@@ -23,7 +24,7 @@ Collate:
     'printHead.R'
     'shiny.R'
 Depends:
-    R (>= 2.10)
+    R (>= 3.2)
 Imports:
     shiny,
     shinydashboard,
@@ -40,3 +41,4 @@ Suggests:
     knitr,
     benchmarkR
 VignetteBuilder: knitr
+biocViews: Classification

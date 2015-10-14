@@ -27,9 +27,20 @@ overlap(x, ...) <- value
 that are classified as 'positive' by each method and for each
 stratification level.}
 }
+\value{
+The accessor function returns a data frame or a list, giving
+  information about which feature that are classified as 'positive' by each
+  method and for each stratification level.
+}
 \description{
 Accessor and replacement functions for the \code{overlap} slot in an
 \code{IBRAPerformance} or \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "overlap")
+head(overlap(ibraperf))
 }
 \author{
 Charlotte Soneson

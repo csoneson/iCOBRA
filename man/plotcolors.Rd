@@ -25,9 +25,21 @@ plotcolors(x, ...) <- value
 methods (or method/stratification level combinations) represented in the
 \code{IBRAPlot} object.}
 }
+\value{
+The accessor function returns a character vector giving the colors
+  assigned to each of the methods (or method/stratification level
+  combinations) represented in the \code{IBRAPlot} object.
+}
 \description{
 Accessor and replacement functions for the \code{plotcolors} slot in an
 \code{IBRAPlot} object.
+}
+\examples{
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+                                  aspects = "fdrtpr")
+ibraplot <- prepare_data_for_plot(ibraperf)
+plotcolors(ibraplot)
 }
 \author{
 Charlotte Soneson
