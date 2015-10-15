@@ -162,18 +162,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-# #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-# #          allg <- intersect(rownames(truth(ibradata)),
-# #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -341,18 +329,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "corr")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, cont_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, cont_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -426,18 +402,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "tpr")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -502,18 +466,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "fdr")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -591,18 +543,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -669,18 +609,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "fdrtpr")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -762,17 +690,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "roc")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -839,17 +756,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "scatter")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, cont_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, cont_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -907,17 +813,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "deviation")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, cont_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, cont_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
@@ -974,17 +869,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       inpcol <- select_measure(ibradata, i, asp = "fpc")
       if (!is.null(inpcol)) {
         tmp <- slot(ibradata, inpcol)[i]
-#         if (onlyshared == FALSE) {
-#           tb <- truth(ibradata)
-#           allg <- rownames(tb[which(!is.na(tb[, binary_truth])), ])
-#           #          allg <- rownames(truth(ibradata))
-#         } else {
-#           tb <- truth(ibradata)
-#           allg <- intersect(rownames(tb[which(!is.na(tb[, binary_truth])), ]),
-#                             rownames(tmp)[which(!is.na(tmp[i]))])
-#           #          allg <- intersect(rownames(truth(ibradata)),
-#           #                            rownames(tmp)[which(!is.na(tmp[i]))])
-#         }
         allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
