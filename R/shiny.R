@@ -8,6 +8,8 @@
 #'
 #' @param ibradata An (optional) \code{IBRAData} object. If not given, the user
 #'   can load results from text files.
+#' @param autorun A logical indicating whether the app calculations should start
+#'   automatically or wait for the user to press the launch button.
 #' @author Charlotte Soneson
 #' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny
@@ -23,7 +25,7 @@
 #' \dontrun{
 #' IBRAapp(ibradata)
 #' }
-IBRAapp <- function(ibradata = NULL) {
+IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
   ## ------------------------------------------------------------------ ##
   ##                          Define UI                                 ##
   ## ------------------------------------------------------------------ ##
@@ -33,7 +35,7 @@ IBRAapp <- function(ibradata = NULL) {
       skin = "blue",
       shinydashboard::dashboardHeader(
         title = paste0("IBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.1)"),
+                       "of methods for ranking and binary assignment (v0.3.2)"),
         titleWidth = 800),
       shinydashboard::dashboardSidebar(
         width = 350,
@@ -422,8 +424,9 @@ IBRAapp <- function(ibradata = NULL) {
     truthFile <- reactive({
       if (is.null(input$truth))
         return(NULL)
-      trf <- read.delim(input$truth$datapath, header = TRUE, as.is = TRUE,
-                        sep = "\t", quote = "", check.names = FALSE)
+      trf <- utils::read.delim(input$truth$datapath, header = TRUE,
+                               as.is = TRUE, sep = "\t", quote = "",
+                               check.names = FALSE)
       isolate(values$my_ibradata <-
                 IBRAData(truth = trf,
                          object_to_extend = values$my_ibradata))
@@ -569,8 +572,8 @@ IBRAapp <- function(ibradata = NULL) {
         inFile <- input$file1
         if (is.null(inFile))
           return(NULL)
-        v <- read.delim(inFile$datapath, header = TRUE, as.is = TRUE,
-                        sep = "\t", quote = "", check.names = FALSE)
+        v <- utils::read.delim(inFile$datapath, header = TRUE, as.is = TRUE,
+                               sep = "\t", quote = "", check.names = FALSE)
 
         ## Perform some checks on the file, if ok then continue
         if (res_check(v)) {
@@ -620,7 +623,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_TPR <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
@@ -638,7 +641,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_FDR <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
@@ -656,7 +659,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_FPR <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
@@ -674,7 +677,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_ROC <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -689,7 +692,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_FPC <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -704,7 +707,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_FDRTPR <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -719,7 +722,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_overlap <- reactive({
-      if (input$goButton > 0 & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -734,7 +737,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_corr <- reactive({
-      if (input$goButton > 0 & input$cont_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -749,7 +752,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_scatter <- reactive({
-      if (input$goButton > 0 & input$cont_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -764,7 +767,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues_deviation <- reactive({
-      if (input$goButton > 0 & input$cont_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) & input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -779,7 +782,7 @@ IBRAapp <- function(ibradata = NULL) {
     })
 
     plotvalues <- reactive({
-      if (input$goButton > 0) {
+      if ((input$goButton > 0 | isTRUE(autorun))) {
         ## Put together results for current methods
         if (length(input$cols) != 0) {
           withProgress(message = "Calculating...", value = 0, {
@@ -834,11 +837,11 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.overlap <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, height = 12, width = 12)
+        grDevices::pdf(file, height = 12, width = 12)
         if (length(values$all_methods) == 0 | length(input$cols) == 0)
           return(NULL)
         plot_overlap(plotvalues()$all_vals)
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -864,14 +867,14 @@ IBRAapp <- function(ibradata = NULL) {
         else {
           overlap_df <- cbind(feature = rownames(overlap_df), overlap_df)
         }
-        write.table(overlap_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(overlap_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$overlap <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_overlap")
           shinyBS::createAlert(
             session, anchorId = "overlap_message",
@@ -903,7 +906,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           return(NULL)
         }
 
@@ -921,16 +924,16 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.tpr <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(tpr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(tpr(plotvalues()$all_vals)))
           return(NULL)
         print(plot_tpr(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        pointsize = input$pointsize,
                        xaxisrange = input$xrange_tpr))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -945,14 +948,15 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "tpr-data.tsv",
       content = function(file) {
         tpr_df <- isolate(tpr(plotvalues()$all_vals))
-        write.table(tpr_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(tpr_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$tpr <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
+          print("aaaaaaaaaaaarggh")
           shinyBS::closeAlert(session, alertId = "message_tpr")
           shinyBS::createAlert(
             session, anchorId = "tpr_message",
@@ -972,7 +976,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(tpr(plotvalues()$all_vals))) {
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(tpr(plotvalues()$all_vals))) {
           return(NULL)
         }
 
@@ -984,7 +988,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$tpr_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(tpr(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(tpr(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(tpr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1012,9 +1016,9 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.corr <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(corr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
         print(plot_corr(ibraplot = plotvalues()$all_vals,
                         title = plotvalues()$title,
@@ -1022,7 +1026,7 @@ IBRAapp <- function(ibradata = NULL) {
                        pointsize = input$pointsize,
                        xaxisrange = input$xrange_corr,
                        corrtype = input$corrtype))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1037,14 +1041,14 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "corr-data.tsv",
       content = function(file) {
         tpr_df <- isolate(corr(plotvalues()$all_vals))
-        write.table(tpr_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(tpr_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$corr <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_corr")
           shinyBS::createAlert(
             session, anchorId = "corr_message",
@@ -1064,7 +1068,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(corr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
 
         plot_corr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
@@ -1076,7 +1080,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$corr_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(corr(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(corr(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(corr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1097,7 +1101,7 @@ IBRAapp <- function(ibradata = NULL) {
     ## -------------------------- DEVIATION ---------------------------- ##
     output$axislimitsdeviation <- renderUI({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 ||
+          (input$goButton == 0 & !isTRUE(autorun)) ||
           !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       else {
@@ -1122,9 +1126,9 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.deviation <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 ||
+            (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
         print(plot_deviation(ibraplot = plotvalues()$all_vals,
@@ -1134,7 +1138,7 @@ IBRAapp <- function(ibradata = NULL) {
                              plottype = input$devtype,
                              dojitter = input$dojitter,
                              squaredevs = input$dosquare))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1149,14 +1153,14 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "deviation-data.tsv",
       content = function(file) {
         deviation_df <- isolate(deviation(plotvalues()$all_vals))
-        write.table(deviation_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(deviation_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$deviation <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_deviation")
           shinyBS::createAlert(
             session, anchorId = "deviation_message",
@@ -1177,7 +1181,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 ||
+            (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
         plot_deviation(ibraplot = plotvalues()$all_vals,
@@ -1191,7 +1195,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$deviation_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 ||
+          (input$goButton == 0 & !isTRUE(autorun)) ||
           !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(deviation(plotvalues()$all_vals))
@@ -1229,16 +1233,16 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.fpr <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fpr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
         print(plot_fpr(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        pointsize = input$pointsize,
                        xaxisrange = input$xrange_fpr))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1253,14 +1257,14 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "fpr-data.tsv",
       content = function(file) {
         fpr_df <- isolate(fpr(plotvalues()$all_vals))
-        write.table(fpr_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(fpr_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$fpr <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_fpr")
           shinyBS::createAlert(
             session, anchorId = "fpr_message",
@@ -1280,7 +1284,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fpr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
         plot_fpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
@@ -1290,7 +1294,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fpr_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(fpr(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpr(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(fpr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1317,16 +1321,16 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.roc <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(roc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
         print(plot_roc(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        xaxisrange = input$xrange_roc,
                        yaxisrange = input$yrange_roc))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1341,14 +1345,14 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "roc-data.tsv",
       content = function(file) {
         roc_df <- isolate(roc(plotvalues()$all_vals))
-        write.table(roc_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(roc_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$roc <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_roc")
           shinyBS::createAlert(
             session, anchorId = "roc_message",
@@ -1367,7 +1371,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(roc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
         plot_roc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
@@ -1377,7 +1381,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$roc_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(roc(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(roc(plotvalues()$all_vals)))
         return(NULL)
 
       all_data <- isolate(roc(plotvalues()$all_vals))
@@ -1406,9 +1410,9 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.scatter <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 ||
+            (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
         print(plot_scatter(ibraplot = plotvalues()$all_vals,
@@ -1416,7 +1420,7 @@ IBRAapp <- function(ibradata = NULL) {
                            stripsize = input$stripsize, titlecol = "white",
                            pointsize = input$pointsize, doflip = input$doflip,
                            dolog = input$dolog))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1431,14 +1435,14 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "scatter-data.tsv",
       content = function(file) {
         scatter_df <- isolate(scatter(plotvalues()$all_vals))
-        write.table(scatter_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(scatter_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$scatter <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_scatter")
           shinyBS::createAlert(
             session, anchorId = "scatter_message",
@@ -1458,7 +1462,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 ||
+            (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
         plot_scatter(ibraplot = plotvalues()$all_vals,
@@ -1471,7 +1475,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$scatter_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(scatter(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(scatter(plotvalues()$all_vals)))
         return(NULL)
 
       all_data <- isolate(scatter(plotvalues()$all_vals))
@@ -1499,15 +1503,15 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.fpc <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fpc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
         print(plot_fpc(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        maxnfdc = input$maxnfdc))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1522,14 +1526,14 @@ IBRAapp <- function(ibradata = NULL) {
       filename = "fpc-data.tsv",
       content = function(file) {
         fpc_df <- isolate(fpc(plotvalues()$all_vals))
-        write.table(fpc_df, file = file, quote = FALSE, row.names = FALSE,
-                    col.names = TRUE, sep = "\t")
+        utils::write.table(fpc_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$fpc <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_fpc")
           shinyBS::createAlert(
             session, anchorId = "fpc_message",
@@ -1548,7 +1552,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 || !is_plottable(fpc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
 
         plot_fpc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
@@ -1559,7 +1563,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fpc_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0 || !is_plottable(fpc(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpc(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(fpc(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1587,9 +1591,9 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.fdrtprcurve <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 ||
+            (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
           return(NULL)
         print(plot_fdrtprcurve(ibraplot = plotvalues()$all_vals,
@@ -1599,7 +1603,7 @@ IBRAapp <- function(ibradata = NULL) {
                                xaxisrange = input$xrange_fdrtpr,
                                yaxisrange = input$yrange_fdrtpr,
                                plottype = input$plottype))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1623,17 +1627,17 @@ IBRAapp <- function(ibradata = NULL) {
         fdrtpr_curve_df <- isolate(fdrtprcurve(plotvalues()$all_vals))
         fdrtpr_point_df <- isolate(fdrtpr(plotvalues()$all_vals))
         if ("curve" %in% input$plottype)
-          write.table(fdrtpr_curve_df, file = file, quote = FALSE,
-                      row.names = FALSE, col.names = TRUE, sep = "\t")
+          utils::write.table(fdrtpr_curve_df, file = file, quote = FALSE,
+                             row.names = FALSE, col.names = TRUE, sep = "\t")
         else if ("points" %in% input$plottype)
-          write.table(fdrtpr_point_df, file = file, quote = FALSE,
-                      row.names = FALSE, col.names = TRUE, sep = "\t")
+          utils::write.table(fdrtpr_point_df, file = file, quote = FALSE,
+                             row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
     output$fdrtprcurve <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_fdrtpr")
           shinyBS::createAlert(
             session, anchorId = "fdrtpr_message",
@@ -1671,7 +1675,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0)
+            (input$goButton == 0 & !isTRUE(autorun)))
           return(NULL)
         if ("curve" %in% input$plottype &
             !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
@@ -1693,7 +1697,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fdrtprcurve_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0)
+          (input$goButton == 0 & !isTRUE(autorun)))
         return(NULL)
       if ("curve" %in% input$plottype &
           !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
@@ -1729,9 +1733,9 @@ IBRAapp <- function(ibradata = NULL) {
     output$export.fdrnbrcurve <- downloadHandler(
       filename = "shiny-plot.pdf",
       content = function(file) {
-        pdf(file, width = 12, height = input$plotheight/67)
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0 ||
+            (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
           return(NULL)
         print(plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals,
@@ -1740,7 +1744,7 @@ IBRAapp <- function(ibradata = NULL) {
                                pointsize = input$pointsize,
                                xaxisrange = input$xrange_fdrnbr,
                                plottype = input$plottype))
-        dev.off()
+        grDevices::dev.off()
       })
 
     ## Data for exporting
@@ -1764,18 +1768,18 @@ IBRAapp <- function(ibradata = NULL) {
         fdrnbr_curve_df <- isolate(fdrnbrcurve(plotvalues()$all_vals))
         fdrnbr_point_df <- isolate(fdrnbr(plotvalues()$all_vals))
         if ("curve" %in% input$plottype)
-          write.table(fdrnbr_curve_df, file = file, quote = FALSE,
-                      row.names = FALSE, col.names = TRUE, sep = "\t")
+          utils::write.table(fdrnbr_curve_df, file = file, quote = FALSE,
+                             row.names = FALSE, col.names = TRUE, sep = "\t")
         else if ("points" %in% input$plottype)
-          write.table(fdrnbr_point_df, file = file, quote = FALSE,
-                      row.names = FALSE, col.names = TRUE, sep = "\t")
+          utils::write.table(fdrnbr_point_df, file = file, quote = FALSE,
+                             row.names = FALSE, col.names = TRUE, sep = "\t")
       })
 
 
     output$fdrnbrcurve <- renderPlot({
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0) {
+            (input$goButton == 0 & !isTRUE(autorun))) {
           shinyBS::closeAlert(session, alertId = "message_fdrnbr")
           shinyBS::createAlert(
             session, anchorId = "fdrnbr_message",
@@ -1813,7 +1817,7 @@ IBRAapp <- function(ibradata = NULL) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            input$goButton == 0)
+            (input$goButton == 0 & !isTRUE(autorun)))
           return(NULL)
         if ("curve" %in% input$plottype &
             !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
@@ -1834,7 +1838,7 @@ IBRAapp <- function(ibradata = NULL) {
 
     output$fdrnbrcurve_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          input$goButton == 0)
+          (input$goButton == 0 & !isTRUE(autorun)))
         return(NULL)
       if ("curve" %in% input$plottype &
           !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))

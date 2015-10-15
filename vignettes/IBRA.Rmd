@@ -34,7 +34,6 @@ IBRAData object provided with the package.
 ```{r}
 library(IBRA)
 data(ibradata_example)
-#load(system.file("extdata", "IBRAData_ex1.Rdata", package = "IBRA"))
 class(ibradata_example)
 ibradata_example
 ```

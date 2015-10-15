@@ -23,16 +23,7 @@ The truth file is a tab-delimited text file (with a header line), listing all th
 
 The table below shows the first lines of an example truth file. Here, we have the columns **feature** (indicating the feature identifier), **status** (the binary true assignment), **logFC** (the true continuous variable corresponding to the scores calculated by the evaluated methods), as well as additional columns representing stratification annotations. 
 
-| feature | status | n_iso | logFC | logFC_categ | exprs | exprs_categ |
-|-|-|-|-|-|-|-|
-| ENSG00000000457 | 0   | 5     | 0     | [ 0.00, 0.297) | 8.526  | [2.85, 14.5)  |
-| ENSG00000000460 | 0   | 10    | 0     | [ 0.00, 0.297) | 3.315  | [2.85, 14.5)  |
-| ENSG00000000938 | 0   | 8     | 0     | [ 0.00, 0.297) | 11.54  | [2.85, 14.5)  |
-| ENSG00000000971 | 0   | 6     | 0     | [ 0.00, 0.297) | 163.5  | [14.5, 24300] |
-| ENSG00000001460 | 1   | 13    | 3.939 | [ 3.54, 24.06] | 3.792  | [2.85, 14.5)  |
-| ENSG00000001461 | 1   | 8     | 0.060 | [ 0.00, 0.297) | 20.40  | [14.5, 24300] |
-| ENSG00000004455 | 1   | 13    | 6.200 | [ 3.54, 24.06] | 62.54  | [14.5, 24300] |
-| ENSG00000004487 | 0   | 7     | 0     | [ 0.00, 0.297) | 25.11  | [14.5, 24300] |
+<img src="screenshot_truth.png" style="width:800px;"/>
 
 #### The result files
 The result files contain the p-values, adjusted p-values and scores for the evaluated features. Each file can contain results obtained by one or multiple methods. It is also possible to load multiple result files into the app. Each result file must have a column corresponding to the feature identifier. This column **must** have the same name as in the truth file. In order to correctly interpret the other columns, each column header must be of the form **method:type**, where **type** is either **adjP** (if the column contains adjusted p-values or FDR estimates), **P** (if the column contains nominal p-values), or **score** (if the column contains a general score). 
@@ -41,19 +32,7 @@ Nominal p-values will be adjusted by the app, using the Benjamini-Hochberg corre
 
 The table below shows the first lines of an example result file, containing nominal p-values, adjusted p-values and scores for several methods. Missing values (NA) are allowed.
 
-| feature | edgeR:P | DESeq2:P | edgeR:adjP | voom:adjP | edgeR:score | 
-|-|-|-|-|-|-|
-| ENSG00000000457 | 0.1178    | 0.0163      | 0.2833    | 0.1375    | 0.2271 | 
-| ENSG00000000460 | 0.1101    | 0.0328      | 0.2700    | 0.2826    | 0.3105 | 
-| ENSG00000000938 | 0.8128    | 0.9943      | 0.9233    | 0.9400    | 0.0499 | 
-| ENSG00000000971 | 0.8450    | 0.9628      | 0.9382    | 0.9492    | 0.0390 | 
-| ENSG00000001460 | 8.343e-21 | 9.303e-23   | 6.334e-20 | 4.575e-09 | 3.814  | 
-| ENSG00000001461 | 0.2200    | 0.0824      | 0.4417    | 0.3097    | 0.1720 | 
-| ENSG00000004455 | 3.166e-79 | 2.0067e-100 | 7.375e-78 | 1.519e-15 | 5.964  | 
-| ENSG00000004487 | 0.4522    | 0.633       | 0.692     | 0.6452    | 0.1268 | 
-| ENSG00000006555 | 0.1139    | 0.0651      | 0.2768    | 0.1876    | 0.2795 | 
-| ENSG00000007341 | 4.748e-62 | 4.174e-81   | 8.563e-61 | 8.360e-15 | 2.670  | 
-| ENSG00000007908 | 0.9583    | 0.8223      | 0.9842    | 0.8806    | 0.0172 | 
+<img src="screenshot_results.png" style="width:800px;"/>
 
 ### Use of different measure types
 The combination of measures that are provided for a given method (P, adjP, score) affects how the performance evaluation will be performed: 
@@ -62,18 +41,26 @@ The combination of measures that are provided for a given method (P, adjP, score
 - The full FDR/TPR and FDR/NBR curves, as well as ROC and FD curves, are calculated from scores or p-values if provided (since these often have a higher resolution than adjusted p-values). If not, adjusted p-values will be used. For FDR/TPR and FDR/NBR curves, if both score/p-value and adjusted p-values are provided, it is necessary that the score/p-value and the adjusted p-values are monotonically related to each other, otherwise the adjusted p-values will be used also for the curves. 
 - The continuous evaluations (correlations, scatter plots and deviation plots) are always based on provided scores. If scores are not provided for some methods, they will be excluded from these evaluations.
 
+### Handling missing features
+
+Sometimes, not all features are assigned a score by each of the compared methods. Similarly, some features may not be present in the truth table. The table below tabulates the possible sets of features in a data set. Features that are neither present in the result tables nor in the truth table will not be considered. 
+
+<img src="screenshot_missing.png" style="width:400px;"/>
+
+The default settings of `IBRA` is to consider all features that are present (with non-missing status) in the truth file. Thus, we assume that A = B = 0. By choosing to consider only features shared between the truth and result table, also C and D will be disregarded. The only exception is in the Venn diagrams, where all features are considered (since this is interpretable without a truth). This means that the value represented in the `Number of detections` column in the FDR/NBR plots may differ from the total number of calls in the Venn diagrams. 
+
 ## Comparison and evaluation methods
 The `IBRA` application calculates several different types of comparison and evaluation metrics, each represented in a separate tab. The available methods are described briefly below. 
 
 - **FDR vs TPR plot**: This plot shows the observed false discovery rate vs the observed true positive rate. If adjusted p-values are provided, it can be calculated for a given set of adjusted p-value cutoffs. It can also be calculated for each possible cutoff to generate an "FDR/TPR curve". Each point in the plot represents one method and one cutoff, and points corresponding to the same method are joined together. If "points" is selected to be displayed in the input panel, and a method controls the FDR (that is, if the observed false discovery rate is lower than or equal to the imposed cutoff), the corresponding point is filled, otherwise it is open. The user can change the imposed adjusted p-value cutoffs using the "FDR thresholds" input in the left-hand control panel.  
 - **FDR vs NBR plot**: This plot is similar to the FDR vs TPR plot, but instead of the TPR it shows the number of features classified as positive at given FDR thresholds. 
 - **TPR plot**: This plot shows the observed true positive rate for one or more adjusted p-value cutoffs. Each circle represents one method and one cutoff. The user can change the imposed adjusted p-value cutoffs using the "FDR thresholds" input in the left-hand control panel.
-- **ROC curves**: This plot shows the ROC (receiver operating characteristic) curves obtained by ranking genes by their adjusted p-value, varying the significance cutoff and calculating the true and false positive rate for each cutoff value. A good method (one that assigns low p-values to truly differentially spliced genes and high p-values to truly non-differential genes) has a ROC curve that passes close to the upper left corner, while a poorly performing method has a ROC curve that lies close to the diagonal line. Note that since many variables are often assigned an adjusted p-value of 1, the upper right part of the ROC curve may be less informative. The user can change the maximal FPR value to show (that is, the upper limit of the x-axis) with the input controls, in order to focus on the beginning of the ROC curve.
-- **False discovery curves**: These plots are obtained by ranking the genes by significance, and counting the number of false positives among the top N genes, for varying values of N. The maximal value of N can be changed by the user (Maximal rank in false discovery plots). 
-- **Correlation**: 
-- **Scatter plots**: 
-- **Deviation pots**: 
-- **Venn diagram**: The sets of differential genes for up to five methods (one of which can be the truth) can be compared using a Venn diagram. The adjusted p-value cutoff for determining significance can be set by the user. The user can also choose whether or not to include the truth in the Venn diagram. If the truth is included, it will be considered as a "perfect" method, assigning an adjusted p-value of 0 to all truly differential genes, and an adjusted p-value of 1 to all other genes. The Venn diagram will not be displayed if the results are stratified by some variable annotation.
+- **ROC curves**: This plot shows the ROC (receiver operating characteristic) curves obtained by ranking features according to one of the provided measures (scores if available, otherwise p-values, otherwise adjusted p-values), varying the significance cutoff and calculating the true and false positive rate for each cutoff value. A good method has a ROC curve that passes close to the upper left corner, while a poorly performing method has a ROC curve that lies close to the diagonal line. The user can zoom in to different parts of the ROC curve by modifying the axis limits using the sliders below the plot. 
+- **False discovery curves**: This plot is obtained by ranking the features by one of the provided measures (same order of prioritization as for ROC curves), and counting the number of false positives among the top N features, for varying values of N. The maximal value of N can be changed by the user. 
+- **Correlation**: This plot shows the correlation between the continuous truth variable (defined by the user in the left-hand sidebar) and the scores for each method. The user can choose between Pearson and Spearman correlation.
+- **Scatter plots**: This plot depicts the observed scores against the continuous truth variable (defined by the user in the left-hand sidebar), for each method separately. Axes can be represented on a log-scale.
+- **Deviation pots**: This plot shows the distribution of the deviation of the observed scores from the continuous truth defined by the user. The distributions can be shown as violin plots or regular box plots, with or without the individual points overlaid.
+- **Venn diagram**: The sets of features classified as "positive" for up to five methods (one of which can be the truth) can be compared using a Venn diagram. The adjusted p-value cutoff for determining significance can be set by the user. The user can also choose whether or not to include the truth in the Venn diagram. If the truth is included, it will be considered as a "perfect" method, assigning an adjusted p-value of 0 to all truly positive features, and an adjusted p-value of 1 to all other features. 
 
 ## Input controls
 Input controls are located in the sidebar as well as in the individual tabs. By changing one or more of the input parameters, the user can get more precise control of what is shown in the plots. The following general parameters are available:
@@ -106,7 +93,7 @@ Input controls are located in the sidebar as well as in the individual tabs. By 
 - **Download plot**: Download the current plot in pdf format.
 - **Download Rdata**: Download the `IBRAPlot` object containing all results needed for plotting (see the `IBRA` package for details).
 - **Download tsv**: Download a tab-separated file with the values shown in the plot. 
-- **Maximal rank to display** (False discovery curves): The largest number of "top genes" shown in the false discovery plots (that is, the upper x-axis limit).
+- **Maximal rank to display** (False discovery curves): The largest number of "top features" shown in the false discovery plots (that is, the upper x-axis limit).
 - **Correlation measure** (Correlation): Either Pearson or Spearman, the type of correlation shown in the plot. 
 - **Flip axes** (Scatter plots): Flip the x- and y-axes.
 - **Log-transform** (Scatter plots): Log-transform the x- and y-axes.
@@ -114,7 +101,7 @@ Input controls are located in the sidebar as well as in the individual tabs. By 
 - **Square deviations** (Deviations): Square the deviations before plotting.
 - **Plot type** (Deviations): Whether to show the distribution of deviations as a violin plot or a regular box plot.  
 - **Include truth** (Venn diagram): Whether or not the truth should be considered as a (perfect) method in the Venn diagrams. If yes, the "truth" method will be considered to assign an adjusted p-value of 0 to all truly "positive" features, and an adjusted p-value of 1 to the truly "negative" ones. 
-- **Adjusted p-value threshold** (Venn diagram)**: The adjusted p-value threshold that will be used to classify features as positive or negative. The collections of positive features from different methods will be compared in the Venn diagram. 
+- **Adjusted p-value threshold** (Venn diagram): The adjusted p-value threshold that will be used to classify features as positive or negative. The collections of positive features from different methods will be compared in the Venn diagram. 
 
 
 

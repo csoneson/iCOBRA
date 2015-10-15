@@ -497,7 +497,7 @@ plot_overlap <- function(ibraplot, ...) {
   } else {
     ncl <- ceiling(sqrt(length(overlap_table)))
     nrw <- ceiling(length(overlap_table)/ncl)
-    par(mfrow = c(nrw, ncl), mar = c(4, 1, 1, 1))
+    graphics::par(mfrow = c(nrw, ncl), mar = c(4, 1, 1, 1))
     for (i in 1:length(overlap_table)) {
       if (ncol(overlap_table[[i]]) < 6) {
         if (ncol(overlap_table[[i]]) == 5)
@@ -511,7 +511,7 @@ plot_overlap <- function(ibraplot, ...) {
         NULL
       }
     }
-    par(mfrow = c(1, 1), mar = c(5, 4, 4, 2))
+    graphics::par(mfrow = c(1, 1), mar = c(5, 4, 4, 2))
   }
 }
 

@@ -128,9 +128,10 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
 #'   truth and result files that encodes the feature identifier.
 #' @export
 IBRAData_from_text <- function(truth_file, result_files, feature_id) {
-  truth <- read.delim(truth_file, header = TRUE, as.is = TRUE)
+  truth <- utils::read.delim(truth_file, header = TRUE, as.is = TRUE)
+  rownames(truth) <- truth[, feature_id]
   RF <- lapply(result_files, function(f) {
-    f <- read.delim(f, header = TRUE, as.is = TRUE, check.names = FALSE)
+    f <- utils::read.delim(f, header = TRUE, as.is = TRUE, check.names = FALSE)
   })
   RF <- Reduce(function(...) merge(..., by = feature_id, all = TRUE), RF)
   pval <- RF[, c(feature_id,
@@ -140,7 +141,7 @@ IBRAData_from_text <- function(truth_file, result_files, feature_id) {
   score <- RF[, c(feature_id,
                   grep(":score$", colnames(RF), value = TRUE)), drop = FALSE]
 
-  if (nrow(pval) == 1) {
+  if (ncol(pval) == 1) {
     pval <- data.frame()
   } else {
     rownames(pval) <- pval[, feature_id]
@@ -148,7 +149,7 @@ IBRAData_from_text <- function(truth_file, result_files, feature_id) {
     colnames(pval) <- gsub(":P$", "", colnames(pval))
   }
 
-  if (nrow(padj) == 1) {
+  if (ncol(padj) == 1) {
     padj <- data.frame()
   } else {
     rownames(padj) <- padj[, feature_id]
@@ -156,7 +157,7 @@ IBRAData_from_text <- function(truth_file, result_files, feature_id) {
     colnames(padj) <- gsub(":adjP$", "", colnames(padj))
   }
 
-  if (nrow(score) == 1) {
+  if (ncol(score) == 1) {
     score <- data.frame()
   } else {
     rownames(score) <- score[, feature_id]
@@ -177,8 +178,8 @@ IBRAData_to_text <- function(ibradata, truth_file, result_files, feature_id) {
   truth[, feature_id] <- rownames(truth)
   truth <- truth[, c(feature_id,
                      setdiff(colnames(truth), feature_id)), drop = FALSE]
-  write.table(truth, file = truth_file, quote = FALSE,
-              sep = "\t", row.names = FALSE, col.names = TRUE)
+  utils::write.table(truth, file = truth_file, quote = FALSE,
+                     sep = "\t", row.names = FALSE, col.names = TRUE)
 
   ## Merge results and write to file
   pval <- pval(ibradata)
@@ -197,8 +198,8 @@ IBRAData_to_text <- function(ibradata, truth_file, result_files, feature_id) {
   results <- Reduce(function(...) merge(..., by = feature_id, all = TRUE),
                     list(pval, padj, score))
 
-  write.table(results, file = result_files, quote = FALSE,
-              sep = "\t", row.names = FALSE, col.names = TRUE)
+  utils::write.table(results, file = result_files, quote = FALSE,
+                     sep = "\t", row.names = FALSE, col.names = TRUE)
 }
 
 setMethod("show", "IBRAData",
@@ -444,13 +445,14 @@ IBRAData_from_simresults <- function(simres) {
 IBRAData_to_simresults <- function(ibradata, binary_truth, strat = NULL) {
   if (length(pval(ibradata)) == 0)
     stop("ibradata must have non-empty slot pval")
-  if (all(colnames(pval(ibradata)) != colnames(padj(ibradata)))) {
-    padj <- NULL
-    pval <- pval(ibradata)
-    keep_methods <- colnames(pval)
-  } else {
+  if (length(pval(ibradata)) == length(padj(ibradata)) &&
+      all(colnames(pval(ibradata)) == colnames(padj(ibradata)))) {
     pval <- pval(ibradata)
     padj <- padj(ibradata)
+    keep_methods <- colnames(pval)
+  } else {
+    padj <- NULL
+    pval <- pval(ibradata)
     keep_methods <- colnames(pval)
   }
 
