@@ -116,8 +116,8 @@ fix_duplicates <- function(res_df, method_name) {
 calculate_adjp <- function(ibradata, method = "BH") {
   sf <- setdiff(colnames(pval(ibradata)), colnames(padj(ibradata)))
   if (length(sf) > 0) {
-      pa <- as.data.frame(apply(pval(ibradata)[, sf, drop = FALSE], 2, p.adjust,
-                                method = method))
+      pa <- as.data.frame(apply(pval(ibradata)[, sf, drop = FALSE], 2,
+                                stats::p.adjust, method = method))
       missing_genes <- setdiff(rownames(pa), rownames(padj(ibradata)))
       if (length(padj(ibradata)) != 0) {
         tmpadd <-
@@ -177,7 +177,8 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
       warning(paste0("Too few colors provided. ", ncolors - length(palette),
                      " random colors will be added."))
       use_colors1 <- c(palette,
-                       setdiff(colors(),
+                       setdiff(sample(grDevices::colors(),
+                                      length(grDevices::colors())),
                                c("white",
                                  palette))[1:(ncolors - length(palette))])
     } else {
@@ -191,7 +192,8 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
                      "Pastel2", "Set1", "Set2", "Set3"))) {
       warning("Invalid palette, will consider it a color.")
       use_colors1 <- c(palette,
-                       setdiff(colors(),
+                       setdiff(sample(grDevices::colors(),
+                                      length(grDevices::colors())),
                                c("white",
                                  palette))[1:(ncolors - length(palette))])
     } else {
@@ -199,11 +201,12 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
       maxnbr <- c(Accent = 8, Dark2 = 8, Paired = 12, Pastel1 = 9,
                   Pastel2 = 8, Set1 = 9, Set2 = 8, Set3 = 12)
       if (palette == "hue_pal") use_colors1 <- scales::hue_pal()(ncolors)
-      else if (palette == "rainbow") use_colors1 <- rainbow(ncolors)
-      else if (palette == "heat") use_colors1 <- heat.colors(ncolors)
-      else if (palette == "terrain") use_colors1 <- terrain.colors(ncolors)
-      else if (palette == "topo") use_colors1 <- topo.colors(ncolors)
-      else if (palette == "cm") use_colors1 <- cm.colors(ncolors)
+      else if (palette == "rainbow") use_colors1 <- grDevices::rainbow(ncolors)
+      else if (palette == "heat") use_colors1 <- grDevices::heat.colors(ncolors)
+      else if (palette == "terrain") use_colors1 <-
+          grDevices::terrain.colors(ncolors)
+      else if (palette == "topo") use_colors1 <- grDevices::topo.colors(ncolors)
+      else if (palette == "cm") use_colors1 <- grDevices::cm.colors(ncolors)
       else {
         if (ncolors <= maxnbr[bnm])
           use_colors1 <- scales::brewer_pal(palette = bnm)(ncolors)
@@ -271,11 +274,14 @@ select_measure <- function(ibradata, method, asp) {
         if (length(unique(sgn[sgn != 0 & !is.na(sgn)])) == 1) ret <- "pval"
         else ret <- "padj"
       } else ret <- "pval"
-    } else ret <- "padj"
+    } else if (method %in% names(padj(ibradata))) {
+      ret <- "padj"
+    } else ret <- NULL
   } else if (asp %in% c("roc", "fpc")) {
     if (method %in% names(score(ibradata))) ret <- "score"
     else if (method %in% names(pval(ibradata))) ret <- "pval"
-    else ret <- "padj"
+    else if (method %in% names(padj(ibradata))) ret <- "padj"
+    else ret <- NULL
   } else if (asp %in% c("corr", "scatter", "deviation")) {
     if (method %in% names(score(ibradata))) ret <- "score"
     else ret <- NULL

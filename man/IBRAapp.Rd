@@ -4,11 +4,14 @@
 \alias{IBRAapp}
 \title{Interactive shiny app to visualize results}
 \usage{
-IBRAapp(ibradata = NULL)
+IBRAapp(ibradata = NULL, autorun = FALSE)
 }
 \arguments{
 \item{ibradata}{An (optional) \code{IBRAData} object. If not given, the user
 can load results from text files.}
+
+\item{autorun}{A logical indicating whether the app calculations should start
+automatically or wait for the user to press the launch button.}
 }
 \value{
 Returns (and runs) an object representing the shiny app.

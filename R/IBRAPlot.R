@@ -227,15 +227,15 @@ setMethod("[", "IBRAPlot",
             if (length(x@scatter) != 0)
               x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
             if (length(x@overlap) != 0) {
-              if (class(x@overlap) == "list") {
+              if (class(x@overlap) == "data.frame") {
+                x@overlap <-
+                  x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),
+                            drop = FALSE]
+              } else {
                 x@overlap <-
                   lapply(x@overlap, function(w) {
                     w[, which(colnames(w) %in% c(j, "truth")), drop = FALSE]
                   })
-              } else {
-                x@overlap <-
-                  x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),
-                            drop = FALSE]
               }
             }
             x

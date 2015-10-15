@@ -1,7 +1,7 @@
 Package: IBRA
 Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
-Version: 0.3.1
+Version: 0.3.2
 Date: 2015-10-10
 Authors@R: c(person(given = "Charlotte", family = "Soneson", 
     role = c("aut", "cre"),
@@ -39,6 +39,7 @@ Imports:
     methods
 Suggests:
     knitr,
-    benchmarkR
+    benchmarkR,
+    testthat
 VignetteBuilder: knitr
 biocViews: Classification
