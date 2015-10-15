@@ -9,6 +9,16 @@ res_check <- function(dfr) {
   return(TRUE)
 }
 
+get_keepfeatures <- function(truth, df, method, colm, onlyshared) {
+  if (onlyshared == FALSE) {
+    allg <- rownames(truth[which(!is.na(truth[, colm])), ])
+  } else {
+    allg <- intersect(rownames(truth[which(!is.na(truth[, colm])), ]),
+                      rownames(df)[which(!is.na(df[method]))])
+  }
+  allg
+}
+
 is_plottable <- function(obj) {
   if (is.null(obj))
     FALSE
