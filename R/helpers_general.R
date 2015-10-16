@@ -22,7 +22,7 @@ get_keepfeatures <- function(truth, df, method, colm, onlyshared) {
 is_plottable <- function(obj) {
   if (is.null(obj))
     FALSE
-  else if (nrow(obj) == 0)
+  else if (class(obj) == "data.frame" && nrow(obj) == 0)
     FALSE
   else if (length(obj) == 0)
     FALSE
