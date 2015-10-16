@@ -10,7 +10,7 @@
 IBRAPerformance(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   fdrnbr = data.frame(), fdrnbrcurve = data.frame(), tpr = data.frame(),
   fpr = data.frame(), splv = "", roc = data.frame(), fpc = data.frame(),
-  deviation = data.frame(), overlap = data.frame(),
+  deviation = data.frame(), onlyshared = NA, overlap = data.frame(),
   maxsplit = NA_integer_, corr = data.frame(), scatter = data.frame(),
   object_to_extend = NULL)
 }
@@ -51,6 +51,10 @@ which can be used to generate a false positive curve.}
 
 \item{deviation}{A data frame containing deviations between observed scores
 and true scores.}
+
+\item{onlyshared}{A logical value indicating whether only features shared
+between the results and the truth should be retained, or if all features
+present in the truth should be used.}
 
 \item{overlap}{A data frame or list of data frames with binary values
 indicating, for each of a number of methods and number of features, whether

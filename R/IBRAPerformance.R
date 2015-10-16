@@ -14,7 +14,8 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
                                        fpc = "data.frame", overlap = "list_df",
                                        corr = "data.frame",
                                        maxsplit = "numeric",
-                                       splv = "character"))
+                                       splv = "character",
+                                       onlyshared = "logical"))
 
 #' \code{IBRAPerformance} object and constructor
 #'
@@ -62,6 +63,9 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #'   retain if the results have been stratified by an annotation.
 #' @param splv A character string giving the name of the stratification factor,
 #'   "none" if the results are not stratified.
+#' @param onlyshared A logical value indicating whether only features shared
+#'   between the results and the truth should be retained, or if all features
+#'   present in the truth should be used.
 #' @param object_to_extend An \code{IBRAPerformance} object to extend with the
 #'   provided information.
 #'
@@ -83,7 +87,7 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                             fdrnbr = data.frame(), fdrnbrcurve = data.frame(),
                             tpr = data.frame(), fpr = data.frame(), splv = "",
                             roc = data.frame(), fpc = data.frame(),
-                            deviation = data.frame(),
+                            deviation = data.frame(), onlyshared = NA,
                             overlap = data.frame(), maxsplit = NA_integer_,
                             corr = data.frame(), scatter = data.frame(),
                             object_to_extend = NULL) {
@@ -121,13 +125,16 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
         maxsplit <- object_to_extend@maxsplit
       if ((object_to_extend@splv) != "")
         splv <- object_to_extend@splv
+      if (!is.na(object_to_extend@onlyshared))
+        onlyshared <- object_to_extend@onlyshared
     }
   }
   .IBRAPerformance(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
                    deviation = deviation, fdrnbr = fdrnbr,
                    fdrnbrcurve = fdrnbrcurve, scatter = scatter,
                    tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, corr = corr,
-                   overlap = overlap, splv = splv, maxsplit = maxsplit)
+                   overlap = overlap, splv = splv, maxsplit = maxsplit,
+                   onlyshared = onlyshared)
 }
 
 setMethod("show", "IBRAPerformance", function(object) {
@@ -175,6 +182,46 @@ setReplaceMethod("fdrtpr", signature(x = "IBRAPerformance",
                                      value = "data.frame"),
                  function(x, value) {
                    x@fdrtpr <- value
+                   if (validObject(x))
+                     return(x)
+                 })
+
+#' Accessor and replacement functions for \code{onlyshared} slot
+#'
+#' Accessor and replacement functions for the \code{onlyshared} slot in an
+#' \code{IBRAPerformance} or \code{IBRAPlot} object.
+#'
+#' @docType methods
+#' @name onlyshared
+#' @rdname onlyshared
+#' @aliases onlyshared onlyshared,IBRAPerformance-method
+#'   onlyshared<-,IBRAPerformance,data.frame-method onlyshared,IBRAPlot-method
+#'   onlyshared<-,IBRAPlot,data.frame-method
+#' @return The accessor function returns a logical indicating whether only
+#'   features that are shared between result and truth are retained, or if all
+#'   features in the truth are used.
+#'
+#' @param x An \code{IBRAPerformance} or \code{IBRAPlot} object.
+#' @param ... Additional arguments.
+#' @param value A logical indicating whether only features that are shared
+#'   between result and truth are retained, or if all features in the truth are
+#'   used.
+#' @author Charlotte Soneson
+#' @export
+#' @examples
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#'                                   aspects = "fdrtpr")
+#' head(onlyshared(ibraperf))
+setMethod("onlyshared", signature(x = "IBRAPerformance"),
+          function(x) x@onlyshared)
+#' @name onlyshared
+#' @rdname onlyshared
+#' @exportMethod "onlyshared<-"
+setReplaceMethod("onlyshared", signature(x = "IBRAPerformance",
+                                         value = "logical"),
+                 function(x, value) {
+                   x@onlyshared <- value
                    if (validObject(x))
                      return(x)
                  })

@@ -42,10 +42,10 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      fdrnbr = data.frame(), corr = data.frame(),
                      fdrnbrcurve = data.frame(), tpr = data.frame(),
                      fpr = data.frame(), roc = data.frame(),
-                     scatter = data.frame(),
+                     scatter = data.frame(), onlyshared = NA,
                      fpc = data.frame(), overlap = data.frame(),
                      plotcolors = "", splv = "", deviation = data.frame(),
-                     maxsplit = NA_integer_, facetted = TRUE,
+                     maxsplit = NA_integer_, facetted = NA,
                      object_to_extend = NULL) {
 
   if (!(is.null(object_to_extend))) {
@@ -84,10 +84,12 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
         splv <- object_to_extend@splv
       if (!is.na(object_to_extend@maxsplit))
         maxsplit <- object_to_extend@maxsplit
+      if (!is.na(object_to_extend@onlyshared))
+        onlyshared <- object_to_extend@onlyshared
       facetted <- object_to_extend@facetted
     }
   }
-  .IBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
+  .IBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve, onlyshared = onlyshared,
             fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, deviation = deviation,
             tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
             overlap = overlap, plotcolors = plotcolors, corr = corr,
@@ -277,7 +279,7 @@ setAs("IBRAPerformance", "IBRAPlot",
         .IBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                   fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
                   tpr = from@tpr, fpr = from@fpr, roc = from@roc,
-                  fpc = from@fpc,
+                  fpc = from@fpc, onlyshared = from@onlyshared,
                   scatter = from@scatter, deviation = from@deviation,
                   overlap = from@overlap, plotcolors = "", corr = from@corr,
                   splv = from@splv, maxsplit = from@maxsplit, facetted = TRUE)
@@ -294,7 +296,7 @@ setAs("IBRAPlot", "IBRAPerformance",
                          fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
                          tpr = from@tpr, fpr = from@fpr, roc = from@roc,
                          fpc = from@fpc, deviation = from@deviation,
-                         corr = from@corr,
+                         corr = from@corr, onlyshared = from@onlyshared,
                          scatter = from@scatter, overlap = from@overlap,
                          splv = from@splv, maxsplit = from@maxsplit)
       })

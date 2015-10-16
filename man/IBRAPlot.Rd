@@ -10,9 +10,10 @@
 IBRAPlot(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   fdrnbr = data.frame(), corr = data.frame(), fdrnbrcurve = data.frame(),
   tpr = data.frame(), fpr = data.frame(), roc = data.frame(),
-  scatter = data.frame(), fpc = data.frame(), overlap = data.frame(),
-  plotcolors = "", splv = "", deviation = data.frame(),
-  maxsplit = NA_integer_, facetted = TRUE, object_to_extend = NULL)
+  scatter = data.frame(), onlyshared = NA, fpc = data.frame(),
+  overlap = data.frame(), plotcolors = "", splv = "",
+  deviation = data.frame(), maxsplit = NA_integer_, facetted = NA,
+  object_to_extend = NULL)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various
@@ -47,6 +48,10 @@ generate a ROC curve.}
 \item{scatter}{A data frame containing observed 'scores' (p-values, adjusted
 p-values or more general scores) and true scores, which can be used to
 generate scatter plots.}
+
+\item{onlyshared}{A logical value indicating whether only features shared
+between the results and the truth should be retained, or if all features
+present in the truth should be used.}
 
 \item{fpc}{A data frame containing observed numbers of false positive
 findings among the N top-ranked features (ranked by p-values, adjusted

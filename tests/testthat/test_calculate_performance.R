@@ -71,6 +71,10 @@ aa2 <- length(setdiff(rownames(subset(padjsub, edgeR <= 0.05)), rownames(subset(
 bb2 <- length(setdiff(rownames(subset(padjsub, edgeR > 0.05)), rownames(subset(truthsub, status %in% c(0, 1)))))
 
 test_that("Shared values in output objects are equal", {
+  ibp1 <- prepare_data_for_plot(ib1, keepmethod = NULL, incloverall = TRUE,
+                                incltruth = TRUE)
+  expect_equivalent(colSums(overlap(ibp1))["edgeR"], (subset(tpr(ib1), fullmethod == "edgeR_overall" & thr == "thr0.05"))[, "NBR"])
+
   ## TP (fdrtpr, fdrnbr, tpr, fpr)
   expect_equal((subset(fdrtpr(ib1), fullmethod == "voom_overall" & thr == "thr0.05"))[, "TP"],
                (subset(fdrnbr(ib1), fullmethod == "voom_overall" & thr == "thr0.05"))[, "TP"])
@@ -598,3 +602,64 @@ test_that("calculate_performance without significant features works", {
   expect_is(ib1, "IBRAPerformance")
   expect_equal(fdrtpr(ib1)$FDR, rep(0, 3))
 })
+
+test_that("overlap calculations are correct", {
+  ibradata <- ibradata_example
+  truth(ibradata) <- truth(ibradata)[1:3000, , drop = FALSE]
+  ## Set some adjusted p-values to NA
+  tmp <- padj(ibradata)$edgeR
+  tmp[sample(1:length(tmp), 5)] <- NA
+  padj(ibradata)$edgeR <- tmp
+  padj <- padj(ibradata)
+  truth <- truth(ibradata)
+
+  ## onlyshared = FALSE, incltruth = FALSE
+  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+                               aspects = "overlap", splv = "none",
+                               onlyshared = FALSE, thr_venn = 0.05)
+  ib1 <- prepare_data_for_plot(ib1, incltruth = FALSE)
+  expect_equal(length(intersect(which(padj$edgeR <= 0.05),
+                                which(padj$voom <= 0.05))),
+               sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
+
+  ## onlyshared = TRUE, incltruth = FALSE
+  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+                               aspects = "overlap", splv = "none",
+                               onlyshared = TRUE, thr_venn = 0.05)
+  ib1 <- prepare_data_for_plot(ib1, incltruth = FALSE)
+  expect_equal(length(intersect(which(padj$edgeR <= 0.05),
+                                which(padj$voom <= 0.05))),
+               sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
+
+  ## onlyshared = FALSE, incltruth = TRUE
+  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+                               aspects = "overlap", splv = "none",
+                               onlyshared = FALSE, thr_venn = 0.05)
+  ib1 <- prepare_data_for_plot(ib1, incltruth = TRUE)
+  padj1 <- padj[match(rownames(truth)[which(!is.na(truth$status))],
+                      rownames(padj)), ]
+  rownames(padj1) <- rownames(truth)
+  expect_equal(length(intersect(which(padj1$edgeR <= 0.05),
+                                which(padj1$voom <= 0.05))),
+               sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
+  expect_equal(length(setdiff(which(padj1$voom <= 0.05), which(padj1$edgeR <= 0.05))),
+               length(setdiff(which(overlap(ib1)$voom == 1), which(overlap(ib1)$edgeR == 1))))
+
+  ## onlyshared = TRUE, incltruth = TRUE
+  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+                               aspects = "overlap", splv = "none",
+                               onlyshared = TRUE, thr_venn = 0.05)
+  ib1 <- prepare_data_for_plot(ib1, incltruth = TRUE)
+  kp <- intersect(rownames(truth)[which(!is.na(truth$status))],
+                  rownames(padj)[which(rowSums(is.na(padj)) == 0)])
+  padj1 <- padj[match(kp, rownames(padj)), ]
+  expect_equal(length(intersect(which(padj1$edgeR <= 0.05),
+                                which(padj1$voom <= 0.05))),
+               sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
+  expect_equal(length(setdiff(which(padj1$voom <= 0.05), which(padj1$edgeR <= 0.05))),
+               length(setdiff(which(overlap(ib1)$voom == 1), which(overlap(ib1)$edgeR == 1))))
+})
+
+
+
+

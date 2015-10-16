@@ -34,6 +34,14 @@ setGeneric("fdrtpr", function(x, ...) standardGeneric("fdrtpr"))
 #' @export
 setGeneric("fdrtpr<-", function(x, ..., value) standardGeneric("fdrtpr<-"))
 
+#' @rdname onlyshared
+#' @export
+setGeneric("onlyshared", function(x, ...) standardGeneric("onlyshared"))
+#' @rdname onlyshared
+#' @export
+setGeneric("onlyshared<-", function(x, ..., value)
+  standardGeneric("onlyshared<-"))
+
 #' @rdname fdrtprcurve
 #' @export
 setGeneric("fdrtprcurve", function(x, ...) standardGeneric("fdrtprcurve"))

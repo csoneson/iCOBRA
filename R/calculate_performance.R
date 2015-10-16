@@ -145,9 +145,6 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
                                   maxsplit = 3, onlyshared = FALSE,
                                   thr_venn = 0.05) {
 
-  if (is.null(binary_truth) & is.null(cont_truth))
-    stop("Either binary_truth or cont_truth must be given!")
-
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
   all_methods <- unique(c(colnames(pval(ibradata)), colnames(padj(ibradata)),
@@ -928,18 +925,20 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
   }
 
   ## --------------------------- OVERLAP -------------------------------- ##
-  if ("overlap" %in% aspects & !is.null(binary_truth)) {
+  if ("overlap" %in% aspects) {
     tmplist <- padj(ibradata)
     if (length(tmplist) > 0) {
-      ## Add 'truth' to list of results
-      tmp2 <- 1 - truth(ibradata)[, binary_truth, drop = FALSE]
-      colnames(tmp2) <- "truth"
-      missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
-      tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
-                                     dimnames = list(missing_genes,
-                                                     colnames(tmplist))))
-      tmplist <- rbind(tmplist, tmpadd)
-      tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
+      if (!is.null(binary_truth)) {
+        ## Add 'truth' to list of results
+        tmp2 <- 1 - truth(ibradata)[, binary_truth, drop = FALSE]
+        colnames(tmp2) <- "truth"
+        missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
+        tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
+                                       dimnames = list(missing_genes,
+                                                       colnames(tmplist))))
+        tmplist <- rbind(tmplist, tmpadd)
+        tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
+      }
 
       overlap <- apply(tmplist, 2, function(w) {
         as.numeric(w <= thr_venn)
@@ -949,7 +948,7 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       overlap <- overlap[, which(colSums(is.na(overlap)) != nrow(overlap))]
 
       ## Assume that if we don't have information about a gene, it is "negative"
-      overlap[is.na(overlap)] <- 0
+      ##overlap[is.na(overlap)] <- 0
       overlap <- data.frame(overlap, stringsAsFactors = FALSE)
 
       ## If splv is not "none", split overlap matrix
@@ -958,8 +957,7 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
         keep <- intersect(rownames(overlap), rownames(truth(ibradata)))
         tth <- truth(ibradata)[match(keep, rownames(truth(ibradata))), ]
         keeplevels <- get_keeplevels(truth = tth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+                                     binary_truth = NULL, maxsplit = maxsplit)
         overlap <- overlap[match(keep, rownames(overlap)), ]
         overlap <- split(overlap, tth[, splv])
         ## Keep only the top "maxsplit" categories
@@ -1005,7 +1003,7 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
                   fdrnbrcurve = fdrnbrs, deviation = deviations,
                   roc = rocs, fpc = fpcs, fdrtpr = fdrtpr, fdrnbr = fdrnbr,
                   maxsplit = maxsplit, overlap = overlap, splv = splv,
-                  corr = corrs, scatter = scatters)
+                  corr = corrs, scatter = scatters, onlyshared = onlyshared)
 
 }
 
@@ -1072,9 +1070,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 #' ibraplot2 <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
 #'                                    colorscheme = c("blue", "red"))
 prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
-                                  incloverall = TRUE,
-                                  colorscheme = "hue_pal", facetted = TRUE,
-                                  incltruth = TRUE) {
+                                  incloverall = TRUE, colorscheme = "hue_pal",
+                                  facetted = TRUE, incltruth = TRUE) {
   splitval <- NULL
   if (is.null(keepmethods)) {
     keepmethods <- basemethods(ibraperf)
@@ -1087,15 +1084,50 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
   ibraperf <- ibraperf[, keepmethods]
 
   ## Exclude truth from overlap matrix
+  ## If truth not included, keep all features and set NAs to 0
   if (!isTRUE(incltruth)) {
     if (length(overlap(ibraperf)) != 0) {
       if (class(overlap(ibraperf)) == "data.frame") {
         overlap(ibraperf) <-
           overlap(ibraperf)[, setdiff(colnames(overlap(ibraperf)), "truth"),
                             drop = FALSE]
+        overlap(ibraperf)[is.na(overlap(ibraperf))] <- 0
       } else {
         overlap(ibraperf) <- lapply(overlap(ibraperf), function(w) {
           w <- w[, setdiff(colnames(w), "truth"), drop = FALSE]
+          w[is.na(w)] <- 0
+          w
+        })
+      }
+    }
+  } else {
+    ## If truth is included, what to do depends on onlyshared.
+    ## If onlyshared = FALSE, remove all features where truth!=NA
+    ## If onlyshared = TRUE, remove all features with any NA
+    if (length(overlap(ibraperf)) != 0) {
+      if (class(overlap(ibraperf)) == "data.frame") {
+        if ("truth" %in% colnames(overlap(ibraperf))) {
+          if (isTRUE(onlyshared(ibraperf))) {
+            overlap(ibraperf) <-
+              overlap(ibraperf)[which(rowSums(is.na(overlap(ibraperf))) == 0), ]
+          } else {
+            overlap(ibraperf) <-
+              overlap(ibraperf)[which(!is.na(overlap(ibraperf)$truth)), ]
+          }
+        }
+        overlap(ibraperf)[is.na(overlap(ibraperf))] <- 0
+      } else {
+        overlap(ibraperf) <- lapply(overlap(ibraperf), function(w) {
+          if ("truth" %in% colnames(w)) {
+            if (isTRUE(onlyshared(ibraperf))) {
+              w <- w[which(rowSums(is.na(w)) == 0), ]
+            } else {
+              w <- w[which(!is.na(w$truth)), ]
+            }
+          } else
+            w <- w
+          w[is.na(w)] <- 0
+          w
         })
       }
     }
