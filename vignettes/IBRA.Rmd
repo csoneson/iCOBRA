@@ -23,6 +23,10 @@ and ordering the genes by significance) or a binary assignment problem
 (classifying the genes into differentially expressed and non-differentially
 expressed).
 
+For more detailed information regarding the calculations, handling of missing
+values etc, please consult the "Instructions" tab of the shiny application,
+available via the function ```IBRAapp()```.
+
 # Basic workflow
 ## Creating a data set
 The starting point for an evaluation is typically a collection of feature

@@ -623,7 +623,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_TPR <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
@@ -641,7 +642,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_FDR <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
@@ -659,7 +661,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_FPR <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$binary_truth != "none") {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
@@ -677,7 +680,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_ROC <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -692,7 +696,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_FPC <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -707,7 +712,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_FDRTPR <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$binary_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -722,7 +728,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_overlap <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$binary_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun))) {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
@@ -737,7 +743,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_corr <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$cont_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -752,7 +759,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_scatter <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$cont_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -767,7 +775,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     })
 
     plotvalues_deviation <- reactive({
-      if ((input$goButton > 0 | isTRUE(autorun)) & input$cont_truth != "none") {
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$cont_truth != "none") {
         return(calculate_performance(values$my_ibradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -926,7 +935,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       content = function(file) {
         grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(tpr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(tpr(plotvalues()$all_vals)))
           return(NULL)
         print(plot_tpr(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
@@ -976,7 +986,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(tpr(plotvalues()$all_vals))) {
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(tpr(plotvalues()$all_vals))) {
           return(NULL)
         }
 
@@ -988,7 +999,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     output$tpr_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(tpr(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(tpr(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(tpr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1018,7 +1030,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       content = function(file) {
         grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(corr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
         print(plot_corr(ibraplot = plotvalues()$all_vals,
                         title = plotvalues()$title,
@@ -1068,7 +1081,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(corr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
 
         plot_corr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
@@ -1080,7 +1094,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     output$corr_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(corr(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(corr(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(corr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1235,7 +1250,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       content = function(file) {
         grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
         print(plot_fpr(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
@@ -1284,7 +1300,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpr(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
         plot_fpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
@@ -1294,7 +1311,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     output$fpr_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpr(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(fpr(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(fpr(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
@@ -1323,7 +1341,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       content = function(file) {
         grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(roc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
         print(plot_roc(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
@@ -1371,7 +1390,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(roc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
         plot_roc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
@@ -1381,7 +1401,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     output$roc_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(roc(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(roc(plotvalues()$all_vals)))
         return(NULL)
 
       all_data <- isolate(roc(plotvalues()$all_vals))
@@ -1475,7 +1496,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     output$scatter_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(scatter(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(scatter(plotvalues()$all_vals)))
         return(NULL)
 
       all_data <- isolate(scatter(plotvalues()$all_vals))
@@ -1505,7 +1527,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       content = function(file) {
         grDevices::pdf(file, width = 12, height = input$plotheight/67)
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
         print(plot_fpc(ibraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
@@ -1552,7 +1575,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         }
 
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-            (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpc(plotvalues()$all_vals)))
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
 
         plot_fpc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
@@ -1563,7 +1587,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     output$fpc_click_info <- DT::renderDataTable({
       if (length(values$all_methods) == 0 | length(input$cols) == 0 |
-          (input$goButton == 0 & !isTRUE(autorun)) || !is_plottable(fpc(plotvalues()$all_vals)))
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(fpc(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(fpc(plotvalues()$all_vals))
       if ("split" %in% isolate(input$facet_opt)) {
