@@ -8,13 +8,15 @@ problem (estimating the correct effect size and ordering the genes by
 significance) or a binary assignment problem (classifying the genes 
 into differentially expressed and non-differentially expressed).
 
+IBRA can be used either directly from the console, or via the interactive shiny application (see the function `IBRAapp()`).
+
 ## Installation
 
-The package can be installed using devtools:
+If `devtools` is available, `IBRA` can be installed as follows:
 
 ```
 devtools::install_github("markrobinsonuzh/IBRA")
 ```
 
 ## Vignette
-The vignette can be found in the vignettes/ directory
+The vignette can be found in the vignettes/ directory. Further information is also available in the 'Instructions' tab of the shiny app. 
