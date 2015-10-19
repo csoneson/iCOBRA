@@ -1,5 +1,5 @@
 ## This function is almost verbatim taken from limma. The only change is on
-## lines 34 and 42, adding drop = FALSE, and removal of some unncessary lines.
+## lines 35 and 43, adding drop = FALSE, and removal of some unncessary lines.
 .printHead <- function (x) {
   if (is.atomic(x)) {
     d <- dim(x)

@@ -9,7 +9,8 @@
 #' @param ibradata An (optional) \code{IBRAData} object. If not given, the user
 #'   can load results from text files.
 #' @param autorun A logical indicating whether the app calculations should start
-#'   automatically or wait for the user to press the launch button.
+#'   automatically on launch, or wait for the user to press the 'Start
+#'   calculation!' button.
 #' @author Charlotte Soneson
 #' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny

@@ -11,7 +11,8 @@ IBRAapp(ibradata = NULL, autorun = FALSE)
 can load results from text files.}
 
 \item{autorun}{A logical indicating whether the app calculations should start
-automatically or wait for the user to press the launch button.}
+automatically on launch, or wait for the user to press the 'Start
+calculation!' button.}
 }
 \value{
 Returns (and runs) an object representing the shiny app.

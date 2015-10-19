@@ -111,6 +111,8 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
 
       if (length(object_to_extend@truth) != 0) {
         truth <- object_to_extend@truth
+        message(paste0("Non-empty 'truth' slot already exists, and will ",
+                       "not be replaced."))
       }
     }
   }
@@ -385,6 +387,21 @@ setValidity("IBRAData",
             function(object) {
               msg <- NULL
               valid <- TRUE
+              if (length(object@pval) != 0 &
+                  !all(sapply(object@pval, is.numeric))) {
+                valid <- FALSE
+                msg <- c(msg, paste0("pval slot is not numeric"))
+              }
+              if (length(object@padj) != 0 &
+                  !all(sapply(object@padj, is.numeric))) {
+                valid <- FALSE
+                msg <- c(msg, paste0("padj slot is not numeric"))
+              }
+              if (length(object@score) != 0 &
+                  !all(sapply(object@score, is.numeric))) {
+                valid <- FALSE
+                msg <- c(msg, paste0("score slot is not numeric"))
+              }
               if (length(object@pval) != 0 & length(object@truth) != 0 &
                   length(intersect(rownames(object@pval),
                                    rownames(object@truth))) == 0) {
