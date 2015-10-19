@@ -35,7 +35,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       skin = "blue",
       shinydashboard::dashboardHeader(
         title = paste0("IBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.4)"),
+                       "of methods for ranking and binary assignment (v0.3.5)"),
         titleWidth = 800),
       shinydashboard::dashboardSidebar(
         width = 350,

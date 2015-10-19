@@ -126,31 +126,6 @@ test_that("replacement still returns valid objects", {
   expect_true(IBRA:::is_plottable(tpr(ibraplot)))
 })
 
-test_that("extending an object still returns valid objects", {
-  ibradata <- ibradata_example
-  ibradata <- IBRAData(pval = pval(ibradata), object_to_extend = ibradata)
-  expect_is(ibradata, "IBRAData")
-
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-                                    cont_truth = "logFC")
-  ibraperf <- IBRAPerformance(maxsplit = 4, object_to_extend = ibraperf)
-  expect_is(ibraperf, "IBRAPerformance")
-
-  ibraplot <- prepare_data_for_plot(ibraperf)
-  ibraplot <- IBRAPlot(maxsplit = 4, object_to_extend = ibraplot)
-  expect_is(ibraplot, "IBRAPlot")
-})
-
-test_that("extending an object of the wrong class doesn't work", {
-  ibradata <- ibradata_example
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
-                                    cont_truth = "logFC", aspects = "tpr")
-  ibraplot <- prepare_data_for_plot(ibraperf)
-  expect_error(IBRAData(pval = pval(ibradata), object_to_extend = ibraplot))
-  expect_error(IBRAPerformance(maxsplit = 4, object_to_extend = ibradata))
-  expect_error(IBRAPlot(maxsplit = 4, object_to_extend = ibraperf))
-})
-
 test_that("show returns NULL", {
   ibradata <- ibradata_example
   ibraperf <- calculate_performance(ibradata, binary_truth = "status",

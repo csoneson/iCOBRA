@@ -11,8 +11,7 @@ IBRAPerformance(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   fdrnbr = data.frame(), fdrnbrcurve = data.frame(), tpr = data.frame(),
   fpr = data.frame(), splv = "", roc = data.frame(), fpc = data.frame(),
   deviation = data.frame(), onlyshared = NA, overlap = data.frame(),
-  maxsplit = NA_integer_, corr = data.frame(), scatter = data.frame(),
-  object_to_extend = NULL)
+  maxsplit = NA_integer_, corr = data.frame(), scatter = data.frame())
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various
@@ -53,8 +52,8 @@ which can be used to generate a false positive curve.}
 and true scores.}
 
 \item{onlyshared}{A logical value indicating whether only features shared
-between the results and the truth should be retained, or if all features
-present in the truth should be used.}
+  between the results and the truth should be retained, or if all features
+  present in the truth should be used.}
 
 \item{overlap}{A data frame or list of data frames with binary values
 indicating, for each of a number of methods and number of features, whether
@@ -71,9 +70,6 @@ correlation values between observed and true scores.}
 \item{scatter}{A data frame containing observed 'scores' (p-values, adjusted
 p-values or more general scores) and true scores, which can be used to
 generate scatter plots.}
-
-\item{object_to_extend}{An \code{IBRAPerformance} object to extend with the
-  provided information.}
 }
 \value{
 An \code{IBRAPerformance} object.

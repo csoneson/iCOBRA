@@ -10,10 +10,11 @@ res_check <- function(dfr) {
 }
 
 get_keepfeatures <- function(truth, df, method, colm, onlyshared) {
-  if (onlyshared == FALSE) {
-    allg <- rownames(truth[which(!is.na(truth[, colm])), ])
+  if (!isTRUE(onlyshared)) {
+    allg <- rownames(truth[which(!is.na(truth[, colm])), , drop = FALSE])
   } else {
-    allg <- intersect(rownames(truth[which(!is.na(truth[, colm])), ]),
+    allg <- intersect(rownames(truth[which(!is.na(truth[, colm])), ,
+                                     drop = FALSE]),
                       rownames(df)[which(!is.na(df[method]))])
   }
   allg

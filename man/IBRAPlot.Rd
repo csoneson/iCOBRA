@@ -12,8 +12,7 @@ IBRAPlot(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
   tpr = data.frame(), fpr = data.frame(), roc = data.frame(),
   scatter = data.frame(), onlyshared = NA, fpc = data.frame(),
   overlap = data.frame(), plotcolors = "", splv = "",
-  deviation = data.frame(), maxsplit = NA_integer_, facetted = NA,
-  object_to_extend = NULL)
+  deviation = data.frame(), maxsplit = NA_integer_, facetted = NA)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various
@@ -50,8 +49,8 @@ p-values or more general scores) and true scores, which can be used to
 generate scatter plots.}
 
 \item{onlyshared}{A logical value indicating whether only features shared
-between the results and the truth should be retained, or if all features
-present in the truth should be used.}
+  between the results and the truth should be retained, or if all features
+  present in the truth should be used.}
 
 \item{fpc}{A data frame containing observed numbers of false positive
 findings among the N top-ranked features (ranked by p-values, adjusted
@@ -77,11 +76,8 @@ and true scores.}
 retain if the results have been stratified by an annotation.}
 
 \item{facetted}{A logical indicating whether the data is prepared for a
-facetted plot (separating different stratification levels into different
-panels) or for displaying all values in one plot panel.}
-
-\item{object_to_extend}{An \code{IBRAPlot} object to extend with the provided
-  information.}
+  facetted plot (separating different stratification levels into different
+  panels) or for displaying all values in one plot panel.}
 }
 \value{
 An \code{IBRAPlot} object.

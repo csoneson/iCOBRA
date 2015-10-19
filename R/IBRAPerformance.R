@@ -66,8 +66,6 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #' @param onlyshared A logical value indicating whether only features shared
 #'   between the results and the truth should be retained, or if all features
 #'   present in the truth should be used.
-#' @param object_to_extend An \code{IBRAPerformance} object to extend with the
-#'   provided information.
 #'
 #' @include IBRAData.R
 #' @return An \code{IBRAPerformance} object.
@@ -89,46 +87,9 @@ IBRAPerformance <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                             roc = data.frame(), fpc = data.frame(),
                             deviation = data.frame(), onlyshared = NA,
                             overlap = data.frame(), maxsplit = NA_integer_,
-                            corr = data.frame(), scatter = data.frame(),
-                            object_to_extend = NULL) {
+                            corr = data.frame(), scatter = data.frame()) {
   ## TODO: add some checks of the input arguments
 
-  if (!(is.null(object_to_extend))) {
-    if (!(class(object_to_extend) == "IBRAPerformance")) {
-      stop("object_to_extend must be a IBRAPerformance object")
-    } else {
-      if (length(object_to_extend@fdrtpr) != 0)
-        fdrtpr <- object_to_extend@fdrtpr
-      if (length(object_to_extend@fdrtprcurve) != 0)
-        fdrtprcurve <- object_to_extend@fdrtprcurve
-      if (length(object_to_extend@fdrnbr) != 0)
-        fdrnbr <- object_to_extend@fdrnbr
-      if (length(object_to_extend@fdrnbrcurve) != 0)
-        fdrnbrcurve <- object_to_extend@fdrnbrcurve
-      if (length(object_to_extend@tpr) != 0)
-        tpr <- object_to_extend@tpr
-      if (length(object_to_extend@fpr) != 0)
-        fpr <- object_to_extend@fpr
-      if (length(object_to_extend@roc) != 0)
-        roc <- object_to_extend@roc
-      if (length(object_to_extend@fpc) != 0)
-        fpc <- object_to_extend@fpc
-      if (length(object_to_extend@corr) != 0)
-        corr <- object_to_extend@corr
-      if (length(object_to_extend@deviation) != 0)
-        deviation <- object_to_extend@deviation
-      if (length(object_to_extend@scatter) != 0)
-        scatter <- object_to_extend@scatter
-      if (length(object_to_extend@overlap) != 0)
-        overlap <- object_to_extend@overlap
-      if (!is.na(object_to_extend@maxsplit))
-        maxsplit <- object_to_extend@maxsplit
-      if ((object_to_extend@splv) != "")
-        splv <- object_to_extend@splv
-      if (!is.na(object_to_extend@onlyshared))
-        onlyshared <- object_to_extend@onlyshared
-    }
-  }
   .IBRAPerformance(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
                    deviation = deviation, fdrnbr = fdrnbr,
                    fdrnbrcurve = fdrnbrcurve, scatter = scatter,
@@ -195,8 +156,8 @@ setReplaceMethod("fdrtpr", signature(x = "IBRAPerformance",
 #' @name onlyshared
 #' @rdname onlyshared
 #' @aliases onlyshared onlyshared,IBRAPerformance-method
-#'   onlyshared<-,IBRAPerformance,data.frame-method onlyshared,IBRAPlot-method
-#'   onlyshared<-,IBRAPlot,data.frame-method
+#'   onlyshared<-,IBRAPerformance,logical-method onlyshared,IBRAPlot-method
+#'   onlyshared<-,IBRAPlot,logical-method
 #' @return The accessor function returns a logical indicating whether only
 #'   features that are shared between result and truth are retained, or if all
 #'   features in the truth are used.

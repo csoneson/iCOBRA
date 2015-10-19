@@ -6,8 +6,8 @@
 \alias{onlyshared,IBRAPerformance-method}
 \alias{onlyshared,IBRAPlot-method}
 \alias{onlyshared<-}
-\alias{onlyshared<-,IBRAPerformance,data.frame-method}
-\alias{onlyshared<-,IBRAPlot,data.frame-method}
+\alias{onlyshared<-,IBRAPerformance,logical-method}
+\alias{onlyshared<-,IBRAPlot,logical-method}
 \title{Accessor and replacement functions for \code{onlyshared} slot}
 \usage{
 onlyshared(x, ...)

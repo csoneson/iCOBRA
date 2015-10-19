@@ -21,8 +21,6 @@
 #' @param facetted A logical indicating whether the data is prepared for a
 #'   facetted plot (separating different stratification levels into different
 #'   panels) or for displaying all values in one plot panel.
-#' @param object_to_extend An \code{IBRAPlot} object to extend with the provided
-#'   information.
 #'
 #' @return An \code{IBRAPlot} object.
 #' @inheritParams IBRAPerformance
@@ -45,50 +43,8 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      scatter = data.frame(), onlyshared = NA,
                      fpc = data.frame(), overlap = data.frame(),
                      plotcolors = "", splv = "", deviation = data.frame(),
-                     maxsplit = NA_integer_, facetted = NA,
-                     object_to_extend = NULL) {
+                     maxsplit = NA_integer_, facetted = NA) {
 
-  if (!(is.null(object_to_extend))) {
-    if (!(class(object_to_extend) == "IBRAPlot")) {
-      stop("object_to_extend must be a IBRAPlot object")
-    } else {
-      if (length(object_to_extend@fdrtpr) != 0)
-        fdrtpr <- object_to_extend@fdrtpr
-      if (length(object_to_extend@fdrtprcurve) != 0)
-        fdrtprcurve <- object_to_extend@fdrtprcurve
-      if (length(object_to_extend@fdrnbr) != 0)
-        fdrnbr <- object_to_extend@fdrnbr
-      if (length(object_to_extend@fdrnbrcurve) != 0)
-        fdrnbrcurve <- object_to_extend@fdrnbrcurve
-      if (length(object_to_extend@tpr) != 0)
-        tpr <- object_to_extend@tpr
-      if (length(object_to_extend@fpr) != 0)
-        fpr <- object_to_extend@fpr
-      if (length(object_to_extend@roc) != 0)
-        roc <- object_to_extend@roc
-      if (length(object_to_extend@fpc) != 0)
-        fpc <- object_to_extend@fpc
-      if (length(object_to_extend@corr) != 0)
-        corr <- object_to_extend@corr
-      if (length(object_to_extend@scatter) != 0)
-        scatter <- object_to_extend@scatter
-      if (length(object_to_extend@deviation) != 0)
-        deviation <- object_to_extend@deviation
-      if (length(object_to_extend@overlap) != 0)
-        overlap <- object_to_extend@overlap
-      if (length(object_to_extend@plotcolors) != 0)
-        plotcolors <- c(object_to_extend@plotcolors,
-                        plotcolors[setdiff(names(plotcolors),
-                                           names(object_to_extend@plotcolors))])
-      if ((object_to_extend@splv) != "")
-        splv <- object_to_extend@splv
-      if (!is.na(object_to_extend@maxsplit))
-        maxsplit <- object_to_extend@maxsplit
-      if (!is.na(object_to_extend@onlyshared))
-        onlyshared <- object_to_extend@onlyshared
-      facetted <- object_to_extend@facetted
-    }
-  }
   .IBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve, onlyshared = onlyshared,
             fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, deviation = deviation,
             tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
@@ -134,9 +90,9 @@ setMethod("show", "IBRAPlot", function(object) {
 #' ibraplot <- prepare_data_for_plot(ibraperf)
 #' plotcolors(ibraplot)
 setMethod("plotcolors", "IBRAPlot", function(x) x@plotcolors)
-#'@name plotcolors
-#'@rdname plotcolors
-#'@exportMethod "plotcolors<-"
+#' @name plotcolors
+#' @rdname plotcolors
+#' @exportMethod "plotcolors<-"
 setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
                  function(x, value) {
                    x@plotcolors <- value
@@ -171,9 +127,9 @@ setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
 #' ibraplot <- prepare_data_for_plot(ibraperf)
 #' facetted(ibraplot)
 setMethod("facetted", "IBRAPlot", function(x) x@facetted)
-#'@name facetted
-#'@rdname facetted
-#'@exportMethod "facetted<-"
+#' @name facetted
+#' @rdname facetted
+#' @exportMethod "facetted<-"
 setReplaceMethod("facetted", signature(x = "IBRAPlot", value = "logical"),
                  function(x, value) {
                    x@facetted <- value
