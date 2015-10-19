@@ -42,12 +42,11 @@ may be arranged in the same order.
 }
 \examples{
 data(ibradata_example)
+ibradata_example[c("ENSG00000000457", "ENSG00000000971",
+                   "ENSG00000000460"), ]
 ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
                                   aspects = "fdrtpr")
 ibraperf[, c("voom")]
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr")
 ibraplot <- prepare_data_for_plot(ibraperf)
 ibraplot[, c("voom")]
 }

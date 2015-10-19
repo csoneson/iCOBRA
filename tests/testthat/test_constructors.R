@@ -179,3 +179,16 @@ test_that("subsetting of objects works", {
   expect_error(ibraplot[kp, ])
   expect_equal(nrow(pval(ibradata[kp, ])), length(kp))
 })
+
+test_that("extending an object still returns valid objects", {
+  ibradata <- ibradata_example
+  ibradata <- IBRAData(pval = pval(ibradata), object_to_extend = ibradata)
+  expect_is(ibradata, "IBRAData")
+})
+
+test_that("extending an object of the wrong class doesn't work", {
+    ibradata <- ibradata_example
+    ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+                                      cont_truth = "logFC", aspects = "tpr")
+    expect_error(IBRAData(pval = pval(ibradata), object_to_extend = ibraperf))
+})

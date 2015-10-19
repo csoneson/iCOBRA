@@ -56,13 +56,8 @@ Prepare performance data provided in an \code{IBRAPerformance} object
 (obtained by \code{\link{calculate_performance}}) for plotting.
 }
 \examples{
-set.seed(123)
-padj <- data.frame(m1 = runif(100), m2 = runif(100),
-                   row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)),
-                    row.names = paste0("G", 1:100))
-ibradata <- IBRAData(padj = padj, truth = truth)
-ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+data(ibradata_example)
+ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
                                   cont_truth = "none",
                                   aspects = c("fdrtpr", "fdrtprcurve",
                                               "tpr", "roc"),
@@ -72,7 +67,7 @@ ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
 
 ## User-specified colors
 ibraplot2 <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
-                                   colorscheme = c("blue", "red"))
+                                   colorscheme = c("blue", "red", "green"))
 }
 \author{
 Charlotte Soneson

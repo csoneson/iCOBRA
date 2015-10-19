@@ -24,15 +24,9 @@ of the app for formatting instructions). Properly formatted text files can
 also be obtained using the function \code{\link{IBRAData_to_text}}.
 }
 \examples{
-set.seed(123)
-padj <- data.frame(m1 = runif(100), m2 = runif(100),
-                   row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)),
-                    row.names = paste0("G", 1:100))
-ibradata <- IBRAData(padj = padj, truth = truth)
-
+data(ibradata_example)
 \dontrun{
-IBRAapp(ibradata)
+IBRAapp(ibradata_example)
 }
 }
 \author{

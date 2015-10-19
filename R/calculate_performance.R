@@ -125,13 +125,8 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)),
-#'                     row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
 #'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
@@ -1052,13 +1047,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' padj <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)),
-#'                     row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(padj = padj, truth = truth)
-#' ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+#' data(ibradata_example)
+#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
 #'                                   cont_truth = "none",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
@@ -1068,7 +1058,7 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 #'
 #' ## User-specified colors
 #' ibraplot2 <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
-#'                                    colorscheme = c("blue", "red"))
+#'                                    colorscheme = c("blue", "red", "green"))
 prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
                                   incloverall = TRUE, colorscheme = "hue_pal",
                                   facetted = TRUE, incltruth = TRUE) {

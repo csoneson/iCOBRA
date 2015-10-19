@@ -117,13 +117,8 @@ fix_duplicates <- function(res_df, method_name) {
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' set.seed(123)
-#' pval <- data.frame(m1 = runif(100), m2 = runif(100),
-#'                    row.names = paste0("G", 1:100))
-#' truth <- data.frame(status = round(runif(100)),
-#'                     row.names = paste0("G", 1:100))
-#' ibradata <- IBRAData(pval = pval, truth = truth)
-#' ibradata <- calculate_adjp(ibradata, method = "BH")
+#' data(ibradata_example)
+#' ibradata_example <- calculate_adjp(ibradata_example, method = "BH")
 calculate_adjp <- function(ibradata, method = "BH") {
   sf <- setdiff(colnames(pval(ibradata)), colnames(padj(ibradata)))
   if (length(sf) > 0) {

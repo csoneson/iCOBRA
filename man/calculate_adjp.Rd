@@ -21,13 +21,8 @@ Calculate adjusted p-values for methods where only nominal p-values are
 available in an \code{IBRAData} object.
 }
 \examples{
-set.seed(123)
-pval <- data.frame(m1 = runif(100), m2 = runif(100),
-                   row.names = paste0("G", 1:100))
-truth <- data.frame(status = round(runif(100)),
-                    row.names = paste0("G", 1:100))
-ibradata <- IBRAData(pval = pval, truth = truth)
-ibradata <- calculate_adjp(ibradata, method = "BH")
+data(ibradata_example)
+ibradata_example <- calculate_adjp(ibradata_example, method = "BH")
 }
 \author{
 Charlotte Soneson

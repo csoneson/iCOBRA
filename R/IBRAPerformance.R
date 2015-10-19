@@ -751,11 +751,6 @@ setMethod("stratiflevels", "IBRAPerformance", function(x) {
 #' @aliases [ [,IBRAPerformance-method \S4method{[}{IBRAPerformance,ANY,ANY}
 #' @return A subset of the original object, of the same class
 #' @export
-#' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
-#' ibraperf[, c("voom")]
 setMethod("[", "IBRAPerformance",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
