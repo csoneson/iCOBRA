@@ -1099,10 +1099,12 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
         if ("truth" %in% colnames(overlap(ibraperf))) {
           if (isTRUE(onlyshared(ibraperf))) {
             overlap(ibraperf) <-
-              overlap(ibraperf)[which(rowSums(is.na(overlap(ibraperf))) == 0), ]
+              overlap(ibraperf)[which(rowSums(is.na(overlap(ibraperf))) == 0),
+                                , drop = FALSE]
           } else {
             overlap(ibraperf) <-
-              overlap(ibraperf)[which(!is.na(overlap(ibraperf)$truth)), ]
+              overlap(ibraperf)[which(!is.na(overlap(ibraperf)$truth)),
+                                , drop = FALSE]
           }
         }
         overlap(ibraperf)[is.na(overlap(ibraperf))] <- 0
@@ -1110,9 +1112,9 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
         overlap(ibraperf) <- lapply(overlap(ibraperf), function(w) {
           if ("truth" %in% colnames(w)) {
             if (isTRUE(onlyshared(ibraperf))) {
-              w <- w[which(rowSums(is.na(w)) == 0), ]
+              w <- w[which(rowSums(is.na(w)) == 0), , drop = FALSE]
             } else {
-              w <- w[which(!is.na(w$truth)), ]
+              w <- w[which(!is.na(w$truth)), , drop = FALSE]
             }
           } else
             w <- w

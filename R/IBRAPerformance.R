@@ -756,40 +756,89 @@ setMethod("[", "IBRAPerformance",
             if (length(intersect(j, basemethods(x))) == 0)
               stop(paste0("None of the provided method found in the object. ",
                           "No subsetting done."))
-            if (length(x@tpr) != 0)
+            if (length(x@tpr) != 0 && length(intersect(j,x@tpr$basemethod)) > 0)
               x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
-            if (length(x@fpr) != 0)
+            else
+              x@tpr <- data.frame()
+
+            if (length(x@fpr) != 0 && length(intersect(j,x@fpr$basemethod)) > 0)
               x@fpr <- x@fpr[which(x@fpr$basemethod %in% j), ]
-            if (length(x@roc) != 0)
+            else
+              x@fpr <- data.frame()
+
+            if (length(x@roc) != 0 && length(intersect(j,x@roc$basemethod)) > 0)
               x@roc <- x@roc[which(x@roc$basemethod %in% j), ]
-            if (length(x@fpc) != 0)
+            else
+              x@roc <- data.frame()
+
+            if (length(x@fpc) != 0 && length(intersect(j,x@fpc$basemethod)) > 0)
               x@fpc <- x@fpc[which(x@fpc$basemethod %in% j), ]
-            if (length(x@fdrtpr) != 0)
+            else
+              x@fpc <- data.frame()
+
+            if (length(x@fdrtpr) != 0 &&
+                length(intersect(j, x@fdrtpr$basemethod)) > 0)
               x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
-            if (length(x@fdrnbr) != 0)
+            else
+              x@fdrtpr <- data.frame()
+
+            if (length(x@fdrnbr) != 0 &&
+                length(intersect(j, x@fdrnbr$basemethod)) > 0)
               x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
-            if (length(x@deviation) != 0)
+            else
+              x@fdrnbr <- data.frame()
+
+            if (length(x@deviation) != 0 &&
+                length(intersect(j, x@deviation$basemethod)) > 0)
               x@deviation <- x@deviation[which(x@deviation$basemethod %in% j), ]
-            if (length(x@fdrtprcurve) != 0)
+            else
+              x@deviation <- data.frame()
+
+            if (length(x@fdrtprcurve) != 0 &&
+                length(intersect(j, x@fdrtprcurve$basemethod)) > 0)
               x@fdrtprcurve <-
                 x@fdrtprcurve[which(x@fdrtprcurve$basemethod %in% j), ]
-            if (length(x@fdrnbrcurve) != 0)
+            else
+              x@fdrtprcurve <- data.frame()
+
+            if (length(x@fdrnbrcurve) != 0 &&
+                length(intersect(j,x@fdrnbrcurve$basemethod)) > 0)
               x@fdrnbrcurve <-
                 x@fdrnbrcurve[which(x@fdrnbrcurve$basemethod %in% j), ]
-            if (length(x@corr) != 0)
+            else
+              x@fdrnbrcurve <- data.frame()
+
+            if (length(x@corr) != 0 &&
+                length(intersect(j, x@corr$basemethod)) > 0)
               x@corr <- x@corr[which(x@corr$basemethod %in% j), ]
-            if (length(x@scatter) != 0)
+            else
+              x@corr <- data.frame()
+
+            if (length(x@scatter) != 0 &&
+                length(intersect(j, x@scatter$basemethod)) > 0)
               x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
+            else
+              x@scatter <- data.frame()
+
             if (length(x@overlap) != 0) {
-              if (class(x@overlap) == "list") {
-                x@overlap <-
-                  lapply(x@overlap, function(w) {
-                      w[, which(colnames(w) %in% c(j, "truth")), drop = FALSE]
-                  })
-              } else {
+              if (class(x@overlap) == "data.frame") {
+                if (length(intersect(c(j, "truth"), colnames(x@overlap))) > 0) {
                   x@overlap <-
                     x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),
                               drop = FALSE]
+                } else {
+                  x@overlap <- data.frame()
+                }
+              } else {
+                if (length(intersect(c(j, "truth"),
+                                     colnames(x@overlap[[1]]))) > 0) {
+                  x@overlap <-
+                    lapply(x@overlap, function(w) {
+                      w[, which(colnames(w) %in% c(j, "truth")), drop = FALSE]
+                    })
+                } else {
+                  x@overlap <- list()
+                }
               }
             }
             x
