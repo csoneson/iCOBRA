@@ -28,10 +28,12 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
   p_layout <-
     shinydashboard::dashboardPage(
       skin = "blue",
+
       shinydashboard::dashboardHeader(
         title = paste0("IBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.5)"),
+                       "of methods for ranking and binary assignment (v0.3.6)"),
         titleWidth = 800),
+
       shinydashboard::dashboardSidebar(
         width = 350,
         ## Settings and inputs for the truth
@@ -44,14 +46,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                    "tab for formatting instructions."),
                    "right", options = list(container = "body")),
 
-                 ## Define the column giving the feature identifier
+                 ## Define the column containing the feature identifier
                  ## (for both truth and results)
                  uiOutput("choose_feature_id"),
 
-                 ## Define the column giving the (binary) truth
+                 ## Define the column containing the (binary) truth
                  uiOutput("choose_binary_truth"),
 
-                 ## Define the column giving the (continuous) truth
+                 ## Define the column containing the (continuous) truth
                  uiOutput("choose_continuous_truth"),
 
                  ## Define the variable used to stratify the results,
@@ -63,7 +65,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                           "the result representations."),
                            "right", options = list(container = "body")),
 
-                 ## Define the maximal number of categories to keep
+                 ## Define the maximal number of categories to retain
                  ## in stratification.
                  uiOutput("choosemaxsplit"),
                  shinyBS::bsTooltip(
@@ -580,14 +582,20 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             coltype <- get_coltype(i)
 
             if (!(is.null(coltype))) {
-              tmp <- v[i]
-              rownames(tmp) <- v[, input$feature_id]
+              ## Fix duplicates
+              tmp1 <- v[, c(input$feature_id, i)]
+              tmp1 <- fix_duplicates(tmp1, input$feature_id, i)
+
+#               tmp <- v[i]
+#               rownames(tmp) <- v[, input$feature_id]
+              tmp <- tmp1[i]
+              rownames(tmp) <- tmp1[, input$feature_id]
               i <- gsub(":score$", "", gsub(":adjP$", "", gsub(":P$", "", i)))
               colnames(tmp) <- i
 
               ## If a gene is present multiple times, keep only the smallest p
               ## (excluding missing/NaN values).
-              tmp <- fix_duplicates(tmp, i)
+              #tmp <- fix_duplicates(tmp, i)
 
               isolate(values$all_methods <- unique(c(values$all_methods, i)))
 

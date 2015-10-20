@@ -81,6 +81,9 @@ test_that(paste0("IBRAPerformance constructor and calculate_performance ",
                                                    binary_truth = "status",
                                                    aspects = "fpr"),
                              "IBRAPerformance")
+                   ip <- IBRAPerformance()
+                   onlyshared(ip) <- TRUE
+                   expect_is(ip, "IBRAPerformance")
 })
 
 test_that(paste0("IBRAPlot constructor and prepare_data_for_plot ",

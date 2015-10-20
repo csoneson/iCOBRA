@@ -85,18 +85,19 @@ get_coltype <- function(col_name) {
   coltype
 }
 
-fix_duplicates <- function(res_df, method_name) {
-  dp <- unique(rownames(res_df)[duplicated(rownames(res_df))])
+fix_duplicates <- function(res_df, feature_id, method_name) {
+  dp <-
+    unique(as.character(res_df[, feature_id][duplicated(res_df[, feature_id])]))
   if (length(dp) > 0) {
     print(paste0("Found duplicate gene name(s) for ", method_name))
     for (j in dp) {
-      idx <- which(rownames(res_df) == j)
+      idx <- which(res_df[, feature_id] == j)
       kp <- which.min(res_df[idx, method_name])[1]
       if (is.na(kp)) kp <- 1
       rem <- idx[-kp]
       res_df <- res_df[-rem, , drop = FALSE]
     }
-    if (sum(duplicated(rownames(res_df))) == 0)
+    if (sum(duplicated(res_df[, feature_id])) == 0)
       print("Fixed the duplication!")
   }
   res_df

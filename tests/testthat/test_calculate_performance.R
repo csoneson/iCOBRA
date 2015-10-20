@@ -73,7 +73,9 @@ bb2 <- length(setdiff(rownames(subset(padjsub, edgeR > 0.05)), rownames(subset(t
 test_that("Shared values in output objects are equal", {
   ibp1 <- prepare_data_for_plot(ib1, keepmethod = NULL, incloverall = TRUE,
                                 incltruth = TRUE)
-  expect_equivalent(colSums(overlap(ibp1))["edgeR"], (subset(tpr(ib1), fullmethod == "edgeR_overall" & thr == "thr0.05"))[, "NBR"])
+  expect_equivalent(colSums(overlap(ibp1))["edgeR"],
+                    (subset(tpr(ib1), fullmethod == "edgeR_overall" &
+                              thr == "thr0.05"))[, "NBR"])
 
   ## TP (fdrtpr, fdrnbr, tpr, fpr)
   expect_equal((subset(fdrtpr(ib1), fullmethod == "voom_overall" & thr == "thr0.05"))[, "TP"],
@@ -537,6 +539,10 @@ test_that("getcurve returns NULL if not both positive and negative instances are
   ibraperf <- calculate_performance(ibradata, binary_truth <- "status",
                                     aspects = "fdrtprcurve")
   expect_equal(length(fdrtprcurve(ibraperf)), 0)
+  ibraperf2 <- calculate_performance(ibradata, binary_truth = "status",
+                                     aspects = "fdrtprcurve", splv = "expr_cat")
+  expect_equal(length(fdrtprcurve(ibraperf2)), 0)
+
 })
 
 test_that("calculate_performance without score works", {
@@ -601,6 +607,16 @@ test_that("calculate_performance without significant features works", {
 
   expect_is(ib1, "IBRAPerformance")
   expect_equal(fdrtpr(ib1)$FDR, rep(0, 3))
+
+  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+                               cont_truth = "logFC",
+                               aspects = c("fdrtpr"),
+                               thrs = c(0.05), splv = "expr_cat",
+                               onlyshared = FALSE,
+                               thr_venn = 0.05)
+
+  expect_is(ib1, "IBRAPerformance")
+  expect_equal(fdrtpr(ib1)$FDR, rep(0, 12))
 })
 
 test_that("overlap calculations are correct", {
@@ -658,6 +674,23 @@ test_that("overlap calculations are correct", {
                sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
   expect_equal(length(setdiff(which(padj1$voom <= 0.05), which(padj1$edgeR <= 0.05))),
                length(setdiff(which(overlap(ib1)$voom == 1), which(overlap(ib1)$edgeR == 1))))
+
+  ## onlyshared = TRUE, incltruth = TRUE, stratify
+  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+                               aspects = c("tpr", "overlap"), splv = "expr_cat",
+                               onlyshared = TRUE, thr_venn = 0.05)
+  ib1 <- prepare_data_for_plot(ib1, incltruth = TRUE)
+  kp <- intersect(rownames(truth)[which(!is.na(truth$status))],
+                  rownames(padj)[which(rowSums(is.na(padj)) == 0)])
+  padj1 <- padj[match(kp, rownames(padj)), ]
+  expect_equal(length(intersect(which(padj1$edgeR <= 0.05),
+                                which(padj1$voom <= 0.05))),
+               sum(overlap(ib1)$overall$edgeR * overlap(ib1)$overall$voom))
+  expect_equal(length(setdiff(which(padj1$voom <= 0.05), which(padj1$edgeR <= 0.05))),
+               length(setdiff(which(overlap(ib1)$overall$voom == 1), which(overlap(ib1)$overall$edgeR == 1))))
+
+  ib2 <- prepare_data_for_plot(ib1, incltruth = TRUE, incloverall = FALSE)
+  expect_is(ib2, "IBRAPlot")
 })
 
 
