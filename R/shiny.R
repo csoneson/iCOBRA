@@ -31,7 +31,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("IBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.7)"),
+                       "of methods for ranking and binary assignment (v0.3.8)"),
         titleWidth = 800),
 
       shinydashboard::dashboardSidebar(
@@ -527,6 +527,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                    choices = c("yes", "no"), selected = "yes")
     })
 
+    ## Render the UI element to upload result file(s)
     output$choose_result_file <- renderUI({
       if (!is.null(ibradata)) {
         NULL
@@ -538,7 +539,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       }
     })
 
-    ## Generate the UI object for selecting methods to include, based on the
+    ## Render the UI object for selecting methods to include, based on the
     ## uploaded result files.
     output$columns <- renderUI({
       if (!is.null(ibradata)) {
@@ -577,11 +578,13 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
               tmp1 <- v[, c(input$feature_id, i)]
               tmp1 <- fix_duplicates(tmp1, input$feature_id, i)
 
+              ## Rename column to only method name
               tmp <- tmp1[i]
               rownames(tmp) <- tmp1[, input$feature_id]
               i <- gsub(":score$", "", gsub(":adjP$", "", gsub(":P$", "", i)))
               colnames(tmp) <- i
 
+              ## Add values to data collection
               isolate(values$all_methods <- unique(c(values$all_methods, i)))
 
               if (coltype == "pval") {
@@ -600,9 +603,10 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             }
             ii <- ii + 1
           }
+          ## Calculate adjusted p-values if needed
           isolate(values$my_ibradata <- calculate_adjp(values$my_ibradata))
 
-          ## Create the UI element for selecting methods to include.
+          ## Render the UI element
           checkboxGroupInput("cols", "Select methods",
                              isolate(values$all_methods),
                              isolate(values$all_methods))

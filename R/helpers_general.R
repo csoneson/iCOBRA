@@ -3,7 +3,7 @@
 ## otherwise print a message and return FALSE.
 res_check <- function(dfr) {
   if (ncol(dfr) == 1) {
-    print("The data frame contains only one column")
+    message("The data frame contains only one column")
     return(FALSE)
   }
   return(TRUE)
@@ -89,7 +89,7 @@ fix_duplicates <- function(res_df, feature_id, method_name) {
   dp <-
     unique(as.character(res_df[, feature_id][duplicated(res_df[, feature_id])]))
   if (length(dp) > 0) {
-    print(paste0("Found duplicate gene name(s) for ", method_name))
+    message(paste0("Found duplicate gene name(s) for ", method_name))
     for (j in dp) {
       idx <- which(res_df[, feature_id] == j)
       kp <- which.min(res_df[idx, method_name])[1]
@@ -98,7 +98,7 @@ fix_duplicates <- function(res_df, feature_id, method_name) {
       res_df <- res_df[-rem, , drop = FALSE]
     }
     if (sum(duplicated(res_df[, feature_id])) == 0)
-      print("Fixed the duplication!")
+      message("Fixed the duplication!")
   }
   res_df
 }

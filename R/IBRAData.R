@@ -134,6 +134,9 @@ IBRAData_from_text <- function(truth_file, result_files, feature_id) {
   rownames(truth) <- truth[, feature_id]
   RF <- lapply(result_files, function(f) {
     f <- utils::read.delim(f, header = TRUE, as.is = TRUE, check.names = FALSE)
+    if (any(duplicated(f[, feature_id])))
+      stop("Duplicate feature IDs found in result file. Please fix.")
+    f
   })
   RF <- Reduce(function(...) merge(..., by = feature_id, all = TRUE), RF)
   pval <- RF[, c(feature_id,
