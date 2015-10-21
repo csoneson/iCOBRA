@@ -141,5 +141,5 @@ If not all input controls are visible in the left-hand sidebar, either "fold" on
 
 The sidebar can be hidden by clicking the three lines next to the main title.
 
-
+If the colors of the plots do not change when a new color palette is chosen in the left-hand sidebar, most likely the number of colors in the chosen palette is not enough. Note that the number of required colors depends not only on the number of different methods in the evaluation, but also on whether the plots are facetted or not. Also note that not all methods may be included in each plot, so the number of methods that need to be assigned a unique color may exceed the number of methods displayed in any given plot. `IBRA` will attempt to keep the colors for a given method consistent throughout the different visualizations. 
 

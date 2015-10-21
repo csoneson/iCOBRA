@@ -789,7 +789,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     plotvalues <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun))) {
-        ## Put together results for current methods
+        ## Put together results for chosen methods
         if (length(input$cols) != 0) {
           withProgress(message = "Calculating...", value = 0, {
             all_vals <-
@@ -958,11 +958,11 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                     "not been clicked in order to launch calculations."))
       )
       validate(
-          need(is_plottable(tpr(plotvalues()$all_vals)),
-               paste0("TPR can not be displayed. Check that ",
-                      "binary_truth is not 'none' and that adjusted ",
-                      "p-values are provided."))
-        )
+        need(is_plottable(tpr(plotvalues()$all_vals)),
+             paste0("TPR can not be displayed. Check that ",
+                    "binary_truth is not 'none' and that adjusted ",
+                    "p-values are provided."))
+      )
 
       withProgress(message = "Updating plot...", value = 0, {
         if (length(values$all_methods) == 0 | length(input$cols) == 0 |
@@ -1015,10 +1015,10 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
           return(NULL)
         print(plot_corr(ibraplot = plotvalues()$all_vals,
                         title = plotvalues()$title,
-                       stripsize = input$stripsize, titlecol = "white",
-                       pointsize = input$pointsize,
-                       xaxisrange = input$xrange_corr,
-                       corrtype = input$corrtype))
+                        stripsize = input$stripsize, titlecol = "white",
+                        pointsize = input$pointsize,
+                        xaxisrange = input$xrange_corr,
+                        corrtype = input$corrtype))
         grDevices::dev.off()
       })
 
@@ -1060,9 +1060,9 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
           return(NULL)
 
         plot_corr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
-                 stripsize = input$stripsize, titlecol = "white",
-                 pointsize = input$pointsize, xaxisrange = input$xrange_corr,
-                 corrtype = input$corrtype)
+                  stripsize = input$stripsize, titlecol = "white",
+                  pointsize = input$pointsize, xaxisrange = input$xrange_corr,
+                  corrtype = input$corrtype)
       })
     })
 
@@ -1611,14 +1611,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                     "not been clicked in order to launch calculations."))
       )
       validate(need(any(c("points", "curve") %in% input$plottype),
-               "No plot type selected.")
+                    "No plot type selected.")
       )
       if ("curve" %in% input$plottype)
         validate(
           need(is_plottable(fdrtprcurve(plotvalues()$all_vals)),
                paste0("FDR/TPR curves can not be displayed. Check that ",
                       "binary_truth is not 'none'."))
-      )
+        )
       if ("points" %in% input$plottype)
         validate(
           need(is_plottable(fdrtpr(plotvalues()$all_vals)),

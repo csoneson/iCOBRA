@@ -21,7 +21,7 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #'
 #' The \code{IBRAPerformance} class holds various types of calculated
 #' performance measures. Objects from this class are typically generated from
-#' \code{IBRAData} object by means of the function
+#' \code{IBRAData} objects by means of the function
 #' \code{\link{calculate_performance}}.
 #'
 #' @param fdrtpr A data frame containing observed FDR and TPR values at various

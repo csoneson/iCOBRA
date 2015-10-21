@@ -13,7 +13,7 @@
 #' assignments. Several \code{IBRAPlot} objects can be generated from the same
 #' \code{IBRAPerformance} object, without having to go through the potentially
 #' time consuming task of recalculating all performance measures. Objects from
-#' this class are typically generated from an \code{IBRAPerformance} object by
+#' this class are typically generated from an \code{IBRAPerformance} objects by
 #' means of the function \code{\link{prepare_data_for_plot}}.
 #'
 #' @param plotcolors A character vector giving the color for each method (or
