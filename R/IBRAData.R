@@ -67,52 +67,120 @@ IBRAData <- function(pval = data.frame(), padj = data.frame(),
       stop("object_to_extend must be a IBRAData object")
     } else {
       if (length(object_to_extend@pval) != 0) {
-        if (length(pval) != 0 &&
-            length(setdiff(colnames(pval),
-                           colnames(object_to_extend@pval))) > 0) {
-          pval <- pval[, setdiff(colnames(pval),
-                                 colnames(object_to_extend@pval)), drop = FALSE]
-          pval <- merge(object_to_extend@pval, pval, by = 0, all = TRUE)
-          rownames(pval) <- pval$Row.names
-          pval$Row.names <- NULL
+        if (length(pval) != 0) {
+          sds <- setdiff(colnames(pval),
+                         colnames(object_to_extend@pval))
+          if (length(sds) > 0) {
+            pval <- pval[, setdiff(colnames(pval),
+                                   colnames(object_to_extend@pval)),
+                         drop = FALSE]
+            object_to_extend@pval$feature_names_tmp <-
+              rownames(object_to_extend@pval)
+            pval$feature_names_tmp <- rownames(pval)
+            pval <- as.data.frame(dplyr::full_join(object_to_extend@pval, pval,
+                                                   by = "feature_names_tmp"))
+            rownames(pval) <- pval$feature_names_tmp
+            pval$feature_names_tmp <- NULL
+          } else {
+            pval <- object_to_extend@pval
+          }
+          message(paste0(length(setdiff(rownames(pval),
+                                        rownames(object_to_extend@pval))),
+                         " new features and ",
+                         length(sds), " new methods added to pval table."))
         } else {
           pval <- object_to_extend@pval
         }
+      } else {
+        message(paste0(nrow(pval), " new features and ",
+                       ncol(pval), " new methods added to pval table."))
       }
 
       if (length(object_to_extend@padj) != 0) {
-        if (length(padj) != 0 &&
-            length(setdiff(colnames(padj),
-                           colnames(object_to_extend@padj))) > 0) {
-          padj <- padj[, setdiff(colnames(padj),
-                                 colnames(object_to_extend@padj)), drop = FALSE]
-          padj <- merge(object_to_extend@padj, padj, by = 0, all = TRUE)
-          rownames(padj) <- padj$Row.names
-          padj$Row.names <- NULL
+        if (length(padj) != 0) {
+          sds <- setdiff(colnames(padj),
+                         colnames(object_to_extend@padj))
+          if (length(sds) > 0) {
+            padj <- padj[, setdiff(colnames(padj),
+                                   colnames(object_to_extend@padj)),
+                         drop = FALSE]
+            object_to_extend@padj$feature_names_tmp <-
+              rownames(object_to_extend@padj)
+            padj$feature_names_tmp <- rownames(padj)
+            padj <- as.data.frame(dplyr::full_join(object_to_extend@padj, padj,
+                                                   by = "feature_names_tmp"))
+            rownames(padj) <- padj$feature_names_tmp
+            padj$feature_names_tmp <- NULL
+          } else {
+            padj <- object_to_extend@padj
+          }
+          message(paste0(length(setdiff(rownames(padj),
+                                        rownames(object_to_extend@padj))),
+                         " new features and ",
+                         length(sds), " new methods added to padj table."))
         } else {
           padj <- object_to_extend@padj
         }
+      } else {
+        message(paste0(nrow(padj), " new features and ",
+                       ncol(padj), " new methods added to padj table."))
       }
 
       if (length(object_to_extend@score) != 0) {
-        if (length(score) != 0 &&
-            length(setdiff(colnames(score),
-                           colnames(object_to_extend@score))) > 0) {
-          score <- score[, setdiff(colnames(score),
-                                   colnames(object_to_extend@score)),
-                         drop = FALSE]
-          score <- merge(object_to_extend@score, score, by = 0, all = TRUE)
-          rownames(score) <- score$Row.names
-          score$Row.names <- NULL
+        if (length(score) != 0) {
+          sds <- setdiff(colnames(score),
+                         colnames(object_to_extend@score))
+          if (length(sds) > 0) {
+            score <- score[, setdiff(colnames(score),
+                                     colnames(object_to_extend@score)),
+                           drop = FALSE]
+            object_to_extend@score$feature_names_tmp <-
+              rownames(object_to_extend@score)
+            score$feature_names_tmp <- rownames(score)
+            score <- as.data.frame(dplyr::full_join(object_to_extend@score,
+                                                    score,
+                                                    by = "feature_names_tmp"))
+            rownames(score) <- score$feature_names_tmp
+            score$feature_names_tmp <- NULL
+          } else {
+            score <- object_to_extend@score
+          }
+          message(paste0(length(setdiff(rownames(score),
+                                        rownames(object_to_extend@score))),
+                         " new features and ",
+                         length(sds), " new methods added to score table."))
         } else {
           score <- object_to_extend@score
         }
+      } else {
+        message(paste0(nrow(score), " new features and ",
+                       ncol(score), " new methods added to score table."))
       }
 
       if (length(object_to_extend@truth) != 0) {
-        truth <- object_to_extend@truth
-        message(paste0("Non-empty 'truth' slot already exists, and will ",
-                       "not be replaced."))
+        if (length(truth) != 0) {
+          truth$feature_names_tmp <- rownames(truth)
+          object_to_extend@truth$feature_names_tmp <-
+            rownames(object_to_extend@truth)
+          tm <- merge(object_to_extend@truth, truth, all = TRUE)
+          if (any(duplicated(tm$feature_names_tmp)))
+            stop(paste0("Problem merging truth tables, likely due to ",
+                        "inconsistent annotations for one or more features."))
+          truth <- data.frame(tm, stringsAsFactors = FALSE)
+          rownames(truth) <- truth$feature_names_tmp
+          truth$feature_names_tmp <- NULL
+        } else {
+          truth <- object_to_extend@truth
+        }
+        message(paste0(length(setdiff(rownames(truth),
+                                      rownames(object_to_extend@truth))),
+                       " new features and ",
+                       length(setdiff(colnames(truth),
+                                      colnames(object_to_extend@truth))),
+                       " new annotations added to truth table."))
+      } else {
+        message(paste0(nrow(truth), " new features and ",
+                       ncol(truth), " new annotations added to truth table."))
       }
     }
   }

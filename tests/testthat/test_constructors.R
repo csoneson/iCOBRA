@@ -62,6 +62,55 @@ test_that("IBRAData constructors generate IBRAData objects", {
   expect_equal(score(ib2)$m1, score(ib2)$m2)
 })
 
+test_that("extending IBRAData objects works as expected", {
+  ibA <- IBRAData(pval = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                    row.names = paste0("F", 1:5)),
+                  padj = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                    row.names = paste0("F", 1:5)),
+                  score = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                     row.names = paste0("F", 1:5)),
+                  truth = data.frame(status = c(1, 0, 1, 0, 1),
+                                     row.names = paste0("F", 1:5)))
+  ibAp <- ibA
+  truth(ibAp)$expr <- 1:5
+  truth(ibAp)$status <- c(0, 1, 0, 1, 0)
+  ibB <- IBRAData(pval = data.frame(mB = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+                                    row.names = paste0("F", 1:6)),
+                  padj = data.frame(mA = c(0.6, 0.7, 0.8, 0.9, 1.0),
+                                    row.names = paste0("F", 1:5)),
+                  score = data.frame(mB = c(0.6, 0.7, 0.8),
+                                     row.names = paste0("F", 1:3)),
+                  truth = data.frame(status = c(1, 0, 1, 0, 1, 0),
+                                     expr = 1:6,
+                                     row.names = paste0("F", 1:6)))
+  ibBp <- ibB
+  truth(ibBp)$expr <- NULL
+  truth(ibBp)$status <- c(0, 1, 0, 1, 0, 1)
+
+  ibtest <- IBRAData(pval = pval(ibA), padj = padj(ibA), score = score(ibA),
+                     truth = truth(ibA), object_to_extend = ibB)
+  expect_equal(nrow(pval(ibtest)), 6)
+  expect_equal(pval(ibtest)[paste0("F", 1:6), "mB"], c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6))
+  expect_equal(nrow(padj(ibtest)), 5)
+  expect_equal(ncol(padj(ibtest)), 1)
+  expect_equal(padj(ibtest)[paste0("F", 1:5), "mA"], c(0.6, 0.7, 0.8, 0.9, 1.0))
+  expect_equal(score(ibtest)[paste0("F", 1:5), "mB"], c(0.6, 0.7, 0.8, NA, NA))
+  expect_equal(truth(ibtest)[paste0("F", 1:6), "expr"], 1:6)
+  expect_equal(ncol(truth(ibtest)), 2)
+
+  expect_error(IBRAData(pval = pval(ibA), padj = padj(ibA), score = score(ibA),
+                        truth = truth(ibA), object_to_extend = ibBp))
+
+  ibtestp <- IBRAData(pval = pval(ibBp), padj = padj(ibBp), score = score(ibBp),
+                      truth = truth(ibBp), object_to_extend = ibAp)
+  expect_equal(pval(ibtest)[paste0("F", 1:6), c("mA", "mB")],
+               pval(ibtestp)[paste0("F", 1:6), c("mA", "mB")])
+  expect_equal(padj(ibtestp)[paste0("F", 1:5), "mA"], c(0.1, 0.2, 0.3, 0.4, 0.5))
+  expect_equal(score(ibtest)[paste0("F", 1:5), c("mA", "mB")],
+               score(ibtestp)[paste0("F", 1:5), c("mA", "mB")])
+  expect_equal(truth(ibtestp)[paste0("F", 1:6), "expr"], c(1:5, NA))
+})
+
 test_that("export functions return correct class", {
   expect_is(IBRAData_to_text(ibradata_example, feature_id = "feature",
                              truth_file = "test_truth.txt",
