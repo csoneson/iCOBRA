@@ -4,11 +4,11 @@
 \alias{plot_fpc}
 \title{Plot FP curves}
 \usage{
-plot_fpc(ibraplot, title = "", stripsize = 15, titlecol = "black",
+plot_fpc(cobraplot, title = "", stripsize = 15, titlecol = "black",
   maxnfdc = 500)
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -27,12 +27,12 @@ Plot false positive curves, indicating the number of false positives among
 the top-ranked N variables, for varying values of N.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = "fpc")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_fpc(ibraplot, maxnfdc = 750)
+plot_fpc(cobraplot, maxnfdc = 750)
 }
 \author{
 Charlotte Soneson

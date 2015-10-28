@@ -1,4 +1,4 @@
 library(testthat)
-library(IBRA)
+library(COBRA)
 
-test_check("IBRA")
+test_check("COBRA")

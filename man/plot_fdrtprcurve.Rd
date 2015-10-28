@@ -4,12 +4,12 @@
 \alias{plot_fdrtprcurve}
 \title{Plot TPR vs FDR}
 \usage{
-plot_fdrtprcurve(ibraplot, title = "", stripsize = 15, titlecol = "black",
-  pointsize = 5, xaxisrange = c(0, 1), yaxisrange = c(0, 1),
-  plottype = c("curve", "points"))
+plot_fdrtprcurve(cobraplot, title = "", stripsize = 15,
+  titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
+  yaxisrange = c(0, 1), plottype = c("curve", "points"))
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -38,12 +38,12 @@ Plot observed true positive rate (TPR) vs observed false discovery rate
 considering all threshold values.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = c("fdrtpr", "fdrtprcurve"))
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_fdrtprcurve(ibraplot, plottype = c("curve", "points"))
+plot_fdrtprcurve(cobraplot, plottype = c("curve", "points"))
 }
 \author{
 Charlotte Soneson

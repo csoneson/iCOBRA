@@ -4,11 +4,12 @@
 \alias{plot_fdrnbrcurve}
 \title{Plot number of significant features vs FDR}
 \usage{
-plot_fdrnbrcurve(ibraplot, title = "", stripsize = 15, titlecol = "black",
-  pointsize = 5, xaxisrange = c(0, 1), plottype = c("curve", "points"))
+plot_fdrnbrcurve(cobraplot, title = "", stripsize = 15,
+  titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
+  plottype = c("curve", "points"))
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -34,12 +35,12 @@ discovery rate (FDR), for given adjusted p-value thresholds and/or as curves
 traced out by considering all threshold values.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = c("fdrnbr", "fdrnbrcurve"))
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_fdrnbrcurve(ibraplot, plottype = c("curve", "points"))
+plot_fdrnbrcurve(cobraplot, plottype = c("curve", "points"))
 }
 \author{
 Charlotte Soneson

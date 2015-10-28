@@ -1,12 +1,12 @@
 #' Interactive shiny app to visualize results
 #'
 #' Interactive shiny app for visualization of results. The app can be
-#' initialized with an \code{IBRAData} object. If no object is provided, truth
+#' initialized with an \code{COBRAData} object. If no object is provided, truth
 #' and results are loaded into the app from text files (see the Instructions tab
 #' of the app for formatting instructions). Properly formatted text files can
-#' also be obtained using the function \code{\link{IBRAData_to_text}}.
+#' also be obtained using the function \code{\link{COBRAData_to_text}}.
 #'
-#' @param ibradata An (optional) \code{IBRAData} object. If not given, the user
+#' @param cobradata An (optional) \code{COBRAData} object. If not given, the user
 #'   can load results from text files.
 #' @param autorun A logical indicating whether the app calculations should start
 #'   automatically on launch, or wait for the user to press the 'Start
@@ -16,11 +16,11 @@
 #' @import shiny
 #' @export
 #' @examples
-#' data(ibradata_example)
+#' data(cobradata_example)
 #' \dontrun{
-#' IBRAapp(ibradata_example)
+#' COBRAapp(cobradata_example)
 #' }
-IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
+COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
   ## ------------------------------------------------------------------ ##
   ##                          Define UI                                 ##
   ## ------------------------------------------------------------------ ##
@@ -30,8 +30,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       skin = "blue",
 
       shinydashboard::dashboardHeader(
-        title = paste0("IBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.9)"),
+        title = paste0("COBRA - Comparative evaluation ",
+                       "of methods for ranking and binary assignment (v0.3.10)"),
         titleWidth = 800),
 
       shinydashboard::dashboardSidebar(
@@ -208,7 +208,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
           tabPanel("Instructions",
                    includeMarkdown(system.file("extdata", "instructions.md",
-                                               package = "IBRA")),
+                                               package = "COBRA")),
                    value = "instructions"),
 
           tabPanel("TPR vs FDR",
@@ -413,10 +413,10 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
   server_function <- function(input, output, session) {
     values <- reactiveValues()
-    values$my_ibradata <- IBRAData()
+    values$my_cobradata <- COBRAData()
 
     output$choose_truth_file <- renderUI({
-      if (!is.null(ibradata)) {
+      if (!is.null(cobradata)) {
         NULL
       } else {
         return(fileInput(inputId = "truth", label = "Load truth file",
@@ -432,9 +432,9 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       trf <- utils::read.delim(input$truth$datapath, header = TRUE,
                                as.is = TRUE, sep = "\t", quote = "",
                                check.names = FALSE)
-      isolate(values$my_ibradata <-
-                IBRAData(truth = trf,
-                         object_to_extend = values$my_ibradata))
+      isolate(values$my_cobradata <-
+                COBRAData(truth = trf,
+                          object_to_extend = values$my_cobradata))
       return(trf)
     })
 
@@ -448,9 +448,9 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     ## Render the UI element to choose the binary truth column
     output$choose_binary_truth <- renderUI({
-      if (!is.null(ibradata)) {
-        ccl <- sapply(truth(ibradata), class)
-        only01 <- sapply(truth(ibradata), function(i) {
+      if (!is.null(cobradata)) {
+        ccl <- sapply(truth(cobradata), class)
+        only01 <- sapply(truth(cobradata), function(i) {
           if (all(i %in% c(0, 1, NA))) "binary"
           else "notbinary"
         })
@@ -465,9 +465,9 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
       }
       keepcols <- intersect(which(ccl %in% c("numeric", "integer")),
                             which(only01 == "binary"))
-      if (!is.null(ibradata)) {
+      if (!is.null(cobradata)) {
         selectInput("binary_truth", "Select column containing binary truth",
-                    c(colnames(truth(ibradata))[keepcols], "none"),
+                    c(colnames(truth(cobradata))[keepcols], "none"),
                     selectize = TRUE)
       } else {
         selectInput("binary_truth", "Select column containing binary truth",
@@ -478,17 +478,17 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     ## Render the UI element to choose the continuous truth column
     output$choose_continuous_truth <- renderUI({
-      if (!is.null(ibradata)) {
-        ccl <- sapply(truth(ibradata), class)
+      if (!is.null(cobradata)) {
+        ccl <- sapply(truth(cobradata), class)
       } else {
         if (is.null(truthFile()))
           return(NULL)
         ccl <- sapply(truthFile(), class)
       }
       keepcols <- which(ccl %in% c("numeric", "integer"))
-      if (!is.null(ibradata)) {
+      if (!is.null(cobradata)) {
         selectInput("cont_truth", "Select column containing continuous truth",
-                    c("none", colnames(truth(ibradata))[keepcols]),
+                    c("none", colnames(truth(cobradata))[keepcols]),
                     selectize = TRUE)
       } else {
         selectInput("cont_truth", "Select column containing continuous truth",
@@ -500,9 +500,9 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     ## Render the UI element to choose which attribute (from the truth file)
     ## to split panels by.
     output$splitvar <- renderUI({
-      if (!is.null(ibradata)) {
+      if (!is.null(cobradata)) {
         selectInput("splv", "Select variable to stratify by",
-                    c("none", colnames(truth(ibradata))), selectize = TRUE)
+                    c("none", colnames(truth(cobradata))), selectize = TRUE)
       } else {
         trf <- truthFile()
         if (is.null(trf))
@@ -529,7 +529,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
 
     ## Render the UI element to upload result file(s)
     output$choose_result_file <- renderUI({
-      if (!is.null(ibradata)) {
+      if (!is.null(cobradata)) {
         NULL
       } else {
         return(fileInput(inputId = "file1", label = "Add file with results",
@@ -542,20 +542,20 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     ## Render the UI object for selecting methods to include, based on the
     ## uploaded result files.
     output$columns <- renderUI({
-      if (!is.null(ibradata)) {
-        allm <- unique(c(colnames(pval(ibradata)), colnames(padj(ibradata)),
-                         colnames(score(ibradata))))
-        isolate(values$my_ibradata <- ibradata)
+      if (!is.null(cobradata)) {
+        allm <- unique(c(colnames(pval(cobradata)), colnames(padj(cobradata)),
+                         colnames(score(cobradata))))
+        isolate(values$my_cobradata <- cobradata)
         isolate(values$all_methods <- allm)
-        isolate(values$my_ibradata <- calculate_adjp(values$my_ibradata))
+        isolate(values$my_cobradata <- calculate_adjp(values$my_cobradata))
 
         ## Create the UI element for selecting methods to include.
         checkboxGroupInput("cols", "Select methods",
                            isolate(values$all_methods),
                            isolate(values$all_methods))
       } else {
-        rownames(truth(values$my_ibradata)) <-
-          truth(values$my_ibradata)[, input$feature_id]
+        rownames(truth(values$my_cobradata)) <-
+          truth(values$my_cobradata)[, input$feature_id]
 
         ## Read file
         inFile <- input$file1
@@ -588,23 +588,23 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
               isolate(values$all_methods <- unique(c(values$all_methods, i)))
 
               if (coltype == "pval") {
-                isolate(values$my_ibradata <-
-                          IBRAData(pval = tmp,
-                                   object_to_extend = values$my_ibradata))
+                isolate(values$my_cobradata <-
+                          COBRAData(pval = tmp,
+                                   object_to_extend = values$my_cobradata))
               } else if (coltype == "padj") {
-                isolate(values$my_ibradata <-
-                          IBRAData(padj = tmp,
-                                   object_to_extend = values$my_ibradata))
+                isolate(values$my_cobradata <-
+                          COBRAData(padj = tmp,
+                                   object_to_extend = values$my_cobradata))
               } else if (coltype == "score") {
-                isolate(values$my_ibradata <-
-                          IBRAData(score = tmp,
-                                   object_to_extend = values$my_ibradata))
+                isolate(values$my_cobradata <-
+                          COBRAData(score = tmp,
+                                   object_to_extend = values$my_cobradata))
               }
             }
             ii <- ii + 1
           }
           ## Calculate adjusted p-values if needed
-          isolate(values$my_ibradata <- calculate_adjp(values$my_ibradata))
+          isolate(values$my_cobradata <- calculate_adjp(values$my_cobradata))
 
           ## Render the UI element
           checkboxGroupInput("cols", "Select methods",
@@ -620,7 +620,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
                                      aspects = "tpr", thrs = thrs,
@@ -629,7 +629,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
@@ -639,7 +639,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
                                      aspects = "fdrtpr", thrs = thrs,
@@ -648,7 +648,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
@@ -658,7 +658,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         thrs <- sort(unique(as.numeric(gsub(" ", "",
                                             unlist(strsplit(input$fdrthresholds,
                                                             ","))))))
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
                                      aspects = "fpr", thrs = thrs,
@@ -667,14 +667,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
     plotvalues_ROC <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$binary_truth != "none") {
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
                                      aspects = "roc", thrs = NULL,
@@ -683,14 +683,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
     plotvalues_FPC <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$binary_truth != "none") {
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
                                      aspects = "fpc", thrs = thrs,
@@ -699,14 +699,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
     plotvalues_FDRTPR <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$binary_truth != "none") {
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
                                      aspects = "fdrtprcurve", thrs = thrs,
@@ -715,7 +715,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
@@ -726,7 +726,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         } else {
           bt <- input$binary_truth
         }
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = bt,
                                      cont_truth = NULL,
                                      aspects = "overlap", thrs = NULL,
@@ -735,14 +735,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = input$adjpVenn))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
     plotvalues_corr <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$cont_truth != "none") {
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
                                      aspects = "corr", thrs = NULL,
@@ -751,14 +751,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
     plotvalues_scatter <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$cont_truth != "none") {
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
                                      aspects = "scatter", thrs = NULL,
@@ -767,14 +767,14 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
     plotvalues_deviation <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$cont_truth != "none") {
-        return(calculate_performance(values$my_ibradata,
+        return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
                                      aspects = "deviation", thrs = NULL,
@@ -783,7 +783,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                                      onlyshared = input$onlyshared,
                                      thr_venn = NULL))
       } else {
-        return(IBRAPerformance())
+        return(COBRAPerformance())
       }
     })
 
@@ -793,7 +793,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
         if (length(input$cols) != 0) {
           withProgress(message = "Calculating...", value = 0, {
             all_vals <-
-              IBRAPerformance(tpr = tpr(plotvalues_TPR()),
+              COBRAPerformance(tpr = tpr(plotvalues_TPR()),
                               fdrtpr = fdrtpr(plotvalues_FDR()),
                               fdrnbr = fdrtpr(plotvalues_FDR()),
                               fdrtprcurve = fdrtprcurve(plotvalues_FDRTPR()),
@@ -809,7 +809,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
                               deviation = deviation(plotvalues_deviation()))
 
             all_vals <- prepare_data_for_plot(
-              ibraperf = all_vals,
+              cobraperf = all_vals,
               keepmethods = input$cols,
               incloverall = (input$includeoverall == "yes"),
               colorscheme = input$colorscheme,
@@ -854,8 +854,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.overlap.df.rdata <- downloadHandler(
       filename = "overlap-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.overlap.df.tsv <- downloadHandler(
@@ -925,7 +925,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(tpr(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_tpr(ibraplot = plotvalues()$all_vals,
+        print(plot_tpr(cobraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        pointsize = input$pointsize,
@@ -937,8 +937,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.tpr.df.rdata <- downloadHandler(
       filename = "tpr-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.tpr.df.tsv <- downloadHandler(
@@ -971,7 +971,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
           return(NULL)
         }
 
-        plot_tpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        plot_tpr(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  pointsize = input$pointsize, xaxisrange = input$xrange_tpr)
       })
@@ -1013,7 +1013,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_corr(ibraplot = plotvalues()$all_vals,
+        print(plot_corr(cobraplot = plotvalues()$all_vals,
                         title = plotvalues()$title,
                         stripsize = input$stripsize, titlecol = "white",
                         pointsize = input$pointsize,
@@ -1026,8 +1026,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.corr.df.rdata <- downloadHandler(
       filename = "corr-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.corr.df.tsv <- downloadHandler(
@@ -1059,7 +1059,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             !is_plottable(corr(plotvalues()$all_vals)))
           return(NULL)
 
-        plot_corr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        plot_corr(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                   stripsize = input$stripsize, titlecol = "white",
                   pointsize = input$pointsize, xaxisrange = input$xrange_corr,
                   corrtype = input$corrtype)
@@ -1120,7 +1120,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_deviation(ibraplot = plotvalues()$all_vals,
+        print(plot_deviation(cobraplot = plotvalues()$all_vals,
                              title = plotvalues()$title,
                              stripsize = input$stripsize, titlecol = "white",
                              xaxisrange = input$xrange_deviation,
@@ -1134,8 +1134,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.deviation.df.rdata <- downloadHandler(
       filename = "deviation-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.deviation.df.tsv <- downloadHandler(
@@ -1166,7 +1166,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(deviation(plotvalues()$all_vals)))
           return(NULL)
-        plot_deviation(ibraplot = plotvalues()$all_vals,
+        plot_deviation(cobraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        xaxisrange = input$xrange_deviation,
@@ -1220,7 +1220,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fpr(ibraplot = plotvalues()$all_vals,
+        print(plot_fpr(cobraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        pointsize = input$pointsize,
@@ -1232,8 +1232,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.fpr.df.rdata <- downloadHandler(
       filename = "fpr-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.fpr.df.tsv <- downloadHandler(
@@ -1264,7 +1264,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fpr(plotvalues()$all_vals)))
           return(NULL)
-        plot_fpr(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        plot_fpr(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  pointsize = input$pointsize, xaxisrange = input$xrange_fpr)
       })
@@ -1305,7 +1305,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_roc(ibraplot = plotvalues()$all_vals,
+        print(plot_roc(cobraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        xaxisrange = input$xrange_roc,
@@ -1317,8 +1317,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.roc.df.rdata <- downloadHandler(
       filename = "roc-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.roc.df.tsv <- downloadHandler(
@@ -1348,7 +1348,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(roc(plotvalues()$all_vals)))
           return(NULL)
-        plot_roc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        plot_roc(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  xaxisrange = input$xrange_roc, yaxisrange = input$yrange_roc)
       })
@@ -1391,7 +1391,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_scatter(ibraplot = plotvalues()$all_vals,
+        print(plot_scatter(cobraplot = plotvalues()$all_vals,
                            title = plotvalues()$title,
                            stripsize = input$stripsize, titlecol = "white",
                            pointsize = input$pointsize, doflip = input$doflip,
@@ -1403,8 +1403,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.scatter.df.rdata <- downloadHandler(
       filename = "scatter-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.scatter.df.tsv <- downloadHandler(
@@ -1435,7 +1435,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(scatter(plotvalues()$all_vals)))
           return(NULL)
-        plot_scatter(ibraplot = plotvalues()$all_vals,
+        plot_scatter(cobraplot = plotvalues()$all_vals,
                      title = plotvalues()$title,
                      stripsize = input$stripsize, titlecol = "white",
                      pointsize = input$pointsize, doflip = input$doflip,
@@ -1479,7 +1479,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fpc(ibraplot = plotvalues()$all_vals,
+        print(plot_fpc(cobraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        maxnfdc = input$maxnfdc))
@@ -1490,8 +1490,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.fpc.df.rdata <- downloadHandler(
       filename = "fpc-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$export.fpc.df.tsv <- downloadHandler(
@@ -1522,7 +1522,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             !is_plottable(fpc(plotvalues()$all_vals)))
           return(NULL)
 
-        plot_fpc(ibraplot = plotvalues()$all_vals, title = plotvalues()$title,
+        plot_fpc(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
                  maxnfdc = input$maxnfdc)
       })
@@ -1564,7 +1564,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fdrtprcurve(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fdrtprcurve(ibraplot = plotvalues()$all_vals,
+        print(plot_fdrtprcurve(cobraplot = plotvalues()$all_vals,
                                title = plotvalues()$title,
                                stripsize = input$stripsize, titlecol = "white",
                                pointsize = input$pointsize,
@@ -1578,8 +1578,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.fdrtpr.df.rdata <- downloadHandler(
       filename = "fdrtpr-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$fdrtpr.df.tsv.button <- renderUI({
@@ -1639,7 +1639,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
           return(NULL)
         if (!any(c("curve", "points") %in% input$plottype))
           return(NULL)
-        plot_fdrtprcurve(ibraplot = plotvalues()$all_vals,
+        plot_fdrtprcurve(cobraplot = plotvalues()$all_vals,
                          title = plotvalues()$title,
                          stripsize = input$stripsize, titlecol = "white",
                          pointsize = input$pointsize,
@@ -1692,7 +1692,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
             (input$goButton == 0 & !isTRUE(autorun)) ||
             !is_plottable(fdrnbrcurve(plotvalues()$all_vals)))
           return(NULL)
-        print(plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals,
+        print(plot_fdrnbrcurve(cobraplot = plotvalues()$all_vals,
                                title = plotvalues()$title,
                                stripsize = input$stripsize, titlecol = "white",
                                pointsize = input$pointsize,
@@ -1705,8 +1705,8 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
     output$export.fdrnbr.df.rdata <- downloadHandler(
       filename = "fdrnbr-data.Rdata",
       content = function(file) {
-        ibraplot <- isolate(plotvalues()$all_vals)
-        save(ibraplot, file = file)
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
       })
 
     output$fdrnbr.df.tsv.button <- renderUI({
@@ -1767,7 +1767,7 @@ IBRAapp <- function(ibradata = NULL, autorun = FALSE) {
           return(NULL)
         if (!any(c("curve", "points") %in% input$plottype))
           return(NULL)
-        plot_fdrnbrcurve(ibraplot = plotvalues()$all_vals,
+        plot_fdrnbrcurve(cobraplot = plotvalues()$all_vals,
                          title = plotvalues()$title,
                          stripsize = input$stripsize, titlecol = "white",
                          pointsize = input$pointsize,

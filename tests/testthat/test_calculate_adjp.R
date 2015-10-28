@@ -1,11 +1,11 @@
 ## Test that calculate_adjp is doing the right thing
 
-library(IBRA)
+library(COBRA)
 context("Check that calculate_adjp is working properly")
 
 test_that("calculated adjusted p-values are correct", {
   pval <- c(0.0058, 0.771, 0.024, 0.741, 0.247)
-  ib <- IBRAData(pval = data.frame(m1 = pval, row.names = paste0("F", 1:5)),
+  ib <- COBRAData(pval = data.frame(m1 = pval, row.names = paste0("F", 1:5)),
                  truth = data.frame(status = c(0, 1, 0, 1, 0),
                                     row.names = paste0("F", 1:5)))
   ib2 <- calculate_adjp(ib)
@@ -17,7 +17,7 @@ test_that("calculated adjusted p-values are correct", {
 test_that("adjusted p-values are added correctly", {
   pval <- c(0.0058, 0.771, 0.024, 0.741, 0.247)
   padj <- p.adjust(pval, method = "BH")
-  ib <- IBRAData(pval = data.frame(m1 = pval, m2 = pval, row.names = paste0("F", 1:5)),
+  ib <- COBRAData(pval = data.frame(m1 = pval, m2 = pval, row.names = paste0("F", 1:5)),
                  padj = data.frame(m1 = padj, row.names = paste0("F", 1:5)),
                  truth = data.frame(status = c(0, 1, 0, 1, 0),
                                     row.names = paste0("F", 1:5)))

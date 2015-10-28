@@ -4,12 +4,12 @@
 \alias{plot_deviation}
 \title{Plot deviations}
 \usage{
-plot_deviation(ibraplot, title = "", stripsize = 15, titlecol = "black",
+plot_deviation(cobraplot, title = "", stripsize = 15, titlecol = "black",
   xaxisrange = NULL, plottype = "boxplot", dojitter = TRUE,
   squaredevs = FALSE)
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -38,12 +38,12 @@ Plot the deviations between observed scores and the continuous truth
 variable.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
                                   aspects = "deviation")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_deviation(ibraplot)
+plot_deviation(cobraplot)
 }
 \author{
 Charlotte Soneson

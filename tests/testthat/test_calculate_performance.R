@@ -1,19 +1,19 @@
 ## Test that calculate_performance is doing the right thing.
 
-library(IBRA)
+library(COBRA)
 context("Check calculation of performance scores")
 
 ## Remove some genes from the truth
-ibradata <- ibradata_example
-truth(ibradata) <- truth(ibradata)[1:3000, , drop = FALSE]
+cobradata <- cobradata_example
+truth(cobradata) <- truth(cobradata)[1:3000, , drop = FALSE]
 
 ## Set some adjusted p-values to NA
-tmp <- padj(ibradata)$edgeR
+tmp <- padj(cobradata)$edgeR
 tmp[sample(1:length(tmp), 100)] <- NA
-padj(ibradata)$edgeR <- tmp
+padj(cobradata)$edgeR <- tmp
 
 ## No stratification, onlyshared = FALSE
-ib1 <- calculate_performance(ibradata, binary_truth = "status",
+ib1 <- calculate_performance(cobradata, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                          "fdrnbrcurve", "tpr", "fpr",
@@ -23,7 +23,7 @@ ib1 <- calculate_performance(ibradata, binary_truth = "status",
                              thr_venn = 0.05)
 
 ## Stratification, onlyshared = FALSE
-ib2 <- calculate_performance(ibradata, binary_truth = "status",
+ib2 <- calculate_performance(cobradata, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                          "fdrnbrcurve", "tpr", "fpr",
@@ -33,7 +33,7 @@ ib2 <- calculate_performance(ibradata, binary_truth = "status",
                              onlyshared = FALSE, thr_venn = 0.05)
 
 ## No stratification, onlyshared = TRUE
-ib3 <- calculate_performance(ibradata, binary_truth = "status",
+ib3 <- calculate_performance(cobradata, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                          "fdrnbrcurve", "tpr", "fpr",
@@ -42,10 +42,10 @@ ib3 <- calculate_performance(ibradata, binary_truth = "status",
                              thrs = c(0.05), splv = "none", onlyshared = TRUE,
                              thr_venn = 0.05)
 
-pval <- pval(ibradata)
-padj <- padj(ibradata)
-score <- score(ibradata)
-truth <- truth(ibradata)
+pval <- pval(cobradata)
+padj <- padj(cobradata)
+score <- score(cobradata)
+truth <- truth(cobradata)
 
 pvalsub <- pval[rownames(subset(truth, expr_cat == "[2.85e+00,1.45e+01)")), ]
 padjsub <- padj[rownames(subset(truth, expr_cat == "[2.85e+00,1.45e+01)")), ]
@@ -534,103 +534,103 @@ test_that("DEVIATION and SCATTER values correspond to each other", {
 })
 
 test_that("getcurve returns NULL if not both positive and negative instances are present", {
-  ibradata <- ibradata_example
-  truth(ibradata)$status <- 0
-  ibraperf <- calculate_performance(ibradata, binary_truth <- "status",
+  cobradata <- cobradata_example
+  truth(cobradata)$status <- 0
+  cobraperf <- calculate_performance(cobradata, binary_truth <- "status",
                                     aspects = "fdrtprcurve")
-  expect_equal(length(fdrtprcurve(ibraperf)), 0)
-  ibraperf2 <- calculate_performance(ibradata, binary_truth = "status",
+  expect_equal(length(fdrtprcurve(cobraperf)), 0)
+  cobraperf2 <- calculate_performance(cobradata, binary_truth = "status",
                                      aspects = "fdrtprcurve", splv = "expr_cat")
-  expect_equal(length(fdrtprcurve(ibraperf2)), 0)
+  expect_equal(length(fdrtprcurve(cobraperf2)), 0)
 
 })
 
 test_that("calculate_performance without score works", {
-  ibradata <- ibradata_example
-  score(ibradata) <- data.frame()
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  score(cobradata) <- data.frame()
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC",
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  expect_is(ib1, "IBRAPerformance")
+  expect_is(ib1, "COBRAPerformance")
 })
 
 test_that("calculate_performance without adj.p works", {
-  ibradata <- ibradata_example
-  padj(ibradata) <- data.frame()
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  padj(cobradata) <- data.frame()
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC",
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  expect_is(ib1, "IBRAPerformance")
+  expect_is(ib1, "COBRAPerformance")
 })
 
 test_that("calculate_performance with only adj.p works", {
-  ibradata <- ibradata_example
-  pval(ibradata) <- data.frame()
-  score(ibradata) <- data.frame()
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  pval(cobradata) <- data.frame()
+  score(cobradata) <- data.frame()
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC", aspects = "fdrtprcurve",
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  expect_is(ib1, "IBRAPerformance")
+  expect_is(ib1, "COBRAPerformance")
 })
 
 test_that("calculate_performance with empty input works", {
-  ibradata <- ibradata_example
-  padj(ibradata) <- data.frame()
-  pval(ibradata) <- data.frame()
-  score(ibradata) <- data.frame()
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  padj(cobradata) <- data.frame()
+  pval(cobradata) <- data.frame()
+  score(cobradata) <- data.frame()
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC",
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  expect_is(ib1, "IBRAPerformance")
+  expect_is(ib1, "COBRAPerformance")
   expect_equal(basemethods(ib1), character(0))
 })
 
 test_that("calculate_performance without significant features works", {
-  ibradata <- ibradata_example
-  padj(ibradata) <- data.frame(edgeR = rep(1, nrow(padj(ibradata))),
-                               voom = rep(1, nrow(padj(ibradata))),
-                               DESeq2 = rep(1, nrow(padj(ibradata))),
-                               row.names = rownames(padj(ibradata)))
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  padj(cobradata) <- data.frame(edgeR = rep(1, nrow(padj(cobradata))),
+                               voom = rep(1, nrow(padj(cobradata))),
+                               DESeq2 = rep(1, nrow(padj(cobradata))),
+                               row.names = rownames(padj(cobradata)))
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtpr"),
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  expect_is(ib1, "IBRAPerformance")
+  expect_is(ib1, "COBRAPerformance")
   expect_equal(fdrtpr(ib1)$FDR, rep(0, 3))
 
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtpr"),
                                thrs = c(0.05), splv = "expr_cat",
                                onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  expect_is(ib1, "IBRAPerformance")
+  expect_is(ib1, "COBRAPerformance")
   expect_equal(fdrtpr(ib1)$FDR, rep(0, 12))
 })
 
 test_that("overlap calculations are correct", {
-  ibradata <- ibradata_example
-  truth(ibradata) <- truth(ibradata)[1:3000, , drop = FALSE]
+  cobradata <- cobradata_example
+  truth(cobradata) <- truth(cobradata)[1:3000, , drop = FALSE]
   ## Set some adjusted p-values to NA
-  tmp <- padj(ibradata)$edgeR
+  tmp <- padj(cobradata)$edgeR
   tmp[sample(1:length(tmp), 5)] <- NA
-  padj(ibradata)$edgeR <- tmp
-  padj <- padj(ibradata)
-  truth <- truth(ibradata)
+  padj(cobradata)$edgeR <- tmp
+  padj <- padj(cobradata)
+  truth <- truth(cobradata)
 
   ## onlyshared = FALSE, incltruth = FALSE
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                aspects = "overlap", splv = "none",
                                onlyshared = FALSE, thr_venn = 0.05)
   ib1 <- prepare_data_for_plot(ib1, incltruth = FALSE)
@@ -639,7 +639,7 @@ test_that("overlap calculations are correct", {
                sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
 
   ## onlyshared = TRUE, incltruth = FALSE
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                aspects = "overlap", splv = "none",
                                onlyshared = TRUE, thr_venn = 0.05)
   ib1 <- prepare_data_for_plot(ib1, incltruth = FALSE)
@@ -648,7 +648,7 @@ test_that("overlap calculations are correct", {
                sum(overlap(ib1)$edgeR * overlap(ib1)$voom))
 
   ## onlyshared = FALSE, incltruth = TRUE
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                aspects = "overlap", splv = "none",
                                onlyshared = FALSE, thr_venn = 0.05)
   ib1 <- prepare_data_for_plot(ib1, incltruth = TRUE)
@@ -662,7 +662,7 @@ test_that("overlap calculations are correct", {
                length(setdiff(which(overlap(ib1)$voom == 1), which(overlap(ib1)$edgeR == 1))))
 
   ## onlyshared = TRUE, incltruth = TRUE
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                aspects = "overlap", splv = "none",
                                onlyshared = TRUE, thr_venn = 0.05)
   ib1 <- prepare_data_for_plot(ib1, incltruth = TRUE)
@@ -676,7 +676,7 @@ test_that("overlap calculations are correct", {
                length(setdiff(which(overlap(ib1)$voom == 1), which(overlap(ib1)$edgeR == 1))))
 
   ## onlyshared = TRUE, incltruth = TRUE, stratify
-  ib1 <- calculate_performance(ibradata, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                aspects = c("tpr", "overlap"), splv = "expr_cat",
                                onlyshared = TRUE, thr_venn = 0.05)
   ib1 <- prepare_data_for_plot(ib1, incltruth = TRUE)
@@ -690,7 +690,7 @@ test_that("overlap calculations are correct", {
                length(setdiff(which(overlap(ib1)$overall$voom == 1), which(overlap(ib1)$overall$edgeR == 1))))
 
   ib2 <- prepare_data_for_plot(ib1, incltruth = TRUE, incloverall = FALSE)
-  expect_is(ib2, "IBRAPlot")
+  expect_is(ib2, "COBRAPlot")
 })
 
 

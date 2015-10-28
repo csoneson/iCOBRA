@@ -1,9 +1,9 @@
 ## Test that plot functions do the right thing
 
-library(IBRA)
+library(COBRA)
 context("Check plot functions")
 
-ib1 <- calculate_performance(ibradata_example, binary_truth = "status",
+ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                          "fdrnbrcurve", "tpr", "fpr",
@@ -48,7 +48,7 @@ test_that("Plot functions return ggplot objects if not facetted", {
   expect_is(plot_overlap(ibp1), "NULL")
 })
 
-ib1 <- calculate_performance(ibradata_example, binary_truth = "status",
+ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("overlap", "tpr"),
                              thrs = c(0.05), splv = "none", onlyshared = FALSE,
@@ -72,7 +72,7 @@ test_that("Plot functions return ggplot objects for empty input", {
   expect_is(plot_overlap(ibp1), "NULL")
 })
 
-ib1 <- calculate_performance(ibradata_example, binary_truth = "status",
+ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("tpr"),
                              thrs = c(0.05), splv = "none", onlyshared = FALSE,
@@ -99,7 +99,7 @@ test_that("Plot functions return ggplot objects with too many colors", {
   expect_equal(length(unique(plotcolors(ibp1))), 3)
 })
 
-ib1 <- calculate_performance(ibradata_example, binary_truth = "status",
+ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("fdrtprcurve"),
                              thrs = c(0.05), splv = "none", onlyshared = FALSE,
@@ -126,7 +126,7 @@ test_that("Plot functions return ggplot objects with right nbr colors", {
 })
 
 ## Facetted, stratified
-ib1 <- calculate_performance(ibradata_example, binary_truth = "status",
+ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
                              cont_truth = "logFC",
                              aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                          "fdrnbrcurve", "tpr", "fpr",

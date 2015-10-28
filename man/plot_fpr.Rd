@@ -4,11 +4,11 @@
 \alias{plot_fpr}
 \title{Plot FPR}
 \usage{
-plot_fpr(ibraplot, title = "", stripsize = 15, titlecol = "black",
+plot_fpr(cobraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(0, 1))
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -30,12 +30,12 @@ Plot observed false positive rate (FPR) for given adjusted p-value
 thresholds.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = "fpr")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_fpr(ibraplot, xaxisrange = c(0, 0.25))
+plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 }
 \author{
 Charlotte Soneson

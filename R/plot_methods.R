@@ -1,27 +1,27 @@
 ## ------------------- FDR or TPR or CORR ----------------------------- ##
 #' @import ggplot2
-plot_fpr_tpr <- function(ibraplot, title, stripsize, titlecol, pointsize,
+plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
                          xaxisrange, aspc) {
   if (aspc == "FPR")
-    plot_data <- fpr(ibraplot)
+    plot_data <- fpr(cobraplot)
   else if (aspc == "TPR")
-    plot_data <- tpr(ibraplot)
+    plot_data <- tpr(cobraplot)
   else if (aspc %in% c("SPEARMAN", "PEARSON"))
-    plot_data <- corr(ibraplot)
+    plot_data <- corr(cobraplot)
 
-  if (!(isTRUE(facetted(ibraplot)))) {
+  if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
 
   pp <-ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
     geom_point(size = pointsize + 1,
                aes_string(colour = "method"), shape = 19) +
-    scale_color_manual(values = plotcolors(ibraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "") +
     xlim(xaxisrange[1], xaxisrange[2]) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
-  if (isTRUE(facetted(ibraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
+  if (isTRUE(facetted(cobraplot))) {
+    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(cobraplot) + 1)/3))
   } else {
     pp
   }
@@ -32,7 +32,7 @@ plot_fpr_tpr <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' Plot observed false positive rate (FPR) for given adjusted p-value
 #' thresholds.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -47,15 +47,15 @@ plot_fpr_tpr <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "fpr")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_fpr(ibraplot, xaxisrange = c(0, 0.25))
-plot_fpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
+#' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
+plot_fpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      pointsize = 5, xaxisrange = c(0, 1)) {
-  plot_fpr_tpr(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_fpr_tpr(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, pointsize = pointsize,
                xaxisrange = xaxisrange, aspc = "FPR")
 }
@@ -64,7 +64,7 @@ plot_fpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #'
 #' Plot observed true positive rate (TPR) for given adjusted p-value thresholds.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -79,15 +79,15 @@ plot_fpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "tpr")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_tpr(ibraplot)
-plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
+#' plot_tpr(cobraplot)
+plot_tpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      pointsize = 5, xaxisrange = c(0, 1)) {
-  plot_fpr_tpr(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_fpr_tpr(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, pointsize = pointsize,
                xaxisrange = xaxisrange, aspc = "TPR")
 }
@@ -96,7 +96,7 @@ plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #'
 #' Plot correlations between observations and a continuous truth value.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -113,36 +113,36 @@ plot_tpr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
 #'                                   aspects = "corr")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_corr(ibraplot, corrtype = "spearman")
-plot_corr <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
+#' plot_corr(cobraplot, corrtype = "spearman")
+plot_corr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                       pointsize = 5, xaxisrange = c(-1, 1),
                       corrtype = "pearson") {
-  plot_fpr_tpr(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_fpr_tpr(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, pointsize = pointsize,
                xaxisrange = xaxisrange, aspc = toupper(corrtype))
 }
 
 ## ---------------------- ROC or FPC --------------------------------- ##
 #' @import ggplot2
-plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
+plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
                          yaxisrange, maxnfdc, aspc) {
   if (aspc == "roc")
-    plot_data <- roc(ibraplot)
+    plot_data <- roc(cobraplot)
   else if (aspc == "fpc")
-    plot_data <- fpc(ibraplot)
-  if (!(isTRUE(facetted(ibraplot)))) {
+    plot_data <- fpc(cobraplot)
+  if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
   pp <- ggplot(plot_data, aes_string(x = ifelse(aspc == "roc", "FPR", "topN"),
                                      y = ifelse(aspc == "roc", "TPR", "FP"),
                                      group = "method", colour = "method")) +
     geom_path(size = 1) +
-    scale_color_manual(values = plotcolors(ibraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     xlim(ifelse(aspc == "roc", xaxisrange[1], 0),
          ifelse(aspc == "roc", xaxisrange[2], maxnfdc)) +
@@ -150,8 +150,8 @@ plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
          ifelse(aspc == "roc", yaxisrange[2],
                 max(plot_data$FP[plot_data$topN <= maxnfdc]))) +
     ggtitle(title)
-  if (isTRUE(facetted(ibraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
+  if (isTRUE(facetted(cobraplot))) {
+    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(cobraplot) + 1)/3))
   } else {
     pp
   }
@@ -161,7 +161,7 @@ plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
 #'
 #' Plot receiver operating characteristics (ROC) curves.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -177,15 +177,15 @@ plot_roc_fpc <- function(ibraplot, title, stripsize, titlecol, xaxisrange,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "roc")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_roc(ibraplot)
-plot_roc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
+#' plot_roc(cobraplot)
+plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      xaxisrange = c(0, 1), yaxisrange = c(0, 1)) {
-  plot_roc_fpc(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_roc_fpc(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, xaxisrange = xaxisrange,
                yaxisrange = yaxisrange, maxnfdc = NULL, aspc = "roc")
 }
@@ -195,7 +195,7 @@ plot_roc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' Plot false positive curves, indicating the number of false positives among
 #' the top-ranked N variables, for varying values of N.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -208,15 +208,15 @@ plot_roc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "fpc")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_fpc(ibraplot, maxnfdc = 750)
-plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
+#' plot_fpc(cobraplot, maxnfdc = 750)
+plot_fpc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      maxnfdc = 500) {
-  plot_roc_fpc(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_roc_fpc(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, xaxisrange = NULL, yaxisrange = NULL,
                maxnfdc = maxnfdc, aspc = "fpc")
 }
@@ -227,7 +227,7 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' Plot scatter plots, indicating the relationship between observed values and a
 #' continuous truth.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -245,27 +245,27 @@ plot_fpc <- function(ibraplot, title = "", stripsize = 15, titlecol = "black",
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
 #'                                   aspects = "scatter")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_scatter(ibraplot)
-plot_scatter <- function(ibraplot, title = "", stripsize = 10,
+#' plot_scatter(cobraplot)
+plot_scatter <- function(cobraplot, title = "", stripsize = 10,
                          titlecol = "black", pointsize = 3, doflip = FALSE,
                          dolog = FALSE) {
-  plot_data <- scatter(ibraplot)
+  plot_data <- scatter(cobraplot)
 
-  if (isTRUE(facetted(ibraplot))) {
+  if (isTRUE(facetted(cobraplot))) {
     plot_data$fullmethod <- plot_data$method
   }
   pp <- ggplot(plot_data, aes_string(x = "OBSERVATION", y = "TRUTH",
                                      colour = "fullmethod")) +
     geom_point(size = pointsize) +
-    scale_color_manual(values = plotcolors(ibraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
-  if (isTRUE(facetted(ibraplot))) {
+  if (isTRUE(facetted(cobraplot))) {
     if (isTRUE(doflip))
       pp <- pp + facet_grid(splitval ~ method)
     else
@@ -281,21 +281,21 @@ plot_scatter <- function(ibraplot, title = "", stripsize = 10,
 
 ## ------------------- FDRTPR or FDRNBR ------------------------------ ##
 #' @import ggplot2
-plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
+plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
                           xaxisrange, yaxisrange, plottype, aspc) {
   if (aspc == "TPR") {
-    plot_data_lines <- fdrtprcurve(ibraplot)
-    plot_data_points <- fdrtpr(ibraplot)
+    plot_data_lines <- fdrtprcurve(cobraplot)
+    plot_data_points <- fdrtpr(cobraplot)
   } else if (aspc == "NBR") {
-    plot_data_lines <- fdrnbrcurve(ibraplot)
-    plot_data_points <- fdrnbr(ibraplot)
+    plot_data_lines <- fdrnbrcurve(cobraplot)
+    plot_data_points <- fdrnbr(cobraplot)
   }
 
   thresholds <- sort(unique(as.numeric(gsub("thr", "", plot_data_points$thr))))
   plot_data_points$method2.satis <- paste0(plot_data_points$method,
                                            plot_data_points$satis)
 
-  if (!(isTRUE(facetted(ibraplot)))) {
+  if (!(isTRUE(facetted(cobraplot)))) {
     plot_data_points$method <- plot_data_points$fullmethod
     plot_data_lines$method <- plot_data_lines$fullmethod
     plot_data_points$method2.satis <- paste0(plot_data_points$fullmethod,
@@ -315,9 +315,9 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
       geom_point(data = plot_data_points, size = pointsize,
                  aes_string(fill = "method2.satis", colour = "method"),
                  shape = 21) +
-      scale_fill_manual(values = plotcolors(ibraplot), guide = FALSE,
+      scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
                         name = "") +
-      scale_color_manual(values = plotcolors(ibraplot), name = "") +
+      scale_color_manual(values = plotcolors(cobraplot), name = "") +
       ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
            ifelse(aspc == "TPR", yaxisrange[2],
                   max(plot_data_lines$NBR[plot_data_lines$FDR <=
@@ -339,7 +339,7 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
            ifelse(aspc == "TPR", yaxisrange[2],
                   max(plot_data_lines$NBR[plot_data_lines$FDR <=
                                             xaxisrange[2]]))) +
-      scale_color_manual(values = plotcolors(ibraplot), name = "") +
+      scale_color_manual(values = plotcolors(cobraplot), name = "") +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("points" %in% plottype) {
@@ -354,9 +354,9 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
       geom_point(size = pointsize,
                  aes_string(fill = "method2.satis", colour = "method"),
                  shape = 21) +
-      scale_fill_manual(values = plotcolors(ibraplot), guide = FALSE,
+      scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
                         name = "") +
-      scale_color_manual(values = plotcolors(ibraplot), name = "") +
+      scale_color_manual(values = plotcolors(cobraplot), name = "") +
       ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
            ifelse(aspc == "TPR", yaxisrange[2],
                   max(plot_data_lines$NBR[plot_data_lines$FDR <=
@@ -369,8 +369,8 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   }
-  if (isTRUE(facetted(ibraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(ibraplot) + 1)/3))
+  if (isTRUE(facetted(cobraplot))) {
+    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(cobraplot) + 1)/3))
   } else {
     pp
   }
@@ -382,7 +382,7 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' (FDR), for given adjusted p-value thresholds and/or as curves traced out by
 #' considering all threshold values.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -401,17 +401,17 @@ plot_fdrcurve <- function(ibraplot, title, stripsize, titlecol, pointsize,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve"))
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_fdrtprcurve(ibraplot, plottype = c("curve", "points"))
-plot_fdrtprcurve <- function(ibraplot, title = "", stripsize = 15,
+#' plot_fdrtprcurve(cobraplot, plottype = c("curve", "points"))
+plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
                              titlecol = "black", pointsize = 5,
                              xaxisrange = c(0, 1), yaxisrange = c(0, 1),
                              plottype = c("curve", "points")) {
-  plot_fdrcurve(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_fdrcurve(cobraplot = cobraplot, title = title, stripsize = stripsize,
                 titlecol = titlecol, pointsize = pointsize,
                 xaxisrange = xaxisrange, yaxisrange = yaxisrange,
                 plottype = plottype, aspc = "TPR")
@@ -423,7 +423,7 @@ plot_fdrtprcurve <- function(ibraplot, title = "", stripsize = 15,
 #' discovery rate (FDR), for given adjusted p-value thresholds and/or as curves
 #' traced out by considering all threshold values.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -440,17 +440,17 @@ plot_fdrtprcurve <- function(ibraplot, title = "", stripsize = 15,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = c("fdrnbr", "fdrnbrcurve"))
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_fdrnbrcurve(ibraplot, plottype = c("curve", "points"))
-plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
+#' plot_fdrnbrcurve(cobraplot, plottype = c("curve", "points"))
+plot_fdrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
                              titlecol = "black", pointsize = 5,
                              xaxisrange = c(0, 1),
                              plottype = c("curve", "points")) {
-  plot_fdrcurve(ibraplot = ibraplot, title = title, stripsize = stripsize,
+  plot_fdrcurve(cobraplot = cobraplot, title = title, stripsize = stripsize,
                 titlecol = titlecol, pointsize = pointsize,
                 xaxisrange = xaxisrange, yaxisrange = NULL,
                 plottype = plottype, aspc = "NBR")
@@ -464,7 +464,7 @@ plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
 #' as a "perfect" method. Note that maximally five methods (including the truth,
 #' if applicable) can be compared.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param ... Additional arguments to \code{limma::vennDiagram}.
 #'
 #' @return Nothing, displays a graph
@@ -472,15 +472,15 @@ plot_fdrnbrcurve <- function(ibraplot, title = "", stripsize = 15,
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "overlap")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_overlap(ibraplot)
-plot_overlap <- function(ibraplot, ...) {
-  overlap_table <- overlap(ibraplot)
-  circle.col <- plotcolors(ibraplot)
+#' plot_overlap(cobraplot)
+plot_overlap <- function(cobraplot, ...) {
+  overlap_table <- overlap(cobraplot)
+  circle.col <- plotcolors(cobraplot)
   if (length(overlap_table) == 0)
     return(NULL)
 
@@ -505,7 +505,7 @@ plot_overlap <- function(ibraplot, ...) {
         else
           cols <- circle.col[colnames(overlap_table[[i]])]
         limma::vennDiagram(overlap_table[[i]], circle.col = cols,
-                           main = paste0(splv(ibraplot), ":",
+                           main = paste0(splv(cobraplot), ":",
                                          names(overlap_table)[i]), ...)
       } else {
         NULL
@@ -521,7 +521,7 @@ plot_overlap <- function(ibraplot, ...) {
 #' Plot the deviations between observed scores and the continuous truth
 #' variable.
 #'
-#' @param ibraplot An \code{IBRAPlot} object.
+#' @param cobraplot An \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -541,22 +541,22 @@ plot_overlap <- function(ibraplot, ...) {
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
 #'                                   aspects = "deviation")
-#' ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                   incltruth = TRUE)
-#' plot_deviation(ibraplot)
-plot_deviation <- function(ibraplot, title = "", stripsize = 15,
+#' plot_deviation(cobraplot)
+plot_deviation <- function(cobraplot, title = "", stripsize = 15,
                            titlecol = "black", xaxisrange = NULL,
                            plottype = "boxplot",
                            dojitter = TRUE, squaredevs = FALSE) {
-  plot_data <- deviation(ibraplot)
+  plot_data <- deviation(cobraplot)
   if (isTRUE(squaredevs)) {
     plot_data$sqDEVIATION <- plot_data$DEVIATION^2
   }
 
-  if (!(isTRUE(facetted(ibraplot)))) {
+  if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
 
@@ -565,7 +565,7 @@ plot_deviation <- function(ibraplot, title = "", stripsize = 15,
                                                "sqDEVIATION", "DEVIATION"),
                                     group = "method", colour = "method")) +
     coord_flip() +
-    scale_color_manual(values = plotcolors(ibraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
   if (plottype == "boxplot") {
@@ -579,9 +579,9 @@ plot_deviation <- function(ibraplot, title = "", stripsize = 15,
   if (isTRUE(dojitter))
     pp <- pp + geom_jitter(position = position_jitter(width = 0.1, height = 0),
                            size = 1.5)
-  if (isTRUE(facetted(ibraplot))) {
+  if (isTRUE(facetted(cobraplot))) {
     pp <- pp + facet_wrap(~ splitval,
-                          nrow = ceiling((maxsplit(ibraplot) + 1)/3))
+                          nrow = ceiling((maxsplit(cobraplot) + 1)/3))
   }
   if (!is.null(xaxisrange))
     pp <- pp + ylim(xaxisrange[1], xaxisrange[2])

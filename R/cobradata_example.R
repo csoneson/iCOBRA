@@ -3,13 +3,13 @@
 #' A data set consisting of p-values, adjusted p-values and estimated log fold
 #' changes (in the 'scores' slot) obtained by three methods for differential
 #' expression analysis of RNA-seq data, applied to a small synthetic data set of
-#' 3,858 human genes. The values are stored in an \code{IBRAData} object
+#' 3,858 human genes. The values are stored in an \code{COBRAData} object
 #' together with a 'truth' data frame containing the true differential
 #' expression status for each gene as well as various additional annotations
 #' such as the true log fold change, the number of isoforms of the gene and the
 #' average expression level.
 #'
-#' @format An \code{IBRAData} object with four slots:
+#' @format An \code{COBRAData} object with four slots:
 #' \describe{
 #'   \item{pval}{data frame with p-values for 2,399 genes, from three different
 #'   methods.}
@@ -22,5 +22,5 @@
 #'   log fold change (logFC and logFC_cat columns) and average expression level
 #'   (expr and expr_cat columns) for 3,858 genes.}
 #'   }
-#' @return An \code{IBRAData} object.
-"ibradata_example"
+#' @return An \code{COBRAData} object.
+"cobradata_example"

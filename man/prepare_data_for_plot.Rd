@@ -4,15 +4,15 @@
 \alias{prepare_data_for_plot}
 \title{Prepare data for plotting}
 \usage{
-prepare_data_for_plot(ibraperf, keepmethods = NULL, incloverall = TRUE,
+prepare_data_for_plot(cobraperf, keepmethods = NULL, incloverall = TRUE,
   colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE)
 }
 \arguments{
-\item{ibraperf}{An \code{IBRAPerformance} object.}
+\item{cobraperf}{An \code{COBRAPerformance} object.}
 
 \item{keepmethods}{A character vector consisting of methods to retain for
-plotting (these should be a subset of \code{basemethods(ibraperf)}), or
-NULL (indicating that all methods represented in ibraperf should be
+plotting (these should be a subset of \code{basemethods(cobraperf)}), or
+NULL (indicating that all methods represented in cobraperf should be
 retained).}
 
 \item{incloverall}{A logical indicating whether the "overall" results should
@@ -49,24 +49,24 @@ same panel but shown with different colors (\code{FALSE}).}
   Venn diagrams.}
 }
 \value{
-An \code{IBRAPlot} object
+An \code{COBRAPlot} object
 }
 \description{
-Prepare performance data provided in an \code{IBRAPerformance} object
+Prepare performance data provided in an \code{COBRAPerformance} object
 (obtained by \code{\link{calculate_performance}}) for plotting.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   cont_truth = "none",
                                   aspects = c("fdrtpr", "fdrtprcurve",
                                               "tpr", "roc"),
                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
-ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
+cobraplot <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
                                   colorscheme = "Dark2")
 
 ## User-specified colors
-ibraplot2 <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
+cobraplot2 <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
                                    colorscheme = c("blue", "red", "green"))
 }
 \author{

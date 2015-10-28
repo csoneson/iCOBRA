@@ -4,10 +4,10 @@
 \alias{plot_overlap}
 \title{Plot Venn diagram}
 \usage{
-plot_overlap(ibraplot, ...)
+plot_overlap(cobraplot, ...)
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{...}{Additional arguments to \code{limma::vennDiagram}.}
 }
@@ -21,12 +21,12 @@ as a "perfect" method. Note that maximally five methods (including the truth,
 if applicable) can be compared.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = "overlap")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_overlap(ibraplot)
+plot_overlap(cobraplot)
 }
 \author{
 Charlotte Soneson

@@ -1,19 +1,19 @@
-#' @rdname IBRAPlot
+#' @rdname COBRAPlot
 #' @export
-.IBRAPlot <- setClass("IBRAPlot",
+.COBRAPlot <- setClass("COBRAPlot",
                       slots = c(plotcolors = "character",
                                 facetted = "logical"),
-                      contains = "IBRAPerformance")
+                      contains = "COBRAPerformance")
 
-#' \code{IBRAPlot} object and constructor
+#' \code{COBRAPlot} object and constructor
 #'
-#' The \code{IBRAPlot} class is similar to the \code{IBRAPerformance} class in
+#' The \code{COBRAPlot} class is similar to the \code{COBRAPerformance} class in
 #' that it holds various types of calculated performance measures. However, it
 #' also contains other attributes that are necessary for plotting, such as color
-#' assignments. Several \code{IBRAPlot} objects can be generated from the same
-#' \code{IBRAPerformance} object, without having to go through the potentially
+#' assignments. Several \code{COBRAPlot} objects can be generated from the same
+#' \code{COBRAPerformance} object, without having to go through the potentially
 #' time consuming task of recalculating all performance measures. Objects from
-#' this class are typically generated from an \code{IBRAPerformance} objects by
+#' this class are typically generated from an \code{COBRAPerformance} objects by
 #' means of the function \code{\link{prepare_data_for_plot}}.
 #'
 #' @param plotcolors A character vector giving the color for each method (or
@@ -22,21 +22,21 @@
 #'   facetted plot (separating different stratification levels into different
 #'   panels) or for displaying all values in one plot panel.
 #'
-#' @return An \code{IBRAPlot} object.
-#' @inheritParams IBRAPerformance
-#' @include IBRAPerformance.R
+#' @return An \code{COBRAPlot} object.
+#' @inheritParams COBRAPerformance
+#' @include COBRAPerformance.R
 #'
-#' @aliases IBRAPlot IBRAPlot-class
+#' @aliases COBRAPlot COBRAPlot-class
 #'
 #' @docType class
 #'
 #' @export
-#' @rdname IBRAPlot
+#' @rdname COBRAPlot
 #' @author Charlotte Soneson
 #' @examples
-#' ## Empty IBRAPlot object
-#' ibraplot <- IBRAPlot()
-IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
+#' ## Empty COBRAPlot object
+#' cobraplot <- COBRAPlot()
+COBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      fdrnbr = data.frame(), corr = data.frame(),
                      fdrnbrcurve = data.frame(), tpr = data.frame(),
                      fpr = data.frame(), roc = data.frame(),
@@ -45,14 +45,14 @@ IBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                      plotcolors = "", splv = "", deviation = data.frame(),
                      maxsplit = NA_integer_, facetted = NA) {
 
-  .IBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve, onlyshared = onlyshared,
+  .COBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve, onlyshared = onlyshared,
             fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, deviation = deviation,
             tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
             overlap = overlap, plotcolors = plotcolors, corr = corr,
             splv = splv, maxsplit = maxsplit, facetted = facetted)
 }
 
-setMethod("show", "IBRAPlot", function(object) {
+setMethod("show", "COBRAPlot", function(object) {
   cat("An object of class \"", class(object), "\"\n", sep = "")
   for (sl in slotNames(object)) {
     x <- slot(object, sl)
@@ -65,35 +65,35 @@ setMethod("show", "IBRAPlot", function(object) {
 #' Accessor and replacement functions for \code{plotcolors} slot
 #'
 #' Accessor and replacement functions for the \code{plotcolors} slot in an
-#' \code{IBRAPlot} object.
+#' \code{COBRAPlot} object.
 #'
 #' @docType methods
 #' @name plotcolors
 #' @rdname plotcolors
-#' @aliases plotcolors plotcolors,IBRAPlot-method
-#'   plotcolors<-,IBRAPlot,character-method
+#' @aliases plotcolors plotcolors,COBRAPlot-method
+#'   plotcolors<-,COBRAPlot,character-method
 #' @return The accessor function returns a character vector giving the colors
 #'   assigned to each of the methods (or method/stratification level
-#'   combinations) represented in the \code{IBRAPlot} object.
+#'   combinations) represented in the \code{COBRAPlot} object.
 #'
-#' @param x An \code{IBRAPlot} object.
+#' @param x An \code{COBRAPlot} object.
 #' @param ... Additional arguments.
 #' @param value A character vector giving the colors assigned to each of the
 #'   methods (or method/stratification level combinations) represented in the
-#'   \code{IBRAPlot} object.
+#'   \code{COBRAPlot} object.
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "fdrtpr")
-#' ibraplot <- prepare_data_for_plot(ibraperf)
-#' plotcolors(ibraplot)
-setMethod("plotcolors", "IBRAPlot", function(x) x@plotcolors)
+#' cobraplot <- prepare_data_for_plot(cobraperf)
+#' plotcolors(cobraplot)
+setMethod("plotcolors", "COBRAPlot", function(x) x@plotcolors)
 #' @name plotcolors
 #' @rdname plotcolors
 #' @exportMethod "plotcolors<-"
-setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
+setReplaceMethod("plotcolors", signature(x = "COBRAPlot", value = "character"),
                  function(x, value) {
                    x@plotcolors <- value
                    if (validObject(x))
@@ -103,17 +103,17 @@ setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
 #' Accessor and replacement functions for \code{facetted} slot
 #'
 #' Accessor and replacement functions for the \code{facetted} slot in an
-#' \code{IBRAPlot} object.
+#' \code{COBRAPlot} object.
 #'
 #' @docType methods
 #' @name facetted
 #' @rdname facetted
-#' @aliases facetted facetted,IBRAPlot-method facetted<-,IBRAPlot,logical-method
+#' @aliases facetted facetted,COBRAPlot-method facetted<-,COBRAPlot,logical-method
 #' @return The accessor function returns a logical value, indicating whether the
 #'   object is formatted for facetted plots (visualizing each stratification
 #'   level in a separate panel) or not.
 #'
-#' @param x An \code{IBRAPlot} object.
+#' @param x An \code{COBRAPlot} object.
 #' @param ... Additional arguments.
 #' @param value A logical value, indicating whether the object is formatted for
 #'   facetted plots (visualizing each stratification level in a separate panel)
@@ -121,16 +121,16 @@ setReplaceMethod("plotcolors", signature(x = "IBRAPlot", value = "character"),
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "fdrtpr")
-#' ibraplot <- prepare_data_for_plot(ibraperf)
-#' facetted(ibraplot)
-setMethod("facetted", "IBRAPlot", function(x) x@facetted)
+#' cobraplot <- prepare_data_for_plot(cobraperf)
+#' facetted(cobraplot)
+setMethod("facetted", "COBRAPlot", function(x) x@facetted)
 #' @name facetted
 #' @rdname facetted
 #' @exportMethod "facetted<-"
-setReplaceMethod("facetted", signature(x = "IBRAPlot", value = "logical"),
+setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
                  function(x, value) {
                    x@facetted <- value
                    if (validObject(x))
@@ -140,18 +140,18 @@ setReplaceMethod("facetted", signature(x = "IBRAPlot", value = "logical"),
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases [ [,IBRAPlot-method \S4method{[}{IBRAPlot,ANY,ANY}
+#' @aliases [ [,COBRAPlot-method \S4method{[}{COBRAPlot,ANY,ANY}
 #' @export
 #' @examples
-#' data(ibradata_example)
-#' ibradata_example[c("ENSG00000000457", "ENSG00000000971",
+#' data(cobradata_example)
+#' cobradata_example[c("ENSG00000000457", "ENSG00000000971",
 #'                    "ENSG00000000460"), ]
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "fdrtpr")
-#' ibraperf[, c("voom")]
-#' ibraplot <- prepare_data_for_plot(ibraperf)
-#' ibraplot[, c("voom")]
-setMethod("[", "IBRAPlot",
+#' cobraperf[, c("voom")]
+#' cobraplot <- prepare_data_for_plot(cobraperf)
+#' cobraplot[, c("voom")]
+setMethod("[", "COBRAPlot",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
               stop(paste0("None of the provided method found in the object. ",
@@ -202,7 +202,7 @@ setMethod("[", "IBRAPlot",
             x
           })
 
-setValidity("IBRAPlot",
+setValidity("COBRAPlot",
             function(object) {
               msg <- NULL
               valid <- TRUE
@@ -211,31 +211,31 @@ setValidity("IBRAPlot",
 
 #' Convert an object to another class
 #'
-#' Convert object between \code{IBRAPerformance} and \code{IBRAPlot} classes.
+#' Convert object between \code{COBRAPerformance} and \code{COBRAPlot} classes.
 #'
 #' @docType methods
 #' @name coerce
 #' @rdname coerce
-#' @aliases coerce coerce,IBRAPerformance,IBRAPlot-method coerce,
-#'   IBRAPlot,IBRAPerformance-method
+#' @aliases coerce coerce,COBRAPerformance,COBRAPlot-method coerce,
+#'   COBRAPlot,COBRAPerformance-method
 #'
 #' @param from The object that is to be coerced into another class.
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = "fdrtpr")
-#' ibraplot <- prepare_data_for_plot(ibraperf)
+#' cobraplot <- prepare_data_for_plot(cobraperf)
 #'
-#' ## Coerce IBRAPerformance object into IBRAPlot object
-#' as(ibraperf, "IBRAPlot")
+#' ## Coerce COBRAPerformance object into COBRAPlot object
+#' as(cobraperf, "COBRAPlot")
 #'
-#' ## Coerce IBRAPlot object into IBRAPerformance object
-#' as(ibraplot, "IBRAPerformance")
-setAs("IBRAPerformance", "IBRAPlot",
+#' ## Coerce COBRAPlot object into COBRAPerformance object
+#' as(cobraplot, "COBRAPerformance")
+setAs("COBRAPerformance", "COBRAPlot",
       function(from) {
-        .IBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
+        .COBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                   fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
                   tpr = from@tpr, fpr = from@fpr, roc = from@roc,
                   fpc = from@fpc, onlyshared = from@onlyshared,
@@ -247,11 +247,11 @@ setAs("IBRAPerformance", "IBRAPlot",
 #' @docType methods
 #' @name coerce
 #' @rdname coerce
-#' @aliases coerce coerce,IBRAPlot,IBRAPerformance-method
+#' @aliases coerce coerce,COBRAPlot,COBRAPerformance-method
 #' @export
-setAs("IBRAPlot", "IBRAPerformance",
+setAs("COBRAPlot", "COBRAPerformance",
       function(from) {
-        .IBRAPerformance(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
+        .COBRAPerformance(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                          fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
                          tpr = from@tpr, fpr = from@fpr, roc = from@roc,
                          fpc = from@fpc, deviation = from@deviation,

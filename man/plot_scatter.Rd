@@ -4,11 +4,11 @@
 \alias{plot_scatter}
 \title{Plot scatter plots}
 \usage{
-plot_scatter(ibraplot, title = "", stripsize = 10, titlecol = "black",
+plot_scatter(cobraplot, title = "", stripsize = 10, titlecol = "black",
   pointsize = 3, doflip = FALSE, dolog = FALSE)
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -34,12 +34,12 @@ Plot scatter plots, indicating the relationship between observed values and a
 continuous truth.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
                                   aspects = "scatter")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_scatter(ibraplot)
+plot_scatter(cobraplot)
 }
 \author{
 Charlotte Soneson

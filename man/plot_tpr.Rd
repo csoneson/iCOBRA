@@ -4,11 +4,11 @@
 \alias{plot_tpr}
 \title{Plot TPR}
 \usage{
-plot_tpr(ibraplot, title = "", stripsize = 15, titlecol = "black",
+plot_tpr(cobraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(0, 1))
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -29,12 +29,12 @@ A ggplot object
 Plot observed true positive rate (TPR) for given adjusted p-value thresholds.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = "tpr")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_tpr(ibraplot)
+plot_tpr(cobraplot)
 }
 \author{
 Charlotte Soneson

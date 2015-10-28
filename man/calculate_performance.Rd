@@ -4,21 +4,21 @@
 \alias{calculate_performance}
 \title{Calculate performance measures}
 \usage{
-calculate_performance(ibradata, binary_truth = NULL, cont_truth = NULL,
+calculate_performance(cobradata, binary_truth = NULL, cont_truth = NULL,
   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr",
   "roc", "fpc", "overlap", "corr", "scatter", "deviation"), thrs = c(0.01,
   0.05, 0.1), splv = "none", maxsplit = 3, onlyshared = FALSE,
   thr_venn = 0.05)
 }
 \arguments{
-\item{ibradata}{An IBRAData object.}
+\item{cobradata}{An COBRAData object.}
 
 \item{binary_truth}{A character string giving the name of the column of
-truth(ibradata) that contains the binary truth (true assignment of
+truth(cobradata) that contains the binary truth (true assignment of
 variables into two classes, represented by 0/1).}
 
 \item{cont_truth}{A character string giving the name of the column of
-truth(ibradata) that contains the continuous truth (a continuous value that
+truth(cobradata) that contains the continuous truth (a continuous value that
 the observations can be compared to).}
 
 \item{aspects}{A character vector giving the types of performance measures to
@@ -31,7 +31,7 @@ calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 "fpr".}
 
 \item{splv}{A character string giving the name of the column of
-truth(ibradata) that will be used to stratify the results. The default
+truth(cobradata) that will be used to stratify the results. The default
 value is "none", indicating no stratification.}
 
 \item{maxsplit}{A numeric value giving the maximal number of categories to
@@ -47,18 +47,18 @@ used.}
   to create Venn diagrams.}
 }
 \value{
-An IBRAPerformance object
+An COBRAPerformance object
 }
 \description{
 Calculate performance measures from a given collection of p-values, adjusted
-p-values and scores provided in an \code{IBRAData} object.
+p-values and scores provided in an \code{COBRAData} object.
 }
 \details{
 Depending on the collection of observations that are available for a given
 method, the appropriate one will be chosen for each performance measure. For
 \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr} and \code{overlap}
 aspects, results will only be calculated for methods where adjusted p-values
-are included in the \code{IBRAData} object, since these calculations make use
+are included in the \code{COBRAData} object, since these calculations make use
 of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
 \code{fdrnbrcurve} aspects, the \code{score} observations will be
 preferentially used, given that they are monotonically associated with the
@@ -73,8 +73,8 @@ observations will be used if they are provided, otherwise no results will be
 calculated.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = c("fdrtpr", "fdrtprcurve",
                                               "tpr", "roc"),
                                   thrs = c(0.01, 0.05, 0.1), splv = "none")

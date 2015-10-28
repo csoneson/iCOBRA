@@ -73,13 +73,13 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' Calculate performance measures
 #'
 #' Calculate performance measures from a given collection of p-values, adjusted
-#' p-values and scores provided in an \code{IBRAData} object.
+#' p-values and scores provided in an \code{COBRAData} object.
 #'
 #' Depending on the collection of observations that are available for a given
 #' method, the appropriate one will be chosen for each performance measure. For
 #' \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr} and \code{overlap}
 #' aspects, results will only be calculated for methods where adjusted p-values
-#' are included in the \code{IBRAData} object, since these calculations make use
+#' are included in the \code{COBRAData} object, since these calculations make use
 #' of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
 #' \code{fdrnbrcurve} aspects, the \code{score} observations will be
 #' preferentially used, given that they are monotonically associated with the
@@ -93,12 +93,12 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' observations will be used if they are provided, otherwise no results will be
 #' calculated.
 #'
-#' @param ibradata An IBRAData object.
+#' @param cobradata An COBRAData object.
 #' @param binary_truth A character string giving the name of the column of
-#'   truth(ibradata) that contains the binary truth (true assignment of
+#'   truth(cobradata) that contains the binary truth (true assignment of
 #'   variables into two classes, represented by 0/1).
 #' @param cont_truth A character string giving the name of the column of
-#'   truth(ibradata) that contains the continuous truth (a continuous value that
+#'   truth(cobradata) that contains the continuous truth (a continuous value that
 #'   the observations can be compared to).
 #' @param aspects A character vector giving the types of performance measures to
 #'   calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
@@ -108,7 +108,7 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 #'   "fpr".
 #' @param splv A character string giving the name of the column of
-#'   truth(ibradata) that will be used to stratify the results. The default
+#'   truth(cobradata) that will be used to stratify the results. The default
 #'   value is "none", indicating no stratification.
 #' @param maxsplit A numeric value giving the maximal number of categories to
 #'   keep in the stratification. The largest categories containing both positive
@@ -120,17 +120,17 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' @param thr_venn A numeric value giving the adjusted p-value threshold to use
 #'   to create Venn diagrams.
 #'
-#' @return An IBRAPerformance object
+#' @return An COBRAPerformance object
 #'
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
 #'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
-calculate_performance <- function(ibradata, binary_truth = NULL,
+calculate_performance <- function(cobradata, binary_truth = NULL,
                                   cont_truth = NULL,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                               "fdrnbrcurve", "tpr", "fpr",
@@ -142,8 +142,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
-  all_methods <- unique(c(colnames(pval(ibradata)), colnames(padj(ibradata)),
-                          colnames(score(ibradata))))
+  all_methods <- unique(c(colnames(pval(cobradata)), colnames(padj(cobradata)),
+                          colnames(score(cobradata))))
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
   if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects) &
@@ -151,13 +151,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
     outNBR <- outFP <- outTP <- outFN <- outTN <- outTOT_CALLED <-
       outDS <- outNONDS <- list()
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "fpr")
+      inpcol <- select_measure(cobradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -318,13 +318,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
     outPEARSON <- list()
     outSPEARMAN <- list()
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "corr")
+      inpcol <- select_measure(cobradata, i, asp = "corr")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = NULL, maxsplit = maxsplit)
@@ -391,13 +391,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
   if (any(c("tpr", "fdrtpr", "fdrnbr") %in% aspects) & !is.null(binary_truth)) {
     outTPR <- list()
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "tpr")
+      inpcol <- select_measure(cobradata, i, asp = "tpr")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -455,13 +455,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
   if (any(c("fdrtpr", "fdrnbr") %in% aspects) & !is.null(binary_truth)) {
     outFDR <- list()
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "fdr")
+      inpcol <- select_measure(cobradata, i, asp = "fdr")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -532,13 +532,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
   if ("fpr" %in% aspects & !is.null(binary_truth)) {
     outFPR <- list()
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "fpr")
+      inpcol <- select_measure(cobradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -598,13 +598,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       !is.null(binary_truth)) {
     outFDRTPR <- list()
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "fdrtpr")
+      inpcol <- select_measure(cobradata, i, asp = "fdrtpr")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -679,13 +679,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
     outROC <- list()
 
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "roc")
+      inpcol <- select_measure(cobradata, i, asp = "roc")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -745,13 +745,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
     outSCATTER <- list()
 
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "scatter")
+      inpcol <- select_measure(cobradata, i, asp = "scatter")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = NULL, maxsplit = maxsplit)
@@ -802,13 +802,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
     outDEVIATION <- list()
 
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "deviation")
+      inpcol <- select_measure(cobradata, i, asp = "deviation")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = NULL, maxsplit = maxsplit)
@@ -858,13 +858,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
     outFPC <- list()
 
     for (i in all_methods) {
-      inpcol <- select_measure(ibradata, i, asp = "fpc")
+      inpcol <- select_measure(cobradata, i, asp = "fpc")
       if (!is.null(inpcol)) {
-        tmp <- slot(ibradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(ibradata), df = tmp,  method = i,
+        tmp <- slot(cobradata, inpcol)[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
-        truth <- truth(ibradata)[match(allg, rownames(truth(ibradata))), ,
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
         keeplevels <- get_keeplevels(truth = truth, splv = splv,
                                      binary_truth = binary_truth,
@@ -921,11 +921,11 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 
   ## --------------------------- OVERLAP -------------------------------- ##
   if ("overlap" %in% aspects) {
-    tmplist <- padj(ibradata)
+    tmplist <- padj(cobradata)
     if (length(tmplist) > 0) {
       if (!is.null(binary_truth)) {
         ## Add 'truth' to list of results
-        tmp2 <- 1 - truth(ibradata)[, binary_truth, drop = FALSE]
+        tmp2 <- 1 - truth(cobradata)[, binary_truth, drop = FALSE]
         colnames(tmp2) <- "truth"
         missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
         tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
@@ -949,8 +949,8 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
       ## If splv is not "none", split overlap matrix
       if (splv != "none") {
         overlap_overall <- overlap
-        keep <- intersect(rownames(overlap), rownames(truth(ibradata)))
-        tth <- truth(ibradata)[match(keep, rownames(truth(ibradata))), ]
+        keep <- intersect(rownames(overlap), rownames(truth(cobradata)))
+        tth <- truth(cobradata)[match(keep, rownames(truth(cobradata))), ]
         keeplevels <- get_keeplevels(truth = tth, splv = splv,
                                      binary_truth = NULL, maxsplit = maxsplit)
         overlap <- overlap[match(keep, rownames(overlap)), ]
@@ -994,7 +994,7 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
   if (!("fdrtprcurve" %in% aspects)) fdrtprcurve <- data.frame()
   if (!("fdrnbrcurve" %in% aspects)) fdrnbrcurve <- data.frame()
 
-  IBRAPerformance(tpr = tprs, fpr = fprs, fdrtprcurve = fdrtprs,
+  COBRAPerformance(tpr = tprs, fpr = fprs, fdrtprcurve = fdrtprs,
                   fdrnbrcurve = fdrnbrs, deviation = deviations,
                   roc = rocs, fpc = fpcs, fdrtpr = fdrtpr, fdrnbr = fdrnbr,
                   maxsplit = maxsplit, overlap = overlap, splv = splv,
@@ -1004,13 +1004,13 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 
 #' Prepare data for plotting
 #'
-#' Prepare performance data provided in an \code{IBRAPerformance} object
+#' Prepare performance data provided in an \code{COBRAPerformance} object
 #' (obtained by \code{\link{calculate_performance}}) for plotting.
 #'
-#' @param ibraperf An \code{IBRAPerformance} object.
+#' @param cobraperf An \code{COBRAPerformance} object.
 #' @param keepmethods A character vector consisting of methods to retain for
-#'   plotting (these should be a subset of \code{basemethods(ibraperf)}), or
-#'   NULL (indicating that all methods represented in ibraperf should be
+#'   plotting (these should be a subset of \code{basemethods(cobraperf)}), or
+#'   NULL (indicating that all methods represented in cobraperf should be
 #'   retained).
 #' @param incloverall A logical indicating whether the "overall" results should
 #'   be included if the results are stratified by an annotation.
@@ -1042,48 +1042,48 @@ calculate_performance <- function(ibradata, binary_truth = NULL,
 #' @param incltruth A logical indicating whether the truth should be included in
 #'   Venn diagrams.
 #'
-#' @return An \code{IBRAPlot} object
+#' @return An \code{COBRAPlot} object
 #'
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
 #'                                   cont_truth = "none",
 #'                                   aspects = c("fdrtpr", "fdrtprcurve",
 #'                                               "tpr", "roc"),
 #'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
-#' ibraplot <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
+#' cobraplot <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
 #'                                   colorscheme = "Dark2")
 #'
 #' ## User-specified colors
-#' ibraplot2 <- prepare_data_for_plot(ibraperf, keepmethods = NULL,
+#' cobraplot2 <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
 #'                                    colorscheme = c("blue", "red", "green"))
-prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
+prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
                                   incloverall = TRUE, colorscheme = "hue_pal",
                                   facetted = TRUE, incltruth = TRUE) {
   splitval <- NULL
   if (is.null(keepmethods)) {
-    keepmethods <- basemethods(ibraperf)
+    keepmethods <- basemethods(cobraperf)
   }
 
-  if (length(intersect(basemethods(ibraperf), keepmethods)) == 0)
-    return(IBRAPlot())
+  if (length(intersect(basemethods(cobraperf), keepmethods)) == 0)
+    return(COBRAPlot())
 
-  ## Subset ibraperf object
-  ibraperf <- ibraperf[, keepmethods]
+  ## Subset cobraperf object
+  cobraperf <- cobraperf[, keepmethods]
 
   ## Exclude truth from overlap matrix
   ## If truth not included, keep all features and set NAs to 0
   if (!isTRUE(incltruth)) {
-    if (length(overlap(ibraperf)) != 0) {
-      if (class(overlap(ibraperf)) == "data.frame") {
-        overlap(ibraperf) <-
-          overlap(ibraperf)[, setdiff(colnames(overlap(ibraperf)), "truth"),
+    if (length(overlap(cobraperf)) != 0) {
+      if (class(overlap(cobraperf)) == "data.frame") {
+        overlap(cobraperf) <-
+          overlap(cobraperf)[, setdiff(colnames(overlap(cobraperf)), "truth"),
                             drop = FALSE]
-        overlap(ibraperf)[is.na(overlap(ibraperf))] <- 0
+        overlap(cobraperf)[is.na(overlap(cobraperf))] <- 0
       } else {
-        overlap(ibraperf) <- lapply(overlap(ibraperf), function(w) {
+        overlap(cobraperf) <- lapply(overlap(cobraperf), function(w) {
           w <- w[, setdiff(colnames(w), "truth"), drop = FALSE]
           w[is.na(w)] <- 0
           w
@@ -1094,24 +1094,24 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
     ## If truth is included, what to do depends on onlyshared.
     ## If onlyshared = FALSE, remove all features where truth!=NA
     ## If onlyshared = TRUE, remove all features with any NA
-    if (length(overlap(ibraperf)) != 0) {
-      if (class(overlap(ibraperf)) == "data.frame") {
-        if ("truth" %in% colnames(overlap(ibraperf))) {
-          if (isTRUE(onlyshared(ibraperf))) {
-            overlap(ibraperf) <-
-              overlap(ibraperf)[which(rowSums(is.na(overlap(ibraperf))) == 0),
+    if (length(overlap(cobraperf)) != 0) {
+      if (class(overlap(cobraperf)) == "data.frame") {
+        if ("truth" %in% colnames(overlap(cobraperf))) {
+          if (isTRUE(onlyshared(cobraperf))) {
+            overlap(cobraperf) <-
+              overlap(cobraperf)[which(rowSums(is.na(overlap(cobraperf))) == 0),
                                 , drop = FALSE]
           } else {
-            overlap(ibraperf) <-
-              overlap(ibraperf)[which(!is.na(overlap(ibraperf)$truth)),
+            overlap(cobraperf) <-
+              overlap(cobraperf)[which(!is.na(overlap(cobraperf)$truth)),
                                 , drop = FALSE]
           }
         }
-        overlap(ibraperf)[is.na(overlap(ibraperf))] <- 0
+        overlap(cobraperf)[is.na(overlap(cobraperf))] <- 0
       } else {
-        overlap(ibraperf) <- lapply(overlap(ibraperf), function(w) {
+        overlap(cobraperf) <- lapply(overlap(cobraperf), function(w) {
           if ("truth" %in% colnames(w)) {
-            if (isTRUE(onlyshared(ibraperf))) {
+            if (isTRUE(onlyshared(cobraperf))) {
               w <- w[which(rowSums(is.na(w)) == 0), , drop = FALSE]
             } else {
               w <- w[which(!is.na(w$truth)), , drop = FALSE]
@@ -1126,39 +1126,39 @@ prepare_data_for_plot <- function(ibraperf, keepmethods = NULL,
   }
 
   ## Define colors
-  use_colors <- define_colors(ibraperf = ibraperf, palette = colorscheme,
+  use_colors <- define_colors(cobraperf = cobraperf, palette = colorscheme,
                               facetted = facetted, incloverall = incloverall)
 
   ## Exclude overall level
   for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
                "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr")) {
-    if (splv(ibraperf) != "none") {
+    if (splv(cobraperf) != "none") {
       if (!(isTRUE(incloverall))) {
-        if (length(slot(ibraperf, sl)) != 0)
-          slot(ibraperf, sl) <- subset(slot(ibraperf, sl),
+        if (length(slot(cobraperf, sl)) != 0)
+          slot(cobraperf, sl) <- subset(slot(cobraperf, sl),
                                        splitval != "overall")
       }
     }
-    if (length(slot(ibraperf, sl)) != 0) {
+    if (length(slot(cobraperf, sl)) != 0) {
       if (isTRUE(facetted))
-        slot(ibraperf, sl)$num_method <-
-          as.numeric(as.factor(slot(ibraperf, sl)$method))
+        slot(cobraperf, sl)$num_method <-
+          as.numeric(as.factor(slot(cobraperf, sl)$method))
       else
-        slot(ibraperf, sl)$num_method <-
-          as.numeric(as.factor(slot(ibraperf, sl)$fullmethod))
+        slot(cobraperf, sl)$num_method <-
+          as.numeric(as.factor(slot(cobraperf, sl)$fullmethod))
     }
   }
 
-  if (splv(ibraperf) != "none") {
+  if (splv(cobraperf) != "none") {
     if (!(isTRUE(incloverall))) {
-      if (length(overlap(ibraperf)) != 0)
-        overlap(ibraperf)$overall <- NULL
+      if (length(overlap(cobraperf)) != 0)
+        overlap(cobraperf)$overall <- NULL
     }
   }
 
-  ibraperf <- as(ibraperf, "IBRAPlot")
-  facetted(ibraperf) <- facetted
-  plotcolors(ibraperf) <- use_colors
-  ibraperf
+  cobraperf <- as(cobraperf, "COBRAPlot")
+  facetted(cobraperf) <- facetted
+  plotcolors(cobraperf) <- use_colors
+  cobraperf
 }
 

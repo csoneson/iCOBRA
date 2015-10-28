@@ -4,11 +4,11 @@
 \alias{plot_roc}
 \title{Plot ROC curves}
 \usage{
-plot_roc(ibraplot, title = "", stripsize = 15, titlecol = "black",
+plot_roc(cobraplot, title = "", stripsize = 15, titlecol = "black",
   xaxisrange = c(0, 1), yaxisrange = c(0, 1))
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -30,12 +30,12 @@ A ggplot object
 Plot receiver operating characteristics (ROC) curves.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, binary_truth = "status",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
                                   aspects = "roc")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_roc(ibraplot)
+plot_roc(cobraplot)
 }
 \author{
 Charlotte Soneson

@@ -106,41 +106,41 @@ fix_duplicates <- function(res_df, feature_id, method_name) {
 #' Calculate adjusted p-values
 #'
 #' Calculate adjusted p-values for methods where only nominal p-values are
-#' available in an \code{IBRAData} object.
+#' available in an \code{COBRAData} object.
 #'
-#' @param ibradata An \code{IBRAData} object.
+#' @param cobradata An \code{COBRAData} object.
 #' @param method A character string giving the method (selected from
 #'   \code{p.adjust.methods()}) that will be used to perform the adjustment.
 #'
-#' @return An \code{IBRAData} object, extended with the calculated adjusted
+#' @return An \code{COBRAData} object, extended with the calculated adjusted
 #'   p-values.
 #'
 #' @export
 #' @author Charlotte Soneson
 #' @examples
-#' data(ibradata_example)
-#' ibradata_example <- calculate_adjp(ibradata_example, method = "BH")
-calculate_adjp <- function(ibradata, method = "BH") {
-  sf <- setdiff(colnames(pval(ibradata)), colnames(padj(ibradata)))
+#' data(cobradata_example)
+#' cobradata_example <- calculate_adjp(cobradata_example, method = "BH")
+calculate_adjp <- function(cobradata, method = "BH") {
+  sf <- setdiff(colnames(pval(cobradata)), colnames(padj(cobradata)))
   if (length(sf) > 0) {
-      pa <- as.data.frame(apply(pval(ibradata)[, sf, drop = FALSE], 2,
+      pa <- as.data.frame(apply(pval(cobradata)[, sf, drop = FALSE], 2,
                                 stats::p.adjust, method = method))
-      missing_genes <- setdiff(rownames(pa), rownames(padj(ibradata)))
-      if (length(padj(ibradata)) != 0) {
+      missing_genes <- setdiff(rownames(pa), rownames(padj(cobradata)))
+      if (length(padj(cobradata)) != 0) {
         tmpadd <-
           as.data.frame(matrix(NA, length(missing_genes),
-                               ncol(padj(ibradata)),
+                               ncol(padj(cobradata)),
                                dimnames = list(missing_genes,
-                                               colnames(padj(ibradata)))))
-        padj(ibradata) <- rbind(padj(ibradata), tmpadd)
-        padj(ibradata) <- cbind(padj(ibradata),
-                                pa[match(rownames(padj(ibradata)),
+                                               colnames(padj(cobradata)))))
+        padj(cobradata) <- rbind(padj(cobradata), tmpadd)
+        padj(cobradata) <- cbind(padj(cobradata),
+                                pa[match(rownames(padj(cobradata)),
                                          rownames(pa)), , drop = FALSE])
       } else {
-        padj(ibradata) <- pa
+        padj(cobradata) <- pa
       }
   }
-  ibradata
+  cobradata
 }
 
 fixcolname <- function(df, prevv, newv) {
@@ -150,11 +150,11 @@ fixcolname <- function(df, prevv, newv) {
   df
 }
 
-define_colors <- function(ibraperf, palette, facetted, incloverall) {
+define_colors <- function(cobraperf, palette, facetted, incloverall) {
   levs <- basemethod <- NULL
 
-  basem <- basemethods(ibraperf)
-  strl <- paste0("_", stratiflevels(ibraperf))
+  basem <- basemethods(cobraperf)
+  strl <- paste0("_", stratiflevels(cobraperf))
   inp_methods <- expand.grid(basemethod = basem, levs = c("", strl))
   inp_methods$fullmethod <- paste0(inp_methods$basemethod, inp_methods$levs)
 
@@ -253,16 +253,16 @@ define_colors <- function(ibraperf, palette, facetted, incloverall) {
 }
 
 
-select_measure <- function(ibradata, method, asp) {
+select_measure <- function(cobradata, method, asp) {
   ret <- NULL
   if (asp %in% c("nbr", "fpr", "fdr", "tpr")) {
-    if (method %in% names(padj(ibradata))) ret <- "padj"
+    if (method %in% names(padj(cobradata))) ret <- "padj"
     else ret <- NULL
   } else if (asp %in% c("fdrtpr", "fdrnbr")) {
-    if (method %in% names(score(ibradata))) {
-      if (method %in% names(padj(ibradata))) {
-        tmp1 <- padj(ibradata)[method]
-        tmp2 <- score(ibradata)[method]
+    if (method %in% names(score(cobradata))) {
+      if (method %in% names(padj(cobradata))) {
+        tmp1 <- padj(cobradata)[method]
+        tmp2 <- score(cobradata)[method]
         nm <- intersect(rownames(tmp1), rownames(tmp2))
         tmp1 <- tmp1[match(nm, rownames(tmp1)), method]
         tmp2 <- tmp2[match(nm, rownames(tmp2)), method]
@@ -270,10 +270,10 @@ select_measure <- function(ibradata, method, asp) {
         if (length(unique(sgn[sgn != 0 & !is.na(sgn)])) == 1) ret <- "score"
         else ret <- "padj"
       } else ret <- "score"
-    } else if (method %in% names(pval(ibradata))) {
-      if (method %in% names(padj(ibradata))) {
-        tmp1 <- padj(ibradata)[method]
-        tmp2 <- pval(ibradata)[method]
+    } else if (method %in% names(pval(cobradata))) {
+      if (method %in% names(padj(cobradata))) {
+        tmp1 <- padj(cobradata)[method]
+        tmp2 <- pval(cobradata)[method]
         nm <- intersect(rownames(tmp1), rownames(tmp2))
         tmp1 <- tmp1[match(nm, rownames(tmp1)), method]
         tmp2 <- tmp2[match(nm, rownames(tmp2)), method]
@@ -281,16 +281,16 @@ select_measure <- function(ibradata, method, asp) {
         if (length(unique(sgn[sgn != 0 & !is.na(sgn)])) == 1) ret <- "pval"
         else ret <- "padj"
       } else ret <- "pval"
-    } else if (method %in% names(padj(ibradata))) {
+    } else if (method %in% names(padj(cobradata))) {
       ret <- "padj"
     } else ret <- NULL
   } else if (asp %in% c("roc", "fpc")) {
-    if (method %in% names(score(ibradata))) ret <- "score"
-    else if (method %in% names(pval(ibradata))) ret <- "pval"
-    else if (method %in% names(padj(ibradata))) ret <- "padj"
+    if (method %in% names(score(cobradata))) ret <- "score"
+    else if (method %in% names(pval(cobradata))) ret <- "pval"
+    else if (method %in% names(padj(cobradata))) ret <- "padj"
     else ret <- NULL
   } else if (asp %in% c("corr", "scatter", "deviation")) {
-    if (method %in% names(score(ibradata))) ret <- "score"
+    if (method %in% names(score(cobradata))) ret <- "score"
     else ret <- NULL
   }
   ret

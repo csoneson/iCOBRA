@@ -1,46 +1,46 @@
 ## Test that the constructors generate objects of the correct type
 
-library(IBRA)
+library(COBRA)
 context("Check that constructors generate objects of the correct type")
 
-test_that("IBRAData constructors generate IBRAData objects", {
-  expect_is(IBRAData(), "IBRAData")
-  expect_is(IBRAData_from_text(
-    truth_file = system.file("extdata", "ibradata_example_truth.txt",
-                             package = "IBRA"),
-    result_files = system.file("extdata", "ibradata_example_results.txt",
-                               package = "IBRA"),
-    feature_id = "feature"), "IBRAData")
+test_that("COBRAData constructors generate COBRAData objects", {
+  expect_is(COBRAData(), "COBRAData")
+  expect_is(COBRAData_from_text(
+    truth_file = system.file("extdata", "cobradata_example_truth.txt",
+                             package = "COBRA"),
+    result_files = system.file("extdata", "cobradata_example_results.txt",
+                               package = "COBRA"),
+    feature_id = "feature"), "COBRAData")
 
-  load(system.file("extdata", "ibradata_example_simres.Rdata",
-                   package = "IBRA"))
-  expect_is(IBRAData_from_simresults(simres), "IBRAData")
+  load(system.file("extdata", "cobradata_example_simres.Rdata",
+                   package = "COBRA"))
+  expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
   rownames(simres@padj) <- NULL
-  expect_is(IBRAData_from_simresults(simres), "IBRAData")
+  expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
-  load(system.file("extdata", "ibradata_example_simres.Rdata",
-                   package = "IBRA"))
+  load(system.file("extdata", "cobradata_example_simres.Rdata",
+                   package = "COBRA"))
   rownames(simres@pval) <- NULL
-  expect_is(IBRAData_from_simresults(simres), "IBRAData")
+  expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
   rownames(simres@padj) <- NULL
-  expect_is(IBRAData_from_simresults(simres), "IBRAData")
+  expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
-  expect_is(IBRAData_from_text(
-    truth_file = system.file("extdata", "ibradata_example_truth.txt",
-                             package = "IBRA"),
-    result_files = system.file("extdata", "ibradata_example_results_2.txt",
-                               package = "IBRA"),
-    feature_id = "feature"), "IBRAData")
+  expect_is(COBRAData_from_text(
+    truth_file = system.file("extdata", "cobradata_example_truth.txt",
+                             package = "COBRA"),
+    result_files = system.file("extdata", "cobradata_example_results_2.txt",
+                               package = "COBRA"),
+    feature_id = "feature"), "COBRAData")
 
-  ibt <- IBRAData_from_text(
-    truth_file = system.file("extdata", "ibradata_example_truth.txt",
-                             package = "IBRA"),
-    result_files = system.file("extdata", "ibradata_example_results_3.txt",
-                               package = "IBRA"),
+  ibt <- COBRAData_from_text(
+    truth_file = system.file("extdata", "cobradata_example_truth.txt",
+                             package = "COBRA"),
+    result_files = system.file("extdata", "cobradata_example_results_3.txt",
+                               package = "COBRA"),
     feature_id = "feature")
-  expect_is(ibt, "IBRAData")
+  expect_is(ibt, "COBRAData")
   expect_equal(length(pval(ibt)), 0)
   expect_equal(length(padj(ibt)), 0)
   expect_equal(length(score(ibt)), 0)
@@ -48,12 +48,12 @@ test_that("IBRAData constructors generate IBRAData objects", {
   pval <- c(0.0058, 0.771, 0.024, 0.741, 0.247)
   padj <- p.adjust(pval, method = "BH")
   score <- 1:5
-  ib <- IBRAData(pval = data.frame(m1 = pval, row.names = paste0("F", 1:5)),
+  ib <- COBRAData(pval = data.frame(m1 = pval, row.names = paste0("F", 1:5)),
                  padj = data.frame(m1 = padj, row.names = paste0("F", 1:5)),
                  score = data.frame(m1 = score, row.names = paste0("F", 1:5)),
                  truth = data.frame(status = c(0, 1, 0, 1, 0),
                                     row.names = paste0("F", 1:5)))
-  ib2 <- IBRAData(pval = data.frame(m2 = pval, row.names = paste0("F", 1:5)),
+  ib2 <- COBRAData(pval = data.frame(m2 = pval, row.names = paste0("F", 1:5)),
                   padj = data.frame(m2 = padj, row.names = paste0("F", 1:5)),
                   score = data.frame(m2 = score, row.names = paste0("F", 1:5)),
                   object_to_extend = ib)
@@ -62,8 +62,8 @@ test_that("IBRAData constructors generate IBRAData objects", {
   expect_equal(score(ib2)$m1, score(ib2)$m2)
 })
 
-test_that("extending IBRAData objects works as expected", {
-  ibA <- IBRAData(pval = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+test_that("extending COBRAData objects works as expected", {
+  ibA <- COBRAData(pval = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
                                     row.names = paste0("F", 1:5)),
                   padj = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
                                     row.names = paste0("F", 1:5)),
@@ -74,7 +74,7 @@ test_that("extending IBRAData objects works as expected", {
   ibAp <- ibA
   truth(ibAp)$expr <- 1:5
   truth(ibAp)$status <- c(0, 1, 0, 1, 0)
-  ibB <- IBRAData(pval = data.frame(mB = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+  ibB <- COBRAData(pval = data.frame(mB = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
                                     row.names = paste0("F", 1:6)),
                   padj = data.frame(mA = c(0.6, 0.7, 0.8, 0.9, 1.0),
                                     row.names = paste0("F", 1:5)),
@@ -87,7 +87,7 @@ test_that("extending IBRAData objects works as expected", {
   truth(ibBp)$expr <- NULL
   truth(ibBp)$status <- c(0, 1, 0, 1, 0, 1)
 
-  ibtest <- IBRAData(pval = pval(ibA), padj = padj(ibA), score = score(ibA),
+  ibtest <- COBRAData(pval = pval(ibA), padj = padj(ibA), score = score(ibA),
                      truth = truth(ibA), object_to_extend = ibB)
   expect_equal(nrow(pval(ibtest)), 6)
   expect_equal(pval(ibtest)[paste0("F", 1:6), "mB"], c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6))
@@ -98,10 +98,10 @@ test_that("extending IBRAData objects works as expected", {
   expect_equal(truth(ibtest)[paste0("F", 1:6), "expr"], 1:6)
   expect_equal(ncol(truth(ibtest)), 2)
 
-  expect_error(IBRAData(pval = pval(ibA), padj = padj(ibA), score = score(ibA),
+  expect_error(COBRAData(pval = pval(ibA), padj = padj(ibA), score = score(ibA),
                         truth = truth(ibA), object_to_extend = ibBp))
 
-  ibtestp <- IBRAData(pval = pval(ibBp), padj = padj(ibBp), score = score(ibBp),
+  ibtestp <- COBRAData(pval = pval(ibBp), padj = padj(ibBp), score = score(ibBp),
                       truth = truth(ibBp), object_to_extend = ibAp)
   expect_equal(pval(ibtest)[paste0("F", 1:6), c("mA", "mB")],
                pval(ibtestp)[paste0("F", 1:6), c("mA", "mB")])
@@ -112,135 +112,135 @@ test_that("extending IBRAData objects works as expected", {
 })
 
 test_that("export functions return correct class", {
-  expect_is(IBRAData_to_text(ibradata_example, feature_id = "feature",
+  expect_is(COBRAData_to_text(cobradata_example, feature_id = "feature",
                              truth_file = "test_truth.txt",
                              result_files = "test_results.txt"), "NULL")
-  expect_is(IBRAData_to_simresults(ibradata_example, binary_truth = "status",
+  expect_is(COBRAData_to_simresults(cobradata_example, binary_truth = "status",
                                    strat = NULL), "SimResults")
-  ibradata <- ibradata_example
-  ibradata <- calculate_adjp(ibradata)
-  expect_is(IBRAData_to_simresults(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  cobradata <- calculate_adjp(cobradata)
+  expect_is(COBRAData_to_simresults(cobradata, binary_truth = "status",
                                    strat = "expr_cat"), "SimResults")
 })
 
-test_that(paste0("IBRAPerformance constructor and calculate_performance ",
-                 "generate IBRAPerformance objects"), {
-                   expect_is(IBRAPerformance(), "IBRAPerformance")
-                   expect_is(calculate_performance(ibradata_example,
+test_that(paste0("COBRAPerformance constructor and calculate_performance ",
+                 "generate COBRAPerformance objects"), {
+                   expect_is(COBRAPerformance(), "COBRAPerformance")
+                   expect_is(calculate_performance(cobradata_example,
                                                    binary_truth = "status",
                                                    aspects = "fpr"),
-                             "IBRAPerformance")
-                   ip <- IBRAPerformance()
+                             "COBRAPerformance")
+                   ip <- COBRAPerformance()
                    onlyshared(ip) <- TRUE
-                   expect_is(ip, "IBRAPerformance")
+                   expect_is(ip, "COBRAPerformance")
 })
 
-test_that(paste0("IBRAPlot constructor and prepare_data_for_plot ",
-                 "generate IBRAPlot objects"), {
-                   expect_is(IBRAPlot(), "IBRAPlot")
+test_that(paste0("COBRAPlot constructor and prepare_data_for_plot ",
+                 "generate COBRAPlot objects"), {
+                   expect_is(COBRAPlot(), "COBRAPlot")
                    expect_is(
                      prepare_data_for_plot(
-                       calculate_performance(ibradata_example,
+                       calculate_performance(cobradata_example,
                                              binary_truth = "status",
-                                             aspects = "fpr")), "IBRAPlot")
+                                             aspects = "fpr")), "COBRAPlot")
 })
 
 test_that("replacement still returns valid objects", {
-  ibradata <- ibradata_example
-  pval(ibradata) <- pval(ibradata)[1:500, ]
-  padj(ibradata) <- padj(ibradata)[1:1000, ]
-  score(ibradata) <- score(ibradata)[1:750, ]
-  truth(ibradata) <- truth(ibradata)[1:500, ]
-  expect_is(ibradata, "IBRAData")
+  cobradata <- cobradata_example
+  pval(cobradata) <- pval(cobradata)[1:500, ]
+  padj(cobradata) <- padj(cobradata)[1:1000, ]
+  score(cobradata) <- score(cobradata)[1:750, ]
+  truth(cobradata) <- truth(cobradata)[1:500, ]
+  expect_is(cobradata, "COBRAData")
 
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+  cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC")
-  fdrtpr(ibraperf) <- fdrtpr(ibraperf)[1:2, ]
-  fdrtprcurve(ibraperf) <- fdrtprcurve(ibraperf)[1:2, ]
-  fdrnbr(ibraperf) <- fdrnbr(ibraperf)[1:2, ]
-  fdrnbrcurve(ibraperf) <- fdrnbrcurve(ibraperf)[1:2, ]
-  fpr(ibraperf) <- fpr(ibraperf)[1:2, ]
-  tpr(ibraperf) <- tpr(ibraperf)[1:2, ]
-  roc(ibraperf) <- roc(ibraperf)[1:2, ]
-  fpc(ibraperf) <- fpc(ibraperf)[1:2, ]
-  deviation(ibraperf) <- deviation(ibraperf)[1:2, ]
-  scatter(ibraperf) <- scatter(ibraperf)[1:2, ]
-  fdrtpr(ibraperf) <- fdrtpr(ibraperf)[1:2, ]
-  overlap(ibraperf) <- overlap(ibraperf)[1:2, ]
-  corr(ibraperf) <- corr(ibraperf)[1:2, ]
-  maxsplit(ibraperf) <- 4
-  splv(ibraperf) <- "none"
-  expect_is(ibraperf, "IBRAPerformance")
+  fdrtpr(cobraperf) <- fdrtpr(cobraperf)[1:2, ]
+  fdrtprcurve(cobraperf) <- fdrtprcurve(cobraperf)[1:2, ]
+  fdrnbr(cobraperf) <- fdrnbr(cobraperf)[1:2, ]
+  fdrnbrcurve(cobraperf) <- fdrnbrcurve(cobraperf)[1:2, ]
+  fpr(cobraperf) <- fpr(cobraperf)[1:2, ]
+  tpr(cobraperf) <- tpr(cobraperf)[1:2, ]
+  roc(cobraperf) <- roc(cobraperf)[1:2, ]
+  fpc(cobraperf) <- fpc(cobraperf)[1:2, ]
+  deviation(cobraperf) <- deviation(cobraperf)[1:2, ]
+  scatter(cobraperf) <- scatter(cobraperf)[1:2, ]
+  fdrtpr(cobraperf) <- fdrtpr(cobraperf)[1:2, ]
+  overlap(cobraperf) <- overlap(cobraperf)[1:2, ]
+  corr(cobraperf) <- corr(cobraperf)[1:2, ]
+  maxsplit(cobraperf) <- 4
+  splv(cobraperf) <- "none"
+  expect_is(cobraperf, "COBRAPerformance")
 
-  ibraplot <- prepare_data_for_plot(ibraperf)
-  plotcolors(ibraplot) <- plotcolors(ibraplot)[1:5]
-  facetted(ibraplot) <- FALSE
-  expect_true(IBRA:::is_plottable(tpr(ibraplot)))
+  cobraplot <- prepare_data_for_plot(cobraperf)
+  plotcolors(cobraplot) <- plotcolors(cobraplot)[1:5]
+  facetted(cobraplot) <- FALSE
+  expect_true(COBRA:::is_plottable(tpr(cobraplot)))
 })
 
 test_that("show returns NULL", {
-  ibradata <- ibradata_example
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "tpr")
-  ibraperf2 <- calculate_performance(ibradata, binary_truth = "status",
+  cobraperf2 <- calculate_performance(cobradata, binary_truth = "status",
                                      cont_truth = "logFC",
                                      aspects = c("tpr", "overlap"),
                                      splv = "expr_cat", maxsplit = 4)
-  ibraplot <- prepare_data_for_plot(ibraperf2, colorscheme = "Set3",
+  cobraplot <- prepare_data_for_plot(cobraperf2, colorscheme = "Set3",
                                     facetted = FALSE)
-  expect_is(show(ibradata), "NULL")
-  expect_is(show(ibraperf), "NULL")
-  expect_is(show(ibraperf2), "NULL")
-  expect_is(show(ibraplot), "NULL")
+  expect_is(show(cobradata), "NULL")
+  expect_is(show(cobraperf), "NULL")
+  expect_is(show(cobraperf2), "NULL")
+  expect_is(show(cobraplot), "NULL")
 })
 
 test_that("subsetting of objects works", {
-  ibradata <- ibradata_example
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+  cobradata <- cobradata_example
+  cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "tpr")
-  ibraplot <- prepare_data_for_plot(ibraperf)
-  expect_error(ibraplot[, "nonexisting_method"])
-  expect_is(ibraplot[, "voom"], "IBRAPlot")
-  expect_equal(tpr(ibraplot[, "voom"])$basemethod, rep("voom", 3))
+  cobraplot <- prepare_data_for_plot(cobraperf)
+  expect_error(cobraplot[, "nonexisting_method"])
+  expect_is(cobraplot[, "voom"], "COBRAPlot")
+  expect_equal(tpr(cobraplot[, "voom"])$basemethod, rep("voom", 3))
 
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+  cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "overlap",
                                     splv = "none")
-  ibraplot <- prepare_data_for_plot(ibraperf)
-  expect_error(ibraperf[, "nonexisting_method"])
-  expect_is(overlap(ibraperf[, "voom"]), "data.frame")
-  expect_is(overlap(ibraplot[, "voom"]), "data.frame")
+  cobraplot <- prepare_data_for_plot(cobraperf)
+  expect_error(cobraperf[, "nonexisting_method"])
+  expect_is(overlap(cobraperf[, "voom"]), "data.frame")
+  expect_is(overlap(cobraplot[, "voom"]), "data.frame")
 
-  ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+  cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "overlap",
                                     splv = "expr_cat")
-  ibraplot <- prepare_data_for_plot(ibraperf)
-  expect_error(ibraperf[, "nonexisting_method"])
-  expect_is(ibraperf[, "voom"], "IBRAPerformance")
-  expect_is(overlap(ibraperf[, "voom"]), "list")
-  expect_equal(colnames(overlap(ibraperf[, "voom"])[[1]]), c("voom", "truth"))
+  cobraplot <- prepare_data_for_plot(cobraperf)
+  expect_error(cobraperf[, "nonexisting_method"])
+  expect_is(cobraperf[, "voom"], "COBRAPerformance")
+  expect_is(overlap(cobraperf[, "voom"]), "list")
+  expect_equal(colnames(overlap(cobraperf[, "voom"])[[1]]), c("voom", "truth"))
 
-  expect_error(ibraplot[, "nonexisting_method"])
-  expect_is(ibraplot[, "voom"], "IBRAPlot")
-  expect_is(overlap(ibraplot[, "voom"]), "list")
-  expect_equal(colnames(overlap(ibraplot[, "voom"])[[1]]), c("voom", "truth"))
+  expect_error(cobraplot[, "nonexisting_method"])
+  expect_is(cobraplot[, "voom"], "COBRAPlot")
+  expect_is(overlap(cobraplot[, "voom"]), "list")
+  expect_equal(colnames(overlap(cobraplot[, "voom"])[[1]]), c("voom", "truth"))
 
-  kp <- rownames(pval(ibradata))[1:50]
-  expect_error(ibradata["nonexisting_variable", ])
-  expect_is(ibradata[kp, ], "IBRAData")
-  expect_error(ibraplot[kp, ])
-  expect_equal(nrow(pval(ibradata[kp, ])), length(kp))
+  kp <- rownames(pval(cobradata))[1:50]
+  expect_error(cobradata["nonexisting_variable", ])
+  expect_is(cobradata[kp, ], "COBRAData")
+  expect_error(cobraplot[kp, ])
+  expect_equal(nrow(pval(cobradata[kp, ])), length(kp))
 })
 
 test_that("extending an object still returns valid objects", {
-  ibradata <- ibradata_example
-  ibradata <- IBRAData(pval = pval(ibradata), object_to_extend = ibradata)
-  expect_is(ibradata, "IBRAData")
+  cobradata <- cobradata_example
+  cobradata <- COBRAData(pval = pval(cobradata), object_to_extend = cobradata)
+  expect_is(cobradata, "COBRAData")
 })
 
 test_that("extending an object of the wrong class doesn't work", {
-    ibradata <- ibradata_example
-    ibraperf <- calculate_performance(ibradata, binary_truth = "status",
+    cobradata <- cobradata_example
+    cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                       cont_truth = "logFC", aspects = "tpr")
-    expect_error(IBRAData(pval = pval(ibradata), object_to_extend = ibraperf))
+    expect_error(COBRAData(pval = pval(cobradata), object_to_extend = cobraperf))
 })

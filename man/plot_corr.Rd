@@ -4,11 +4,11 @@
 \alias{plot_corr}
 \title{Plot correlations}
 \usage{
-plot_corr(ibraplot, title = "", stripsize = 15, titlecol = "black",
+plot_corr(cobraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(-1, 1), corrtype = "pearson")
 }
 \arguments{
-\item{ibraplot}{An \code{IBRAPlot} object.}
+\item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -32,12 +32,12 @@ A ggplot object
 Plot correlations between observations and a continuous truth value.
 }
 \examples{
-data(ibradata_example)
-ibraperf <- calculate_performance(ibradata_example, cont_truth = "logFC",
+data(cobradata_example)
+cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
                                   aspects = "corr")
-ibraplot <- prepare_data_for_plot(ibraperf, colorscheme = "Dark2",
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                   incltruth = TRUE)
-plot_corr(ibraplot, corrtype = "spearman")
+plot_corr(cobraplot, corrtype = "spearman")
 }
 \author{
 Charlotte Soneson
