@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{COBRA User Guide}
+  %\VignetteIndexEntry{iCOBRA User Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,7 @@ vignette: >
 options(width = 100)
 ```
 
-COBRA is a package to calculate and visualize performance metrics for ranking and
+iCOBRA is a package to calculate and visualize performance metrics for ranking and
 binary assignment methods. A typical use case could be, for example, comparing
 methods calling differential expression in gene expression experiments, which
 could be seen as either a ranking problem (estimating the correct effect size
@@ -32,11 +32,11 @@ available via the function ```COBRAapp()```.
 The starting point for an evaluation is typically a collection of feature
 'scores' (p-values, adjusted p-values or any other ranking score) and the truth
 (information about the true status, or the true scores for the features). These
-values are stored in an COBRAData object. Here, we will start from an example
-COBRAData object provided with the package.
+values are stored in an `COBRAData` object. Here, we will start from an example
+`COBRAData` object provided with the package.
 
 ```{r}
-library(COBRA)
+library(iCOBRA)
 data(cobradata_example)
 class(cobradata_example)
 cobradata_example
@@ -162,7 +162,7 @@ The colors can either be chosen by one of the pre-defined color palettes, or
 provided by the user as a character vector. Note that the number of colors that
 are required depends on the facetting, and that not all methods may be shown in
 all plots (depending on the provided score types). If the wrong number of colors
-is provided, COBRA will automatically add or remove colors.
+is provided, iCOBRA will automatically add or remove colors.
 
 ```{r, fig.width = 7, fig.height = 5, warning = FALSE}
 cobraplot <- prepare_data_for_plot(cobraperf, 
@@ -177,7 +177,7 @@ pp + theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
 ```
 
 ## Interactive exploration
-COBRA contains an interactive shiny application, for interactive exploration of
+iCOBRA contains an interactive shiny application, for interactive exploration of
 results. It can be called with an COBRAData object, or with no arguments. In the
 latter case, results can be loaded into the app from text files (see the
 Instructions tab for formatting instructions, or the COBRAData_to_text()

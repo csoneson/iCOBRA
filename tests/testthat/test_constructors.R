@@ -1,26 +1,26 @@
 ## Test that the constructors generate objects of the correct type
 
-library(COBRA)
+library(iCOBRA)
 context("Check that constructors generate objects of the correct type")
 
 test_that("COBRAData constructors generate COBRAData objects", {
   expect_is(COBRAData(), "COBRAData")
   expect_is(COBRAData_from_text(
     truth_file = system.file("extdata", "cobradata_example_truth.txt",
-                             package = "COBRA"),
+                             package = "iCOBRA"),
     result_files = system.file("extdata", "cobradata_example_results.txt",
-                               package = "COBRA"),
+                               package = "iCOBRA"),
     feature_id = "feature"), "COBRAData")
 
   load(system.file("extdata", "cobradata_example_simres.Rdata",
-                   package = "COBRA"))
+                   package = "iCOBRA"))
   expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
   rownames(simres@padj) <- NULL
   expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
   load(system.file("extdata", "cobradata_example_simres.Rdata",
-                   package = "COBRA"))
+                   package = "iCOBRA"))
   rownames(simres@pval) <- NULL
   expect_is(COBRAData_from_simresults(simres), "COBRAData")
 
@@ -29,16 +29,16 @@ test_that("COBRAData constructors generate COBRAData objects", {
 
   expect_is(COBRAData_from_text(
     truth_file = system.file("extdata", "cobradata_example_truth.txt",
-                             package = "COBRA"),
+                             package = "iCOBRA"),
     result_files = system.file("extdata", "cobradata_example_results_2.txt",
-                               package = "COBRA"),
+                               package = "iCOBRA"),
     feature_id = "feature"), "COBRAData")
 
   ibt <- COBRAData_from_text(
     truth_file = system.file("extdata", "cobradata_example_truth.txt",
-                             package = "COBRA"),
+                             package = "iCOBRA"),
     result_files = system.file("extdata", "cobradata_example_results_3.txt",
-                               package = "COBRA"),
+                               package = "iCOBRA"),
     feature_id = "feature")
   expect_is(ibt, "COBRAData")
   expect_equal(length(pval(ibt)), 0)
@@ -175,7 +175,7 @@ test_that("replacement still returns valid objects", {
   cobraplot <- prepare_data_for_plot(cobraperf)
   plotcolors(cobraplot) <- plotcolors(cobraplot)[1:5]
   facetted(cobraplot) <- FALSE
-  expect_true(COBRA:::is_plottable(tpr(cobraplot)))
+  expect_true(iCOBRA:::is_plottable(tpr(cobraplot)))
 })
 
 test_that("show returns NULL", {

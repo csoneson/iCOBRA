@@ -30,8 +30,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       skin = "blue",
 
       shinydashboard::dashboardHeader(
-        title = paste0("COBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.10)"),
+        title = paste0("iCOBRA - Comparative evaluation ",
+                       "of methods for ranking and binary assignment (v0.3.11)"),
         titleWidth = 800),
 
       shinydashboard::dashboardSidebar(
@@ -208,7 +208,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
           tabPanel("Instructions",
                    includeMarkdown(system.file("extdata", "instructions.md",
-                                               package = "COBRA")),
+                                               package = "iCOBRA")),
                    value = "instructions"),
 
           tabPanel("TPR vs FDR",

@@ -1,6 +1,6 @@
 ## Test that plot functions do the right thing
 
-library(COBRA)
+library(iCOBRA)
 context("Check plot functions")
 
 ib1 <- calculate_performance(cobradata_example, binary_truth = "status",

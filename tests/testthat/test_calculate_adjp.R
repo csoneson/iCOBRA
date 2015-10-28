@@ -1,6 +1,6 @@
 ## Test that calculate_adjp is doing the right thing
 
-library(COBRA)
+library(iCOBRA)
 context("Check that calculate_adjp is working properly")
 
 test_that("calculated adjusted p-values are correct", {

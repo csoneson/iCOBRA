@@ -1,6 +1,6 @@
 ## Test that calculate_performance is doing the right thing.
 
-library(COBRA)
+library(iCOBRA)
 context("Check calculation of performance scores")
 
 ## Remove some genes from the truth

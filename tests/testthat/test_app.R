@@ -1,6 +1,6 @@
 ## Test shiny app
 
-library(COBRA)
+library(iCOBRA)
 context("Check that shiny app is generated")
 
 test_that("Shiny app is generated", {
