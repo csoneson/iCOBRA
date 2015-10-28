@@ -31,7 +31,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.11)"),
+                       "of methods for ranking and binary assignment (v0.3.12)"),
         titleWidth = 850),
 
       shinydashboard::dashboardSidebar(
@@ -205,6 +205,11 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                             }
                             "))
             ),
+
+          tabPanel("About",
+                   includeMarkdown(system.file("extdata", "about.md",
+                                               package = "iCOBRA")),
+                   value = "about"),
 
           tabPanel("Instructions",
                    includeMarkdown(system.file("extdata", "instructions.md",
