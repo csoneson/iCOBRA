@@ -1,5 +1,5 @@
 ---
-title: "COBRA User Guide"
+title: "iCOBRA User Guide"
 author: "Charlotte Soneson"
 date: "`r Sys.Date()`"
 output:
