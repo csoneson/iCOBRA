@@ -1106,7 +1106,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         mn <- signif(min(tmp[is.finite(tmp)]), 3)
         mx <- signif(max(tmp[is.finite(tmp)]), 3)
         sliderInput(inputId = "xrange_deviation", label = "x-axis limits",
-                    min = mn, max = mx, value = c(mn, mx), step = 0.01)
+                    min = mn, max = mx, value = c(mn, mx), step = (mx - mn)/100)
       }
     })
 
