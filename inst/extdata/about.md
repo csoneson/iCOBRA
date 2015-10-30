@@ -10,7 +10,7 @@ Mark Robinson [email](mailto:mark.robinson@imls.uzh.ch)
 
 ### Instruction video
 
-An instruction video is available
+An instruction video is available on [YouTube](https://www.youtube.com/watch?v=KpYCI31iQd4&feature=youtu.be)
 
 ### Benchmarking data sets
 
