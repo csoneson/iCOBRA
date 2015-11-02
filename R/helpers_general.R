@@ -150,7 +150,7 @@ fixcolname <- function(df, prevv, newv) {
   df
 }
 
-#' @import scales
+#' @importFrom scales hue_pal brewer_pal
 define_colors <- function(cobraperf, palette, facetted, incloverall) {
   levs <- basemethod <- NULL
 
@@ -297,7 +297,7 @@ select_measure <- function(cobradata, method, asp) {
   ret
 }
 
-#' @import reshape2
+#' @importFrom reshape2 melt
 extend_resulttable <- function(df, splv, keeplevels, valuename,
                                basemethod, domelt = TRUE) {
   if (isTRUE(domelt)) {
@@ -346,6 +346,7 @@ extend_resulttable <- function(df, splv, keeplevels, valuename,
   df
 }
 
+#' @importFrom DT datatable
 fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
   res$dist_ <- round(res$dist_, 1)
   if (tabtype != "scatter") {

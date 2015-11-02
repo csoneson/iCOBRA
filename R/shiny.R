@@ -15,7 +15,7 @@
 #' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny
 #' @import shinydashboard
-#' @import shinyBS
+#' @importFrom shinyBS bsTooltip
 #' @export
 #' @examples
 #' data(cobradata_example)

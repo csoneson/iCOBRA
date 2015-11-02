@@ -4,7 +4,7 @@ gen_thr_vec <- function(thresholds) {
   v
 }
 
-#' @import ROCR
+#' @importFrom ROCR prediction performance
 get_curve <- function(bintruth, vals, revr, aspc) {
   kg <- intersect(names(bintruth), names(vals[!is.na(vals)]))
   if (any(bintruth[match(kg, names(bintruth))] == 0) &
