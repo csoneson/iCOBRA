@@ -38,8 +38,9 @@ Accessor and replacement functions for the \code{fdrtpr} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr")
 head(fdrtpr(cobraperf))
 }
 \author{

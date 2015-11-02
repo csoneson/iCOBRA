@@ -35,7 +35,7 @@ Accessor and replacement functions for the \code{corr} slot in an
 \examples{
 data(cobradata_example)
 cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-                                  aspects = "corr")
+                                   aspects = "corr")
 head(corr(cobraperf))
 }
 \author{

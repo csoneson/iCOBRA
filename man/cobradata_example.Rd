@@ -3,7 +3,7 @@
 \docType{data}
 \name{cobradata_example}
 \alias{cobradata_example}
-\title{Example data set comparing three methods for differential gene expression}
+\title{Example data set with three differential gene expression methods}
 \format{An \code{COBRAData} object with four slots:
 \describe{
   \item{pval}{data frame with p-values for 2,399 genes, from three different

@@ -37,19 +37,20 @@
 #' ## Empty COBRAPlot object
 #' cobraplot <- COBRAPlot()
 COBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
-                     fdrnbr = data.frame(), corr = data.frame(),
-                     fdrnbrcurve = data.frame(), tpr = data.frame(),
-                     fpr = data.frame(), roc = data.frame(),
-                     scatter = data.frame(), onlyshared = NA,
-                     fpc = data.frame(), overlap = data.frame(),
-                     plotcolors = "", splv = "", deviation = data.frame(),
-                     maxsplit = NA_integer_, facetted = NA) {
+                      fdrnbr = data.frame(), corr = data.frame(),
+                      fdrnbrcurve = data.frame(), tpr = data.frame(),
+                      fpr = data.frame(), roc = data.frame(),
+                      scatter = data.frame(), onlyshared = NA,
+                      fpc = data.frame(), overlap = data.frame(),
+                      plotcolors = "", splv = "", deviation = data.frame(),
+                      maxsplit = NA_integer_, facetted = NA) {
 
-  .COBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve, onlyshared = onlyshared,
-            fdrnbr = fdrnbr, fdrnbrcurve = fdrnbrcurve, deviation = deviation,
-            tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
-            overlap = overlap, plotcolors = plotcolors, corr = corr,
-            splv = splv, maxsplit = maxsplit, facetted = facetted)
+  .COBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
+             onlyshared = onlyshared, fdrnbr = fdrnbr,
+             fdrnbrcurve = fdrnbrcurve, deviation = deviation,
+             tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
+             overlap = overlap, plotcolors = plotcolors, corr = corr,
+             splv = splv, maxsplit = maxsplit, facetted = facetted)
 }
 
 setMethod("show", "COBRAPlot", function(object) {
@@ -85,8 +86,9 @@ setMethod("show", "COBRAPlot", function(object) {
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr")
 #' cobraplot <- prepare_data_for_plot(cobraperf)
 #' plotcolors(cobraplot)
 setMethod("plotcolors", "COBRAPlot", function(x) x@plotcolors)
@@ -108,7 +110,8 @@ setReplaceMethod("plotcolors", signature(x = "COBRAPlot", value = "character"),
 #' @docType methods
 #' @name facetted
 #' @rdname facetted
-#' @aliases facetted facetted,COBRAPlot-method facetted<-,COBRAPlot,logical-method
+#' @aliases facetted facetted,COBRAPlot-method
+#'   facetted<-,COBRAPlot,logical-method
 #' @return The accessor function returns a logical value, indicating whether the
 #'   object is formatted for facetted plots (visualizing each stratification
 #'   level in a separate panel) or not.
@@ -122,8 +125,9 @@ setReplaceMethod("plotcolors", signature(x = "COBRAPlot", value = "character"),
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr")
 #' cobraplot <- prepare_data_for_plot(cobraperf)
 #' facetted(cobraplot)
 setMethod("facetted", "COBRAPlot", function(x) x@facetted)
@@ -145,9 +149,10 @@ setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
 #' @examples
 #' data(cobradata_example)
 #' cobradata_example[c("ENSG00000000457", "ENSG00000000971",
-#'                    "ENSG00000000460"), ]
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
+#'                     "ENSG00000000460"), ]
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr")
 #' cobraperf[, c("voom")]
 #' cobraplot <- prepare_data_for_plot(cobraperf)
 #' cobraplot[, c("voom")]
@@ -224,8 +229,9 @@ setValidity("COBRAPlot",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr")
 #' cobraplot <- prepare_data_for_plot(cobraperf)
 #'
 #' ## Coerce COBRAPerformance object into COBRAPlot object
@@ -236,12 +242,12 @@ setValidity("COBRAPlot",
 setAs("COBRAPerformance", "COBRAPlot",
       function(from) {
         .COBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
-                  fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
-                  tpr = from@tpr, fpr = from@fpr, roc = from@roc,
-                  fpc = from@fpc, onlyshared = from@onlyshared,
-                  scatter = from@scatter, deviation = from@deviation,
-                  overlap = from@overlap, plotcolors = "", corr = from@corr,
-                  splv = from@splv, maxsplit = from@maxsplit, facetted = TRUE)
+                   fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
+                   tpr = from@tpr, fpr = from@fpr, roc = from@roc,
+                   fpc = from@fpc, onlyshared = from@onlyshared,
+                   scatter = from@scatter, deviation = from@deviation,
+                   overlap = from@overlap, plotcolors = "", corr = from@corr,
+                   splv = from@splv, maxsplit = from@maxsplit, facetted = TRUE)
       })
 
 #' @docType methods
@@ -252,10 +258,10 @@ setAs("COBRAPerformance", "COBRAPlot",
 setAs("COBRAPlot", "COBRAPerformance",
       function(from) {
         .COBRAPerformance(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
-                         fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
-                         tpr = from@tpr, fpr = from@fpr, roc = from@roc,
-                         fpc = from@fpc, deviation = from@deviation,
-                         corr = from@corr, onlyshared = from@onlyshared,
-                         scatter = from@scatter, overlap = from@overlap,
-                         splv = from@splv, maxsplit = from@maxsplit)
+                          fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
+                          tpr = from@tpr, fpr = from@fpr, roc = from@roc,
+                          fpc = from@fpc, deviation = from@deviation,
+                          corr = from@corr, onlyshared = from@onlyshared,
+                          scatter = from@scatter, overlap = from@overlap,
+                          splv = from@splv, maxsplit = from@maxsplit)
       })

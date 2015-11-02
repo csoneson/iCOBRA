@@ -150,6 +150,7 @@ fixcolname <- function(df, prevv, newv) {
   df
 }
 
+#' @import scales
 define_colors <- function(cobraperf, palette, facetted, incloverall) {
   levs <- basemethod <- NULL
 
@@ -207,7 +208,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
       ## Pre-defined palette
       maxnbr <- c(Accent = 8, Dark2 = 8, Paired = 12, Pastel1 = 9,
                   Pastel2 = 8, Set1 = 9, Set2 = 8, Set3 = 12)
-      if (palette == "hue_pal") use_colors1 <- scales::hue_pal()(ncolors)
+      if (palette == "hue_pal") use_colors1 <- hue_pal()(ncolors)
       else if (palette == "rainbow") use_colors1 <- grDevices::rainbow(ncolors)
       else if (palette == "heat") use_colors1 <- grDevices::heat.colors(ncolors)
       else if (palette == "terrain") use_colors1 <-
@@ -216,9 +217,9 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
       else if (palette == "cm") use_colors1 <- grDevices::cm.colors(ncolors)
       else {
         if (ncolors <= maxnbr[bnm])
-          use_colors1 <- scales::brewer_pal(palette = bnm)(ncolors)
+          use_colors1 <- brewer_pal(palette = bnm)(ncolors)
         else
-          use_colors1 <- scales::hue_pal()(ncolors)
+          use_colors1 <- hue_pal()(ncolors)
       }
     }
   }
@@ -296,11 +297,12 @@ select_measure <- function(cobradata, method, asp) {
   ret
 }
 
+#' @import reshape2
 extend_resulttable <- function(df, splv, keeplevels, valuename,
                                basemethod, domelt = TRUE) {
   if (isTRUE(domelt)) {
-    df <- reshape2::melt(df, varnames = c("thr", "method"),
-                         value.name = valuename)
+    df <- melt(df, varnames = c("thr", "method"),
+               value.name = valuename)
     df <- fixcolname(df, prevv = "value", newv = valuename)
   }
   df$basemethod <- basemethod[match(df$method, names(basemethod))]

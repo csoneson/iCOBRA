@@ -48,10 +48,10 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "fpr")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 plot_fpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      pointsize = 5, xaxisrange = c(0, 1)) {
@@ -80,10 +80,10 @@ plot_fpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "tpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "tpr")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_tpr(cobraplot)
 plot_tpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      pointsize = 5, xaxisrange = c(0, 1)) {
@@ -115,9 +115,9 @@ plot_tpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #' @examples
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-#'                                   aspects = "corr")
+#'                                    aspects = "corr")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_corr(cobraplot, corrtype = "spearman")
 plot_corr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                       pointsize = 5, xaxisrange = c(-1, 1),
@@ -178,10 +178,10 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "roc")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "roc")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_roc(cobraplot)
 plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      xaxisrange = c(0, 1), yaxisrange = c(0, 1)) {
@@ -209,10 +209,10 @@ plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fpc")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "fpc")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_fpc(cobraplot, maxnfdc = 750)
 plot_fpc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
                      maxnfdc = 500) {
@@ -247,9 +247,9 @@ plot_fpc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #' @examples
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-#'                                   aspects = "scatter")
+#'                                    aspects = "scatter")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_scatter(cobraplot)
 plot_scatter <- function(cobraplot, title = "", stripsize = 10,
                          titlecol = "black", pointsize = 3, doflip = FALSE,
@@ -402,10 +402,11 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = c("fdrtpr", "fdrtprcurve"))
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = c("fdrtpr", "fdrtprcurve"))
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_fdrtprcurve(cobraplot, plottype = c("curve", "points"))
 plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
                              titlecol = "black", pointsize = 5,
@@ -441,10 +442,11 @@ plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = c("fdrnbr", "fdrnbrcurve"))
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = c("fdrnbr", "fdrnbrcurve"))
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_fdrnbrcurve(cobraplot, plottype = c("curve", "points"))
 plot_fdrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
                              titlecol = "black", pointsize = 5,
@@ -470,13 +472,15 @@ plot_fdrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
 #' @return Nothing, displays a graph
 #'
 #' @export
+#' @import limma
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "overlap")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "overlap")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_overlap(cobraplot)
 plot_overlap <- function(cobraplot, ...) {
   overlap_table <- overlap(cobraplot)
@@ -490,7 +494,7 @@ plot_overlap <- function(cobraplot, ...) {
         cols <- rep(circle.col[colnames(overlap_table)], 2)[2:6]
       else
         cols <- circle.col[colnames(overlap_table)]
-      limma::vennDiagram(overlap_table, circle.col = cols, ...)
+      vennDiagram(overlap_table, circle.col = cols, ...)
     } else {
       NULL
     }
@@ -504,9 +508,9 @@ plot_overlap <- function(cobraplot, ...) {
           cols <- rep(circle.col[colnames(overlap_table[[i]])], 2)[2:6]
         else
           cols <- circle.col[colnames(overlap_table[[i]])]
-        limma::vennDiagram(overlap_table[[i]], circle.col = cols,
-                           main = paste0(splv(cobraplot), ":",
-                                         names(overlap_table)[i]), ...)
+        vennDiagram(overlap_table[[i]], circle.col = cols,
+                    main = paste0(splv(cobraplot), ":",
+                                  names(overlap_table)[i]), ...)
       } else {
         NULL
       }
@@ -543,9 +547,9 @@ plot_overlap <- function(cobraplot, ...) {
 #' @examples
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-#'                                   aspects = "deviation")
+#'                                    aspects = "deviation")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-#'                                   incltruth = TRUE)
+#'                                    incltruth = TRUE)
 #' plot_deviation(cobraplot)
 plot_deviation <- function(cobraplot, title = "", stripsize = 15,
                            titlecol = "black", xaxisrange = NULL,

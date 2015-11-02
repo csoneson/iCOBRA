@@ -30,10 +30,10 @@ Plot observed true positive rate (TPR) for given adjusted p-value thresholds.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "tpr")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "tpr")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_tpr(cobraplot)
 }
 \author{

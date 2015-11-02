@@ -36,8 +36,9 @@ Accessor and replacement functions for the \code{splv} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr", splv = "expr_cat")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr", splv = "expr_cat")
 splv(cobraperf)
 }
 \author{

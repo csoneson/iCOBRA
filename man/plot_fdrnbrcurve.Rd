@@ -36,10 +36,11 @@ traced out by considering all threshold values.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = c("fdrnbr", "fdrnbrcurve"))
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = c("fdrnbr", "fdrnbrcurve"))
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_fdrnbrcurve(cobraplot, plottype = c("curve", "points"))
 }
 \author{

@@ -10,7 +10,8 @@
 \alias{\S4method{[}{COBRAData,ANY,ANY}}
 \alias{\S4method{[}{COBRAPerformance,ANY,ANY}}
 \alias{\S4method{[}{COBRAPlot,ANY,ANY}}
-\title{Subsetting \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot} objects}
+\title{Subsetting \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}
+objects}
 \usage{
 \S4method{[}{COBRAData}(x, i, j = "missing", drop = "missing")
 
@@ -25,8 +26,8 @@ object.}
 \item{i}{For \code{COBRAData} objects, a character vector of feature names to
 retain.}
 
-\item{j}{For \code{COBRAPerformance} and \code{COBRAPlot} objects, a character
-vector with method names to retain.}
+\item{j}{For \code{COBRAPerformance} and \code{COBRAPlot} objects, a
+character vector with method names to retain.}
 
 \item{drop}{not used.}
 }
@@ -43,9 +44,10 @@ may be arranged in the same order.
 \examples{
 data(cobradata_example)
 cobradata_example[c("ENSG00000000457", "ENSG00000000971",
-                   "ENSG00000000460"), ]
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr")
+                    "ENSG00000000460"), ]
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr")
 cobraperf[, c("voom")]
 cobraplot <- prepare_data_for_plot(cobraperf)
 cobraplot[, c("voom")]

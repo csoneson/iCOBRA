@@ -28,10 +28,10 @@ the top-ranked N variables, for varying values of N.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fpc")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "fpc")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_fpc(cobraplot, maxnfdc = 750)
 }
 \author{

@@ -25,8 +25,9 @@ Accessor function to extract the methods that are represented in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtprcurve")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtprcurve")
 basemethods(cobraperf)
 }
 \author{

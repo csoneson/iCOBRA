@@ -34,9 +34,9 @@ Plot correlations between observations and a continuous truth value.
 \examples{
 data(cobradata_example)
 cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-                                  aspects = "corr")
+                                   aspects = "corr")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_corr(cobraplot, corrtype = "spearman")
 }
 \author{

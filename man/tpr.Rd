@@ -38,8 +38,8 @@ Accessor and replacement functions for the \code{tpr} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "tpr")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "tpr")
 head(tpr(cobraperf))
 }
 \author{

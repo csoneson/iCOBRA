@@ -31,10 +31,10 @@ thresholds.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fpr")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "fpr")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 }
 \author{

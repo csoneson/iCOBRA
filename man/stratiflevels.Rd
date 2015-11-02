@@ -26,9 +26,10 @@ in an \code{COBRAPerformance} or \code{COBRAPlot} object.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr", splv = "expr_cat",
-                                  maxsplit = 4)
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr", splv = "expr_cat",
+                                   maxsplit = 4)
 stratiflevels(cobraperf)
 }
 \author{

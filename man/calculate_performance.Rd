@@ -18,8 +18,8 @@ truth(cobradata) that contains the binary truth (true assignment of
 variables into two classes, represented by 0/1).}
 
 \item{cont_truth}{A character string giving the name of the column of
-truth(cobradata) that contains the continuous truth (a continuous value that
-the observations can be compared to).}
+truth(cobradata) that contains the continuous truth (a continuous value
+that the observations can be compared to).}
 
 \item{aspects}{A character vector giving the types of performance measures to
 calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
@@ -58,8 +58,8 @@ Depending on the collection of observations that are available for a given
 method, the appropriate one will be chosen for each performance measure. For
 \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr} and \code{overlap}
 aspects, results will only be calculated for methods where adjusted p-values
-are included in the \code{COBRAData} object, since these calculations make use
-of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
+are included in the \code{COBRAData} object, since these calculations make
+use of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
 \code{fdrnbrcurve} aspects, the \code{score} observations will be
 preferentially used, given that they are monotonically associated with the
 adjusted p-values (if provided). If the \code{score} is not provided, the
@@ -74,10 +74,11 @@ calculated.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = c("fdrtpr", "fdrtprcurve",
-                                              "tpr", "roc"),
-                                  thrs = c(0.01, 0.05, 0.1), splv = "none")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = c("fdrtpr", "fdrtprcurve",
+                                               "tpr", "roc"),
+                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
 }
 \author{
 Charlotte Soneson

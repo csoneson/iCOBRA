@@ -132,8 +132,9 @@ setMethod("show", "COBRAPerformance", function(object) {
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr")
 #' head(fdrtpr(cobraperf))
 setMethod("fdrtpr", signature(x = "COBRAPerformance"), function(x) x@fdrtpr)
 #' @name fdrtpr
@@ -171,8 +172,9 @@ setReplaceMethod("fdrtpr", signature(x = "COBRAPerformance",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr")
 #' head(onlyshared(cobraperf))
 setMethod("onlyshared", signature(x = "COBRAPerformance"),
           function(x) x@onlyshared)
@@ -196,8 +198,8 @@ setReplaceMethod("onlyshared", signature(x = "COBRAPerformance",
 #' @name fdrtprcurve
 #' @rdname fdrtprcurve
 #' @aliases fdrtprcurve fdrtprcurve,COBRAPerformance-method
-#'   fdrtprcurve<-,COBRAPerformance,data.frame-method fdrtprcurve,COBRAPlot-method
-#'   fdrtprcurve<-,COBRAPlot,data.frame-method
+#'   fdrtprcurve<-,COBRAPerformance,data.frame-method
+#'   fdrtprcurve,COBRAPlot-method fdrtprcurve<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate curves of observed FDR vs TPR for each method and
 #'   each stratification level.
@@ -210,8 +212,9 @@ setReplaceMethod("onlyshared", signature(x = "COBRAPerformance",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtprcurve")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtprcurve")
 #' head(fdrtprcurve(cobraperf))
 setMethod("fdrtprcurve", "COBRAPerformance", function(x) x@fdrtprcurve)
 #' @name fdrtprcurve
@@ -250,7 +253,7 @@ setReplaceMethod("fdrtprcurve", signature(x = "COBRAPerformance",
 #' @examples
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-#'                                   aspects = "deviation")
+#'                                    aspects = "deviation")
 #' head(deviation(cobraperf))
 setMethod("deviation", "COBRAPerformance", function(x) x@deviation)
 #' @name deviation
@@ -288,8 +291,9 @@ setReplaceMethod("deviation", signature(x = "COBRAPerformance",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrnbr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrnbr")
 #' head(fdrnbr(cobraperf))
 setMethod("fdrnbr", "COBRAPerformance", function(x) x@fdrnbr)
 #' @name fdrnbr
@@ -312,8 +316,8 @@ setReplaceMethod("fdrnbr", signature(x = "COBRAPerformance",
 #' @name fdrnbrcurve
 #' @rdname fdrnbrcurve
 #' @aliases fdrnbrcurve fdrnbrcurve,COBRAPerformance-method
-#'   fdrnbrcurve<-,COBRAPerformance,data.frame-method fdrnbrcurve,COBRAPlot-method
-#'   fdrnbrcurve<-,COBRAPlot,data.frame-method
+#'   fdrnbrcurve<-,COBRAPerformance,data.frame-method
+#'   fdrnbrcurve,COBRAPlot-method fdrnbrcurve<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate curves of observed FDR vs number of features called
 #'   positive for each method and each stratification level.
@@ -327,8 +331,9 @@ setReplaceMethod("fdrnbr", signature(x = "COBRAPerformance",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrnbrcurve")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrnbrcurve")
 #' head(fdrnbrcurve(cobraperf))
 setMethod("fdrnbrcurve", "COBRAPerformance", function(x) x@fdrnbrcurve)
 #' @name fdrnbrcurve
@@ -367,7 +372,7 @@ setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPerformance",
 #' @examples
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-#'                                   aspects = "scatter")
+#'                                    aspects = "scatter")
 #' head(scatter(cobraperf))
 setMethod("scatter", "COBRAPerformance", function(x) x@scatter)
 #' @name scatter
@@ -405,8 +410,8 @@ setReplaceMethod("scatter", signature(x = "COBRAPerformance",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "tpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "tpr")
 #' head(tpr(cobraperf))
 setMethod("tpr", "COBRAPerformance", function(x) x@tpr)
 #' @name tpr
@@ -443,8 +448,8 @@ setReplaceMethod("tpr", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fpr")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "fpr")
 #' head(fpr(cobraperf))
 setMethod("fpr", "COBRAPerformance", function(x) x@fpr)
 #' @name fpr
@@ -480,8 +485,8 @@ setReplaceMethod("fpr", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "roc")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "roc")
 #' head(roc(cobraperf))
 setMethod("roc", "COBRAPerformance", function(x) x@roc)
 #' @name roc
@@ -517,8 +522,8 @@ setReplaceMethod("roc", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fpc")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "fpc")
 #' head(fpc(cobraperf))
 setMethod("fpc", "COBRAPerformance", function(x) x@fpc)
 #' @name fpc
@@ -553,13 +558,14 @@ setReplaceMethod("fpc", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @examples
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-#'                                   aspects = "corr")
+#'                                    aspects = "corr")
 #' head(corr(cobraperf))
 setMethod("corr", "COBRAPerformance", function(x) x@corr)
 #' @name corr
 #' @rdname corr
 #' @exportMethod "corr<-"
-setReplaceMethod("corr", signature(x = "COBRAPerformance", value = "data.frame"),
+setReplaceMethod("corr", signature(x = "COBRAPerformance",
+                                   value = "data.frame"),
                  function(x, value) {
                    x@corr <- value
                    if (validObject(x))
@@ -590,14 +596,16 @@ setReplaceMethod("corr", signature(x = "COBRAPerformance", value = "data.frame")
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "overlap")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "overlap")
 #' head(overlap(cobraperf))
 setMethod("overlap", "COBRAPerformance", function(x) x@overlap)
 #' @name overlap
 #' @rdname overlap
 #' @exportMethod "overlap<-"
-setReplaceMethod("overlap", signature(x = "COBRAPerformance", value = "list_df"),
+setReplaceMethod("overlap", signature(x = "COBRAPerformance",
+                                      value = "list_df"),
                  function(x, value) {
                    x@overlap <- value
                    if (validObject(x))
@@ -626,8 +634,9 @@ setReplaceMethod("overlap", signature(x = "COBRAPerformance", value = "list_df")
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr", splv = "expr_cat")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr", splv = "expr_cat")
 #' splv(cobraperf)
 setMethod("splv", "COBRAPerformance", function(x) x@splv)
 #' @name splv
@@ -661,9 +670,10 @@ setReplaceMethod("splv", signature(x = "COBRAPerformance", value = "character"),
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr", splv = "expr_cat",
-#'                                   maxsplit = 3)
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr", splv = "expr_cat",
+#'                                    maxsplit = 3)
 #' maxsplit(cobraperf)
 setMethod("maxsplit", "COBRAPerformance", function(x) x@maxsplit)
 #' @name maxsplit
@@ -695,8 +705,9 @@ setReplaceMethod("maxsplit", signature(x = "COBRAPerformance",
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtprcurve")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtprcurve")
 #' basemethods(cobraperf)
 setMethod("basemethods", "COBRAPerformance", function(x) {
   x1 <- unlist(lapply(slotNames(x), function(w) {
@@ -729,9 +740,10 @@ setMethod("basemethods", "COBRAPerformance", function(x) {
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = "fdrtpr", splv = "expr_cat",
-#'                                   maxsplit = 4)
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "fdrtpr", splv = "expr_cat",
+#'                                    maxsplit = 4)
 #' stratiflevels(cobraperf)
 setMethod("stratiflevels", "COBRAPerformance", function(x) {
   x1 <- unlist(lapply(slotNames(x), function(w) {

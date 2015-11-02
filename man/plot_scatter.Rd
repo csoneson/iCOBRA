@@ -36,9 +36,9 @@ continuous truth.
 \examples{
 data(cobradata_example)
 cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-                                  aspects = "scatter")
+                                   aspects = "scatter")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_scatter(cobraplot)
 }
 \author{

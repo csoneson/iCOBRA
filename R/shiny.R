@@ -6,14 +6,16 @@
 #' of the app for formatting instructions). Properly formatted text files can
 #' also be obtained using the function \code{\link{COBRAData_to_text}}.
 #'
-#' @param cobradata An (optional) \code{COBRAData} object. If not given, the user
-#'   can load results from text files.
+#' @param cobradata An (optional) \code{COBRAData} object. If not given, the
+#'   user can load results from text files.
 #' @param autorun A logical indicating whether the app calculations should start
 #'   automatically on launch, or wait for the user to press the 'Start
 #'   calculation!' button.
 #' @author Charlotte Soneson
 #' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny
+#' @import shinydashboard
+#' @import shinyBS
 #' @export
 #' @examples
 #' data(cobradata_example)
@@ -26,21 +28,22 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
   ## ------------------------------------------------------------------ ##
 
   p_layout <-
-    shinydashboard::dashboardPage(
+    dashboardPage(
       skin = "blue",
 
-      shinydashboard::dashboardHeader(
+      dashboardHeader(
         title = paste0("iCOBRA - Comparative evaluation ",
-                       "of methods for ranking and binary assignment (v0.3.12)"),
+                       "of methods for ranking and binary ",
+                       "assignment (v0.3.12)"),
         titleWidth = 850),
 
-      shinydashboard::dashboardSidebar(
+      dashboardSidebar(
         width = 350,
         ## Settings and inputs for the truth
-        shinydashboard::menuItem("Truth", icon = icon("database"),
+        menuItem("Truth", icon = icon("database"),
                  ## Load the file containing the truth.
                  uiOutput("choose_truth_file"),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "truth", paste0("Select the file containing the true status",
                                    " of each feature. See the Instructions ",
                                    "tab for formatting instructions."),
@@ -59,7 +62,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Define the variable used to stratify the results,
                  ## based on the columns available in the truth file.
                  uiOutput("splitvar"),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "splitvar",
                    paste0("Select a feature attribute by which to stratify ",
                           "the result representations."),
@@ -68,7 +71,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Define the maximal number of categories to retain
                  ## in stratification.
                  uiOutput("choosemaxsplit"),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "choosemaxsplit",
                    paste0("Set the number of categories to show if the results",
                           " are stratified by a variable annotation. The most ",
@@ -79,17 +82,17 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Decide whether or not to include the "overall" category when
                  ## stratifying the results.
                  uiOutput("chooseincludeoverall"),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "includeoverall",
                    paste0("Select whether or not to include the 'overall' ",
                           "class when showing stratified results."),
                    "right", options = list(container = "body"))),
 
         ## Settings and inputs for results
-        shinydashboard::menuItem("Results", icon = icon("folder-o"),
+        menuItem("Results", icon = icon("folder-o"),
                  ## Load the file containing the results.
                  uiOutput("choose_result_file"),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "file1", paste0("Select file containing results from one or",
                                    " multiple methods. See the Instructions ",
                                    "tab for formatting instructions."),
@@ -98,7 +101,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Decide which methods to include in the results.
                  ## Depends on the loaded result files.
                  uiOutput("columns"),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "columns",
                    paste0("Select the methods for which to show the results."),
                    "right", options = list(container = "body")),
@@ -112,7 +115,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                   "features shared between truth and result ",
                                   "tables."),
                    value = FALSE),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "onlyshared",
                    paste0("Calculate performance based only on ",
                           "features shared between truth and result ",
@@ -124,7 +127,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                               icon = icon("plane"))),
 
         ## Plot settings
-        shinydashboard::menuItem("Plot settings", icon = icon("paint-brush"),
+        menuItem("Plot settings", icon = icon("paint-brush"),
                  ## Choose color scheme
                  selectInput(
                    "colorscheme", "Select color palette",
@@ -135,7 +138,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                      "Set3 (max 11 methods)", "rainbow", "heat", "terrain",
                      "topo", "cm"),
                    selectize = TRUE),
-                 shinyBS::bsTooltip(
+                 bsTooltip(
                    "colorscheme",
                    paste0("Choose color palette. Some palettes are only ",
                           "applicable if the number of methods ",
@@ -160,7 +163,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Define the q-value thresholds to use in the plots.
                  textInput(inputId = "fdrthresholds", label = "FDR thresholds",
                            value = "0.01, 0.05, 0.1"),
-                 shinyBS::bsTooltip("fdrthresholds",
+                 bsTooltip("fdrthresholds",
                            paste0("Specific FDR thresholds at which the ",
                                   "performance will be evaluated. ",
                                   "Separate multiple values with comma"),
@@ -170,7 +173,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  numericInput(inputId = "plotheight",
                               label = "Plot height (numeric, in pixels)",
                               value = 600, min = 200, max = 2000, step = 10),
-                 shinyBS::bsTooltip("plotheight",
+                 bsTooltip("plotheight",
                            paste0("The height of the plots (in pixels). ",
                                   "Default 800."),
                            "right", options = list(container = "body")),
@@ -178,7 +181,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Define the pointsize used in the plots.
                  numericInput(inputId = "pointsize", label = "Point size",
                               value = 5),
-                 shinyBS::bsTooltip("pointsize",
+                 bsTooltip("pointsize",
                            paste0("The point size used in the plots."),
                            "right", options = list(container = "body")),
 
@@ -186,15 +189,15 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  numericInput(inputId = "stripsize",
                               label = "Font size for panel headers",
                               value = 15),
-                 shinyBS::bsTooltip("stripsize",
+                 bsTooltip("stripsize",
                            paste0("The font size used for panel headers in",
                                   " facetted plots."),
                            "right", options = list(container = "body")))
       ),
 
       ## Outputs
-      shinydashboard::dashboardBody(fluidRow(
-        shinydashboard::tabBox(
+      dashboardBody(fluidRow(
+        tabBox(
           width = 12,
 
           ## Define output size of error messages
@@ -381,7 +384,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                             label = "Include truth",
                                             choices = c("yes", "no"),
                                             selected = "yes")),
-                     shinyBS::bsTooltip(
+                     bsTooltip(
                        "incltruth",
                        paste0("Whether or nor to include the truth as a ",
                               "(perfect) method in the Venn diagrams. Note ",
@@ -392,7 +395,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                        inputId = "adjpVenn",
                        label = "Adjusted p-value threshold",
                        value = 0.05, min = 0, max = 1, step = 0.01)),
-                     shinyBS::bsTooltip(
+                     bsTooltip(
                        "adjpVenn",
                        paste0("The adjusted p-value threshold used to extract ",
                               "the sets of significant variables to use for ",

@@ -4,6 +4,7 @@ gen_thr_vec <- function(thresholds) {
   v
 }
 
+#' @import ROCR
 get_curve <- function(bintruth, vals, revr, aspc) {
   kg <- intersect(names(bintruth), names(vals[!is.na(vals)]))
   if (any(bintruth[match(kg, names(bintruth))] == 0) &
@@ -79,8 +80,8 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' method, the appropriate one will be chosen for each performance measure. For
 #' \code{fpr}, \code{tpr}, \code{fdrtpr}, \code{fdrnbr} and \code{overlap}
 #' aspects, results will only be calculated for methods where adjusted p-values
-#' are included in the \code{COBRAData} object, since these calculations make use
-#' of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
+#' are included in the \code{COBRAData} object, since these calculations make
+#' use of specific adjusted p-value cutoffs. For \code{fdrtprcurve} and
 #' \code{fdrnbrcurve} aspects, the \code{score} observations will be
 #' preferentially used, given that they are monotonically associated with the
 #' adjusted p-values (if provided). If the \code{score} is not provided, the
@@ -98,8 +99,8 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   truth(cobradata) that contains the binary truth (true assignment of
 #'   variables into two classes, represented by 0/1).
 #' @param cont_truth A character string giving the name of the column of
-#'   truth(cobradata) that contains the continuous truth (a continuous value that
-#'   the observations can be compared to).
+#'   truth(cobradata) that contains the continuous truth (a continuous value
+#'   that the observations can be compared to).
 #' @param aspects A character vector giving the types of performance measures to
 #'   calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
 #'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
@@ -126,10 +127,11 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   aspects = c("fdrtpr", "fdrtprcurve",
-#'                                               "tpr", "roc"),
-#'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = c("fdrtpr", "fdrtprcurve",
+#'                                                "tpr", "roc"),
+#'                                    thrs = c(0.01, 0.05, 0.1), splv = "none")
 calculate_performance <- function(cobradata, binary_truth = NULL,
                                   cont_truth = NULL,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
@@ -154,7 +156,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -321,7 +324,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "corr")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -394,7 +398,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "tpr")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -458,7 +463,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "fdr")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -535,7 +541,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -601,7 +608,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "fdrtpr")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -682,7 +690,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "roc")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -748,7 +757,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "scatter")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -805,7 +815,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "deviation")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -861,7 +872,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       inpcol <- select_measure(cobradata, i, asp = "fpc")
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
-        allg <- get_keepfeatures(truth = truth(cobradata), df = tmp,  method = i,
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = tmp,  method = i,
                                  colm = binary_truth, onlyshared = onlyshared)
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
@@ -1048,13 +1060,14 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-#'                                   cont_truth = "none",
-#'                                   aspects = c("fdrtpr", "fdrtprcurve",
-#'                                               "tpr", "roc"),
-#'                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    cont_truth = "none",
+#'                                    aspects = c("fdrtpr", "fdrtprcurve",
+#'                                                "tpr", "roc"),
+#'                                    thrs = c(0.01, 0.05, 0.1), splv = "none")
 #' cobraplot <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
-#'                                   colorscheme = "Dark2")
+#'                                    colorscheme = "Dark2")
 #'
 #' ## User-specified colors
 #' cobraplot2 <- prepare_data_for_plot(cobraperf, keepmethods = NULL,

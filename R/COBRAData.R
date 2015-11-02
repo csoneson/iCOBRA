@@ -35,8 +35,8 @@
 #'   annotations such as, e.g., binary and continuous truths and additional
 #'   annotations that can be used to stratify the performance calculations. The
 #'   row names should be feature names.
-#' @param object_to_extend An \code{COBRAData} object to extend with the provided
-#'   information.
+#' @param object_to_extend An \code{COBRAData} object to extend with the
+#'   provided information.
 #'
 #' @aliases COBRAData COBRAData-class
 #' @return \code{COBRAData}, \code{COBRAData_from_text} and
@@ -411,7 +411,8 @@ setReplaceMethod("truth", signature(x = "COBRAData", value = "data.frame"),
                      return(x)
                  })
 
-#' Subsetting \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot} objects
+#' Subsetting \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}
+#' objects
 #'
 #' Functions to subset \code{COBRAData}, \code{COBRAPerformance} or
 #' \code{COBRAPlot} objects. \code{COBRAData} objects are subset by features
@@ -427,8 +428,8 @@ setReplaceMethod("truth", signature(x = "COBRAData", value = "data.frame"),
 #'   object.
 #' @param i For \code{COBRAData} objects, a character vector of feature names to
 #'   retain.
-#' @param j For \code{COBRAPerformance} and \code{COBRAPlot} objects, a character
-#'   vector with method names to retain.
+#' @param j For \code{COBRAPerformance} and \code{COBRAPlot} objects, a
+#'   character vector with method names to retain.
 #' @param drop not used.
 #' @export
 setMethod("[", "COBRAData",

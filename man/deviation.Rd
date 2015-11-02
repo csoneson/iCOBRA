@@ -39,7 +39,7 @@ Accessor and replacement functions for the \code{deviation} slot in an
 \examples{
 data(cobradata_example)
 cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-                                  aspects = "deviation")
+                                   aspects = "deviation")
 head(deviation(cobraperf))
 }
 \author{

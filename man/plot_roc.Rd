@@ -31,10 +31,10 @@ Plot receiver operating characteristics (ROC) curves.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "roc")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "roc")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_roc(cobraplot)
 }
 \author{

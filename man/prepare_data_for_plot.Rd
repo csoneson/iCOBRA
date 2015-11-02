@@ -57,13 +57,14 @@ Prepare performance data provided in an \code{COBRAPerformance} object
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  cont_truth = "none",
-                                  aspects = c("fdrtpr", "fdrtprcurve",
-                                              "tpr", "roc"),
-                                  thrs = c(0.01, 0.05, 0.1), splv = "none")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   cont_truth = "none",
+                                   aspects = c("fdrtpr", "fdrtprcurve",
+                                               "tpr", "roc"),
+                                   thrs = c(0.01, 0.05, 0.1), splv = "none")
 cobraplot <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
-                                  colorscheme = "Dark2")
+                                   colorscheme = "Dark2")
 
 ## User-specified colors
 cobraplot2 <- prepare_data_for_plot(cobraperf, keepmethods = NULL,

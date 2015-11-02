@@ -42,8 +42,8 @@ annotations such as, e.g., binary and continuous truths and additional
 annotations that can be used to stratify the performance calculations. The
 row names should be feature names.}
 
-\item{object_to_extend}{An \code{COBRAData} object to extend with the provided
-  information.}
+\item{object_to_extend}{An \code{COBRAData} object to extend with the
+  provided information.}
 
 \item{truth_file}{A character string giving the path to a file with true
 labels and other feature annotations.}

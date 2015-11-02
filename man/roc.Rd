@@ -37,8 +37,8 @@ Accessor and replacement functions for the \code{roc} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "roc")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "roc")
 head(roc(cobraperf))
 }
 \author{

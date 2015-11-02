@@ -35,9 +35,10 @@ Accessor and replacement functions for the \code{maxsplit} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr", splv = "expr_cat",
-                                  maxsplit = 3)
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr", splv = "expr_cat",
+                                   maxsplit = 3)
 maxsplit(cobraperf)
 }
 \author{

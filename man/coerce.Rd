@@ -16,8 +16,9 @@ Convert object between \code{COBRAPerformance} and \code{COBRAPlot} classes.
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr")
 cobraplot <- prepare_data_for_plot(cobraperf)
 
 ## Coerce COBRAPerformance object into COBRAPlot object

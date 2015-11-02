@@ -40,9 +40,9 @@ variable.
 \examples{
 data(cobradata_example)
 cobraperf <- calculate_performance(cobradata_example, cont_truth = "logFC",
-                                  aspects = "deviation")
+                                   aspects = "deviation")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
-                                  incltruth = TRUE)
+                                   incltruth = TRUE)
 plot_deviation(cobraplot)
 }
 \author{

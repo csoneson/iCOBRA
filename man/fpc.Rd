@@ -37,8 +37,8 @@ Accessor and replacement functions for the \code{fpc} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fpc")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status", aspects = "fpc")
 head(fpc(cobraperf))
 }
 \author{

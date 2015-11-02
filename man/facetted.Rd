@@ -36,8 +36,9 @@ Accessor and replacement functions for the \code{facetted} slot in an
 }
 \examples{
 data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
-                                  aspects = "fdrtpr")
+cobraperf <- calculate_performance(cobradata_example,
+                                   binary_truth = "status",
+                                   aspects = "fdrtpr")
 cobraplot <- prepare_data_for_plot(cobraperf)
 facetted(cobraplot)
 }

@@ -7,8 +7,8 @@
 COBRAapp(cobradata = NULL, autorun = FALSE)
 }
 \arguments{
-\item{cobradata}{An (optional) \code{COBRAData} object. If not given, the user
-can load results from text files.}
+\item{cobradata}{An (optional) \code{COBRAData} object. If not given, the
+user can load results from text files.}
 
 \item{autorun}{A logical indicating whether the app calculations should start
 automatically on launch, or wait for the user to press the 'Start
