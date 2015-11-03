@@ -561,9 +561,6 @@ plot_deviation <- function(cobraplot, title = "", stripsize = 15,
     plot_data$absDEVIATION <- abs(plot_data$DEVIATION)
   else if (transf == "squared")
     plot_data$sqDEVIATION <- plot_data$DEVIATION^2
-#   if (isTRUE(squaredevs)) {
-#     plot_data$sqDEVIATION <- plot_data$DEVIATION^2
-#   }
 
   if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
@@ -574,8 +571,6 @@ plot_deviation <- function(cobraplot, title = "", stripsize = 15,
                           y = ifelse(transf == "raw", "DEVIATION",
                                      ifelse(transf == "absolute",
                                             "absDEVIATION", "sqDEVIATION")),
-#                                     y = ifelse(isTRUE(squaredevs),
-#                                                "sqDEVIATION", "DEVIATION"),
                           group = "method", colour = "method")) +
     coord_flip() +
     scale_color_manual(values = plotcolors(cobraplot), name = "") +

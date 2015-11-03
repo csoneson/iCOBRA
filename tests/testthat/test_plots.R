@@ -154,6 +154,7 @@ test_that("Plot functions return ggplot objects after stratification", {
   expect_is(plot_deviation(ibp1), "ggplot")
   expect_is(plot_deviation(ibp1, transf = "absolute"), "ggplot")
   expect_is(plot_deviation(ibp1, transf = "squared"), "ggplot")
+  expect_error(plot_deviation(ibp1, transf = "square"))
   expect_is(plot_fdrnbrcurve(ibp1), "ggplot")
   expect_is(plot_fdrtprcurve(ibp1), "ggplot")
   expect_is(plot_fpc(ibp1), "ggplot")

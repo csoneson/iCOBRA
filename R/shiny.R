@@ -34,7 +34,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
                        "Binary classification and RAnking methods (v0.99.0)"),
-        titleWidth = 850),
+        titleWidth = 950),
 
       shinydashboard::dashboardSidebar(
         width = 350,
@@ -364,8 +364,6 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                          choices = c("raw", "absolute",
                                                      "squared"),
                                          selected = "raw")),
-#                             checkboxInput("dosquare",
-#                                           "Square deviations", FALSE)),
                      column(1, radioButtons(
                        inputId = "devtype", label = "Plot type",
                        choices = c("boxplot", "violinplot"),
@@ -1112,14 +1110,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
           tmp <- abs((deviation(plotvalues()$all_vals))$DEVIATION)
         else
           tmp <- (deviation(plotvalues()$all_vals))$DEVIATION^2
-#         if (isTRUE(input$dosquare))
-#           tmp <- (deviation(plotvalues()$all_vals))$DEVIATION^2
-#         else
-#           tmp <- (deviation(plotvalues()$all_vals))$DEVIATION
         mn <- signif(min(tmp[is.finite(tmp)]), 3)
         mx <- signif(max(tmp[is.finite(tmp)]), 3)
         sliderInput(inputId = "xrange_deviation", label = "x-axis limits",
-                    min = mn, max = mx, value = c(mn, mx), step = (mx - mn)/100)
+                    min = mn, max = mx, value = c(mn, mx))
       }
     })
 
@@ -1145,7 +1139,6 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                              plottype = input$devtype,
                              dojitter = input$dojitter,
                              transf = input$devtrans))
-#                             squaredevs = input$dosquare))
         grDevices::dev.off()
       })
 
@@ -1191,7 +1184,6 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                        xaxisrange = input$xrange_deviation,
                        plottype = input$devtype, dojitter = input$dojitter,
                        transf = input$devtrans)
-#                       squaredevs = input$dosquare)
       })
     })
 
@@ -1204,7 +1196,6 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       if (input$devtrans == "absolute")
         all_data$absDEVIATION <- abs(all_data$DEVIATION)
-      # if (isTRUE(input$dosquare))
       if (input$devtrans == "squared")
         all_data$sqDEVIATION <- all_data$DEVIATION^2
 
@@ -1219,8 +1210,6 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                           xvar = ifelse(input$devtrans == "raw", "DEVIATION",
                                         ifelse(input$devtrans == "absolute",
                                                "absDEVIATION", "sqDEVIATION")))
-#                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-#                                         "DEVIATION"))
       } else {
         res <- nearPoints(all_data, tmp_click,
                           threshold = 50, maxpoints = 100,
@@ -1228,15 +1217,11 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                           xvar = ifelse(input$devtrans == "raw", "DEVIATION",
                                         ifelse(input$devtrans == "absolute",
                                                "absDEVIATION", "sqDEVIATION")))
-#                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-#                                         "DEVIATION"))
       }
       fix_res(res, methodcol = "fullmethod",
               aspcts = ifelse(input$devtrans == "raw", "DEVIATION",
                               ifelse(input$devtrans == "absolute",
                                      "absDEVIATION", "sqDEVIATION")),
-#               aspcts = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-#                               "DEVIATION"),
               tabtype = "deviation")
     })
 
