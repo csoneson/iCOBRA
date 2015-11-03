@@ -99,7 +99,7 @@ setReplaceMethod("plotcolors", signature(x = "COBRAPlot", value = "character"),
                  function(x, value) {
                    x@plotcolors <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{facetted} slot
@@ -138,7 +138,7 @@ setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
                  function(x, value) {
                    x@facetted <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' @docType methods
@@ -159,8 +159,8 @@ setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
 setMethod("[", "COBRAPlot",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
-              stop(paste0("None of the provided method found in the object. ",
-                          "No subsetting done."))
+              stop("none of the provided method found in the object, ",
+                   "no subsetting done")
             if (length(x@plotcolors) != 0) {
               combs <-
                 expand.grid(c(j, "truth"), c("", paste0("_", stratiflevels(x))),

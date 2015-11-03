@@ -15,13 +15,13 @@ vignette: >
 options(width = 100)
 ```
 
-iCOBRA is a package to calculate and visualize performance metrics for ranking and
-binary assignment methods. A typical use case could be, for example, comparing
-methods calling differential expression in gene expression experiments, which
-could be seen as either a ranking problem (estimating the correct effect size
-and ordering the genes by significance) or a binary assignment problem
-(classifying the genes into differentially expressed and non-differentially
-expressed).
+iCOBRA is a package to calculate and visualize performance metrics for ranking 
+and binary assignment methods. A typical use case could be, for example, 
+comparing methods calling differential expression in gene expression 
+experiments, which could be seen as either a ranking problem (estimating the 
+correct effect size and ordering the genes by significance) or a binary 
+assignment problem (classifying the genes into differentially expressed and 
+non-differentially expressed).
 
 For more detailed information regarding the calculations, handling of missing
 values etc, please consult the "Instructions" tab of the shiny application,
@@ -100,10 +100,10 @@ plot_overlap(cobraplot)
 # Modifications to the basic workflow
 ## Stratification
 All results can be stratified by any annotation provided in the truth slot of
-the COBRAData object. Note that only the largest categories will be retained (the
-number of retained categories is determined by the maxsplit argument), and thus
-stratifying by continuous annotations is not supported (each category would
-likely contain just one observation). Here, we show how the stratification is
+the COBRAData object. Note that only the largest categories will be retained
+(the number of retained categories is determined by the maxsplit argument), and
+thus stratifying by continuous annotations is not supported (each category would
+likely contain just one observation). Here, we show how the stratification is 
 performed, and how it changes the plots generated above.
 
 ```{r, fig.width = 7, fig.height = 5, warning = FALSE}

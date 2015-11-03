@@ -145,7 +145,7 @@ setReplaceMethod("fdrtpr", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@fdrtpr <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{onlyshared} slot
@@ -186,7 +186,7 @@ setReplaceMethod("onlyshared", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@onlyshared <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{fdrtprcurve} slot
@@ -225,7 +225,7 @@ setReplaceMethod("fdrtprcurve", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@fdrtprcurve <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{deviation} slot
@@ -264,7 +264,7 @@ setReplaceMethod("deviation", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@deviation <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{fdrnbr} slot
@@ -304,7 +304,7 @@ setReplaceMethod("fdrnbr", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@fdrnbr <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{fdrnbrcurve} slot
@@ -344,7 +344,7 @@ setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@fdrnbrcurve <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{scatter} slot
@@ -383,7 +383,7 @@ setReplaceMethod("scatter", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@scatter <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{tpr} slot
@@ -421,7 +421,7 @@ setReplaceMethod("tpr", signature(x = "COBRAPerformance", value = "data.frame"),
                  function(x, value) {
                    x@tpr <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{fpr} slot
@@ -459,7 +459,7 @@ setReplaceMethod("fpr", signature(x = "COBRAPerformance", value = "data.frame"),
                  function(x, value) {
                    x@fpr <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{roc} slot
@@ -496,7 +496,7 @@ setReplaceMethod("roc", signature(x = "COBRAPerformance", value = "data.frame"),
                  function(x, value) {
                    x@roc <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{fpc} slot
@@ -533,7 +533,7 @@ setReplaceMethod("fpc", signature(x = "COBRAPerformance", value = "data.frame"),
                  function(x, value) {
                    x@fpc <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{corr} slot
@@ -569,7 +569,7 @@ setReplaceMethod("corr", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@corr <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{overlap} slot
@@ -609,7 +609,7 @@ setReplaceMethod("overlap", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@overlap <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{splv} slot
@@ -646,7 +646,7 @@ setReplaceMethod("splv", signature(x = "COBRAPerformance", value = "character"),
                  function(x, value) {
                    x@splv <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{maxsplit} slot
@@ -684,7 +684,7 @@ setReplaceMethod("maxsplit", signature(x = "COBRAPerformance",
                  function(x, value) {
                    x@maxsplit <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor function for basemethods
@@ -766,8 +766,8 @@ setMethod("stratiflevels", "COBRAPerformance", function(x) {
 setMethod("[", "COBRAPerformance",
           function(x, i = "missing", j, drop = "missing") {
             if (length(intersect(j, basemethods(x))) == 0)
-              stop(paste0("None of the provided method found in the object. ",
-                          "No subsetting done."))
+              stop("none of the provided method found in the object, ",
+                   "no subsetting done")
             if (length(x@tpr) != 0 && length(intersect(j,x@tpr$basemethod)) > 0)
               x@tpr <- x@tpr[which(x@tpr$basemethod %in% j), ]
             else

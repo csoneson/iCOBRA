@@ -84,16 +84,16 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
           } else {
             pval <- object_to_extend@pval
           }
-          message(paste0(length(setdiff(rownames(pval),
-                                        rownames(object_to_extend@pval))),
-                         " new features and ",
-                         length(sds), " new methods added to pval table."))
+          message(length(setdiff(rownames(pval),
+                                 rownames(object_to_extend@pval))),
+                  " new features and ",
+                  length(sds), " new methods added to pval table")
         } else {
           pval <- object_to_extend@pval
         }
       } else {
-        message(paste0(nrow(pval), " new features and ",
-                       ncol(pval), " new methods added to pval table."))
+        message(nrow(pval), " new features and ",
+                ncol(pval), " new methods added to pval table")
       }
 
       if (length(object_to_extend@padj) != 0) {
@@ -114,16 +114,16 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
           } else {
             padj <- object_to_extend@padj
           }
-          message(paste0(length(setdiff(rownames(padj),
-                                        rownames(object_to_extend@padj))),
-                         " new features and ",
-                         length(sds), " new methods added to padj table."))
+          message(length(setdiff(rownames(padj),
+                                 rownames(object_to_extend@padj))),
+                  " new features and ",
+                  length(sds), " new methods added to padj table")
         } else {
           padj <- object_to_extend@padj
         }
       } else {
-        message(paste0(nrow(padj), " new features and ",
-                       ncol(padj), " new methods added to padj table."))
+        message(nrow(padj), " new features and ",
+                ncol(padj), " new methods added to padj table")
       }
 
       if (length(object_to_extend@score) != 0) {
@@ -145,16 +145,16 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
           } else {
             score <- object_to_extend@score
           }
-          message(paste0(length(setdiff(rownames(score),
-                                        rownames(object_to_extend@score))),
-                         " new features and ",
-                         length(sds), " new methods added to score table."))
+          message(length(setdiff(rownames(score),
+                                 rownames(object_to_extend@score))),
+                  " new features and ",
+                  length(sds), " new methods added to score table")
         } else {
           score <- object_to_extend@score
         }
       } else {
-        message(paste0(nrow(score), " new features and ",
-                       ncol(score), " new methods added to score table."))
+        message(nrow(score), " new features and ",
+                ncol(score), " new methods added to score table")
       }
 
       if (length(object_to_extend@truth) != 0) {
@@ -164,23 +164,23 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
             rownames(object_to_extend@truth)
           tm <- merge(object_to_extend@truth, truth, all = TRUE)
           if (any(duplicated(tm$feature_names_tmp)))
-            stop(paste0("Problem merging truth tables, likely due to ",
-                        "inconsistent annotations for one or more features."))
+            stop("problem merging truth tables, likely due to ",
+                 "inconsistent annotations for one or more features")
           truth <- data.frame(tm, stringsAsFactors = FALSE)
           rownames(truth) <- truth$feature_names_tmp
           truth$feature_names_tmp <- NULL
         } else {
           truth <- object_to_extend@truth
         }
-        message(paste0(length(setdiff(rownames(truth),
-                                      rownames(object_to_extend@truth))),
-                       " new features and ",
-                       length(setdiff(colnames(truth),
-                                      colnames(object_to_extend@truth))),
-                       " new annotations added to truth table."))
+        message(length(setdiff(rownames(truth),
+                               rownames(object_to_extend@truth))),
+                " new features and ",
+                length(setdiff(colnames(truth),
+                               colnames(object_to_extend@truth))),
+                " new annotations added to truth table")
       } else {
-        message(paste0(nrow(truth), " new features and ",
-                       ncol(truth), " new annotations added to truth table."))
+        message(nrow(truth), " new features and ",
+                ncol(truth), " new annotations added to truth table")
       }
     }
   }
@@ -314,7 +314,7 @@ setReplaceMethod("pval", signature(x = "COBRAData", value = "data.frame"),
                  function(x, value) {
                    x@pval <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{padj} slot
@@ -345,7 +345,7 @@ setReplaceMethod("padj", signature(x = "COBRAData", value = "data.frame"),
                  function(x, value) {
                    x@padj <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{score} slot
@@ -375,7 +375,7 @@ setReplaceMethod("score", signature(x = "COBRAData", value = "data.frame"),
                  function(x, value) {
                    x@score <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Accessor and replacement functions for \code{truth} slot
@@ -408,7 +408,7 @@ setReplaceMethod("truth", signature(x = "COBRAData", value = "data.frame"),
                  function(x, value) {
                    x@truth <- value
                    if (validObject(x))
-                     return(x)
+                     x
                  })
 
 #' Subsetting \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}
@@ -436,16 +436,16 @@ setMethod("[", "COBRAData",
           function(x, i, j = "missing", drop = "missing") {
             if (length(x@pval) != 0 &
                 length(intersect(rownames(x@pval), i)) == 0)
-              stop("None of the provided features found in the pval slot.")
+              stop("none of the provided features found in the pval slot")
             if (length(x@padj) != 0 &
                 length(intersect(rownames(x@padj), i)) == 0)
-              stop("None of the provided features found in the padj slot.")
+              stop("none of the provided features found in the padj slot")
             if (length(x@score) != 0 &
                 length(intersect(rownames(x@score), i)) == 0)
-              stop("None of the provided features found in the score slot.")
+              stop("none of the provided features found in the score slot")
             if (length(x@truth) != 0 &
                 length(intersect(rownames(x@truth), i)) == 0)
-              stop("None of the provided features found in the truth slot.")
+              stop("none of the provided features found in the truth slot")
             .pval <- x@pval[match(i, rownames(x@pval)), , drop = FALSE]
             .padj <- x@padj[match(i, rownames(x@padj)), , drop = FALSE]
             .score <- x@score[match(i, rownames(x@score)), , drop = FALSE]

@@ -270,8 +270,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           outNONDS <- c(outNONDS, NONDS)
         }
       } else {
-        message(paste0("Column ", i,
-                       " is being ignored for NBRS calculations."))
+        message("column ", i, " is being ignored for NBRS calculations")
       }
     }
     if (any(sapply(lapply(outNBR, function(w) w$nbr), length) > 0)) {
@@ -368,8 +367,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         outPEARSON <- c(outPEARSON, PEARSON)
         outSPEARMAN <- c(outSPEARMAN, SPEARMAN)
       } else {
-        message(paste0("Column ", i,
-                       " is being ignored for correlation calculations."))
+        message("column ", i, " is being ignored for correlation calculations")
       }
     }
 
@@ -440,8 +438,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           outTPR <- c(outTPR, TPR)
         }
       } else {
-        message(paste0("Column ", i,
-                       " is being ignored for TPR calculations."))
+        message("column ", i, " is being ignored for TPR calculations")
       }
     }
     if (any(sapply(lapply(outTPR, function(w) w$tpr), length) > 0)) {
@@ -514,8 +511,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           outFDR <- c(outFDR, FDR)
         }
       } else {
-        message(paste0("Column ", i,
-                       " is being ignored for FDR calculations."))
+        message("column ", i, " is being ignored for FDR calculations")
       }
     }
     if (any(sapply(lapply(outFDR, function(w) w$fdr), length) > 0)) {
@@ -583,8 +579,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           outFPR <- c(outFPR, FPR)
         }
       } else {
-        message(paste0("Column ", i,
-                       " is being ignored for FPR calculations."))
+        message("column ", i, " is being ignored for FPR calculations")
       }
     }
     if (any(sapply(lapply(outFPR, function(w) w$fpr), length) > 0)) {
@@ -651,8 +646,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           outFDRTPR <- c(outFDRTPR, FDRTPR)
         }
       } else {
-        message(paste0("Column ", i,
-                       " is being ignored for FDRTPR calculations."))
+        message("column ", i, " is being ignored for FDRTPR calculations")
       }
     }
     if (any(sapply(lapply(outFDRTPR, function(w) w$fdrtpr),
@@ -728,7 +722,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         }
         outROC <- c(outROC, ROC)
       } else {
-        message(paste0("Column ", i, " is being ignored."))
+        message("column ", i, " is being ignored for ROC calculations")
       }
     }
 
@@ -910,7 +904,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         }
         outFPC <- c(outFPC, FPC)
       } else {
-        message(paste0("Column ", i, " is being ignored."))
+        message("column ", i, " is being ignored for FPC calculations")
       }
     }
 

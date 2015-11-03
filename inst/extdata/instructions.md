@@ -1,5 +1,19 @@
 ## Introduction
-The `iCOBRA` interactive shiny application provides an easy-to-use, general-purpose benchmarking interface for comparing multiple methods in terms of their ability to correctly classify features in a (high-throughput) dataset as "positive" or "negative", as well as in terms of their ability to correctly estimate a continuous target. As an example, `iCOBRA` can be used to evaluate the performance of methods aimed at finding differentially expressed or differentially spliced genes between conditions, or to evaluate how well methods manage to estimate the (known) expression of a set of genes. The only formal requirements are that each evaluated method has assigned either (adjusted) p-values or a more general "score" (for example, the estimated expression level that will be compared to the true one) to each feature, and that the true status of the features to which the evaluated methods have been applied is known. The results can be visualized from different perspectives, using different metrics, and can also be stratified by feature attributes.
+The `iCOBRA` interactive shiny application provides an easy-to-use, 
+general-purpose benchmarking interface for comparing multiple methods 
+in terms of their ability to correctly classify features in a (high-throughput) 
+dataset as "positive" or "negative", as well as in terms of their ability to 
+correctly estimate a continuous target. As an example, `iCOBRA` can be 
+used to evaluate the performance of methods aimed at finding differentially 
+expressed or differentially spliced genes between conditions, or to 
+evaluate how well methods manage to estimate the (known) expression of a 
+set of genes. The only formal requirements are that each evaluated method 
+has assigned either (adjusted) p-values or a more general "score" (for 
+example, the estimated expression level that will be compared to the true 
+one) to each feature, and that the true status of the features to which 
+the evaluated methods have been applied is known. The results can be 
+visualized from different perspectives, using different metrics, and can 
+also be stratified by feature attributes.
 
 ## Launching the application
 The `iCOBRA` app can be launched in two modes:
@@ -8,34 +22,57 @@ The `iCOBRA` app can be launched in two modes:
 - Without an input object, either from the `iCOBRA` R package or from the server ([http://imlspenticton.uzh.ch:3838/iCOBRA](http://imlspenticton.uzh.ch:3838/iCOBRA)). In this case, all input data is uploaded in the form of text files containing the truth and the results, respectively. These text files are described in more detail in the next section. Note that the `iCOBRA` R package can be used to convert between `COBRAData` objects and  correctly formatted text files (see help pages for functions `COBRAData_to_text()` and `COBRAData_from_text()`)
 
 ## Input text files
-If the `iCOBRA` app is launched without a data object, two types of input text files are necessary for the calculations to be performed:
+If the `iCOBRA` app is launched without a data object, two types of input text 
+files are necessary for the calculations to be performed:
 
 - A "truth" file
 - One or more "result" files for the evaluated methods
 
 #### The truth file
-The truth file is a tab-delimited text file (with a header line), listing all the features that were investigated (in rows), together with one or more attributes (in columns). The columns are of different types, and are used by the app for different purposes:
+The truth file is a tab-delimited text file (with a header line), listing all the 
+features that were investigated (in rows), together with one or more attributes 
+(in columns). The columns are of different types, and are used by the app for 
+different purposes:
 
 - One column contains the feature identifiers. By default, the application uses the first column as identifiers, but this can be modified using the input controls.
 - (optional) One column containing a binary truth variable, encoding the true classification of features into "positive" (encoded as 1) and "negative" (encoded as 0). This can be, for example, the true differential expression status if the features are genes. This column is only necessary to calculate the metrics evaluating the binary classification of features (FDR/TPR, FDR/NBR, TPR, FPR, ROC, FPC, overlap). By default, it is chosen as the first binary column in the truth file, but this can be modified using the input controls. If binary classification should not be evaluated, this can be set to "none".
 - (optional) One column containing a continuous truth variable, encoding a characteristic of the data that will be compared to the provided scores. This can be, for example, the true expression of genes. This column is only necessary to calculate the metrics based on comparing continuous scores (correlation, scatter plots, deviations). By default, it is set to "none", since these metrics may take slightly longer to calculate than the binary classification metrics. This can be modified using the input controls. 
 - (optional) Additional columns containing categorical variables that can be used to stratify the performance evaluation. 
 
-The table below shows the first lines of an example truth file. It contains the columns **feature** (indicating the feature identifier), **status** (the true binary assignment), **logFC** (the true continuous variable corresponding to the scores calculated by the evaluated methods), as well as additional columns representing stratification annotations. 
+The table below shows the first lines of an example truth file. It contains the columns 
+**feature** (indicating the feature identifier), **status** (the true binary assignment), 
+**logFC** (the true continuous variable corresponding to the scores calculated by the 
+evaluated methods), as well as additional columns representing stratification annotations. 
 
 <img src="screenshot_truth.png" style="width:800px;"/>
 
 #### The result files
-The result files contain the p-values, adjusted p-values and scores for the evaluated features. Each file can contain results obtained by one or multiple methods. It is also possible to load multiple result files into the app. Each result file must have a column corresponding to the feature identifier. This column **must** have the same name as in the truth file. In order to correctly interpret the other columns, each column header must be of the form **method:type**, where **type** is either **adjP** (if the column contains adjusted p-values or FDR estimates), **P** (if the column contains nominal p-values), or **score** (if the column contains a general score). 
+The result files contain the p-values, adjusted p-values and scores for the evaluated 
+features. Each file can contain results obtained by one or multiple methods. It is also 
+possible to load multiple result files into the app. Each result file must have a 
+column corresponding to the feature identifier. This column **must** have the same name as 
+in the truth file. In order to correctly interpret the other columns, each column header 
+must be of the form **method:type**, where **type** is either **adjP** (if the column 
+contains adjusted p-values or FDR estimates), **P** (if the column contains nominal 
+p-values), or **score** (if the column contains a general score). 
 
-Nominal p-values will be adjusted by the app, using the Benjamini-Hochberg correction method, as long as the adjusted p-values for the same method have not been previously loaded or are part of the same result file as the p-values. The part of the column name preceding the ":adjP", ":P" or ":score" will be considered the "name" of the method. Please make sure that this name is unique for each evaluated method. However, note that one or several types of columns can be provided for the same method (e.g., we can provide both p-values, adjusted p-values and a score with the same method name, and they will be considered as different representations corresponding to the same method).  
+Nominal p-values will be adjusted by the app, using the Benjamini-Hochberg correction 
+method, as long as the adjusted p-values for the same method have not been previously 
+loaded or are part of the same result file as the p-values. The part of the column name 
+preceding the ":adjP", ":P" or ":score" will be considered the "name" of the method. 
+Please make sure that this name is unique for each evaluated method. However, note that 
+one or several types of columns can be provided for the same method (e.g., we can 
+provide both p-values, adjusted p-values and a score with the same method name, and 
+they will be considered as different representations corresponding to the same method).  
 
-The table below shows the first lines of an example result file, containing nominal p-values, adjusted p-values and scores for several methods. Missing values (NA) are allowed.
+The table below shows the first lines of an example result file, containing nominal 
+p-values, adjusted p-values and scores for several methods. Missing values (NA) are allowed.
 
 <img src="screenshot_results.png" style="width:800px;"/>
 
 ### Use of different measure types
-The combination of measures that are provided for a given method (P, adjP, score) affects how the performance evaluation will be performed: 
+The combination of measures that are provided for a given method (P, adjP, score) 
+affects how the performance evaluation will be performed: 
 
 - Calculations of FDR, TPR, number of detections and FPRs at given adjusted p-value thresholds are always calculated based on adjusted p-value inputs (recall that these are calculated from p-values if they are not provided). Methods for which adjusted p-values are not available will be excluded from these evaluations.
 - The full FDR/TPR and FDR/NBR curves, as well as ROC and FD curves, are calculated from scores or p-values if provided (since these often have a higher resolution than adjusted p-values). If not, adjusted p-values will be used. Note that scores that are used for this purpose should be such that a higher score corresponds to "more significant" featuers. For FDR/TPR and FDR/NBR curves, if both scores/p-values and adjusted p-values are provided, it is necessary that the scores/p-values and the adjusted p-values are monotonically related to each other, otherwise the adjusted p-values will be used also for the curves. This is to avoid discrepancies between the full curves and the values calculated at specific adjusted p-value thresholds. 
@@ -43,19 +80,40 @@ The combination of measures that are provided for a given method (P, adjP, score
 
 ### Handling missing features
 
-Sometimes, not all features are assigned a score by each of the evaluated methods. For example, some methods filter out variables for which they can not perform reliable inference. Similarly, some features may not be present in the truth table. This can be due to, for example, some inference methods generating "new" features by combining original features. In this case, the true status for the new features is not known. The table below tabulates the possible sets of features in a data set. Features that are neither present in the result tables nor in the truth table will not be considered. 
+Sometimes, not all features are assigned a score by each of the evaluated methods. 
+For example, some methods filter out variables for which they can not perform reliable 
+inference. Similarly, some features may not be present in the truth table. This can be 
+due to, for example, some inference methods generating "new" features by combining 
+original features. In this case, the true status for the new features is not known. 
+The table below tabulates the possible sets of features in a data set. Features that 
+are neither present in the result tables nor in the truth table will not be considered. 
 
 <img src="screenshot_missing.png" style="width:400px;"/>
 
-The default settings of `iCOBRA` is to consider all features that are present (with non-missing status) in the truth file. Thus, A = B = 0. In this case, all features that are not called (i.e., where there are missing values in the result table) will be considered negative ("not significant") and will thus be added to the FN and TN, respectively, in the calculations of TPR and FPR. This is motivated by the assumption that features are left out of the result table because there was not enough evidence to call them significant. However, in some circumstances it may mean that the given TPR and FPR values are slight underestimates of the true values. Choosing to consider only features shared between the truth and result table (by checking the box in the input controls) will disregard features with missing values in the truth table such that also C = D = 0. This will be done separately for each evaluated method. One exception is made for the Venn diagrams, which is the only aspect that is interpretable even without a given truth (to evaluate agreement between methods). For the Venn diagrams, the following feature collections are used:
+The default settings of `iCOBRA` is to consider all features that are present (with 
+non-missing status) in the truth file. Thus, A = B = 0. In this case, all features that 
+are not called (i.e., where there are missing values in the result table) will be 
+considered negative ("not significant") and will thus be added to the FN and TN, 
+respectively, in the calculations of TPR and FPR. This is motivated by the assumption 
+that features are left out of the result table because there was not enough evidence to 
+call them significant. However, in some circumstances it may mean that the given TPR and 
+FPR values are slight underestimates of the true values. Choosing to consider only 
+features shared between the truth and result table (by checking the box in the input 
+controls) will disregard features with missing values in the truth table such that also 
+C = D = 0. This will be done separately for each evaluated method. One exception is made 
+for the Venn diagrams, which is the only aspect that is interpretable even without a 
+given truth (to evaluate agreement between methods). For the Venn diagrams, the following 
+feature collections are used:
 
 - When the checkbox for considering only shared features is not checked and the truth is included in the Venn diagrams, all features where the (binary) truth is available are used. Features with missing adjusted p-values are considered non-significant. 
 - When the checkbox for considering only shared features is checked and the truth is included in the Venn diagrams, all features where the (binary) truth *as well* as the adjusted p-value for *all* included methods are available are used. 
 - When the truth is not included in the Venn diagrams, all features will be used. Features with missing adjusted p-values are considered non-significant. 
 
-Note that this means that, for example, the value represented in the `Number of detections` column in the FDR/NBR plots may differ from the total number of calls in the Venn diagrams. 
+Note that this means that, for example, the value represented in the `Number of detections` 
+column in the FDR/NBR plots may differ from the total number of calls in the Venn diagrams. 
 
-To summarise, the different columns shown in the information boxes below the plots when hovering over a displayed point are defined as follows:
+To summarise, the different columns shown in the information boxes below the plots when 
+hovering over a displayed point are defined as follows:
 
 - Number of detections = TP + FP
 - TPR = TP/(TP + FN + C)
@@ -70,7 +128,8 @@ To summarise, the different columns shown in the information boxes below the plo
 - NONDIFF = FP + TN + D
 
 ## Comparison and evaluation methods
-The `iCOBRA` application calculates several different types of comparison and evaluation metrics, each represented in a separate tab. The available methods are described briefly below. 
+The `iCOBRA` application calculates several different types of comparison and evaluation 
+metrics, each represented in a separate tab. The available methods are described briefly below. 
 
 - **FDR vs TPR plot**: This plot shows the observed false discovery rate vs the observed true positive rate. If adjusted p-values are provided, it can be calculated for a given set of adjusted p-value cutoffs. It can also be calculated for each possible cutoff to generate an "FDR/TPR curve". Each point in the plot represents one method and one cutoff, and points corresponding to the same method are joined together. If "points" is selected to be displayed in the input panel, and a method controls the FDR (that is, if the observed false discovery rate is lower than or equal to the imposed cutoff), the corresponding point is filled, otherwise it is open. The user can change the imposed adjusted p-value cutoffs using the "FDR thresholds" input in the control panel in the sidebar.  
 - **FDR vs NBR plot**: This plot is similar to the FDR vs TPR plot, but instead of the TPR it shows the number of features classified as positive. 
@@ -87,7 +146,9 @@ For all plots except Venn diagrams, more information about a given point can be 
 
 
 ## Input controls
-Input controls are located in the sidebar as well as in the individual tabs. By changing one or more of the input parameters, the user can get more precise control of what is displayed. The following general parameters are available:
+Input controls are located in the sidebar as well as in the individual tabs. By changing one 
+or more of the input parameters, the user can get more precise control of what is displayed. 
+The following general parameters are available:
 
 ### Truth-related
 - **Select column containing feature identifiers**: The name of the column in truth and result text files that corresponds to the feature identifiers.
@@ -141,5 +202,12 @@ If not all input controls are visible in the left-hand sidebar, either "fold" on
 
 The sidebar can be hidden by clicking the three lines next to the main title.
 
-If the colors of the plots do not change when a new color palette is chosen in the left-hand sidebar, most likely the number of colors in the chosen palette is not enough. Note that the number of required colors depends not only on the number of different methods in the evaluation, but also on whether the plots are facetted or not. Also note that not all methods may be included in each plot, so the number of methods that need to be assigned a unique color may exceed the number of methods displayed in any given plot. `iCOBRA` will attempt to keep the colors for a given method consistent throughout the different visualizations. 
+If the colors of the plots do not change when a new color palette is chosen in the 
+left-hand sidebar, most likely the number of colors in the chosen palette is not enough. 
+Note that the number of required colors depends not only on the number of different 
+methods in the evaluation, but also on whether the plots are facetted or not. Also note 
+that not all methods may be included in each plot, so the number of methods that need to 
+be assigned a unique color may exceed the number of methods displayed in any given plot. 
+`iCOBRA` will attempt to keep the colors for a given method consistent throughout the 
+different visualizations. 
 

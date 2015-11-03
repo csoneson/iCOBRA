@@ -3,7 +3,7 @@
 ## otherwise print a message and return FALSE.
 res_check <- function(dfr) {
   if (ncol(dfr) == 1) {
-    message("The data frame contains only one column")
+    message("the data frame contains only one column")
     return(FALSE)
   }
   return(TRUE)
@@ -89,7 +89,7 @@ fix_duplicates <- function(res_df, feature_id, method_name) {
   dp <-
     unique(as.character(res_df[, feature_id][duplicated(res_df[, feature_id])]))
   if (length(dp) > 0) {
-    message(paste0("Found duplicate gene name(s) for ", method_name))
+    message("found duplicate gene name(s) for ", method_name)
     for (j in dp) {
       idx <- which(res_df[, feature_id] == j)
       kp <- which.min(res_df[idx, method_name])[1]
@@ -98,7 +98,7 @@ fix_duplicates <- function(res_df, feature_id, method_name) {
       res_df <- res_df[-rem, , drop = FALSE]
     }
     if (sum(duplicated(res_df[, feature_id])) == 0)
-      message("Fixed the duplication!")
+      message("fixed the duplication")
   }
   res_df
 }
@@ -163,7 +163,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
     inp_methods <- subset(inp_methods, levs != "overall")
 
   ## Calculate number of required colors
-  if (facetted == TRUE) {
+  if (isTRUE(facetted)) {
     tmp_methods <- unique(inp_methods$basemethod)
     ncolors <- length(unique(tmp_methods))
   } else {
@@ -178,12 +178,12 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
   if (length(palette) > 1) {
     ## User-specified color vector
     if (length(palette) > ncolors) {
-      warning(paste0("Too many colors supplied. Only the first ", ncolors,
-                     " will be used."))
+      warning("too many colors supplied, only the first ", ncolors,
+              " will be used")
       use_colors1 <- palette[1:ncolors]
     } else if (length(palette) < ncolors) {
-      warning(paste0("Too few colors provided. ", ncolors - length(palette),
-                     " random colors will be added."))
+      warning("too few colors provided, ", ncolors - length(palette),
+              " random colors will be added")
       use_colors1 <- c(palette,
                        setdiff(sample(grDevices::colors(),
                                       length(grDevices::colors())),
@@ -198,7 +198,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
     if (!(bnm %in% c("hue_pal", "rainbow", "heat", "terrain", "topo",
                      "cm", "Accent", "Dark2", "Paired", "Pastel1",
                      "Pastel2", "Set1", "Set2", "Set3"))) {
-      warning("Invalid palette, will consider it a color.")
+      warning("invalid palette, will consider it a color")
       use_colors1 <- c(palette,
                        setdiff(sample(grDevices::colors(),
                                       length(grDevices::colors())),
@@ -208,7 +208,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
       ## Pre-defined palette
       maxnbr <- c(Accent = 8, Dark2 = 8, Paired = 12, Pastel1 = 9,
                   Pastel2 = 8, Set1 = 9, Set2 = 8, Set3 = 12)
-      if (palette == "hue_pal") use_colors1 <- hue_pal()(ncolors)
+      if (palette == "hue_pal") use_colors1 <- scales::hue_pal()(ncolors)
       else if (palette == "rainbow") use_colors1 <- grDevices::rainbow(ncolors)
       else if (palette == "heat") use_colors1 <- grDevices::heat.colors(ncolors)
       else if (palette == "terrain") use_colors1 <-
@@ -217,15 +217,15 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
       else if (palette == "cm") use_colors1 <- grDevices::cm.colors(ncolors)
       else {
         if (ncolors <= maxnbr[bnm])
-          use_colors1 <- brewer_pal(palette = bnm)(ncolors)
+          use_colors1 <- scales::brewer_pal(palette = bnm)(ncolors)
         else
-          use_colors1 <- hue_pal()(ncolors)
+          use_colors1 <- scales::hue_pal()(ncolors)
       }
     }
   }
   names(use_colors1) <- tmp_methods
 
-  if (facetted == TRUE) {
+  if (isTRUE(facetted)) {
     inp_methods$color <- use_colors1[match(inp_methods$basemethod,
                                            names(use_colors1))]
   } else {
@@ -301,8 +301,8 @@ select_measure <- function(cobradata, method, asp) {
 extend_resulttable <- function(df, splv, keeplevels, valuename,
                                basemethod, domelt = TRUE) {
   if (isTRUE(domelt)) {
-    df <- melt(df, varnames = c("thr", "method"),
-               value.name = valuename)
+    df <- reshape2::melt(df, varnames = c("thr", "method"),
+                         value.name = valuename)
     df <- fixcolname(df, prevv = "value", newv = valuename)
   }
   df$basemethod <- basemethod[match(df$method, names(basemethod))]
