@@ -6,7 +6,7 @@
 \usage{
 plot_deviation(cobraplot, title = "", stripsize = 15, titlecol = "black",
   xaxisrange = NULL, plottype = "boxplot", dojitter = TRUE,
-  squaredevs = FALSE)
+  transf = "raw")
 }
 \arguments{
 \item{cobraplot}{An \code{COBRAPlot} object.}
@@ -27,8 +27,8 @@ make.}
 \item{dojitter}{A logical indicating whether to include jittered data points
 or not.}
 
-\item{squaredevs}{A logical indicating whether to square deviations before
-  plotting or not.}
+\item{transf}{A character indicating the transformation to apply to the
+  deviations before plotting. Must be one of "raw", "absolute" or "squared"}
 }
 \value{
 A ggplot object

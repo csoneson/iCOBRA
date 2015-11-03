@@ -359,8 +359,13 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                    fluidRow(
                      column(2, checkboxInput("dojitter",
                                              "Include jittered points", FALSE),
-                            checkboxInput("dosquare",
-                                          "Square deviations", FALSE)),
+                            radioButtons(inputId = "devtrans",
+                                         label = "Transformation",
+                                         choices = c("raw", "absolute",
+                                                     "squared"),
+                                         selected = "raw")),
+#                             checkboxInput("dosquare",
+#                                           "Square deviations", FALSE)),
                      column(1, radioButtons(
                        inputId = "devtype", label = "Plot type",
                        choices = c("boxplot", "violinplot"),
@@ -1101,10 +1106,16 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
           !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       else {
-        if (isTRUE(input$dosquare))
-          tmp <- (deviation(plotvalues()$all_vals))$DEVIATION^2
-        else
+        if (input$devtrans == "raw")
           tmp <- (deviation(plotvalues()$all_vals))$DEVIATION
+        else if (input$devtrans == "absolute")
+          tmp <- abs((deviation(plotvalues()$all_vals))$DEVIATION)
+        else
+          tmp <- (deviation(plotvalues()$all_vals))$DEVIATION^2
+#         if (isTRUE(input$dosquare))
+#           tmp <- (deviation(plotvalues()$all_vals))$DEVIATION^2
+#         else
+#           tmp <- (deviation(plotvalues()$all_vals))$DEVIATION
         mn <- signif(min(tmp[is.finite(tmp)]), 3)
         mx <- signif(max(tmp[is.finite(tmp)]), 3)
         sliderInput(inputId = "xrange_deviation", label = "x-axis limits",
@@ -1133,7 +1144,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                              xaxisrange = input$xrange_deviation,
                              plottype = input$devtype,
                              dojitter = input$dojitter,
-                             squaredevs = input$dosquare))
+                             transf = input$devtrans))
+#                             squaredevs = input$dosquare))
         grDevices::dev.off()
       })
 
@@ -1178,7 +1190,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                        stripsize = input$stripsize, titlecol = "white",
                        xaxisrange = input$xrange_deviation,
                        plottype = input$devtype, dojitter = input$dojitter,
-                       squaredevs = input$dosquare)
+                       transf = input$devtrans)
+#                       squaredevs = input$dosquare)
       })
     })
 
@@ -1188,8 +1201,13 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
           !is_plottable(deviation(plotvalues()$all_vals)))
         return(NULL)
       all_data <- isolate(deviation(plotvalues()$all_vals))
-      if (isTRUE(input$dosquare))
+
+      if (input$devtrans == "absolute")
+        all_data$absDEVIATION <- abs(all_data$DEVIATION)
+      # if (isTRUE(input$dosquare))
+      if (input$devtrans == "squared")
         all_data$sqDEVIATION <- all_data$DEVIATION^2
+
       tmp_click <- input$deviation_plot_click
       if (!is.null(tmp_click))
         tmp_click$y <- round(tmp_click$y)
@@ -1198,18 +1216,28 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                           threshold = 50, maxpoints = 100,
                           addDist = TRUE, panelvar1 = "splitval",
                           yvar = "num_method",
-                          xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-                                        "DEVIATION"))
+                          xvar = ifelse(input$devtrans == "raw", "DEVIATION",
+                                        ifelse(input$devtrans == "absolute",
+                                               "absDEVIATION", "sqDEVIATION")))
+#                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+#                                         "DEVIATION"))
       } else {
         res <- nearPoints(all_data, tmp_click,
                           threshold = 50, maxpoints = 100,
                           addDist = TRUE, yvar = "num_method",
-                          xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-                                        "DEVIATION"))
+                          xvar = ifelse(input$devtrans == "raw", "DEVIATION",
+                                        ifelse(input$devtrans == "absolute",
+                                               "absDEVIATION", "sqDEVIATION")))
+#                           xvar = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+#                                         "DEVIATION"))
       }
       fix_res(res, methodcol = "fullmethod",
-              aspcts = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
-                              "DEVIATION"), tabtype = "deviation")
+              aspcts = ifelse(input$devtrans == "raw", "DEVIATION",
+                              ifelse(input$devtrans == "absolute",
+                                     "absDEVIATION", "sqDEVIATION")),
+#               aspcts = ifelse(isTRUE(input$dosquare), "sqDEVIATION",
+#                               "DEVIATION"),
+              tabtype = "deviation")
     })
 
     ## ---------------------------- FPR -------------------------------- ##

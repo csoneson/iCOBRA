@@ -536,8 +536,8 @@ plot_overlap <- function(cobraplot, ...) {
 #'   make.
 #' @param dojitter A logical indicating whether to include jittered data points
 #'   or not.
-#' @param squaredevs A logical indicating whether to square deviations before
-#'   plotting or not.
+#' @param transf A character indicating the transformation to apply to the
+#'   deviations before plotting. Must be one of "raw", "absolute" or "squared"
 #'
 #' @return A ggplot object
 #'
@@ -554,20 +554,29 @@ plot_overlap <- function(cobraplot, ...) {
 plot_deviation <- function(cobraplot, title = "", stripsize = 15,
                            titlecol = "black", xaxisrange = NULL,
                            plottype = "boxplot",
-                           dojitter = TRUE, squaredevs = FALSE) {
+                           dojitter = TRUE, transf = "raw") {
+  stopifnot(transf %in% c("raw", "absolute", "squared"))
   plot_data <- deviation(cobraplot)
-  if (isTRUE(squaredevs)) {
+  if (transf == "absolute")
+    plot_data$absDEVIATION <- abs(plot_data$DEVIATION)
+  else if (transf == "squared")
     plot_data$sqDEVIATION <- plot_data$DEVIATION^2
-  }
+#   if (isTRUE(squaredevs)) {
+#     plot_data$sqDEVIATION <- plot_data$DEVIATION^2
+#   }
 
   if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
 
-  pp <-ggplot(plot_data, aes_string(x = "method",
-                                    y = ifelse(isTRUE(squaredevs),
-                                               "sqDEVIATION", "DEVIATION"),
-                                    group = "method", colour = "method")) +
+  pp <- ggplot(
+    plot_data, aes_string(x = "method",
+                          y = ifelse(transf == "raw", "DEVIATION",
+                                     ifelse(transf == "absolute",
+                                            "absDEVIATION", "sqDEVIATION")),
+#                                     y = ifelse(isTRUE(squaredevs),
+#                                                "sqDEVIATION", "DEVIATION"),
+                          group = "method", colour = "method")) +
     coord_flip() +
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
