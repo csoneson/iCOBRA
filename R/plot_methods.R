@@ -256,6 +256,11 @@ plot_scatter <- function(cobraplot, title = "", stripsize = 10,
                          dolog = FALSE) {
   plot_data <- scatter(cobraplot)
 
+  if (isTRUE(dolog)) {
+    plot_data$OBSERVATION[which(plot_data$OBSERVATION < 1e-305)] <- 0
+    plot_data$TRUTH[which(plot_data$TRUTH < 1e-305)] <- 0
+  }
+
   if (isTRUE(facetted(cobraplot))) {
     plot_data$fullmethod <- plot_data$method
   }
