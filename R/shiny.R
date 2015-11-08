@@ -432,7 +432,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(fileInput(inputId = "truth", label = "Load truth file",
                          accept = c("text/csv", "text/comma-separated-values",
                                     "text/tab-separated-values", "text/plain",
-                                    ".csv", ".tsv"), multiple = FALSE))
+                                    ".csv", ".tsv", ".tab", ".txt"),
+                         multiple = FALSE))
       }
     })
 

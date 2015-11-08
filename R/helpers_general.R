@@ -315,16 +315,16 @@ extend_resulttable <- function(df, splv, keeplevels, valuename,
 
   df$fullmethod <- df$method
   if (splv == "none") {
-    df <- droplevels(df[grep("_overall", df$method), ])
+    df <- droplevels(df[grep("_overall$", df$method), ])
     df$splitval <- "overall"
     df$method <- sapply(as.character(df$fullmethod), function(w) {
-      gsub("_overall", "", w)
+      gsub("_overall$", "", w)
     })
   } else {
     df$splitval <-
       factor(sapply(as.character(df$fullmethod),
                     function(w) {
-                      if (length(grep("overall", w)) > 0) {
+                      if (length(grep("overall$", w)) > 0) {
                         "overall"
                       } else {
                         a <- unlist(strsplit(w, paste0("_", splv, ":")))
