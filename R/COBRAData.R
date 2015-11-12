@@ -39,8 +39,8 @@
 #'   provided information.
 #'
 #' @aliases COBRAData COBRAData-class
-#' @return \code{COBRAData}, \code{COBRAData_from_text} and
-#'   \code{COBRAData_from_simres} return an \code{COBRAData} object.
+#' @return \code{COBRAData} and \code{COBRAData_from_text} return a
+#'   \code{COBRAData} object.
 #'
 #' @docType class
 #'
@@ -497,69 +497,4 @@ setValidity("COBRAData",
               }
               if (valid) TRUE else msg
             })
-
-#' @param simres A \code{benchmarkR::SimResults} object
-#' @rdname COBRAData
-#' @export
-COBRAData_from_simresults <- function(simres) {
-  ## Set row names
-  if (!is.null(rownames(simres@pval))) {
-    rn <- rownames(simres@pval)
-    if (is.null(rownames(simres@padj))) {
-      rownames(simres@padj) <- rn
-    }
-  } else if (!is.null(rownames(simres@padj))) {
-    rn <- rownames(simres@padj)
-    rownames(simres@pval) <- rn
-  } else {
-    rn <- paste0("F", 1:nrow(simres@pval))
-    rownames(simres@pval) <- rn
-    rownames(simres@padj) <- rn
-  }
-  pval <- data.frame(simres@pval, stringsAsFactors = FALSE, check.names = FALSE)
-  padj <- data.frame(simres@padj, stringsAsFactors = FALSE, check.names = FALSE)
-  truth <- data.frame(row.names = rn, stringsAsFactors = FALSE)
-  truth$status = simres@labels
-  truth$strat = simres@stratify
-
-  COBRAData(pval = pval, padj = padj, score = data.frame(), truth = truth)
-}
-
-#' @param binary_truth The name of the column in truth(cobradata) that contains
-#'   the binary truth variable.
-#' @param strat (optional) The name of the column in truth(cobradata) that
-#'   contains the stratification variable.
-#' @rdname COBRAData
-#' @export
-COBRAData_to_simresults <- function(cobradata, binary_truth, strat = NULL) {
-  if (length(pval(cobradata)) == 0)
-    stop("cobradata must have non-empty slot pval")
-  if (length(pval(cobradata)) == length(padj(cobradata)) &&
-      all(colnames(pval(cobradata)) == colnames(padj(cobradata)))) {
-    pval <- pval(cobradata)
-    padj <- padj(cobradata)
-    keep_methods <- colnames(pval)
-  } else {
-    padj <- NULL
-    pval <- pval(cobradata)
-    keep_methods <- colnames(pval)
-  }
-
-  keep_features <- rownames(truth(cobradata))
-  if (!is.null(pval)) keep_features <- intersect(keep_features, rownames(pval))
-  if (!is.null(padj)) keep_features <- intersect(keep_features, rownames(padj))
-
-  pval <- pval[keep_features, keep_methods, drop = FALSE]
-  padj <- padj[keep_features, keep_methods, drop = FALSE]
-  if (!is.null(pval)) pval <- as.matrix(pval)
-  if (!is.null(padj)) padj <- as.matrix(padj)
-  labels <- truth(cobradata)[keep_features, binary_truth]
-  if (!is.null(strat))
-    stratify <- truth(cobradata)[keep_features, strat, drop = FALSE]
-  else
-    stratify <- NULL
-  benchmarkR::SimResults(pval = pval, padj = padj,
-                         labels = labels, stratify = stratify)
-}
-
 

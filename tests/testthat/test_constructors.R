@@ -12,21 +12,6 @@ test_that("COBRAData constructors generate COBRAData objects", {
                                package = "iCOBRA"),
     feature_id = "feature"), "COBRAData")
 
-  load(system.file("extdata", "cobradata_example_simres.Rdata",
-                   package = "iCOBRA"))
-  expect_is(COBRAData_from_simresults(simres), "COBRAData")
-
-  rownames(simres@padj) <- NULL
-  expect_is(COBRAData_from_simresults(simres), "COBRAData")
-
-  load(system.file("extdata", "cobradata_example_simres.Rdata",
-                   package = "iCOBRA"))
-  rownames(simres@pval) <- NULL
-  expect_is(COBRAData_from_simresults(simres), "COBRAData")
-
-  rownames(simres@padj) <- NULL
-  expect_is(COBRAData_from_simresults(simres), "COBRAData")
-
   expect_is(COBRAData_from_text(
     truth_file = system.file("extdata", "cobradata_example_truth.txt",
                              package = "iCOBRA"),
@@ -60,6 +45,42 @@ test_that("COBRAData constructors generate COBRAData objects", {
   expect_equal(pval(ib2)$m1, pval(ib2)$m2)
   expect_equal(padj(ib2)$m1, padj(ib2)$m2)
   expect_equal(score(ib2)$m1, score(ib2)$m2)
+})
+
+test_that("extending empty COBRAData object works as expected", {
+  ibA <- COBRAData(pval = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                     row.names = paste0("F", 1:5)),
+                   padj = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                     row.names = paste0("F", 1:5)),
+                   score = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                      row.names = paste0("F", 1:5)),
+                   truth = data.frame(status = c(1, 0, 1, 0, 1),
+                                      row.names = paste0("F", 1:5)))
+  ibB <- COBRAData()
+  ibC <- COBRAData(pval = pval(ibA), padj = padj(ibA),
+                   score = score(ibA), truth = truth(ibA),
+                   object_to_extend = ibB)
+  expect_equal(pval(ibA), pval(ibC))
+  expect_equal(padj(ibA), padj(ibC))
+  expect_equal(score(ibA), score(ibC))
+  expect_equal(truth(ibA), truth(ibC))
+})
+
+test_that("extending object with object without pval slot works", {
+  ibA <- COBRAData(pval = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                     row.names = paste0("F", 1:5)),
+                   padj = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                     row.names = paste0("F", 1:5)),
+                   score = data.frame(mA = c(0.1, 0.2, 0.3, 0.4, 0.5),
+                                      row.names = paste0("F", 1:5)),
+                   truth = data.frame(status = c(1, 0, 1, 0, 1),
+                                      row.names = paste0("F", 1:5)))
+  ibB <- COBRAData(score = score(ibA),
+                   object_to_extend = ibA)
+  expect_equal(pval(ibA), pval(ibB))
+  expect_equal(padj(ibA), padj(ibB))
+  expect_equal(score(ibA), score(ibB))
+  expect_equal(truth(ibA), truth(ibB))
 })
 
 test_that("extending COBRAData objects works as expected", {
@@ -115,12 +136,6 @@ test_that("export functions return correct class", {
   expect_is(COBRAData_to_text(cobradata_example, feature_id = "feature",
                              truth_file = "test_truth.txt",
                              result_files = "test_results.txt"), "NULL")
-  expect_is(COBRAData_to_simresults(cobradata_example, binary_truth = "status",
-                                   strat = NULL), "SimResults")
-  cobradata <- cobradata_example
-  cobradata <- calculate_adjp(cobradata)
-  expect_is(COBRAData_to_simresults(cobradata, binary_truth = "status",
-                                   strat = "expr_cat"), "SimResults")
 })
 
 test_that(paste0("COBRAPerformance constructor and calculate_performance ",

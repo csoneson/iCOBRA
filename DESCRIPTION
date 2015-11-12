@@ -1,7 +1,7 @@
 Package: iCOBRA
 Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
-Version: 0.99.0
+Version: 0.99.1
 Date: 2015-10-10
 Authors@R: c(person(given = "Charlotte", family = "Soneson", 
     role = c("aut", "cre"),
@@ -40,6 +40,6 @@ Imports:
 Suggests:
     knitr,
     testthat
-Enhances: benchmarkR
 VignetteBuilder: knitr
 biocViews: Classification
+RoxygenNote: 5.0.0

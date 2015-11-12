@@ -188,3 +188,8 @@ COBRAapp(cobradata_example)
 COBRAapp()
 ```
 
+The screenshot below shows the appearance of the iCOBRA shiny app, using the 
+example data set.
+
+<img src="screenshot_COBRAapp.png" style="width:800px;"/>
+

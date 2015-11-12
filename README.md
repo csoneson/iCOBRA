@@ -14,11 +14,19 @@ be accessed from the web server [http://imlspenticton.uzh.ch:3838/iCOBRA/](http:
 
 ## Installation
 
-If `devtools` is available, `iCOBRA` can be installed as follows:
+`iCOBRA` can be installed using `biocLite()`:
 
 ```
-devtools::install_github("markrobinsonuzh/iCOBRA")
+source("http://bioconductor.org/biocLite.R")
+biocLite("iCOBRA")
 ```
+
+or, optionally, 
+
+```
+biocLite("markrobinsonuzh/iCOBRA")
+```
+
 
 ## Quick start guide
 
