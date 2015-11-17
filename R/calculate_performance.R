@@ -113,7 +113,9 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   value is "none", indicating no stratification.
 #' @param maxsplit A numeric value giving the maximal number of categories to
 #'   keep in the stratification. The largest categories containing both positive
-#'   and negative features will be retained.
+#'   and negative features will be retained. By setting this argument to `Inf`
+#'   or `NA_integer_`, all categories (as well as the order of categories) will
+#'   be retained.
 #' @param onlyshared A logical, indicating whether to only consider features for
 #'   which both the true assignment and a result (p-value, adjusted p-value or
 #'   score) is given. If FALSE, all features contained in the truth table are

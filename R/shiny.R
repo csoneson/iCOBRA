@@ -33,7 +33,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
-                       "Binary classification and RAnking methods (v0.99.1)"),
+                       "Binary classification and RAnking methods (v0.99.2)"),
         titleWidth = 950),
 
       shinydashboard::dashboardSidebar(

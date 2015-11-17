@@ -34,20 +34,24 @@ is_plottable <- function(obj) {
 #' @import dplyr
 get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
   if (splv != "none") {
-    if (!is.null(binary_truth)) {
-      nbrtrulydiff <-
-        as.data.frame(truth %>% group_by_(splv) %>%
-                        summarise_(nbrdiff = paste0("length(which(",
-                                                    binary_truth, "== 1))")),
-                      stringsAsFactors = FALSE)
-      tokeep <- nbrtrulydiff[nbrtrulydiff$nbrdiff > 0, splv]
-      tbl <- table(truth[[splv]])
-      tbl <- tbl[as.character(tokeep)]
+    if (!is.finite(maxsplit)) {
+      keeplevels <- levels(as.factor(truth[[splv]]))
     } else {
-      tbl <- table(truth[[splv]])
+      if (!is.null(binary_truth)) {
+        nbrtrulydiff <-
+          as.data.frame(truth %>% group_by_(splv) %>%
+                          summarise_(nbrdiff = paste0("length(which(",
+                                                      binary_truth, "== 1))")),
+                        stringsAsFactors = FALSE)
+        tokeep <- nbrtrulydiff[nbrtrulydiff$nbrdiff > 0, splv]
+        tbl <- table(truth[[splv]])
+        tbl <- tbl[as.character(tokeep)]
+      } else {
+        tbl <- table(truth[[splv]])
+      }
+      tbl <- sort(tbl, decreasing = TRUE)
+      keeplevels <- names(tbl)[1:min(maxsplit, length(tbl))]
     }
-    tbl <- sort(tbl, decreasing = TRUE)
-    keeplevels <- names(tbl)[1:min(maxsplit, length(tbl))]
   } else {
     keeplevels <- "overall"
   }
