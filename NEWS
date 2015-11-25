@@ -1,0 +1,15 @@
+v0.3.13: - Adapted package for Bioconductor submission
+v0.3.11: - Renamed to iCOBRA
+v0.3.9: - Improved constructors
+v0.3.8: - Added check for duplicated feature IDs
+v0.3.7: - Fixed bug causing problems for Venn diagrams if only one method is available
+        - Included information texts in app
+v0.3.5: - Simplified constructors
+v0.3.4: - Modified calculation of overlaps
+v0.3.2: - Added unit tests
+v0.3.1:	- Updated information messages in app
+v0.3.0: - Bug fixes in app
+	- Addition of small example data set
+	- Addition of information banners to app
+v0.2.0: - Added deviation plot
+	- Bug fixes
