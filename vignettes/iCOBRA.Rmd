@@ -1,0 +1,195 @@
+---
+title: "iCOBRA User Guide"
+author: "Charlotte Soneson"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{iCOBRA User Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+options(width = 100)
+```
+
+iCOBRA is a package to calculate and visualize performance metrics for ranking 
+and binary assignment methods. A typical use case could be, for example, 
+comparing methods calling differential expression in gene expression 
+experiments, which could be seen as either a ranking problem (estimating the 
+correct effect size and ordering the genes by significance) or a binary 
+assignment problem (classifying the genes into differentially expressed and 
+non-differentially expressed).
+
+For more detailed information regarding the calculations, handling of missing
+values etc, please consult the "Instructions" tab of the shiny application,
+available via the function ```COBRAapp()```.
+
+# Basic workflow
+## Creating a data set
+The starting point for an evaluation is typically a collection of feature
+'scores' (p-values, adjusted p-values or any other ranking score) and the truth
+(information about the true status, or the true scores for the features). These
+values are stored in an `COBRAData` object. Here, we will start from an example
+`COBRAData` object provided with the package.
+
+```{r}
+library(iCOBRA)
+data(cobradata_example)
+class(cobradata_example)
+cobradata_example
+```
+
+For the methods that don't have adjusted p-values, we will calculate adjusted
+p-values from nominal p-values.
+
+```{r}
+cobradata_example <- calculate_adjp(cobradata_example)
+```
+
+
+## Calculating performance scores
+Next, we calculate the performance scores using the COBRAData object. We can
+perform both assignment-based and correlation-based evaluations, and thus we
+have to provide information about which columns in the truth data frame that are
+to be interpreted as the binary (assignment) truth and continuous truth score,
+respectively. Here, we let the "status" column (indicating the true differential
+expression status of the genes) represent the true classification, and the true
+log-fold change represent the true score, to which the observed scores will be
+compared.
+
+```{r}
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status", 
+                                  cont_truth = "logFC", splv = "none",
+                                  maxsplit = 4)
+slotNames(cobraperf)
+```
+
+## Preparing performance object for plotting
+After calculating the performance scores, we prepare the object for plotting. In
+this step, we will assign colors to each of the methods, and we can decide to
+keep only a subset of the methods. We also decide whether the plotting should be
+done with or without facetting (i.e., splitting the plots into panels based on
+the stratification variable). This choice will determine the number of colors
+that are needed to distinguish between all method/stratification level
+combinations.
+
+```{r}
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2", 
+                                  facetted = TRUE)
+```
+
+## Plotting
+When the data has been prepared for plotting, we can apply any of the provided
+plot functions to visualize different aspects of the results.
+
+```{r, fig.width = 7, fig.height = 4, fig.cap = "", warning = FALSE}
+plot_tpr(cobraplot)
+```
+
+```{r, fig.width = 7, fig.height = 4, fig.cap = "", warning = FALSE}
+plot_fdrtprcurve(cobraplot)
+```
+
+```{r, fig.width = 7, fig.height = 4, fig.cap = "", warning = FALSE}
+plot_overlap(cobraplot)
+```
+
+# Modifications to the basic workflow
+## Stratification
+All results can be stratified by any annotation provided in the truth slot of
+the COBRAData object. Note that only the largest categories will be retained
+(the number of retained categories is determined by the maxsplit argument), and
+thus stratifying by continuous annotations is not supported (each category would
+likely contain just one observation). Here, we show how the stratification is 
+performed, and how it changes the plots generated above.
+
+```{r, fig.width = 7, fig.height = 5, warning = FALSE}
+cobraperf <- calculate_performance(cobradata_example, binary_truth = "status", 
+                                  cont_truth = "status", splv = "expr_cat")
+cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2", 
+                                  facetted = TRUE)
+plot_tpr(cobraplot)
+```
+
+## Modification of plots
+
+The plotting functions (except plot_overlap) return ggplot objects. Some basic
+settings (such as the size of the plot characters, the size of the text in the
+panel headers and the axis ranges) can be set directly in the plot functions.
+Others can be modified manually. For example, to reduce the size of the axis
+labels, an appropriate theme can be added to the ggplot object returned by the
+plot functions:
+
+```{r, fig.width = 7, fig.height = 5, warning = FALSE}
+library(ggplot2)
+pp <- plot_tpr(cobraplot, stripsize = 7.5, pointsize = 3)
+pp + theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
+                                      hjust = 1, size = 10),
+           axis.text.y = element_text(size = 10),
+           axis.title.x = element_text(size = 10),
+           axis.title.y = element_text(size = 10))
+```
+
+It is also possible to modify the facetting and/or label position by adding a
+facet_wrap statement (note that the stratification variable is denoted
+"splitval"):
+
+```{r, fig.width = 7, fig.height = 4, warning = FALSE}
+pp + theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
+                                      hjust = 1, size = 10),
+           axis.text.y = element_text(size = 10),
+           axis.title.x = element_text(size = 10),
+           axis.title.y = element_text(size = 10),
+           legend.position = "bottom") +
+  facet_wrap(~splitval, nrow = 1)
+```
+
+The plot_overlap function generates venn diagram(s), using the vennDiagram
+function from the limma package. It can be provided with any additional
+arguments that are accepted by limma::vennDiagram, e.g. to change the size of
+the text:
+
+```{r, fig.width = 7, fig.height = 5, warning = FALSE}
+plot_overlap(cobraplot)
+plot_overlap(cobraplot, cex = c(1, 0.7, 0.7))
+```
+
+## Custom color assignment
+The colors can either be chosen by one of the pre-defined color palettes, or
+provided by the user as a character vector. Note that the number of colors that
+are required depends on the facetting, and that not all methods may be shown in
+all plots (depending on the provided score types). If the wrong number of colors
+is provided, iCOBRA will automatically add or remove colors.
+
+```{r, fig.width = 7, fig.height = 5, warning = FALSE}
+cobraplot <- prepare_data_for_plot(cobraperf, 
+                                  colorscheme = c("blue", "green", "pink"), 
+                                  facetted = TRUE)
+pp <- plot_tpr(cobraplot, stripsize = 7.5, pointsize = 3)
+pp + theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
+                                      hjust = 1, size = 10),
+           axis.text.y = element_text(size = 10),
+           axis.title.x = element_text(size = 10),
+           axis.title.y = element_text(size = 10))
+```
+
+## Interactive exploration
+iCOBRA contains an interactive shiny application, for interactive exploration of
+results. It can be called with an COBRAData object, or with no arguments. In the
+latter case, results can be loaded into the app from text files (see the
+Instructions tab for formatting instructions, or the COBRAData_to_text()
+function).
+
+```{r, eval = FALSE}
+COBRAapp(cobradata_example)
+COBRAapp()
+```
+
+The screenshot below shows the appearance of the iCOBRA shiny app, using the 
+example data set.
+
+<img src="screenshot_COBRAapp.png" style="width:800px;"/>
+
