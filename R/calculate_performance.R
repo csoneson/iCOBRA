@@ -1169,3 +1169,50 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
   cobraperf
 }
 
+#' Reorder levels in COBRAPlot object
+#'
+#' Reorder levels in COBRAPlot object to achieve desired ordering in figure
+#' legends etc. If facetted(cobraplot) is TRUE, the releveling will be applied
+#' to the "method" column. If facetted(cobraplot) is FALSE, it will be applied
+#' to the "fullmethod" column.
+#'
+#' @param cobraplot A COBRAPlot object
+#' @param levels A character vector giving the order of the levels. Any values
+#'   not present in the COBRAPlot object will be removed. Any methods present in
+#'   the COBRAPlot object but not contained in this vector will be added at the
+#'   end.
+#'
+#' @return A COBRAPlot object
+#' @author Charlotte Soneson
+#'
+#' @examples
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "fpr")
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
+#'                                    incltruth = TRUE)
+#' cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
+#' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
+reorder_levels <- function(cobraplot, levels) {
+  if (isTRUE(facetted(cobraplot))) column <- "method"
+  else column <- "fullmethod"
+
+  for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
+               "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr")) {
+    if (length(slot(cobraplot, sl)) != 0) {
+      levels_to_keep <- levels[which(levels %in% slot(cobraplot, sl)[, column])]
+      if (length(setdiff(unique(slot(cobraplot, sl)[, column]),
+                         levels_to_keep)) != 0) {
+        message("The following methods have been added to the ", sl,
+                " slot: ", paste0(setdiff(unique(slot(cobraplot, sl)[, column]),
+                                          levels_to_keep), collapse = ", "))
+        levels_to_keep <- c(levels_to_keep,
+                            sort(setdiff(unique(slot(cobraplot, sl)[, column]),
+                                         levels_to_keep)))
+      }
+      slot(cobraplot, sl)[, column] <- factor(slot(cobraplot, sl)[, column],
+                                              levels = levels_to_keep)
+    }
+  }
+  cobraplot
+}
