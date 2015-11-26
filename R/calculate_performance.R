@@ -1212,6 +1212,9 @@ reorder_levels <- function(cobraplot, levels) {
       }
       slot(cobraplot, sl)[, column] <- factor(slot(cobraplot, sl)[, column],
                                               levels = levels_to_keep)
+
+      slot(cobraplot, sl)$num_method <-
+        as.numeric(slot(cobraplot, sl)[, column])
     }
   }
   cobraplot
