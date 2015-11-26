@@ -1207,6 +1207,7 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
 #' @author Charlotte Soneson
 #'
 #' @examples
+#' \dontrun{
 #' data(cobradata_example)
 #' cobraperf <- calculate_performance(cobradata_example,
 #'                                    binary_truth = "status", aspects = "fpr")
@@ -1214,6 +1215,7 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
 #'                                    incltruth = TRUE)
 #' cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
 #' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
+#' }
 reorder_levels <- function(cobraplot, levels) {
   if (isTRUE(facetted(cobraplot))) column <- "method"
   else column <- "fullmethod"
