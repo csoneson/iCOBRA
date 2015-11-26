@@ -1226,15 +1226,18 @@ reorder_levels <- function(cobraplot, levels) {
       levels_to_keep <- levels[which(levels %in% slot(cobraplot, sl)[, column])]
       if (length(setdiff(unique(slot(cobraplot, sl)[, column]),
                          levels_to_keep)) != 0) {
-        message("The following methods have been added to the ", sl,
-                " slot: ", paste0(setdiff(unique(slot(cobraplot, sl)[, column]),
-                                          levels_to_keep), collapse = ", "))
-        levels_to_keep <- c(levels_to_keep,
-                            sort(setdiff(unique(slot(cobraplot, sl)[, column]),
-                                         levels_to_keep)))
+        message("The following methods have been added to the ", sl, " slot: ",
+                paste0(setdiff(unique(as.character(slot(cobraplot,
+                                                        sl)[, column])),
+                               levels_to_keep), collapse = ", "))
+        levels_to_keep <-
+          c(levels_to_keep,
+            sort(setdiff(unique(as.character(slot(cobraplot, sl)[, column])),
+                         levels_to_keep)))
       }
-      slot(cobraplot, sl)[, column] <- factor(slot(cobraplot, sl)[, column],
-                                              levels = levels_to_keep)
+      slot(cobraplot, sl)[, column] <-
+        factor(as.character(slot(cobraplot, sl)[, column]),
+               levels = levels_to_keep)
 
       slot(cobraplot, sl)$num_method <-
         as.numeric(slot(cobraplot, sl)[, column])
