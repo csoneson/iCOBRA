@@ -191,6 +191,24 @@ test_that("replacement still returns valid objects", {
   plotcolors(cobraplot) <- plotcolors(cobraplot)[1:5]
   facetted(cobraplot) <- FALSE
   expect_true(iCOBRA:::is_plottable(tpr(cobraplot)))
+
+    fdrtpr(cobraplot) <- fdrtpr(cobraplot)[1:2, ]
+  fdrtprcurve(cobraplot) <- fdrtprcurve(cobraplot)[1:2, ]
+  fdrnbr(cobraplot) <- fdrnbr(cobraplot)[1:2, ]
+  fdrnbrcurve(cobraplot) <- fdrnbrcurve(cobraplot)[1:2, ]
+  fpr(cobraplot) <- fpr(cobraplot)[1:2, ]
+  tpr(cobraplot) <- tpr(cobraplot)[1:2, ]
+  roc(cobraplot) <- roc(cobraplot)[1:2, ]
+  fpc(cobraplot) <- fpc(cobraplot)[1:2, ]
+  deviation(cobraplot) <- deviation(cobraplot)[1:2, ]
+  scatter(cobraplot) <- scatter(cobraplot)[1:2, ]
+  fdrtpr(cobraplot) <- fdrtpr(cobraplot)[1:2, ]
+  overlap(cobraplot) <- overlap(cobraplot)[1:2, ]
+  corr(cobraplot) <- corr(cobraplot)[1:2, ]
+  maxsplit(cobraplot) <- 4
+  splv(cobraplot) <- "none"
+  onlyshared(cobraplot) <- TRUE
+  expect_is(cobraplot, "COBRAPlot")
 })
 
 test_that("show returns NULL", {

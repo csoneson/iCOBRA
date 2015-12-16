@@ -63,6 +63,159 @@ setMethod("show", "COBRAPlot", function(object) {
   }
 })
 
+#' @rdname fdrtpr
+#' @aliases fdrtpr fdrtpr,COBRAPlot-method fdrtpr<-,COBRAPlot,data.frame-method
+setReplaceMethod("fdrtpr", signature(x = "COBRAPlot",
+                                     value = "data.frame"),
+                 function(x, value) {
+                   x@fdrtpr <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname onlyshared
+#' @aliases onlyshared onlyshared,COBRAPlot-method
+#'   onlyshared<-,COBRAPlot,logical-method
+setReplaceMethod("onlyshared", signature(x = "COBRAPlot",
+                                         value = "logical"),
+                 function(x, value) {
+                   x@onlyshared <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fdrtprcurve
+#' @aliases fdrtprcurve fdrtprcurve,COBRAPlot-method
+#'   fdrtprcurve<-,COBRAPlot,data.frame-method
+setReplaceMethod("fdrtprcurve", signature(x = "COBRAPlot",
+                                          value = "data.frame"),
+                 function(x, value) {
+                   x@fdrtprcurve <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname deviation
+#' @aliases deviation deviation,COBRAPlot-method
+#'   deviation<-,COBRAPlot,data.frame-method
+setReplaceMethod("deviation", signature(x = "COBRAPlot",
+                                        value = "data.frame"),
+                 function(x, value) {
+                   x@deviation <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fdrnbr
+#' @aliases fdrnbr fdrnbr,COBRAPlot-method fdrnbr<-,COBRAPlot,data.frame-method
+setReplaceMethod("fdrnbr", signature(x = "COBRAPlot",
+                                     value = "data.frame"),
+                 function(x, value) {
+                   x@fdrnbr <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fdrnbrcurve
+#' @aliases fdrnbrcurve fdrnbrcurve,COBRAPlot-method
+#'   fdrnbrcurve<-,COBRAPlot,data.frame-method
+setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPlot",
+                                          value = "data.frame"),
+                 function(x, value) {
+                   x@fdrnbrcurve <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname scatter
+#' @aliases scatter scatter,COBRAPlot-method
+#'   scatter<-,COBRAPlot,data.frame-method
+setReplaceMethod("scatter", signature(x = "COBRAPlot",
+                                      value = "data.frame"),
+                 function(x, value) {
+                   x@scatter <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname tpr
+#' @aliases tpr tpr,COBRAPlot-method tpr<-,COBRAPlot,data.frame-method
+setReplaceMethod("tpr", signature(x = "COBRAPlot", value = "data.frame"),
+                 function(x, value) {
+                   x@tpr <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fpr
+#' @aliases fpr fpr,COBRAPlot-method fpr<-,COBRAPlot,data.frame-method
+setReplaceMethod("fpr", signature(x = "COBRAPlot", value = "data.frame"),
+                 function(x, value) {
+                   x@fpr <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname roc
+#' @aliases roc roc,COBRAPlot-method roc<-,COBRAPlot,data.frame-method
+setReplaceMethod("roc", signature(x = "COBRAPlot", value = "data.frame"),
+                 function(x, value) {
+                   x@roc <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fpc
+#' @aliases fpc fpc,COBRAPlot-method fpc<-,COBRAPlot,data.frame-method
+setReplaceMethod("fpc", signature(x = "COBRAPlot", value = "data.frame"),
+                 function(x, value) {
+                   x@fpc <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname corr
+#' @aliases corr corr,COBRAPlot-method corr<-,COBRAPlot,data.frame-method
+setReplaceMethod("corr", signature(x = "COBRAPlot",
+                                   value = "data.frame"),
+                 function(x, value) {
+                   x@corr <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname overlap
+#' @aliases overlap overlap,COBRAPlot-method overlap<-,COBRAPlot,list_df-method
+setReplaceMethod("overlap", signature(x = "COBRAPlot",
+                                      value = "list_df"),
+                 function(x, value) {
+                   x@overlap <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname splv
+#' @aliases splv splv,COBRAPlot-method splv<-,COBRAPlot,character-method
+setReplaceMethod("splv", signature(x = "COBRAPlot", value = "character"),
+                 function(x, value) {
+                   x@splv <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname maxsplit
+#' @aliases maxsplit maxsplit,COBRAPlot-method
+#'   maxsplit<-,COBRAPlot,numeric-method
+setReplaceMethod("maxsplit", signature(x = "COBRAPlot",
+                                       value = "numeric"),
+                 function(x, value) {
+                   x@maxsplit <- value
+                   if (validObject(x))
+                     x
+                 })
+
+
+
 #' Accessor and replacement functions for \code{plotcolors} slot
 #'
 #' Accessor and replacement functions for the \code{plotcolors} slot in an

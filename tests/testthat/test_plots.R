@@ -165,3 +165,68 @@ test_that("Plot functions return ggplot objects after stratification", {
   expect_is(plot_overlap(ibp1), "list")
   expect_is(plot_overlap(ibp2), "list")
 })
+
+test_that("Plot functions return ggplot objects after stratification", {
+  ## Facetted, stratified
+  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+                               cont_truth = "logFC",
+                               aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
+                                           "fdrnbrcurve", "tpr", "fpr",
+                                           "roc", "fpc", "overlap", "corr",
+                                           "scatter", "deviation"),
+                               thrs = c(0.05), splv = "expr_cat", onlyshared = FALSE,
+                               thr_venn = 0.05, maxsplit = Inf)
+
+  ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
+                                colorscheme = "rainbow", facetted = TRUE,
+                                incltruth = FALSE)
+
+  expect_is(plot_tpr(ibp1), "ggplot")
+  expect_is(plot_corr(ibp1), "ggplot")
+  expect_is(plot_deviation(ibp1), "ggplot")
+  expect_is(plot_deviation(ibp1, transf = "absolute"), "ggplot")
+  expect_is(plot_deviation(ibp1, transf = "squared"), "ggplot")
+  expect_error(plot_deviation(ibp1, transf = "square"))
+  expect_is(plot_fdrnbrcurve(ibp1), "ggplot")
+  expect_is(plot_fdrtprcurve(ibp1), "ggplot")
+  expect_is(plot_fpc(ibp1), "ggplot")
+  expect_is(plot_fpr(ibp1), "ggplot")
+  expect_is(plot_corr(ibp1), "ggplot")
+  expect_is(plot_roc(ibp1), "ggplot")
+  expect_is(plot_scatter(ibp1), "ggplot")
+  expect_is(plot_overlap(ibp1), "list")
+})
+
+test_that("maxsplit=Inf works as expected", {
+  ## Facetted, stratified
+  cde <- cobradata_example
+  truth(cde)$expr_cat <- factor(truth(cde)$expr_cat)
+  ib1 <- calculate_performance(cde, binary_truth = "status",
+                               cont_truth = "logFC",
+                               aspects = c("fdrtpr"),
+                               thrs = 0.05, splv = "expr_cat", onlyshared = FALSE,
+                               thr_venn = 0.05, maxsplit = Inf)
+  expect_equal(c("overall", paste0("expr_cat:", levels(truth(cde)$expr_cat))),
+               levels(fdrtpr(ib1)$splitval))
+  ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
+                                colorscheme = "rainbow", facetted = TRUE,
+                                incltruth = FALSE)
+  expect_equal(c("overall", paste0("expr_cat:", levels(truth(cde)$expr_cat))),
+               levels(fdrtpr(ibp1)$splitval))
+
+  truth(cde)$expr_cat <- factor(truth(cde)$expr_cat,
+                                levels = levels(truth(cde)$expr_cat)[c(3, 4, 2, 1)])
+  ib1 <- calculate_performance(cde, binary_truth = "status",
+                               cont_truth = "logFC",
+                               aspects = c("fdrtpr"),
+                               thrs = 0.05, splv = "expr_cat", onlyshared = FALSE,
+                               thr_venn = 0.05, maxsplit = Inf)
+  expect_equal(c("overall", paste0("expr_cat:", levels(truth(cde)$expr_cat))),
+               levels(fdrtpr(ib1)$splitval))
+  ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
+                                colorscheme = "rainbow", facetted = TRUE,
+                                incltruth = FALSE)
+  expect_equal(c("overall", paste0("expr_cat:", levels(truth(cde)$expr_cat))),
+               levels(fdrtpr(ibp1)$splitval))
+})
+
