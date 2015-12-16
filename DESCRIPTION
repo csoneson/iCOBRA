@@ -3,19 +3,43 @@ Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
 Version: 0.99.5
 Date: 2015-10-10
-Authors@R: c(person(given = "Charlotte", family = "Soneson", role = c("aut", "cre"), email = "charlottesoneson@gmail.com"))
-Description: This package provides functions for calculation and visualization of performance metrics for evaluation of ranking and binary classification
-                 (assignment) methods. It also contains a shiny application for interactive exploration of results.
+Authors@R: c(person(given = "Charlotte", family = "Soneson", 
+    role = c("aut", "cre"),
+    email = "charlottesoneson@gmail.com"))
+Description: This package provides functions for calculation and visualization
+    of performance metrics for evaluation of ranking and binary classification
+    (assignment) methods. It also contains a shiny application for interactive
+    exploration of results.
 License: GPL (>=2)
 LazyData: TRUE
-Collate: 'AllGenerics.R' 'COBRAData.R' 'COBRAPerformance.R' 'COBRAPlot.R' 'calculate_performance.R' 'cobradata_example.R' 'helpers_general.R'
-                 'plot_methods.R' 'printHead.R' 'shiny.R'
-Depends: R (>= 3.2)
-Imports: shiny (>= 0.9.1.9008), shinydashboard, shinyBS, reshape2, ggplot2, scales, ROCR, dplyr, DT, limma, methods
-Suggests: knitr, testthat
+Collate:
+    'AllGenerics.R'
+    'COBRAData.R'
+    'COBRAPerformance.R'
+    'COBRAPlot.R'
+    'calculate_performance.R'
+    'cobradata_example.R'
+    'helpers_general.R'
+    'plot_methods.R'
+    'printHead.R'
+    'shiny.R'
+Depends:
+    R (>= 3.2)
+Imports:
+    shiny (>= 0.9.1.9008),
+    shinydashboard,
+    shinyBS,
+    reshape2,
+    ggplot2,
+    scales,
+    ROCR,
+    dplyr,
+    DT,
+    limma,
+    methods
+Suggests:
+    knitr,
+    testthat
 VignetteBuilder: knitr
 biocViews: Classification
-RoxygenNote: 5.0.0
-NeedsCompilation: no
-Author: Charlotte Soneson [aut, cre]
-Maintainer: Charlotte Soneson <charlottesoneson@gmail.com>
+RoxygenNote: 5.0.1
