@@ -21,7 +21,11 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
   if (isTRUE(facetted(cobraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(cobraplot) + 1)/3))
+    if (!is.finite(maxsplit(cobraplot)))
+      msp <- length(unique(plot_data$splitval))
+    else
+      msp <- maxsplit(cobraplot)
+    pp + facet_wrap(~ splitval, nrow = ceiling((msp + 1)/3))
   } else {
     pp
   }
@@ -151,7 +155,11 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
                 max(plot_data$FP[plot_data$topN <= maxnfdc]))) +
     ggtitle(title)
   if (isTRUE(facetted(cobraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(cobraplot) + 1)/3))
+    if (!is.finite(maxsplit(cobraplot)))
+      msp <- length(unique(plot_data$splitval))
+    else
+      msp <- maxsplit(cobraplot)
+    pp + facet_wrap(~ splitval, nrow = ceiling((msp + 1)/3))
   } else {
     pp
   }
@@ -375,7 +383,15 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       ggtitle(title)
   }
   if (isTRUE(facetted(cobraplot))) {
-    pp + facet_wrap(~ splitval, nrow = ceiling((maxsplit(cobraplot) + 1)/3))
+    if (!is.finite(maxsplit(cobraplot))) {
+      if (length(plot_data_lines) != 0)
+        msp <- length(unique(plot_data_lines$splitval))
+      else
+        msp <- length(unique(plot_data_points$splitval))
+    } else {
+      msp <- maxsplit(cobraplot)
+    }
+    pp + facet_wrap(~ splitval, nrow = ceiling((msp + 1)/3))
   } else {
     pp
   }
@@ -593,8 +609,12 @@ plot_deviation <- function(cobraplot, title = "", stripsize = 15,
     pp <- pp + geom_jitter(position = position_jitter(width = 0.1, height = 0),
                            size = 1.5)
   if (isTRUE(facetted(cobraplot))) {
+    if (!is.finite(maxsplit(cobraplot)))
+      msp <- length(unique(plot_data$splitval))
+    else
+      msp <- maxsplit(cobraplot)
     pp <- pp + facet_wrap(~ splitval,
-                          nrow = ceiling((maxsplit(cobraplot) + 1)/3))
+                          nrow = ceiling((msp + 1)/3))
   }
   if (!is.null(xaxisrange))
     pp <- pp + ylim(xaxisrange[1], xaxisrange[2])

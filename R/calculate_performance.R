@@ -113,7 +113,9 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   value is "none", indicating no stratification.
 #' @param maxsplit A numeric value giving the maximal number of categories to
 #'   keep in the stratification. The largest categories containing both positive
-#'   and negative features will be retained.
+#'   and negative features will be retained. By setting this argument to `Inf`
+#'   or `NA_integer_`, all categories (as well as the order of categories) will
+#'   be retained.
 #' @param onlyshared A logical, indicating whether to only consider features for
 #'   which both the true assignment and a result (p-value, adjusted p-value or
 #'   score) is given. If FALSE, all features contained in the truth table are
@@ -152,6 +154,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       !is.null(binary_truth)) {
     outNBR <- outFP <- outTP <- outFN <- outTN <- outTOT_CALLED <-
       outDS <- outNONDS <- list()
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
@@ -162,9 +165,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (inpcol == "padj") {
           NBR <- list()
@@ -175,7 +179,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           NBR[[paste0(i, "_overall", "__", inpcol)]] <-
             list(basemethod = i, meas_type = inpcol, nbr = nbr)
           if (splv != "none") {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               nbr <- gen_thr_vec(thrs)
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
@@ -225,7 +229,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                meas_type = inpcol, nonds = nonds)
 
           if (splv != "none" & any(truth[, binary_truth] == 0)) {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               fp <- tp <- fn <- tn <- tot_called <- ds <- nonds <-
                 gen_thr_vec(thrs)
               for (thr in thrs) {
@@ -319,6 +323,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   if ("corr" %in% aspects & !is.null(cont_truth)) {
     outPEARSON <- list()
     outSPEARMAN <- list()
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "corr")
       if (!is.null(inpcol)) {
@@ -329,8 +334,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = NULL, maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = NULL,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         PEARSON <- list()
         SPEARMAN <- list()
@@ -345,7 +352,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         SPEARMAN[[paste0(i, "_overall", "__", inpcol)]] <-
           list(basemethod = i, meas_type = inpcol, spearman = spearman)
         if (splv != "none") {
-          for (j in keeplevels) {
+          for (j in kltmp) {
             g <- rownames(truth)[which(truth[[splv]] == j)]
             isf <- intersect(which(is.finite(tmp[match(g, rownames(tmp)), i])),
                              which(is.finite(truth[match(g, rownames(truth)),
@@ -392,6 +399,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## ----------------------------- TPR ---------------------------------- ##
   if (any(c("tpr", "fdrtpr", "fdrnbr") %in% aspects) & !is.null(binary_truth)) {
     outTPR <- list()
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "tpr")
       if (!is.null(inpcol)) {
@@ -402,9 +410,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (inpcol == "padj") {
           TPR <- list()
@@ -421,7 +430,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                                              tpr = tpr)
 
           if (splv != "none") {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               tpr <- gen_thr_vec(thrs)
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
@@ -456,6 +465,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## ----------------------------- FDR ---------------------------------- ##
   if (any(c("fdrtpr", "fdrnbr") %in% aspects) & !is.null(binary_truth)) {
     outFDR <- list()
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "fdr")
       if (!is.null(inpcol)) {
@@ -466,9 +476,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (inpcol == "padj") {
           FDR <- list()
@@ -489,7 +500,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                                              fdr = fdr)
 
           if (splv != "none" & any(truth[, binary_truth] == 0)) {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               fdr <- gen_thr_vec(thrs)
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
@@ -533,6 +544,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## ----------------------------- FPR ---------------------------------- ##
   if ("fpr" %in% aspects & !is.null(binary_truth)) {
     outFPR <- list()
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "fpr")
       if (!is.null(inpcol)) {
@@ -543,9 +555,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (inpcol == "padj") {
           FPR <- list()
@@ -562,7 +575,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                                              fpr = fpr)
 
           if (splv != "none" & any(truth[, binary_truth] == 0)) {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               fpr <- gen_thr_vec(thrs)
               for (thr in thrs) {
                 g <- rownames(truth)[which(truth[[splv]] == j)]
@@ -599,6 +612,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   if (any(c("fdrtprcurve", "fdrnbrcurve") %in% aspects) &
       !is.null(binary_truth)) {
     outFDRTPR <- list()
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "fdrtpr")
       if (!is.null(inpcol)) {
@@ -609,9 +623,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (!is.null(inpcol)) {
           if (any(truth[, binary_truth] == 0) &
@@ -627,7 +642,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
             FDRTPR[[paste0(i, "_overall", "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol, fdrtpr = fdrtpr)
             if (splv != "none") {
-              for (j in keeplevels) {
+              for (j in kltmp) {
                 bintruth <- truth[which(truth[[splv]] == j), binary_truth]
                 names(bintruth) <- rownames(truth)[which(truth[[splv]] ==  j)]
                 fdrtpr <- get_curve(bintruth = bintruth, vals = vals,
@@ -679,7 +694,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## ----------------------------- ROC ---------------------------------- ##
   if ("roc" %in% aspects & !is.null(binary_truth)) {
     outROC <- list()
-
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "roc")
       if (!is.null(inpcol)) {
@@ -690,9 +705,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (any(truth[, binary_truth] == 0) &
             any(truth[, binary_truth] == 1)) {
@@ -707,7 +723,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           ROC[[paste0(i, "_overall", "__", inpcol)]] <-
             list(basemethod = i, meas_type = inpcol, roc = roc)
           if (splv != "none") {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               bintruth <- truth[which(truth[[splv]] == j), binary_truth]
               names(bintruth) <- rownames(truth)[which(truth[[splv]] == j)]
               roc <- get_curve(bintruth = bintruth, vals = vals,
@@ -746,7 +762,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## ---------------------------- SCATTER -------------------------------- ##
   if ("scatter" %in% aspects & !is.null(cont_truth)) {
     outSCATTER <- list()
-
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "scatter")
       if (!is.null(inpcol)) {
@@ -757,8 +773,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = NULL, maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = NULL,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         SCATTER <- list()
         SCATTER[[paste0(i, "_overall", "__", inpcol)]] <-
@@ -768,7 +786,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                     row.names = rownames(tmp),
                                     stringsAsFactors = FALSE))
         if (splv != "none") {
-          for (j in keeplevels) {
+          for (j in kltmp) {
             s <- which(truth[[splv]] == j)
             SCATTER[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol,
@@ -804,7 +822,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## --------------------------- DEVIATION ------------------------------- ##
   if ("deviation" %in% aspects & !is.null(cont_truth)) {
     outDEVIATION <- list()
-
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "deviation")
       if (!is.null(inpcol)) {
@@ -815,8 +833,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = NULL, maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = NULL,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         DEVIATION <- list()
         DEVIATION[[paste0(i, "_overall", "__", inpcol)]] <-
@@ -825,7 +845,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                       row.names = rownames(tmp),
                                       stringsAsFactors = FALSE))
         if (splv != "none") {
-          for (j in keeplevels) {
+          for (j in kltmp) {
             s <- which(truth[[splv]] == j)
             DEVIATION[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol,
@@ -861,7 +881,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## ----------------------------- FPC ---------------------------------- ##
   if ("fpc" %in% aspects & !is.null(binary_truth)) {
     outFPC <- list()
-
+    keeplevels <- c()
     for (i in all_methods) {
       inpcol <- select_measure(cobradata, i, asp = "fpc")
       if (!is.null(inpcol)) {
@@ -872,9 +892,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                  drop = FALSE]
-        keeplevels <- get_keeplevels(truth = truth, splv = splv,
-                                     binary_truth = binary_truth,
-                                     maxsplit = maxsplit)
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = binary_truth,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
 
         if (any(truth[, binary_truth] == 0) &
             any(truth[, binary_truth] == 1)) {
@@ -889,7 +910,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           FPC[[paste0(i, "_overall", "__", inpcol)]] <-
             list(basemethod = i, meas_type = inpcol, fpc = fpc)
           if (splv != "none") {
-            for (j in keeplevels) {
+            for (j in kltmp) {
               bintruth <- truth[which(truth[[splv]] == j), binary_truth]
               names(bintruth) <- rownames(truth)[which(truth[[splv]] == j)]
               fpc <- get_curve(bintruth = bintruth, vals = vals,
@@ -1167,5 +1188,61 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
   facetted(cobraperf) <- facetted
   plotcolors(cobraperf) <- use_colors
   cobraperf
+}
+
+#' Reorder levels in COBRAPlot object
+#'
+#' Reorder levels in COBRAPlot object to achieve desired ordering in figure
+#' legends etc. If facetted(cobraplot) is TRUE, the releveling will be applied
+#' to the "method" column. If facetted(cobraplot) is FALSE, it will be applied
+#' to the "fullmethod" column.
+#'
+#' @param cobraplot A COBRAPlot object
+#' @param levels A character vector giving the order of the levels. Any values
+#'   not present in the COBRAPlot object will be removed. Any methods present in
+#'   the COBRAPlot object but not contained in this vector will be added at the
+#'   end.
+#'
+#' @return A COBRAPlot object
+#' @author Charlotte Soneson
+#'
+#' @examples
+#' \dontrun{
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status", aspects = "fpr")
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
+#'                                    incltruth = TRUE)
+#' cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
+#' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
+#' }
+reorder_levels <- function(cobraplot, levels) {
+  if (isTRUE(facetted(cobraplot))) column <- "method"
+  else column <- "fullmethod"
+
+  for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
+               "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr")) {
+    if (length(slot(cobraplot, sl)) != 0) {
+      levels_to_keep <- levels[which(levels %in% slot(cobraplot, sl)[, column])]
+      if (length(setdiff(unique(slot(cobraplot, sl)[, column]),
+                         levels_to_keep)) != 0) {
+        message("The following methods have been added to the ", sl, " slot: ",
+                paste0(setdiff(unique(as.character(slot(cobraplot,
+                                                        sl)[, column])),
+                               levels_to_keep), collapse = ", "))
+        levels_to_keep <-
+          c(levels_to_keep,
+            sort(setdiff(unique(as.character(slot(cobraplot, sl)[, column])),
+                         levels_to_keep)))
+      }
+      slot(cobraplot, sl)[, column] <-
+        factor(as.character(slot(cobraplot, sl)[, column]),
+               levels = levels_to_keep)
+
+      slot(cobraplot, sl)$num_method <-
+        as.numeric(slot(cobraplot, sl)[, column])
+    }
+  }
+  cobraplot
 }
 
