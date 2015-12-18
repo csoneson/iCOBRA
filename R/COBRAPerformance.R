@@ -760,7 +760,7 @@ setMethod("stratiflevels", "COBRAPerformance", function(x) {
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases [ [,COBRAPerformance-method \S4method{[}{COBRAPerformance,ANY,ANY}
+#' @aliases [ [,COBRAPerformance-method \S4method{[}{COBRAPerformance,ANY,ANY} \S4method{[}{COBRAPerformance,ANY,ANY,ANY}
 #' @return A subset of the original object, of the same class
 #' @export
 setMethod("[", "COBRAPerformance",

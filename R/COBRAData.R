@@ -423,7 +423,7 @@ setReplaceMethod("truth", signature(x = "COBRAData", value = "data.frame"),
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases \S4method{[}{COBRAData,ANY,ANY} [ [,COBRAData-method
+#' @aliases \S4method{[}{COBRAData,ANY,ANY} \S4method{[}{COBRAData,ANY,ANY,ANY} [ [,COBRAData-method
 #' @param x An \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}
 #'   object.
 #' @param i For \code{COBRAData} objects, a character vector of feature names to
