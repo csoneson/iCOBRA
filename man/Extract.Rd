@@ -7,18 +7,20 @@
 \alias{[,COBRAData-method}
 \alias{[,COBRAPerformance-method}
 \alias{[,COBRAPlot-method}
+\alias{\S4method{[}{COBRAData,ANY,ANY,ANY}}
 \alias{\S4method{[}{COBRAData,ANY,ANY}}
+\alias{\S4method{[}{COBRAPerformance,ANY,ANY,ANY}}
 \alias{\S4method{[}{COBRAPerformance,ANY,ANY}}
+\alias{\S4method{[}{COBRAPlot,ANY,ANY,ANY}}
 \alias{\S4method{[}{COBRAPlot,ANY,ANY}}
 \title{Subsetting \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}
 objects}
 \usage{
-\S4method{[}{COBRAData,ANY,ANY,ANY}(x, i, j = "missing", drop = "missing")
+\S4method{[}{COBRAData}(x, i, j = "missing", drop = "missing")
 
-\S4method{[}{COBRAPerformance,ANY,ANY,ANY}(x, i = "missing", j,
-  drop = "missing")
+\S4method{[}{COBRAPerformance}(x, i = "missing", j, drop = "missing")
 
-\S4method{[}{COBRAPlot,ANY,ANY,ANY}(x, i = "missing", j, drop = "missing")
+\S4method{[}{COBRAPlot}(x, i = "missing", j, drop = "missing")
 }
 \arguments{
 \item{x}{An \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}

@@ -297,7 +297,7 @@ setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases [ [,COBRAPlot-method \S4method{[}{COBRAPlot,ANY,ANY}
+#' @aliases [ [,COBRAPlot-method \S4method{[}{COBRAPlot,ANY,ANY} \S4method{[}{COBRAPlot,ANY,ANY,ANY}
 #' @export
 #' @examples
 #' data(cobradata_example)
