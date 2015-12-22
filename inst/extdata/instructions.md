@@ -190,22 +190,23 @@ The following general parameters are available:
 
 ## Trouble-shooting
 
-If the plots are not displayed, it can be due to the following reasons:
+If the plots are not displayed, it can be for any of the following reasons:
 
 - The app has been called with `autorun = FALSE` (default), and the button "Start calculation!" has not been pressed.
-- No methods are selected (check under the "Results" subsection in the left-hand sidebar), or none of the selected methods contain the type of input needed for the current plot (e.g., adjusted p-values for FDR/TPR, FDR/NBR, TPR and FPR plots, scores for correlation, deviation and scatter plots).
-- The right type of truth (binary or continuous) is unavailable (check under the "Truth" subsection in the left-hand sidebar that the truth is not set to "none").
+- The input files are not correctly formatted (e.g., the column headers of the result file do not end with `:P`, `:adjP` or `:score`). Check the "Data preview" tab to see the data that `iCOBRA` has extracted from the input files. 
+- No methods are selected (check under the "Results" subsection in the left-hand sidebar), or none of the selected methods contain the type of input needed for the current plot (e.g., adjusted p-values for FDR/TPR, FDR/NBR, TPR and FPR plots, scores for correlation, deviation and scatter plots). Check the "Data preview" tab to see the data that `iCOBRA` has extracted from the input files. 
+- The right type of truth (binary or continuous) is unavailable or not selected. Check under the "Truth" subsection in the left-hand sidebar that the truth is not set to "none", and check the "Data preview" tab to see the data that `iCOBRA` has extracted from the input files. 
 - More than five methods (including the truth, if applicable) can not be displayed using Venn diagrams.
 - For stratification, only strata with both truly "positive" and truly "negative" instances will be included (except for Venn diagrams). 
 
-If not all input controls are visible in the left-hand sidebar, either "fold" one of the three sections (Truth, Results, Plot settings) by clicking on the title, or change the size of the window slightly. 
+If not all input controls are visible in the left-hand sidebar, either "fold" one of the three sections (Truth, Results, Plot settings) by clicking on the corresponding title, or change the size of the window slightly. 
 
-The sidebar can be hidden by clicking the three lines next to the main title.
+The sidebar can be hidden by clicking on the three lines next to the main title.
 
 If the colors of the plots do not change when a new color palette is chosen in the 
 left-hand sidebar, most likely the number of colors in the chosen palette is not enough. 
 Note that the number of required colors depends not only on the number of different 
-methods in the evaluation, but also on whether the plots are facetted or not. Also note 
+methods in the evaluation, but also on whether the plots are facetted or not, and whether the truth is included or not. Also note 
 that not all methods may be included in each plot, so the number of methods that need to 
 be assigned a unique color may exceed the number of methods displayed in any given plot. 
 `iCOBRA` will attempt to keep the colors for a given method consistent throughout the 
