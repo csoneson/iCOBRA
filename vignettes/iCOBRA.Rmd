@@ -179,14 +179,34 @@ pp + theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
 ## Interactive exploration
 iCOBRA contains an interactive shiny application, for interactive exploration of
 results. It can be called with an COBRAData object, or with no arguments. In the
-latter case, results can be loaded into the app from text files (see the
-Instructions tab for formatting instructions, or the COBRAData_to_text()
-function).
+latter case, results can be loaded into the app from text files. 
 
 ```{r, eval = FALSE}
 COBRAapp(cobradata_example)
 COBRAapp()
 ```
+
+Formatting instructions for the text files can be found in the Instructions tab.
+To generate text files from an existing COBRAData object, use the
+`COBRAData_to_text()` function:
+
+```{r}
+COBRAData_to_text(cobradata = cobradata_example, 
+                  truth_file = "cobradata_truth.txt",
+                  result_files = "cobradata_results.txt", 
+                  feature_id = "feature")
+```
+
+Similarly, a COBRAData object can be generated from a set of text files, using
+the `COBRAData_from_text()` function:
+
+```{r}
+cobra <- COBRAData_from_text(truth_file = "cobradata_truth.txt", 
+                             result_files = "cobradata_results.txt", 
+                             feature_id = "feature")
+cobra
+```
+
 
 The screenshot below shows the appearance of the iCOBRA shiny app, using the 
 example data set.
