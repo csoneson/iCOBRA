@@ -217,6 +217,17 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                    includeMarkdown(system.file("extdata", "instructions.md",
                                                package = "iCOBRA")),
                    value = "instructions"),
+          
+          tabPanel("Data preview",
+                   h1("Truth"), 
+                   DT::dataTableOutput("table.truth"),
+                   h1("p-values"), 
+                   DT::dataTableOutput("table.pval"),
+                   h1("adjusted p-values"), 
+                   DT::dataTableOutput("table.padj"),
+                   h1("scores"), 
+                   DT::dataTableOutput("table.score"),
+                   value = "datapreview"),
 
           tabPanel("TPR vs FDR",
                    uiOutput("plot.fdrtprcurve"),
@@ -843,6 +854,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       }
     })
 
+    
     ## -------------------------- OVERLAP ------------------------------ ##
     ## Generate Venn diagram plot
     output$plot.overlap <- renderUI({
@@ -1008,6 +1020,31 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
               tabtype = "large")
     })
 
+    ## ------------------------ DATA PREVIEW --------------------------- ##
+    output$table.truth <- DT::renderDataTable({
+      if (length(values$all_methods) == 0)
+        return(NULL)
+      DT::datatable(truth(values$my_cobradata))
+    })
+    
+    output$table.pval <- DT::renderDataTable({
+      if (length(values$all_methods) == 0)
+        return(NULL)
+      DT::datatable(pval(values$my_cobradata))
+    })
+    
+    output$table.padj <- DT::renderDataTable({
+      if (length(values$all_methods) == 0)
+        return(NULL)
+      DT::datatable(padj(values$my_cobradata))
+    })
+    
+    output$table.score <- DT::renderDataTable({
+      if (length(values$all_methods) == 0)
+        return(NULL)
+      DT::datatable(score(values$my_cobradata))
+    })
+    
     ## ---------------------------- CORR ------------------------------- ##
     output$plot.corr <- renderUI({
       plotOutput("corr", width = "100%",
