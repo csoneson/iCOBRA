@@ -12,9 +12,11 @@ into differentially expressed and non-differentially expressed).
 interactive shiny application (see the function `COBRAapp()`). It can also 
 be accessed from the web server [http://imlspenticton.uzh.ch:3838/iCOBRA/](http://imlspenticton.uzh.ch:3838/iCOBRA/)
 
+We have also collected a set of benchmarking data sets, addressing different aspects of genomic data analysis. The collection is reachable via the following link: [http://imlspenticton.uzh.ch/robinson_lab/benchmark_collection/](http://imlspenticton.uzh.ch/robinson_lab/benchmark_collection/)
+
 ## Installation
 
-`iCOBRA` can be installed using `biocLite()`:
+`iCOBRA` can be installed from `Bioconductor` using `biocLite()`:
 
 ```
 source("http://bioconductor.org/biocLite.R")
