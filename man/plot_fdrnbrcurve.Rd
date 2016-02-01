@@ -6,7 +6,7 @@
 \usage{
 plot_fdrnbrcurve(cobraplot, title = "", stripsize = 15,
   titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
-  plottype = c("curve", "points"))
+  plottype = c("curve", "points"), linewidth = 1)
 }
 \arguments{
 \item{cobraplot}{An \code{COBRAPlot} object.}
@@ -25,6 +25,8 @@ upper boundary of the x-axis, respectively.}
 
 \item{plottype}{A character vector giving the type of plot to construct. Can
 be any combination of the two elements "curve" and "points".}
+
+\item{linewidth}{The line width used for plotting}
 }
 \value{
 A ggplot object
