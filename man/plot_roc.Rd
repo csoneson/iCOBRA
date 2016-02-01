@@ -5,7 +5,7 @@
 \title{Plot ROC curves}
 \usage{
 plot_roc(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  xaxisrange = c(0, 1), yaxisrange = c(0, 1))
+  xaxisrange = c(0, 1), yaxisrange = c(0, 1), linewidth = 1)
 }
 \arguments{
 \item{cobraplot}{An \code{COBRAPlot} object.}
@@ -22,6 +22,8 @@ upper boundary of the x-axis, respectively.}
 
 \item{yaxisrange}{A numeric vector with two elements, giving the lower and
 upper boundary of the y-axis, respectively.}
+
+\item{linewidth}{The line width used for plotting}
 }
 \value{
 A ggplot object
