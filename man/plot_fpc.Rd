@@ -5,7 +5,7 @@
 \title{Plot FP curves}
 \usage{
 plot_fpc(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  maxnfdc = 500)
+  maxnfdc = 500, linewidth = 1)
 }
 \arguments{
 \item{cobraplot}{An \code{COBRAPlot} object.}
@@ -18,6 +18,8 @@ results are stratified by an annotation.}
 \item{titlecol}{A character string giving the color of the title.}
 
 \item{maxnfdc}{A numeric value giving the largest N to consider.}
+
+\item{linewidth}{The line width used for plotting}
 }
 \value{
 A ggplot object
