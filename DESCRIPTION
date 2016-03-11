@@ -1,7 +1,7 @@
 Package: iCOBRA
 Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
-Version: 0.99.7
+Version: 0.99.8
 Date: 2015-10-10
 Authors@R: c(person(given = "Charlotte", family = "Soneson", 
     role = c("aut", "cre"),
@@ -36,7 +36,8 @@ Imports:
     dplyr,
     DT,
     limma,
-    methods
+    methods,
+    UpSetR
 Suggests:
     knitr,
     testthat

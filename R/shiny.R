@@ -33,7 +33,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
-                       "Binary classification and RAnking methods (v0.99.7)"),
+                       "Binary classification and RAnking methods (v0.99.8)"),
         titleWidth = 950),
 
       shinydashboard::dashboardSidebar(
@@ -440,6 +440,28 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                                     label = "Download tsv"))
                    ),
                    value = "overlap"),
+          
+          tabPanel("UpSet plot",
+                   uiOutput("plot.upset"),
+                   fluidRow(
+                     column(2, uiOutput("upset.stratum")),
+                     column(2, radioButtons(inputId = "order.upset.by",
+                                            label = "Order intersections by",
+                                            choices = c("degree", "freq"),
+                                            selected = "freq")),
+                     column(2, radioButtons(inputId = "upset.order",
+                                            label = "Order intersections",
+                                            choices = c("decreasing", "increasing"),
+                                            selected = "decreasing")),
+                     column(2, br(), downloadButton("export.upset",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.upset.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), downloadButton("export.upset.df.tsv",
+                                                    label = "Download tsv"))
+                   ),
+                   value = "upset"),
+          
           selected = "fdrtprcurve"
         )
       ))
@@ -792,7 +814,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(COBRAPerformance())
       }
     })
-
+    
     plotvalues_corr <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$cont_truth != "none") {
@@ -971,6 +993,96 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       })
     })
 
+    ## --------------------------- UPSET ------------------------------- ##
+    ## Choose category
+    output$upset.stratum <- renderUI({
+      if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+          (input$goButton == 0 & !isTRUE(autorun)) ||
+          !is_plottable(overlap(plotvalues()$all_vals)))
+        return(NULL)
+      else {
+        if (class(overlap(plotvalues()$all_vals)) != "list")
+          selectInput("upset.stratum", "Select category",
+                      "overall", selectize = TRUE)
+        else
+          selectInput("upset.stratum", "Select category",
+                      names(overlap(plotvalues()$all_vals)),
+                      selectize = TRUE)
+      }
+    })
+    
+    ## Generate UpSet plot
+    output$plot.upset <- renderUI({
+      plotOutput("upset", width = "100%",
+                 height = paste0(input$plotheight, "px"))
+    })
+    
+    ## Figure for exporting
+    output$export.upset <- downloadHandler(
+      filename = "shiny-plot.pdf",
+      content = function(file) {
+        grDevices::pdf(file, height = 12, width = 12)
+        if (length(values$all_methods) == 0 | length(input$cols) == 0)
+          return(NULL)
+        plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
+                   decreasing = (input$upset.order == "decreasing"),
+                   stratum = input$upset.stratum)
+        grDevices::dev.off()
+      })
+    
+    ## Data for exporting
+    output$export.upset.df.rdata <- downloadHandler(
+      filename = "upset-data.Rdata",
+      content = function(file) {
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
+      })
+    
+    output$export.upset.df.tsv <- downloadHandler(
+      filename = "upset-data.tsv",
+      content = function(file) {
+        overlap_df <- overlap(plotvalues()$all_vals)
+        if (class(overlap_df) == "list") {
+          overlap_df <- lapply(overlap_df,
+                               function(w) cbind(feature = rownames(w), w))
+          for (i in 1:length(overlap_df)) {
+            overlap_df[[i]]$featureclass <- names(overlap_df)[i]
+          }
+          overlap_df <- do.call(rbind, overlap_df)
+        }
+        else {
+          overlap_df <- cbind(feature = rownames(overlap_df), overlap_df)
+        }
+        utils::write.table(overlap_df, file = file, quote = FALSE,
+                           row.names = FALSE, col.names = TRUE, sep = "\t")
+      })
+    
+    output$upset <- renderPlot({
+      ## Generate error messages if data not available.
+      validate(
+        need(length(values$all_methods) > 0 & length(input$cols) > 0 &
+               (input$goButton > 0 | isTRUE(autorun)),
+             paste0("No input data provided, or 'Start calculation!' has ",
+                    "not been clicked in order to launch calculations."))
+      )
+      validate(need(is_plottable(overlap(plotvalues()$all_vals)),
+                    paste0("UpSet plots can not be displayed. Check that ",
+                           "binary_truth is not 'none', and that adjusted ",
+                           "p-values are provided."))
+      )
+
+      withProgress(message = "Updating plot...", value = 0, {
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            (input$goButton == 0 & !isTRUE(autorun))) {
+          return(NULL)
+        }
+        
+        plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
+                   decreasing = (input$upset.order == "decreasing"),
+                   stratum = input$upset.stratum)
+      })
+    })
+    
     ## ---------------------------- TPR -------------------------------- ##
     output$plot.tpr <- renderUI({
       plotOutput("tpr", width = "100%", height = paste0(input$plotheight, "px"),

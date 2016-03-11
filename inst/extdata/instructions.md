@@ -101,13 +101,13 @@ FPR values are slight underestimates of the true values. Choosing to consider on
 features shared between the truth and result table (by checking the box in the input 
 controls) will disregard features with missing values in the truth table such that also 
 C = D = 0. This will be done separately for each evaluated method. One exception is made 
-for the Venn diagrams, which is the only aspect that is interpretable even without a 
-given truth (to evaluate agreement between methods). For the Venn diagrams, the following 
+for the overlap plots (Venn diagrams and UpSet plots), which is the only aspect that is interpretable even without a 
+given truth (to evaluate agreement between methods). For these, the following 
 feature collections are used:
 
 - When the checkbox for considering only shared features is not checked and the truth is included in the Venn diagrams, all features where the (binary) truth is available are used. Features with missing adjusted p-values are considered non-significant. 
-- When the checkbox for considering only shared features is checked and the truth is included in the Venn diagrams, all features where the (binary) truth *as well* as the adjusted p-value for *all* included methods are available are used. 
-- When the truth is not included in the Venn diagrams, all features will be used. Features with missing adjusted p-values are considered non-significant. 
+- When the checkbox for considering only shared features is checked and the truth is included, all features where the (binary) truth *as well* as the adjusted p-value for *all* included methods are available are used. 
+- When the truth is not included, all features will be used. Features with missing adjusted p-values are considered non-significant. 
 
 Note that this means that, for example, the value represented in the `Number of detections` 
 column in the FDR/NBR plots may differ from the total number of calls in the Venn diagrams. 
@@ -141,8 +141,9 @@ metrics, each represented in a separate tab. The available methods are described
 - **Scatter plots**: This plot depicts the observed scores against the continuous truth variable (defined by the user in the left-hand sidebar), for each method separately. Axes can be represented on a log-scale.
 - **Deviation plots**: This plot shows the distribution of the deviation of the observed scores from the continuous truth defined by the user. The distributions can be shown as violin plots or regular box plots, with or without the individual points overlaid. There is also an option to square the deviations or take the absolute value before plotting. The use can zoom in by changing the slider below the plot. 
 - **Venn diagram**: The sets of features classified as "positive" for up to five methods (one of which can be the truth) can be compared using a Venn diagram. The adjusted p-value cutoff for determining significance can be set by the user. The user can also choose whether or not to include the truth in the Venn diagram. If the truth is included, it will be considered as a "perfect" method, assigning an adjusted p-value of 0 to all truly positive features, and an adjusted p-value of 1 to all other features. 
+- **UpSet plots**: This type of plots also show the overlap among sets of genes, but in a different way than the Venn diagrams. For more information see [Lex et al: UpSet: Visualization of Intersecting sets (IEEE Transactions on Visualization and Computer Graphics 20, 1983-1992 (2014))](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6876017) or [Lex & Gehlenborg: Points of view: Sets and intersections (Nature Methods 11, 779 (2014))](http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html). 
 
-For all plots except Venn diagrams, more information about a given point can be obtained by hovering over the point in the plot. The information will be displayed in a table below the plot. In this table it is also possible to see which type of input measure (p-value, adjusted p-value or score) that was used for each calculation. 
+For all plots except Venn diagrams and UpSet plots, more information about a given point can be obtained by hovering over the point in the plot. The information will be displayed in a table below the plot. In this table it is also possible to see which type of input measure (p-value, adjusted p-value or score) that was used for each calculation. 
 
 
 ## Input controls
@@ -185,8 +186,13 @@ The following general parameters are available:
 - **Include jittered points** (Deviations): In addition to showing the overall distribution of values, include the individual points, with jittering to avoid overplotting.
 - **Transformation** (Deviations): How to transform the deviations before plotting. Either raw, absolute or squared.
 - **Plot type** (Deviations): Whether to show the distribution of deviations as a violin plot or a regular box plot.  
-- **Include truth** (Venn diagram): Whether or not the truth should be considered as a (perfect) method in the Venn diagrams. If yes, the "truth" method will be considered to assign an adjusted p-value of 0 to all truly "positive" features, and an adjusted p-value of 1 to the truly "negative" ones. 
-- **Adjusted p-value threshold** (Venn diagram): The adjusted p-value threshold that will be used to classify features as positive or negative. The collections of positive features from different methods are compared in the Venn diagram. 
+- **Include truth** (Venn diagram, applies also to UpSet plots): Whether or not the truth should be considered as a (perfect) method in the Venn diagrams. If yes, the "truth" method will be considered to assign an adjusted p-value of 0 to all truly "positive" features, and an adjusted p-value of 1 to the truly "negative" ones. 
+- **Type of threshold** (Venn diagram, applies also to UpSet plots): Whether to define "significant features" by thresholding the adjusted p-value or the rank (e.g., considering the top-ranked N features by each method, ranked by adjusted p-value).
+- **Adjusted p-value threshold** (Venn diagram, applies also to UpSet plots): The adjusted p-value threshold that will be used to classify features as positive or negative when threshold type is "adjp". The collections of positive features from different methods are compared in the Venn diagrams and UpSet plots. 
+- **Rank threshold** (Venn diagram, applies also to UpSet plots): The rank threshold that will be used to classify features as positive or negative when threshold type is "rank". The collections of positive features from different methods are compared in the Venn diagrams and UpSet plots. 
+- **Select category** (UpSet plots): If the results are stratified by some variable, these plots can only be generated for one level at a time. With this input control, you select which level is displayed.
+- **Order intersections by** (UpSet plots): You can choose whether to order the intersections by degree (number of sets involved in the intersection) or by frequency (number of elements in the intersection).
+- **Order intersections** (UpSet plots): Choose whether to order the intersections by increasing or decreasing values of the degree or frequency. 
 
 ## Trouble-shooting
 
@@ -198,6 +204,7 @@ If the plots are not displayed, it can be for one of the following reasons:
 - The right type of truth (binary or continuous) is unavailable or not selected. Check under the "Truth" subsection in the left-hand sidebar that the truth is not set to "none", and check the "Data preview" tab to see the data that `iCOBRA` has extracted from the input files. 
 - More than five methods (including the truth, if applicable) can not be displayed using Venn diagrams.
 - For stratification, only strata with both truly "positive" and truly "negative" instances will be included (except for Venn diagrams). 
+- If UpSet plots are not showing it may be because all intersections (for a specific level of the stratification factor) are empty.
 
 If not all input controls are visible in the left-hand sidebar, either "fold" one of the three sections (Truth, Results, Plot settings) by clicking on the corresponding title, or change the size of the window slightly. 
 
