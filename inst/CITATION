@@ -1,0 +1,19 @@
+citHeader("To cite iCOBRA in publications use:")
+
+citEntry(entry = "Article",
+  title        = "iCOBRA: open, reproducible, standardized and live method benchmarking",
+  author       = personList(as.person("Charlotte Soneson"),
+                   as.person("Mark D Robinson")),
+  journal      = "Nature Methods",
+  year         = "2016",
+  volume       = "13",
+  number       = "4",
+  pages        = "283",
+  url          = "http://www.nature.com/nmeth/journal/v13/n4/full/nmeth.3805.html",
+
+  textVersion  =
+  paste("Charlotte Soneson & Mark D Robinson (2016).",
+        "iCOBRA: open, reproducible, standardized and live method benchmarking.",
+        "Nature Methods, 13(4), 283.",
+        "URL http://www.nature.com/nmeth/journal/v13/n4/full/nmeth.3805.html.")
+)
