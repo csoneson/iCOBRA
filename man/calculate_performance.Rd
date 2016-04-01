@@ -8,7 +8,7 @@ calculate_performance(cobradata, binary_truth = NULL, cont_truth = NULL,
   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr",
   "roc", "fpc", "overlap", "corr", "scatter", "deviation"), thrs = c(0.01,
   0.05, 0.1), splv = "none", maxsplit = 3, onlyshared = FALSE,
-  thr_venn = 0.05)
+  thr_venn = 0.05, type_venn = "adjp", topn_venn = 100)
 }
 \arguments{
 \item{cobradata}{An COBRAData object.}
@@ -46,7 +46,15 @@ score) is given. If FALSE, all features contained in the truth table are
 used.}
 
 \item{thr_venn}{A numeric value giving the adjusted p-value threshold to use
-to create Venn diagrams.}
+to create Venn diagrams (if \code{type_venn} is "adjp").}
+
+\item{type_venn}{Either "adjp" or "rank", indicating whether Venn diagrams
+should be constructed based on features with adjusted p-values below a
+certain threshold, or based on the same number of top-ranked features by
+different methods.}
+
+\item{topn_venn}{A numeric value giving the number of top-ranked features to
+compare between methods (if \code{type_venn} is "rank").}
 }
 \value{
 An COBRAPerformance object
