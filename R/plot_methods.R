@@ -549,6 +549,62 @@ plot_overlap <- function(cobraplot, ...) {
   }
 }
 
+#' Create UpSet plots
+#'
+#' Generate UpSet plots showing the overlaps among sets of significant feature
+#' for a given adjusted p-value threshold. Optionally, the truth can be included
+#' as a "perfect" method. Note that if the results are stratified, one 
+#' category must be chosen.
+#'
+#' @param cobraplot An \code{COBRAPlot} object.
+#' @param stratum If results are stratified, the category to plot results for.
+#'   Can be numeric or categorical (the name of the category).
+#' @param ... Additional arguments to \code{UpSetR::upset}.
+#'
+#' @return Nothing, displays a graph
+#' @references 
+#' Lex and Gehlenborg (2014): Points of view: Sets and intersections. Nature
+#' Methods 11, 779.
+#' 
+#' Lex et al (2014): UpSet: Visualization of intersecting sets. IEEE
+#' Transactions on Visualization and Computer Graphics 20(12), 1983-1992.
+#' @export
+#' @import UpSetR
+#' @author Charlotte Soneson
+#' @examples
+#' data(cobradata_example)
+#' cobraperf <- calculate_performance(cobradata_example,
+#'                                    binary_truth = "status",
+#'                                    aspects = "overlap")
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
+#'                                    incltruth = TRUE)
+#' plot_upset(cobraplot)
+plot_upset <- function(cobraplot, stratum = NULL, ...) {
+  overlap_table <- overlap(cobraplot)
+  if (length(overlap_table) == 0)
+    return(NULL)
+  
+  if (class(overlap_table) != "list") {
+    plotorder <- colnames(overlap_table)[order(colSums(overlap_table), 
+                                               seq(1:ncol(overlap_table)),
+                                               decreasing = "true")]
+    if (all(colSums(overlap_table) == 0)) return(NULL)
+    upset(overlap_table, nsets = ncol(overlap_table), 
+          nintersects = 2^(ncol(overlap_table)) - 1, 
+          sets.bar.color = plotcolors(cobraplot)[plotorder], ...)
+  } else {
+    if (is.null(stratum)) stop("You must provide a stratum")
+    plotorder <- 
+      colnames(overlap_table[[stratum]])[order(colSums(overlap_table[[stratum]]), 
+                                               seq(1:ncol(overlap_table[[stratum]])),
+                                               decreasing = "true")]
+    if (all(colSums(overlap_table[[stratum]]) == 0)) return(NULL)
+    upset(overlap_table[[stratum]], nsets = ncol(overlap_table[[stratum]]), 
+          nintersects = 2^(ncol(overlap_table[[stratum]])) - 1,
+          sets.bar.color = plotcolors(cobraplot)[plotorder], ...)
+  }
+}
+
 ## -------------------------- Deviation ------------------------------ ##
 #' Plot deviations
 #'
