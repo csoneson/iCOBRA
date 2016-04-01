@@ -553,8 +553,8 @@ plot_overlap <- function(cobraplot, ...) {
 #'
 #' Generate UpSet plots showing the overlaps among sets of significant feature
 #' for a given adjusted p-value threshold. Optionally, the truth can be included
-#' as a "perfect" method. Note that if the results are stratified, one 
-#' category must be chosen.
+#' as a "perfect" method. Note that if the results are stratified, only one 
+#' category at a time can be displayed.
 #'
 #' @param cobraplot An \code{COBRAPlot} object.
 #' @param stratum If results are stratified, the category to plot results for.
@@ -579,6 +579,15 @@ plot_overlap <- function(cobraplot, ...) {
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                    incltruth = TRUE)
 #' plot_upset(cobraplot)
+#' plot_upset(cobraplot, order.by = "freq", decreasing = TRUE)
+#' 
+#' cobraperf <- calculate_performance(cobradata_example, 
+#'                                    binary_truth = "status", 
+#'                                    aspects = "overlap",
+#'                                    splv = "expr_cat")
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2", 
+#'                                    incltruth = TRUE)
+#' plot_upset(cobraplot, stratum = "[2.85e+00,1.45e+01)")
 plot_upset <- function(cobraplot, stratum = NULL, ...) {
   overlap_table <- overlap(cobraplot)
   if (length(overlap_table) == 0)
