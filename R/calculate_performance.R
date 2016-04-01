@@ -121,7 +121,13 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   score) is given. If FALSE, all features contained in the truth table are
 #'   used.
 #' @param thr_venn A numeric value giving the adjusted p-value threshold to use
-#'   to create Venn diagrams.
+#'   to create Venn diagrams (if \code{type_venn} is "adjp").
+#' @param type_venn Either "adjp" or "rank", indicating whether Venn diagrams
+#'   should be constructed based on features with adjusted p-values below a
+#'   certain threshold, or based on the same number of top-ranked features by
+#'   different methods.
+#' @param topn_venn A numeric value giving the number of top-ranked features to
+#'   compare between methods (if \code{type_venn} is "rank").
 #'
 #' @return An COBRAPerformance object
 #'
@@ -142,7 +148,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                               "corr", "scatter", "deviation"),
                                   thrs = c(0.01, 0.05, 0.1), splv = "none",
                                   maxsplit = 3, onlyshared = FALSE,
-                                  thr_venn = 0.05) {
+                                  thr_venn = 0.05, type_venn = "adjp",
+                                  topn_venn = 100) {
 
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
@@ -962,9 +969,19 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
       }
 
-      overlap <- apply(tmplist, 2, function(w) {
-        as.numeric(w <= thr_venn)
-      })
+      ## Create matrix indicating "significant" features
+      if (type_venn == "adjp") {
+        overlap <- apply(tmplist, 2, function(w) {
+          as.numeric(w <= thr_venn)
+        })
+      } else if (type_venn == "rank") {
+        overlap <- apply(tmplist, 2, function(w) {
+          as.numeric(w <= sort(w, decreasing = FALSE)[topn_venn])
+        })
+        if ("truth" %in% colnames(overlap)) {
+          overlap[, "truth"] <- as.numeric(tmplist[, "truth"] == 0)
+        }
+      }
       common_genes <- rownames(tmplist)
       rownames(overlap) <- common_genes
       overlap <- overlap[, which(colSums(is.na(overlap)) != nrow(overlap))]

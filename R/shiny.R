@@ -33,7 +33,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
-                       "Binary classification and RAnking methods (v0.99.6)"),
+                       "Binary classification and RAnking methods (v0.99.7)"),
         titleWidth = 950),
 
       shinydashboard::dashboardSidebar(
@@ -404,7 +404,16 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                               "that maximally five methods (including the ",
                               "truth) can be included."),
                        "bottom", options = list(container = "body")),
-                     column(3, numericInput(
+                     column(1, radioButtons(inputId = "vennType",
+                                            label = "Type of threshold",
+                                            choices = c("adjp", "rank"),
+                                            selected = "adjp")),
+                     shinyBS::bsTooltip(
+                       "vennType",
+                       paste0("How to determine the set of features to ",
+                              "compare between methods. "),
+                       "bottom", options = list(container = "body")),
+                     column(2, numericInput(
                        inputId = "adjpVenn",
                        label = "Adjusted p-value threshold",
                        value = 0.05, min = 0, max = 1, step = 0.01)),
@@ -413,6 +422,15 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                        paste0("The adjusted p-value threshold used to extract ",
                               "the sets of significant variables to use for ",
                               "the Venn diagram. "),
+                       "bottom", options = list(container = "body")),
+                     column(2, numericInput(
+                       inputId = "rankVenn",
+                       label = "Rank threshold",
+                       value = 100, min = 0, max = 1e10, step = 1)),
+                     shinyBS::bsTooltip(
+                       "rankVenn",
+                       paste0("The rank used to extract the top-ranked ",
+                              "features to compare in the Venn diagram. "),
                        "bottom", options = list(container = "body")),
                      column(2, br(), downloadButton("export.overlap",
                                                     label = "Download plot")),
@@ -649,7 +667,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -668,7 +688,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -687,7 +709,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -703,7 +727,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -719,7 +745,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -735,7 +763,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -755,7 +785,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = input$adjpVenn))
+                                     thr_venn = input$adjpVenn,
+                                     type_venn = input$vennType,
+                                     topn_venn = input$rankVenn))
       } else {
         return(COBRAPerformance())
       }
@@ -771,7 +803,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -787,7 +821,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -803,7 +839,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
-                                     thr_venn = NULL))
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
       } else {
         return(COBRAPerformance())
       }
@@ -1367,7 +1405,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
                        xaxisrange = input$xrange_roc,
-                       yaxisrange = input$yrange_roc))
+                       yaxisrange = input$yrange_roc,
+                       linewidth = 1))
         grDevices::dev.off()
       })
 
@@ -1408,7 +1447,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
           return(NULL)
         plot_roc(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
-                 xaxisrange = input$xrange_roc, yaxisrange = input$yrange_roc)
+                 xaxisrange = input$xrange_roc, yaxisrange = input$yrange_roc,
+                 linewidth = 1)
       })
     })
 
@@ -1540,7 +1580,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         print(plot_fpc(cobraplot = plotvalues()$all_vals,
                        title = plotvalues()$title,
                        stripsize = input$stripsize, titlecol = "white",
-                       maxnfdc = input$maxnfdc))
+                       maxnfdc = input$maxnfdc,
+                       linewidth = 1))
         grDevices::dev.off()
       })
 
@@ -1582,7 +1623,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
         plot_fpc(cobraplot = plotvalues()$all_vals, title = plotvalues()$title,
                  stripsize = input$stripsize, titlecol = "white",
-                 maxnfdc = input$maxnfdc)
+                 maxnfdc = input$maxnfdc,
+                 linewidth = 1)
       })
     })
 
@@ -1628,7 +1670,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                pointsize = input$pointsize,
                                xaxisrange = input$xrange_fdrtpr,
                                yaxisrange = input$yrange_fdrtpr,
-                               plottype = input$plottype))
+                               plottype = input$plottype,
+                               linewidth = 1))
         grDevices::dev.off()
       })
 
@@ -1703,7 +1746,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                          pointsize = input$pointsize,
                          xaxisrange = input$xrange_fdrtpr,
                          yaxisrange = input$yrange_fdrtpr,
-                         plottype = input$plottype)
+                         plottype = input$plottype,
+                         linewidth = 1)
       })
     })
 
@@ -1755,7 +1799,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                stripsize = input$stripsize, titlecol = "white",
                                pointsize = input$pointsize,
                                xaxisrange = input$xrange_fdrnbr,
-                               plottype = input$plottype))
+                               plottype = input$plottype,
+                               linewidth = 1))
         grDevices::dev.off()
       })
 
@@ -1830,7 +1875,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                          stripsize = input$stripsize, titlecol = "white",
                          pointsize = input$pointsize,
                          xaxisrange = input$xrange_fdrnbr,
-                         plottype = input$plottype)
+                         plottype = input$plottype,
+                         linewidth = 1)
       })
     })
 
