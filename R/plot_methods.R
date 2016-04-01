@@ -134,7 +134,7 @@ plot_corr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 ## ---------------------- ROC or FPC --------------------------------- ##
 #' @import ggplot2
 plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
-                         yaxisrange, maxnfdc, aspc) {
+                         yaxisrange, maxnfdc, aspc, linewidth) {
   if (aspc == "roc")
     plot_data <- roc(cobraplot)
   else if (aspc == "fpc")
@@ -145,7 +145,7 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
   pp <- ggplot(plot_data, aes_string(x = ifelse(aspc == "roc", "FPR", "topN"),
                                      y = ifelse(aspc == "roc", "TPR", "FP"),
                                      group = "method", colour = "method")) +
-    geom_path(size = 1) +
+    geom_path(size = linewidth) +
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     xlim(ifelse(aspc == "roc", xaxisrange[1], 0),
@@ -178,6 +178,7 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
 #'   upper boundary of the x-axis, respectively.
 #' @param yaxisrange A numeric vector with two elements, giving the lower and
 #'   upper boundary of the y-axis, respectively.
+#' @param linewidth The line width used for plotting
 #'
 #' @return A ggplot object
 #'
@@ -192,10 +193,12 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
 #'                                    incltruth = TRUE)
 #' plot_roc(cobraplot)
 plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
-                     xaxisrange = c(0, 1), yaxisrange = c(0, 1)) {
+                     xaxisrange = c(0, 1), yaxisrange = c(0, 1), 
+                     linewidth = 1) {
   plot_roc_fpc(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, xaxisrange = xaxisrange,
-               yaxisrange = yaxisrange, maxnfdc = NULL, aspc = "roc")
+               yaxisrange = yaxisrange, maxnfdc = NULL, aspc = "roc",
+               linewidth = linewidth)
 }
 
 #' Plot FP curves
@@ -209,6 +212,7 @@ plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #'   results are stratified by an annotation.
 #' @param titlecol A character string giving the color of the title.
 #' @param maxnfdc A numeric value giving the largest N to consider.
+#' @param linewidth The line width used for plotting
 #'
 #' @return A ggplot object
 #'
@@ -223,10 +227,10 @@ plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #'                                    incltruth = TRUE)
 #' plot_fpc(cobraplot, maxnfdc = 750)
 plot_fpc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
-                     maxnfdc = 500) {
+                     maxnfdc = 500, linewidth = 1) {
   plot_roc_fpc(cobraplot = cobraplot, title = title, stripsize = stripsize,
                titlecol = titlecol, xaxisrange = NULL, yaxisrange = NULL,
-               maxnfdc = maxnfdc, aspc = "fpc")
+               maxnfdc = maxnfdc, aspc = "fpc", linewidth = linewidth)
 }
 
 ## ------------------------- SCATTER --------------------------------- ##
@@ -295,7 +299,7 @@ plot_scatter <- function(cobraplot, title = "", stripsize = 10,
 ## ------------------- FDRTPR or FDRNBR ------------------------------ ##
 #' @import ggplot2
 plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
-                          xaxisrange, yaxisrange, plottype, aspc) {
+                          xaxisrange, yaxisrange, plottype, aspc, linewidth) {
   if (aspc == "TPR") {
     plot_data_lines <- fdrtprcurve(cobraplot)
     plot_data_points <- fdrtpr(cobraplot)
@@ -322,7 +326,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = 1) +
+      geom_path(size = linewidth) +
       geom_point(data = plot_data_points, size = pointsize + 1,
                  aes_string(colour = "method"), shape = 19) +
       geom_point(data = plot_data_points, size = pointsize,
@@ -346,7 +350,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
     pp <- ggplot(plot_data_lines,
                  aes_string(x = "FDR", y = aspc,
                             group = "method", colour = "method")) +
-      geom_path(size = 1) +
+      geom_path(size = linewidth) +
       xlim(xaxisrange[1], xaxisrange[2]) +
       ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
            ifelse(aspc == "TPR", yaxisrange[2],
@@ -361,7 +365,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = 1, aes_string(colour = "method")) +
+      geom_path(size = linewidth, aes_string(colour = "method")) +
       geom_point(size = pointsize + 1,
                  aes_string(colour = "method"), shape = 19) +
       geom_point(size = pointsize,
@@ -415,6 +419,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
 #'   upper boundary of the y-axis, respectively.
 #' @param plottype A character vector giving the type of plot to construct. Can
 #'   be any combination of the two elements "curve" and "points".
+#' @param linewidth The line width used for plotting
 #'
 #' @return A ggplot object
 #'
@@ -432,11 +437,12 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
 plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
                              titlecol = "black", pointsize = 5,
                              xaxisrange = c(0, 1), yaxisrange = c(0, 1),
-                             plottype = c("curve", "points")) {
+                             plottype = c("curve", "points"),
+                             linewidth = 1) {
   plot_fdrcurve(cobraplot = cobraplot, title = title, stripsize = stripsize,
                 titlecol = titlecol, pointsize = pointsize,
                 xaxisrange = xaxisrange, yaxisrange = yaxisrange,
-                plottype = plottype, aspc = "TPR")
+                plottype = plottype, aspc = "TPR", linewidth = linewidth)
 }
 
 #' Plot number of significant features vs FDR
@@ -455,6 +461,7 @@ plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
 #'   upper boundary of the x-axis, respectively.
 #' @param plottype A character vector giving the type of plot to construct. Can
 #'   be any combination of the two elements "curve" and "points".
+#' @param linewidth The line width used for plotting
 #'
 #' @return A ggplot object
 #'
@@ -472,11 +479,13 @@ plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
 plot_fdrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
                              titlecol = "black", pointsize = 5,
                              xaxisrange = c(0, 1),
-                             plottype = c("curve", "points")) {
+                             plottype = c("curve", "points"),
+                             linewidth = 1) {
   plot_fdrcurve(cobraplot = cobraplot, title = title, stripsize = stripsize,
                 titlecol = titlecol, pointsize = pointsize,
                 xaxisrange = xaxisrange, yaxisrange = NULL,
-                plottype = plottype, aspc = "NBR")
+                plottype = plottype, aspc = "NBR",
+                linewidth = linewidth)
 }
 
 ## ------------------------ OVERLAP ---------------------------------- ##
