@@ -1,23 +1,83 @@
-v0.99.9: - Added CITATION file, extended some examples
-v0.99.8: - Include UpSet plots (Lex et al, IEEE Transactions on Visualization and Computer Graphics 2014)
-v0.99.7: - Allow linewidth to be set, add Venn diagrams based on rank cutoffs
-v0.99.5: - Updated documentation
-v0.99.4: - Expanded tests, added experimental function to reorder factor levels before plotting
-v0.99.3: - Bug fixes
-v0.99.2: - Fixed replacement methods for COBRAPlot class
-v0.99.1: - Removed benchmarkR dependence
-v0.3.13: - Adapted package for Bioconductor submission
-v0.3.11: - Renamed to iCOBRA
-v0.3.9: - Improved constructors
-v0.3.8: - Added check for duplicated feature IDs
-v0.3.7: - Fixed bug causing problems for Venn diagrams if only one method is available
-        - Included information texts in app
-v0.3.5: - Simplified constructors
-v0.3.4: - Modified calculation of overlaps
-v0.3.2: - Added unit tests
-v0.3.1:	- Updated information messages in app
-v0.3.0: - Bug fixes in app
-	- Addition of small example data set
-	- Addition of information banners to app
-v0.2.0: - Added deviation plot
-	- Bug fixes
+CHANGES IN VERSION 0.99.10
+--------------------------
+	o Fixed the call to plot_upset to avoid duplicate definition of arguments
+
+CHANGES IN VERSION 0.99.9
+-------------------------
+	o Added CITATION file, extended some examples
+
+CHANGES IN VERSION 0.99.8
+-------------------------
+	o Include UpSet plots (Lex et al, IEEE Transactions on Visualization and Computer Graphics 2014)
+
+CHANGES IN VERSION 0.99.7
+-------------------------
+	o Allow linewidth to be set, add Venn diagrams based on rank cutoffs
+
+CHANGES IN VERSION 0.99.5
+-------------------------
+	o Updated documentation
+
+CHANGES IN VERSION 0.99.4
+-------------------------
+	o Expanded tests, added experimental function to reorder factor levels before plotting
+
+CHANGES IN VERSION 0.99.3
+-------------------------
+	o Bug fixes
+
+CHANGES IN VERSION 0.99.2
+-------------------------
+	o Fixed replacement methods for COBRAPlot class
+
+CHANGES IN VERSION 0.99.1
+-------------------------
+	o Removed benchmarkR dependence
+
+CHANGES IN VERSION 0.3.13
+-------------------------
+	o Adapted package for Bioconductor submission
+
+CHANGES IN VERSION 0.3.11
+-------------------------
+	o Renamed to iCOBRA
+
+CHANGES IN VERSION 0.3.9
+------------------------
+	o Improved constructors
+
+CHANGES IN VERSION 0.3.8
+------------------------
+	o Added check for duplicated feature IDs
+
+CHANGES IN VERSION 0.3.7
+------------------------
+	o Fixed bug causing problems for Venn diagrams if only one method is available
+        o Included information texts in app
+
+CHANGES IN VERSION 0.3.5
+------------------------
+	o Simplified constructors
+
+CHANGES IN VERSION 0.3.4
+------------------------
+	o Modified calculation of overlaps
+
+CHANGES IN VERSION 0.3.2
+------------------------
+	o Added unit tests
+
+CHANGES IN VERSION 0.3.1
+------------------------
+	o Updated information messages in app
+
+CHANGES IN VERSION 0.3.0
+------------------------
+	o Bug fixes in app
+	o Addition of small example data set
+	o Addition of information banners to app
+
+CHANGES IN VERSION 0.2.0
+------------------------
+	o Added deviation plot
+	o Bug fixes
