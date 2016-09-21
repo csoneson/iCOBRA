@@ -28,5 +28,8 @@ differential gene expression) and target value estimation
 ### Code
 
 All code for `iCOBRA` is available on 
-<a href="https://github.com/markrobinsonuzh/iCOBRA" target="_blank">GitHub</a>.
+<a href="https://github.com/markrobinsonuzh/iCOBRA" target="_blank">GitHub</a> and via <a href="http://bioconductor.org/packages/iCOBRA/" target="_blank">Bioconductor</a>.
 
+### Citation
+
+C Soneson & MD Robinson: iCOBRA: open, reproducible, standardized and live method benchmarking. *Nature Methods* 13:283 (2016).
