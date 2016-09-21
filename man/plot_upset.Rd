@@ -4,13 +4,24 @@
 \alias{plot_upset}
 \title{Create UpSet plots}
 \usage{
-plot_upset(cobraplot, stratum = NULL, ...)
+plot_upset(cobraplot, stratum = NULL, nsets = NULL, nintersects = NULL,
+  sets.bar.color = NULL, ...)
 }
 \arguments{
 \item{cobraplot}{An \code{COBRAPlot} object.}
 
 \item{stratum}{If results are stratified, the category to plot results for.
 Can be numeric or categorical (the name of the category).}
+
+\item{nsets}{The number of methods to include. By default, it is determined
+automatically from the \code{cobraplot} object.}
+
+\item{nintersects}{The number of set intersections to display. By default, it
+is determined automatically from the \code{cobraplot} object.}
+
+\item{sets.bar.color}{The colors to use for the bars in the UpSet plot. By
+default, they are extracted from the \code{plotcolors} slot of the
+\code{cobraplot} object.}
 
 \item{...}{Additional arguments to \code{UpSetR::upset}.}
 }
