@@ -36,7 +36,7 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
 #' Plot observed false positive rate (FPR) for given adjusted p-value
 #' thresholds.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -68,7 +68,7 @@ plot_fpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #'
 #' Plot observed true positive rate (TPR) for given adjusted p-value thresholds.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -100,7 +100,7 @@ plot_tpr <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #'
 #' Plot correlations between observations and a continuous truth value.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -169,7 +169,7 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
 #'
 #' Plot receiver operating characteristics (ROC) curves.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -206,7 +206,7 @@ plot_roc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #' Plot false positive curves, indicating the number of false positives among
 #' the top-ranked N variables, for varying values of N.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -239,7 +239,7 @@ plot_fpc <- function(cobraplot, title = "", stripsize = 15, titlecol = "black",
 #' Plot scatter plots, indicating the relationship between observed values and a
 #' continuous truth.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -407,7 +407,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
 #' (FDR), for given adjusted p-value thresholds and/or as curves traced out by
 #' considering all threshold values.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -451,7 +451,7 @@ plot_fdrtprcurve <- function(cobraplot, title = "", stripsize = 15,
 #' discovery rate (FDR), for given adjusted p-value thresholds and/or as curves
 #' traced out by considering all threshold values.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
@@ -496,7 +496,7 @@ plot_fdrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
 #' as a "perfect" method. Note that maximally five methods (including the truth,
 #' if applicable) can be compared.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param ... Additional arguments to \code{limma::vennDiagram}.
 #'
 #' @return Nothing, displays a graph
@@ -556,7 +556,7 @@ plot_overlap <- function(cobraplot, ...) {
 #' as a "perfect" method. Note that if the results are stratified, only one 
 #' category at a time can be displayed.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param stratum If results are stratified, the category to plot results for.
 #'   Can be numeric or categorical (the name of the category).
 #' @param nsets The number of methods to include. By default, it is determined
@@ -632,15 +632,15 @@ plot_upset <- function(cobraplot, stratum = NULL, nsets = NULL,
 #' Plot the deviations between observed scores and the continuous truth
 #' variable.
 #'
-#' @param cobraplot An \code{COBRAPlot} object.
+#' @param cobraplot A \code{COBRAPlot} object.
 #' @param title A character string giving the title of the plot.
 #' @param stripsize A numeric value giving the size of the strip text, when the
 #'   results are stratified by an annotation.
 #' @param titlecol A character string giving the color of the title.
 #' @param xaxisrange A numeric vector with two elements, giving the lower and
 #'   upper boundary of the x-axis, respectively.
-#' @param plottype Either "boxplot" or "violin", indicating what type of plot to
-#'   make.
+#' @param plottype Either "boxplot" or "violinplot", indicating what type of
+#'   plot to make.
 #' @param dojitter A logical indicating whether to include jittered data points
 #'   or not.
 #' @param transf A character indicating the transformation to apply to the
