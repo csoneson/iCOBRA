@@ -3,9 +3,11 @@
 \docType{methods}
 \name{facetted}
 \alias{facetted}
-\alias{facetted,COBRAPlot-method}
 \alias{facetted<-}
+\alias{facetted}
+\alias{facetted,COBRAPlot-method}
 \alias{facetted<-,COBRAPlot,logical-method}
+\alias{facetted}
 \title{Accessor and replacement functions for \code{facetted} slot}
 \usage{
 facetted(x, ...)
@@ -17,7 +19,7 @@ facetted(x, ...) <- value
 \S4method{facetted}{COBRAPlot,logical}(x) <- value
 }
 \arguments{
-\item{x}{An \code{COBRAPlot} object.}
+\item{x}{A \code{COBRAPlot} object.}
 
 \item{...}{Additional arguments.}
 
@@ -45,4 +47,3 @@ facetted(cobraplot)
 \author{
 Charlotte Soneson
 }
-

@@ -4,12 +4,13 @@ library(iCOBRA)
 context("Check plot functions")
 
 local({
-  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                            "fdrnbrcurve", "tpr", "fpr",
                                            "roc", "fpc", "overlap", "corr",
-                                           "scatter", "deviation"),
+                                           "scatter", "deviation", 
+                                           "fsrnbr", "fsrnbrcurve"),
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
@@ -51,7 +52,7 @@ local({
 })
 
 test_that("Plot functions return ggplot objects for empty input", {
-  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("overlap", "tpr"),
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
@@ -75,7 +76,7 @@ test_that("Plot functions return ggplot objects for empty input", {
 })
 
 local({
-  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("tpr"),
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
@@ -103,7 +104,7 @@ local({
 })
 
 local({
-  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtprcurve"),
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
@@ -132,7 +133,7 @@ local({
 
 test_that("Plot functions return ggplot objects after stratification", {
   ## Facetted, stratified
-  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                            "fdrnbrcurve", "tpr", "fpr",
@@ -168,7 +169,7 @@ test_that("Plot functions return ggplot objects after stratification", {
 
 test_that("Plot functions return ggplot objects after stratification", {
   ## Facetted, stratified
-  ib1 <- calculate_performance(cobradata_example, binary_truth = "status",
+  ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                            "fdrnbrcurve", "tpr", "fpr",
@@ -199,7 +200,7 @@ test_that("Plot functions return ggplot objects after stratification", {
 
 test_that("maxsplit=Inf works as expected", {
   ## Facetted, stratified
-  cde <- cobradata_example
+  cde <- cobradata_example_sval
   truth(cde)$expr_cat <- factor(truth(cde)$expr_cat)
   ib1 <- calculate_performance(cde, binary_truth = "status",
                                cont_truth = "logFC",

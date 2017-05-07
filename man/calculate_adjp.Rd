@@ -7,18 +7,18 @@
 calculate_adjp(cobradata, method = "BH")
 }
 \arguments{
-\item{cobradata}{An \code{COBRAData} object.}
+\item{cobradata}{A \code{COBRAData} object.}
 
 \item{method}{A character string giving the method (selected from
 \code{p.adjust.methods()}) that will be used to perform the adjustment.}
 }
 \value{
-An \code{COBRAData} object, extended with the calculated adjusted
+A \code{COBRAData} object, extended with the calculated adjusted
   p-values.
 }
 \description{
 Calculate adjusted p-values for methods where only nominal p-values are
-available in an \code{COBRAData} object.
+available in a \code{COBRAData} object.
 }
 \examples{
 data(cobradata_example)
@@ -27,4 +27,3 @@ cobradata_example <- calculate_adjp(cobradata_example, method = "BH")
 \author{
 Charlotte Soneson
 }
-

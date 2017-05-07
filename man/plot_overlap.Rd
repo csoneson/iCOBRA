@@ -7,7 +7,7 @@
 plot_overlap(cobraplot, ...)
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{...}{Additional arguments to \code{limma::vennDiagram}.}
 }
@@ -32,4 +32,3 @@ plot_overlap(cobraplot)
 \author{
 Charlotte Soneson
 }
-

@@ -75,11 +75,15 @@ plot_theme <- function(stripsize, titlecol) {
 }
 
 get_coltype <- function(col_name) {
-  if (substr(col_name, nchar(col_name) - 1, nchar(col_name)) == ":P") {
+  if (substr(col_name, nchar(col_name) - 1, 
+             nchar(col_name)) == ":P") {
     coltype <- "pval"
   } else if (substr(col_name, nchar(col_name) - 4,
                     nchar(col_name)) == ":adjP") {
     coltype <- "padj"
+  } else if (substr(col_name, nchar(col_name) - 1,
+                    nchar(col_name)) == ":S") {
+    coltype <- "sval"
   } else if (substr(col_name, nchar(col_name) - 5,
                     nchar(col_name)) == ":score") {
     coltype <- "score"
@@ -110,13 +114,13 @@ fix_duplicates <- function(res_df, feature_id, method_name) {
 #' Calculate adjusted p-values
 #'
 #' Calculate adjusted p-values for methods where only nominal p-values are
-#' available in an \code{COBRAData} object.
+#' available in a \code{COBRAData} object.
 #'
-#' @param cobradata An \code{COBRAData} object.
+#' @param cobradata A \code{COBRAData} object.
 #' @param method A character string giving the method (selected from
 #'   \code{p.adjust.methods()}) that will be used to perform the adjustment.
 #'
-#' @return An \code{COBRAData} object, extended with the calculated adjusted
+#' @return A \code{COBRAData} object, extended with the calculated adjusted
 #'   p-values.
 #'
 #' @export
@@ -138,8 +142,8 @@ calculate_adjp <- function(cobradata, method = "BH") {
                                                colnames(padj(cobradata)))))
         padj(cobradata) <- rbind(padj(cobradata), tmpadd)
         padj(cobradata) <- cbind(padj(cobradata),
-                                pa[match(rownames(padj(cobradata)),
-                                         rownames(pa)), , drop = FALSE])
+                                 pa[match(rownames(padj(cobradata)),
+                                          rownames(pa)), , drop = FALSE])
       } else {
         padj(cobradata) <- pa
       }
@@ -259,9 +263,14 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
 
 
 select_measure <- function(cobradata, method, asp) {
+  cobradata <- update_cobradata(cobradata, quiet = TRUE)
   ret <- NULL
   if (asp %in% c("nbr", "fpr", "fdr", "tpr")) {
     if (method %in% names(padj(cobradata))) ret <- "padj"
+    else ret <- NULL
+  } else if (asp %in% c("fsrnbr")) {
+    if (method %in% names(score(cobradata)) && 
+        method %in% names(sval(cobradata))) ret <- "sval"
     else ret <- NULL
   } else if (asp %in% c("fdrtpr", "fdrnbr")) {
     if (method %in% names(score(cobradata))) {
@@ -314,8 +323,9 @@ extend_resulttable <- function(df, splv, keeplevels, valuename,
     a <- strsplit(as.character(w), "__")[[1]]
     paste0("__", a[length(a)])
   })
-  df$method <- gsub("__padj$", "", gsub("__pval$", "",
-                                        gsub("__score", "", df$method)))
+  df$method <- gsub("__sval$", "", gsub("__padj$", "", 
+                                        gsub("__pval$", "",
+                                             gsub("__score", "", df$method))))
 
   df$fullmethod <- df$method
   if (splv == "none") {
@@ -360,11 +370,13 @@ fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
     }
   }
   idx <- match(c("thr", methodcol, "dist_", "NBR", "CUTOFF", "FPC_CUTOFF",
-                 "ROC_CUTOFF", "topN", "OBSERVATION", "TRUTH"), colnames(res))
+                 "ROC_CUTOFF", "topN", "OBSERVATION", "TRUTH", "POSSIGN", 
+                 "NEGSIGN", "ZEROSIGN"), colnames(res))
   colnames(res)[idx[!is.na(idx)]] <-
     c("Threshold", "Method", "Distance from cursor", "Number of detections",
       "Cutoff", "Cutoff", "Cutoff", "Number of detections", "observation",
-      "truth")[!is.na(idx)]
+      "truth", "Number of pos sign", "Number of neg sign", 
+      "Number of zero sign")[!is.na(idx)]
 
   if ("Threshold" %in% colnames(res)) {
     res$Threshold <- gsub("thr", "", res$Threshold)
@@ -377,6 +389,13 @@ fix_res <- function(res, methodcol, aspcts, tabtype = "large") {
                                  "Threshold", "Cutoff"),
                           "Method_m", aspcts, "TP", "FP",
                           "FN", "TN", "TOT_CALLED", "DIFF", "NONDIFF",
+                          "Distance from cursor")])
+  } else if (tabtype == "fsrnbr") {
+    DT::datatable(res[, c(ifelse("Threshold" %in% colnames(res),
+                                 "Threshold", "Cutoff"),
+                          "Method_m", aspcts, "TS", "FS", "TOT_CALLED", 
+                          "Number of pos sign", 
+                          "Number of neg sign", "Number of zero sign", 
                           "Distance from cursor")])
   } else if (tabtype == "corr") {
     DT::datatable(res[, c("Method_m", aspcts, "Distance from cursor")])

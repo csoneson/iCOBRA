@@ -37,4 +37,3 @@ plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 \author{
 Charlotte Soneson
 }
-

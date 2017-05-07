@@ -12,6 +12,13 @@ setGeneric("padj", function(x, ...) standardGeneric("padj"))
 #' @export
 setGeneric("padj<-", function(x, ..., value) standardGeneric("padj<-"))
 
+#' @rdname sval
+#' @export
+setGeneric("sval", function(x, ...) standardGeneric("sval"))
+#' @rdname sval
+#' @export
+setGeneric("sval<-", function(x, ..., value) standardGeneric("sval<-"))
+
 #' @rdname score
 #' @export
 setGeneric("score", function(x, ...) standardGeneric("score"))
@@ -64,6 +71,21 @@ setGeneric("fdrnbrcurve", function(x, ...) standardGeneric("fdrnbrcurve"))
 #' @export
 setGeneric("fdrnbrcurve<-", function(x, ..., value)
   standardGeneric("fdrnbrcurve<-"))
+
+#' @rdname fsrnbr
+#' @export
+setGeneric("fsrnbr", function(x, ...) standardGeneric("fsrnbr"))
+#' @rdname fsrnbr
+#' @export
+setGeneric("fsrnbr<-", function(x, ..., value) standardGeneric("fsrnbr<-"))
+
+#' @rdname fsrnbrcurve
+#' @export
+setGeneric("fsrnbrcurve", function(x, ...) standardGeneric("fsrnbrcurve"))
+#' @rdname fsrnbrcurve
+#' @export
+setGeneric("fsrnbrcurve<-", function(x, ..., value)
+  standardGeneric("fsrnbrcurve<-"))
 
 #' @rdname scatter
 #' @export

@@ -133,7 +133,7 @@ test_that("extending COBRAData objects works as expected", {
 })
 
 test_that("export functions return correct class", {
-  expect_is(COBRAData_to_text(cobradata_example, feature_id = "feature",
+  expect_is(COBRAData_to_text(cobradata_example_sval, feature_id = "feature",
                              truth_file = "test_truth.txt",
                              result_files = "test_results.txt"), "NULL")
 })
@@ -141,7 +141,7 @@ test_that("export functions return correct class", {
 test_that(paste0("COBRAPerformance constructor and calculate_performance ",
                  "generate COBRAPerformance objects"), {
                    expect_is(COBRAPerformance(), "COBRAPerformance")
-                   expect_is(calculate_performance(cobradata_example,
+                   expect_is(calculate_performance(cobradata_example_sval,
                                                    binary_truth = "status",
                                                    aspects = "fpr"),
                              "COBRAPerformance")
@@ -155,13 +155,13 @@ test_that(paste0("COBRAPlot constructor and prepare_data_for_plot ",
                    expect_is(COBRAPlot(), "COBRAPlot")
                    expect_is(
                      prepare_data_for_plot(
-                       calculate_performance(cobradata_example,
+                       calculate_performance(cobradata_example_sval,
                                              binary_truth = "status",
                                              aspects = "fpr")), "COBRAPlot")
 })
 
 test_that("replacement still returns valid objects", {
-  cobradata <- cobradata_example
+  cobradata <- cobradata_example_sval
   pval(cobradata) <- pval(cobradata)[1:500, ]
   padj(cobradata) <- padj(cobradata)[1:1000, ]
   score(cobradata) <- score(cobradata)[1:750, ]
@@ -192,7 +192,7 @@ test_that("replacement still returns valid objects", {
   facetted(cobraplot) <- FALSE
   expect_true(iCOBRA:::is_plottable(tpr(cobraplot)))
 
-    fdrtpr(cobraplot) <- fdrtpr(cobraplot)[1:2, ]
+  fdrtpr(cobraplot) <- fdrtpr(cobraplot)[1:2, ]
   fdrtprcurve(cobraplot) <- fdrtprcurve(cobraplot)[1:2, ]
   fdrnbr(cobraplot) <- fdrnbr(cobraplot)[1:2, ]
   fdrnbrcurve(cobraplot) <- fdrnbrcurve(cobraplot)[1:2, ]
@@ -212,7 +212,7 @@ test_that("replacement still returns valid objects", {
 })
 
 test_that("show returns NULL", {
-  cobradata <- cobradata_example
+  cobradata <- cobradata_example_sval
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "tpr")
   cobraperf2 <- calculate_performance(cobradata, binary_truth = "status",
@@ -228,35 +228,35 @@ test_that("show returns NULL", {
 })
 
 test_that("subsetting of objects works", {
-  cobradata <- cobradata_example
+  cobradata <- cobradata_example_sval
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
-                                    cont_truth = "logFC", aspects = "tpr")
+                                     cont_truth = "logFC", aspects = "tpr")
   cobraplot <- prepare_data_for_plot(cobraperf)
   expect_error(cobraplot[, "nonexisting_method"])
-  expect_is(cobraplot[, "voom"], "COBRAPlot")
-  expect_equal(tpr(cobraplot[, "voom"])$basemethod, rep("voom", 3))
+  expect_is(cobraplot[, "Method2"], "COBRAPlot")
+  expect_equal(tpr(cobraplot[, "Method2"])$basemethod, rep("Method2", 3))
 
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "overlap",
                                     splv = "none")
   cobraplot <- prepare_data_for_plot(cobraperf)
   expect_error(cobraperf[, "nonexisting_method"])
-  expect_is(overlap(cobraperf[, "voom"]), "data.frame")
-  expect_is(overlap(cobraplot[, "voom"]), "data.frame")
+  expect_is(overlap(cobraperf[, "Method2"]), "data.frame")
+  expect_is(overlap(cobraplot[, "Method2"]), "data.frame")
 
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "overlap",
                                     splv = "expr_cat")
   cobraplot <- prepare_data_for_plot(cobraperf)
   expect_error(cobraperf[, "nonexisting_method"])
-  expect_is(cobraperf[, "voom"], "COBRAPerformance")
-  expect_is(overlap(cobraperf[, "voom"]), "list")
-  expect_equal(colnames(overlap(cobraperf[, "voom"])[[1]]), c("voom", "truth"))
+  expect_is(cobraperf[, "Method2"], "COBRAPerformance")
+  expect_is(overlap(cobraperf[, "Method2"]), "list")
+  expect_equal(colnames(overlap(cobraperf[, "Method2"])[[1]]), c("Method2", "truth"))
 
   expect_error(cobraplot[, "nonexisting_method"])
-  expect_is(cobraplot[, "voom"], "COBRAPlot")
-  expect_is(overlap(cobraplot[, "voom"]), "list")
-  expect_equal(colnames(overlap(cobraplot[, "voom"])[[1]]), c("voom", "truth"))
+  expect_is(cobraplot[, "Method2"], "COBRAPlot")
+  expect_is(overlap(cobraplot[, "Method2"]), "list")
+  expect_equal(colnames(overlap(cobraplot[, "Method2"])[[1]]), c("Method2", "truth"))
 
   kp <- rownames(pval(cobradata))[1:50]
   expect_error(cobradata["nonexisting_variable", ])
@@ -266,13 +266,13 @@ test_that("subsetting of objects works", {
 })
 
 test_that("extending an object still returns valid objects", {
-  cobradata <- cobradata_example
+  cobradata <- cobradata_example_sval
   cobradata <- COBRAData(pval = pval(cobradata), object_to_extend = cobradata)
   expect_is(cobradata, "COBRAData")
 })
 
 test_that("extending an object of the wrong class doesn't work", {
-    cobradata <- cobradata_example
+    cobradata <- cobradata_example_sval
     cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                       cont_truth = "logFC", aspects = "tpr")
     expect_error(COBRAData(pval = pval(cobradata), object_to_extend = cobraperf))

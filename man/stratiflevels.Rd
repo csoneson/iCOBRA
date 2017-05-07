@@ -3,6 +3,7 @@
 \docType{methods}
 \name{stratiflevels}
 \alias{stratiflevels}
+\alias{stratiflevels}
 \alias{stratiflevels,COBRAPerformance-method}
 \alias{stratiflevels,COBRAPlot-method}
 \title{Accessor function for stratification levels}
@@ -12,7 +13,7 @@ stratiflevels(x, ...)
 \S4method{stratiflevels}{COBRAPerformance}(x)
 }
 \arguments{
-\item{x}{An \code{COBRAPerformance} or \code{COBRAPlot} object}
+\item{x}{A \code{COBRAPerformance} or \code{COBRAPlot} object}
 
 \item{...}{Additional arguments}
 }
@@ -22,7 +23,7 @@ A character vector of all stratification levels represented in the
 }
 \description{
 Accessor function to extract the stratification levels that are represented
-in an \code{COBRAPerformance} or \code{COBRAPlot} object.
+in a \code{COBRAPerformance} or \code{COBRAPlot} object.
 }
 \examples{
 data(cobradata_example)
@@ -35,4 +36,3 @@ stratiflevels(cobraperf)
 \author{
 Charlotte Soneson
 }
-

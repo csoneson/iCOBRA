@@ -4,8 +4,46 @@ gen_thr_vec <- function(thresholds) {
   v
 }
 
+## conttruth = true logFC
+## estvals = estimated logFC
+## svals = s-values, to rank and cutoff based on
+get_curve_cont <- function(conttruth, estvals, svals, aspc) {
+  if (aspc == "fsrnbr") {
+    kg <- intersect(names(conttruth), names(svals[!is.na(svals)]))
+    svals <- sort(svals[match(kg, names(svals))])
+    conttruth <- conttruth[match(names(svals), names(conttruth))]
+    estvals <- estvals[match(names(svals), names(estvals))]
+    if (any(sign(conttruth) != 0)) {
+      
+      ## Make sure that genes without logFC estimate are counted as mismatching signs
+      if (any(is.na(estvals))) {
+        estvals[is.na(estvals)] <- -conttruth[is.na(estvals)]
+      }
+      
+      unique_svals <- sort(unique(svals))
+      fsrnbr <- as.data.frame(t(sapply(unique_svals, function(s) {
+        ids <- which(svals <= s)
+        nbr <- length(ids)
+        fs <- sum(abs(sign(conttruth[ids]) - sign(estvals[ids])) == 2)
+        fsr <- fs/nbr
+        ts <- sum(sign(conttruth[ids]) == sign(estvals[ids]))
+        tot_called <- length(which(!is.na(svals)))
+        possign <- sum(sign(conttruth) == 1)
+        negsign <- sum(sign(conttruth) == -1)
+        zerosign <- sum(sign(conttruth) == 0)
+        c(SVAL_CUTOFF = s, NBR = nbr, FS = fs, FSR = fsr, TS = ts, 
+          TOT_CALLED = tot_called, POSSIGN = possign, NEGSIGN = negsign,
+          ZEROSIGN = zerosign)
+      })))
+      return(fsrnbr)
+    } else {
+      return(NULL)
+    }
+  }
+}
+
 #' @importFrom ROCR prediction performance
-get_curve <- function(bintruth, vals, revr, aspc) {
+get_curve <- function(bintruth, vals, revr, aspc, rank_by_abs) {
   kg <- intersect(names(bintruth), names(vals[!is.na(vals)]))
   if (any(bintruth[match(kg, names(bintruth))] == 0) &
       any(bintruth[match(kg, names(bintruth))] == 1)) {
@@ -15,6 +53,10 @@ get_curve <- function(bintruth, vals, revr, aspc) {
       fpcorr <- length(which(bintruth == 0))/
         length(intersect(names(bintruth)[which(bintruth == 0)], kg))
     }
+    
+    if (isTRUE(rank_by_abs))
+      vals <- abs(vals)
+    
     if (isTRUE(revr))
       inpvals <- 1 - vals[match(kg, names(vals))]
     else
@@ -74,7 +116,7 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' Calculate performance measures
 #'
 #' Calculate performance measures from a given collection of p-values, adjusted
-#' p-values and scores provided in an \code{COBRAData} object.
+#' p-values and scores provided in a \code{COBRAData} object.
 #'
 #' Depending on the collection of observations that are available for a given
 #' method, the appropriate one will be chosen for each performance measure. For
@@ -90,11 +132,11 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' p-values will be used also for these aspects. For \code{roc} and \code{fpc},
 #' the \code{score} observations will be used if they are provided, otherwise
 #' p-values and, as a last instance, adjusted p-values. Finally, for the
-#' \code{corr}, \code{scatter} and \code{deviation} aspects, the \code{score}
-#' observations will be used if they are provided, otherwise no results will be
-#' calculated.
+#' \code{fsrnbr}, \code{corr}, \code{scatter} and \code{deviation} aspects, the
+#' \code{score} observations will be used if they are provided, otherwise no
+#' results will be calculated.
 #'
-#' @param cobradata An COBRAData object.
+#' @param cobradata A \code{COBRAData} object.
 #' @param binary_truth A character string giving the name of the column of
 #'   truth(cobradata) that contains the binary truth (true assignment of
 #'   variables into two classes, represented by 0/1).
@@ -104,10 +146,12 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #' @param aspects A character vector giving the types of performance measures to
 #'   calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
 #'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
-#'   "deviation").
+#'   "deviation", "fsrnbr", "fsrnbrcurve").
 #' @param thrs A numeric vector of adjusted p-value thresholds for which to
 #'   calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 #'   "fpr".
+#' @param svalthrs A numeric vector of s-value thresholds for which to calculate
+#'   the FSR. Affects "fsrnbr".
 #' @param splv A character string giving the name of the column of
 #'   truth(cobradata) that will be used to stratify the results. The default
 #'   value is "none", indicating no stratification.
@@ -128,8 +172,10 @@ get_curve <- function(bintruth, vals, revr, aspc) {
 #'   different methods.
 #' @param topn_venn A numeric value giving the number of top-ranked features to
 #'   compare between methods (if \code{type_venn} is "rank").
+#' @param rank_by_abs Whether to take the absolute value of the score before
+#'   using it to rank the variables  for ROC, FPC, FDR/NBR and FDR/TPR curves.
 #'
-#' @return An COBRAPerformance object
+#' @return A \code{COBRAPerformance} object
 #'
 #' @export
 #' @author Charlotte Soneson
@@ -145,19 +191,21 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
                                               "fdrnbrcurve", "tpr", "fpr",
                                               "roc", "fpc", "overlap",
-                                              "corr", "scatter", "deviation"),
-                                  thrs = c(0.01, 0.05, 0.1), splv = "none",
+                                              "corr", "scatter", "deviation",
+                                              "fsrnbr", "fsrnbrcurve"),
+                                  thrs = c(0.01, 0.05, 0.1), 
+                                  svalthrs = c(0.01, 0.05, 0.1), splv = "none",
                                   maxsplit = 3, onlyshared = FALSE,
                                   thr_venn = 0.05, type_venn = "adjp",
-                                  topn_venn = 100) {
+                                  topn_venn = 100, rank_by_abs = TRUE) {
 
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
   all_methods <- unique(c(colnames(pval(cobradata)), colnames(padj(cobradata)),
-                          colnames(score(cobradata))))
+                          colnames(sval(cobradata)), colnames(score(cobradata))))
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
-  if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects) &
+  if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects) &&
       !is.null(binary_truth)) {
     outNBR <- outFP <- outTP <- outFN <- outTN <- outTOT_CALLED <-
       outDS <- outNONDS <- list()
@@ -615,6 +663,222 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     fprs <- data.frame()
   }
 
+  ## ----------------------------- FSRNBR ------------------------------- ##
+  if ("fsrnbr" %in% aspects && !is.null(cont_truth)) {
+    outFSR <- list()
+    keeplevels <- c()
+    for (i in all_methods) {
+      inpcol <- select_measure(cobradata, i, asp = "fsrnbr")
+      if (!is.null(inpcol)) {
+        svl <- slot(cobradata, inpcol)[i]
+        scr <- slot(cobradata, "score")[i]
+        allg <- get_keepfeatures(truth = truth(cobradata),
+                                 df = svl, method = i,
+                                 colm = cont_truth, onlyshared = onlyshared)
+        svl <- svl[match(allg, rownames(svl)), , drop = FALSE]
+        scr <- scr[match(allg, rownames(scr)), , drop = FALSE]
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
+                                  drop = FALSE]
+        trt <- truth[, cont_truth, drop = FALSE]
+        
+        ## Make sure that genes without estimated logFCs are counted as having
+        ## mismatching signs
+        if (any(is.na(scr[, i]))) {
+          scr[is.na(scr[, i]), i] <- -trt[, cont_truth][is.na(scr[, i])]
+        }
+        
+        kltmp <- get_keeplevels(truth = truth, splv = splv,
+                                binary_truth = NULL,
+                                maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
+        
+        FSR <- list()
+        fsr <- gen_thr_vec(svalthrs)
+        fs <- gen_thr_vec(svalthrs)
+        ts <- gen_thr_vec(svalthrs)
+        possign <- gen_thr_vec(svalthrs)
+        negsign <- gen_thr_vec(svalthrs)
+        zerosign <- gen_thr_vec(svalthrs)
+        totcalled <- gen_thr_vec(svalthrs)
+        nbr <- gen_thr_vec(svalthrs)
+        for (thr in svalthrs) {
+          passed <- setdiff(rownames(svl)[which(svl[i] <= thr)], NA)
+          tested <- setdiff(rownames(svl)[which(!is.na(svl[i]))], NA)
+          if (length(passed) == 0) {
+            fsr[paste0("thr", thr)] <- 0
+          } else {
+            scrtmp <- scr[match(passed, rownames(scr)), i]
+            trttmp <- trt[match(passed, rownames(trt)), cont_truth]
+            fsr[paste0("thr", thr)] <-
+              length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))/length(passed)
+          }
+          nbr[paste0("thr", thr)] <- length(passed)
+          fs[paste0("thr", thr)] <- length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))
+          ts[paste0("thr", thr)] <- length(which(sign(scrtmp) == sign(trttmp)))
+          possign[paste0("thr", thr)] <- length(which(sign(trttmp) == 1))
+          negsign[paste0("thr", thr)] <- length(which(sign(trttmp) == -1))
+          zerosign[paste0("thr", thr)] <- length(which(sign(trttmp) == 0))
+          totcalled[paste0("thr", thr)] <- length(tested)
+        }
+        FSR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
+                                                           meas_type = inpcol,
+                                                           fsr = fsr,
+                                                           nbr = nbr,
+                                                           fs = fs, 
+                                                           ts = ts,
+                                                           possign = possign,
+                                                           negsign = negsign,
+                                                           zerosign = zerosign,
+                                                           totcalled = totcalled)
+        
+        if (splv != "none") {
+          for (j in kltmp) {
+            fsr <- gen_thr_vec(svalthrs)
+            fs <- gen_thr_vec(svalthrs)
+            ts <- gen_thr_vec(svalthrs)
+            possign <- gen_thr_vec(svalthrs)
+            negsign <- gen_thr_vec(svalthrs)
+            zerosign <- gen_thr_vec(svalthrs)
+            totcalled <- gen_thr_vec(svalthrs)
+            nbr <- gen_thr_vec(svalthrs)
+            for (thr in svalthrs) {
+              g <- rownames(truth)[which(truth[[splv]] == j)]
+              passed <- setdiff(intersect(g, rownames(svl)[which(svl[i] <= thr)]), NA)
+              tested <- setdiff(intersect(g, rownames(svl)[which(!is.na(svl[i]))]), NA)
+              if (length(passed) == 0) {
+                fsr[paste0("thr", thr)] <- 0
+              } else {
+                scrtmp <- scr[match(passed, rownames(scr)), i]
+                trttmp <- trt[match(passed, rownames(trt)), cont_truth]
+                fsr[paste0("thr", thr)] <-
+                  length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))/length(passed)
+              }
+              nbr[paste0("thr", thr)] <- length(passed)
+              fs[paste0("thr", thr)] <- length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))
+              ts[paste0("thr", thr)] <- length(which(sign(scrtmp) == sign(trttmp)))
+              possign[paste0("thr", thr)] <- length(which(sign(trttmp) == 1))
+              negsign[paste0("thr", thr)] <- length(which(sign(trttmp) == -1))
+              zerosign[paste0("thr", thr)] <- length(which(sign(trttmp) == 0))
+              totcalled[paste0("thr", thr)] <- length(tested)
+            }
+            FSR[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
+              list(basemethod = i, meas_type = inpcol, fsr = fsr, nbr = nbr,
+                   fs = fs, ts = ts, possign = possign, negsign = negsign,
+                   zerosign = zerosign, totcalled = totcalled)
+          }
+        }
+        outFSR <- c(outFSR, FSR)
+      } else {
+        message("column ", i, " is being ignored for FSR/NBR calculations")
+      }
+    }
+    if (any(sapply(lapply(outFSR, function(w) w$fsr), length) > 0)) {
+      fsrs <- t(do.call(rbind, lapply(outFSR, function(w) w$fsr)))
+      nbrs <- t(do.call(rbind, lapply(outFSR, function(w) w$nbr)))
+      tss <- t(do.call(rbind, lapply(outFSR, function(w) w$ts)))
+      fss <- t(do.call(rbind, lapply(outFSR, function(w) w$fs)))
+      possigns <- t(do.call(rbind, lapply(outFSR, function(w) w$possign)))
+      negsigns <- t(do.call(rbind, lapply(outFSR, function(w) w$negsign)))
+      zerosigns <- t(do.call(rbind, lapply(outFSR, function(w) w$zerosign)))
+      totcalleds <- t(do.call(rbind, lapply(outFSR, function(w) w$totcalled)))
+      vf <- sapply(outFSR, function(w) w$basemethod)
+      
+      fsrs <- extend_resulttable(fsrs, splv, keeplevels, "FSR",
+                                 vf, domelt = TRUE)
+      fsrs$satis <- ifelse(fsrs$FSR < as.numeric(gsub("thr", "", fsrs$thr)),
+                           "yes", "no")
+      fsrs$method.satis <- paste0(fsrs$fullmethod, fsrs$satis)
+      nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR", vf, domelt = TRUE)
+      tss <- extend_resulttable(tss, splv, keeplevels, "TS", vf, domelt = TRUE)
+      fss <- extend_resulttable(fss, splv, keeplevels, "FS", vf, domelt = TRUE)
+      possigns <- extend_resulttable(possigns, splv, keeplevels, "POSSIGN", vf, domelt = TRUE)
+      negsigns <- extend_resulttable(negsigns, splv, keeplevels, "NEGSIGN", vf, domelt = TRUE)
+      zerosigns <- extend_resulttable(zerosigns, splv, keeplevels, "ZEROSIGN", vf, domelt = TRUE)
+      totcalleds <- extend_resulttable(totcalleds, splv, keeplevels, "TOT_CALLED", vf, domelt = TRUE)
+      
+      fsrs <- Reduce(function(...) merge(..., all = TRUE), 
+                     list(fsrs = fsrs, nbrs = nbrs, tss = tss, fss = fss, 
+                          possigns = possigns, negsigns = negsigns,
+                          zerosigns = zerosigns, totcalleds = totcalleds))
+    } else {
+      fsrs <- data.frame()
+    }
+  } else {
+    fsrs <- data.frame()
+  }
+  
+  ## ------------------------- FSRNBRcurve ------------------------------ ##
+  if ("fsrnbrcurve" %in% aspects & !is.null(cont_truth)) {
+    outFSRNBR <- list()
+    keeplevels <- c()
+    for (i in all_methods) {
+      inpcol <- select_measure(cobradata, i, asp = "fsrnbr")
+      if (!is.null(inpcol)) {
+        tmp <- slot(cobradata, inpcol)[i]
+        scr <- slot(cobradata, "score")[i]
+        allg <- get_keepfeatures(truth = truth(cobradata), 
+                                 df = tmp, method = i, 
+                                 colm = cont_truth, onlyshared = onlyshared)
+        tmp <- tmp[match(allg, rownames(tmp)), , drop = FALSE]
+        truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), , 
+                                  drop = FALSE]
+        scr <- scr[match(allg, rownames(scr)), , drop = FALSE]
+        kltmp <- get_keeplevels(truth = truth, splv = splv, 
+                                binary_truth = NULL, maxsplit = maxsplit)
+        keeplevels <- union(keeplevels, kltmp)
+        
+        FSRNBR <- list()
+        conttruth <- truth[, cont_truth]
+        names(conttruth) <- rownames(truth)
+        vals <- tmp[[i]]
+        names(vals) <- rownames(tmp)
+        estvals <- scr[, i]
+        names(estvals) <- rownames(scr)
+        fsrnbr <- get_curve_cont(conttruth = conttruth, estvals = estvals,
+                                 svals = vals, aspc = "fsrnbr")
+        FSRNBR[[paste0(i, "_overall", "__", inpcol)]] <- 
+          list(basemethod = i, meas_type = inpcol, fsrnbr = fsrnbr)
+        if (splv != "none") {
+          for (j in kltmp) {
+            conttruth <- truth[which(truth[[splv]] == j), cont_truth]
+            names(conttruth) <- rownames(truth)[which(truth[[splv]] == j)]
+            fsrnbr <- get_curve_cont(conttruth = conttruth, estvals = estvals,
+                                     svals = vals, aspc = "fsrnbr")
+            if (!is.null(fsrnbr)) {
+              FSRNBR[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
+                list(basemethod = i, meas_type = inpcol, fsrnbr = fsrnbr)
+            }
+          }
+        }
+        outFSRNBR <- c(outFSRNBR, FSRNBR)
+      } else {
+        message("column ", i, " is being ignored for FSRNBR calculations")
+      }
+    }
+    if (any(sapply(lapply(outFSRNBR, function(w) w$fsrnbr),
+                   length) > 0)) {
+      vfsn <- sapply(outFSRNBR, function(w) w$basemethod)
+      fsrnbrs <- do.call(rbind, lapply(names(outFSRNBR), function(s) {
+        data.frame(FSR = outFSRNBR[[s]]$fsrnbr[, "FSR"],
+                   NBR = outFSRNBR[[s]]$fsrnbr[, "NBR"],
+                   CUTOFF = outFSRNBR[[s]]$fsrnbr[, "SVAL_CUTOFF"],
+                   TS = outFSRNBR[[s]]$fsrnbr[, "TS"],
+                   FS = outFSRNBR[[s]]$fsrnbr[, "FS"],
+                   TOT_CALLED = outFSRNBR[[s]]$fsrnbr[, "TOT_CALLED"],
+                   POSSIGN = outFSRNBR[[s]]$fsrnbr[, "POSSIGN"],
+                   NEGSIGN = outFSRNBR[[s]]$fsrnbr[, "NEGSIGN"],
+                   ZEROSIGN = outFSRNBR[[s]]$fsrnbr[, "ZEROSIGN"],
+                   method = s)
+      }))
+      fsrnbrs <- extend_resulttable(fsrnbrs, splv, keeplevels, NULL,
+                                    vfsn, domelt = FALSE)
+    } else {
+      fsrnbrs <- data.frame()
+    }
+  } else {
+    fsrnbrs <- data.frame()
+  }
+  
   ## ------------------------- FDRTPRcurve ------------------------------ ##
   if (any(c("fdrtprcurve", "fdrnbrcurve") %in% aspects) &
       !is.null(binary_truth)) {
@@ -645,7 +909,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
             names(vals) <- rownames(tmp)
             fdrtpr <- get_curve(bintruth = bintruth, vals = vals,
                                 revr = ifelse(inpcol == "score", FALSE, TRUE),
-                                aspc = "fdrtpr")
+                                aspc = "fdrtpr", rank_by_abs = rank_by_abs)
             FDRTPR[[paste0(i, "_overall", "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol, fdrtpr = fdrtpr)
             if (splv != "none") {
@@ -655,7 +919,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                 fdrtpr <- get_curve(bintruth = bintruth, vals = vals,
                                     revr = ifelse(inpcol == "score",
                                                   FALSE, TRUE),
-                                    aspc = "fdrtpr")
+                                    aspc = "fdrtpr", rank_by_abs = rank_by_abs)
                 if (!is.null(fdrtpr)) {
                   FDRTPR[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
                     list(basemethod = i, meas_type = inpcol, fdrtpr = fdrtpr)
@@ -726,7 +990,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           names(vals) <- rownames(tmp)
           roc <- get_curve(bintruth = bintruth, vals = vals,
                            revr = ifelse(inpcol == "score", FALSE, TRUE),
-                           aspc = "roc")
+                           aspc = "roc", rank_by_abs = rank_by_abs)
           ROC[[paste0(i, "_overall", "__", inpcol)]] <-
             list(basemethod = i, meas_type = inpcol, roc = roc)
           if (splv != "none") {
@@ -735,7 +999,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
               names(bintruth) <- rownames(truth)[which(truth[[splv]] == j)]
               roc <- get_curve(bintruth = bintruth, vals = vals,
                                revr = ifelse(inpcol == "score", FALSE, TRUE),
-                               aspc = "roc")
+                               aspc = "roc", rank_by_abs = rank_by_abs)
               if (!is.null(roc)) {
                 ROC[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
                   list(basemethod = i, meas_type = inpcol, roc = roc)
@@ -913,7 +1177,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           names(vals) <- rownames(tmp)
           fpc <- get_curve(bintruth = bintruth, vals = vals,
                            revr = ifelse(inpcol == "score", FALSE, TRUE),
-                           aspc = "fpc")
+                           aspc = "fpc", rank_by_abs = rank_by_abs)
           FPC[[paste0(i, "_overall", "__", inpcol)]] <-
             list(basemethod = i, meas_type = inpcol, fpc = fpc)
           if (splv != "none") {
@@ -922,7 +1186,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
               names(bintruth) <- rownames(truth)[which(truth[[splv]] == j)]
               fpc <- get_curve(bintruth = bintruth, vals = vals,
                                revr = ifelse(inpcol == "score", FALSE, TRUE),
-                               aspc = "fpc")
+                               aspc = "fpc", rank_by_abs = rank_by_abs)
               if (!is.null(fpc)) {
                 FPC[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
                   list(basemethod = i, meas_type = inpcol, fpc = fpc)
@@ -1037,21 +1301,23 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   if (!("tpr" %in% aspects)) tprs <- data.frame()
   if (!("fdrtprcurve" %in% aspects)) fdrtprcurve <- data.frame()
   if (!("fdrnbrcurve" %in% aspects)) fdrnbrcurve <- data.frame()
-
+  if (!("fsrnbrcurve" %in% aspects)) fsrnbrcurve <- data.frame()
+  
   COBRAPerformance(tpr = tprs, fpr = fprs, fdrtprcurve = fdrtprs,
-                  fdrnbrcurve = fdrnbrs, deviation = deviations,
-                  roc = rocs, fpc = fpcs, fdrtpr = fdrtpr, fdrnbr = fdrnbr,
-                  maxsplit = maxsplit, overlap = overlap, splv = splv,
-                  corr = corrs, scatter = scatters, onlyshared = onlyshared)
+                   fdrnbrcurve = fdrnbrs, deviation = deviations,
+                   roc = rocs, fpc = fpcs, fdrtpr = fdrtpr, fdrnbr = fdrnbr,
+                   maxsplit = maxsplit, overlap = overlap, splv = splv,
+                   corr = corrs, scatter = scatters, onlyshared = onlyshared,
+                   fsrnbrcurve = fsrnbrs, fsrnbr = fsrs)
 
 }
 
 #' Prepare data for plotting
 #'
-#' Prepare performance data provided in an \code{COBRAPerformance} object
+#' Prepare performance data provided in a \code{COBRAPerformance} object
 #' (obtained by \code{\link{calculate_performance}}) for plotting.
 #'
-#' @param cobraperf An \code{COBRAPerformance} object.
+#' @param cobraperf A \code{COBRAPerformance} object.
 #' @param keepmethods A character vector consisting of methods to retain for
 #'   plotting (these should be a subset of \code{basemethods(cobraperf)}), or
 #'   NULL (indicating that all methods represented in cobraperf should be
@@ -1086,7 +1352,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
 #' @param incltruth A logical indicating whether the truth should be included in
 #'   Venn diagrams.
 #'
-#' @return An \code{COBRAPlot} object
+#' @return A \code{COBRAPlot} object
 #'
 #' @export
 #' @author Charlotte Soneson
@@ -1176,7 +1442,8 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
 
   ## Exclude overall level
   for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
-               "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr")) {
+               "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr", 
+               "fsrnbrcurve")) {
     if (splv(cobraperf) != "none") {
       if (!(isTRUE(incloverall))) {
         if (length(slot(cobraperf, sl)) != 0)
@@ -1238,7 +1505,8 @@ reorder_levels <- function(cobraplot, levels) {
   else column <- "fullmethod"
 
   for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
-               "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr")) {
+               "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr",
+               "fsrnbrcurve")) {
     if (length(slot(cobraplot, sl)) != 0) {
       levels_to_keep <- levels[which(levels %in% slot(cobraplot, sl)[, column])]
       if (length(setdiff(unique(slot(cobraplot, sl)[, column]),

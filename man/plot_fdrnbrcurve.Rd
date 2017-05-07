@@ -9,7 +9,7 @@ plot_fdrnbrcurve(cobraplot, title = "", stripsize = 15,
   plottype = c("curve", "points"), linewidth = 1)
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -48,4 +48,3 @@ plot_fdrnbrcurve(cobraplot, plottype = c("curve", "points"))
 \author{
 Charlotte Soneson
 }
-

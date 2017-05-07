@@ -12,13 +12,14 @@ Description: This package provides functions for calculation and visualization
     exploration of results.
 License: GPL (>=2)
 LazyData: TRUE
-Collate:
+Collate: 
     'AllGenerics.R'
     'COBRAData.R'
     'COBRAPerformance.R'
     'COBRAPlot.R'
     'calculate_performance.R'
     'cobradata_example.R'
+    'cobradata_example_sval.R'
     'helpers_general.R'
     'plot_methods.R'
     'printHead.R'
@@ -43,4 +44,4 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 biocViews: Classification
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

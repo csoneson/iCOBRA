@@ -3,9 +3,11 @@
 \docType{methods}
 \name{plotcolors}
 \alias{plotcolors}
-\alias{plotcolors,COBRAPlot-method}
 \alias{plotcolors<-}
+\alias{plotcolors}
+\alias{plotcolors,COBRAPlot-method}
 \alias{plotcolors<-,COBRAPlot,character-method}
+\alias{plotcolors}
 \title{Accessor and replacement functions for \code{plotcolors} slot}
 \usage{
 plotcolors(x, ...)
@@ -17,7 +19,7 @@ plotcolors(x, ...) <- value
 \S4method{plotcolors}{COBRAPlot,character}(x) <- value
 }
 \arguments{
-\item{x}{An \code{COBRAPlot} object.}
+\item{x}{A \code{COBRAPlot} object.}
 
 \item{...}{Additional arguments.}
 
@@ -45,4 +47,3 @@ plotcolors(cobraplot)
 \author{
 Charlotte Soneson
 }
-
