@@ -3,9 +3,11 @@
 \docType{methods}
 \name{pval}
 \alias{pval}
-\alias{pval,COBRAData-method}
 \alias{pval<-}
+\alias{pval}
+\alias{pval,COBRAData-method}
 \alias{pval<-,COBRAData,data.frame-method}
+\alias{pval}
 \title{Accessor and replacement functions for \code{pval} slot}
 \usage{
 pval(x, ...)
@@ -17,7 +19,7 @@ pval(x, ...) <- value
 \S4method{pval}{COBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An \code{COBRAData} object.}
+\item{x}{A \code{COBRAData} object.}
 
 \item{...}{Additional arguments.}
 
@@ -29,7 +31,7 @@ The accessor function returns a data frame containing p-values for
   each feature and each method.
 }
 \description{
-Accessor and replacement functions for the \code{pval} slot in an
+Accessor and replacement functions for the \code{pval} slot in a
 \code{COBRAData} object.
 }
 \examples{
@@ -39,4 +41,3 @@ head(pval(cobradata_example))
 \author{
 Charlotte Soneson
 }
-

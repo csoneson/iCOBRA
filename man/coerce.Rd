@@ -2,10 +2,11 @@
 % Please edit documentation in R/COBRAPlot.R
 \docType{methods}
 \name{coerce}
+\alias{coerce}
+\alias{coerce,COBRAPerformance,COBRAPlot-method}
+\alias{coerce,}
 \alias{COBRAPlot,COBRAPerformance-method}
 \alias{coerce}
-\alias{coerce,}
-\alias{coerce,COBRAPerformance,COBRAPlot-method}
 \alias{coerce,COBRAPlot,COBRAPerformance-method}
 \title{Convert an object to another class}
 \arguments{
@@ -30,4 +31,3 @@ as(cobraplot, "COBRAPerformance")
 \author{
 Charlotte Soneson
 }
-

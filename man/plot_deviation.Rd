@@ -9,7 +9,7 @@ plot_deviation(cobraplot, title = "", stripsize = 15, titlecol = "black",
   transf = "raw")
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -21,8 +21,8 @@ results are stratified by an annotation.}
 \item{xaxisrange}{A numeric vector with two elements, giving the lower and
 upper boundary of the x-axis, respectively.}
 
-\item{plottype}{Either "boxplot" or "violin", indicating what type of plot to
-make.}
+\item{plottype}{Either "boxplot" or "violinplot", indicating what type of
+plot to make.}
 
 \item{dojitter}{A logical indicating whether to include jittered data points
 or not.}
@@ -48,4 +48,3 @@ plot_deviation(cobraplot)
 \author{
 Charlotte Soneson
 }
-

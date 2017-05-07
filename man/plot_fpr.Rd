@@ -8,7 +8,7 @@ plot_fpr(cobraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(0, 1))
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -40,4 +40,3 @@ plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 \author{
 Charlotte Soneson
 }
-

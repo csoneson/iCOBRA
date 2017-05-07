@@ -19,7 +19,7 @@ Returns (and runs) an object representing the shiny app.
 }
 \description{
 Interactive shiny app for visualization of results. The app can be
-initialized with an \code{COBRAData} object. If no object is provided, truth
+initialized with a \code{COBRAData} object. If no object is provided, truth
 and results are loaded into the app from text files (see the Instructions tab
 of the app for formatting instructions). Properly formatted text files can
 also be obtained using the function \code{\link{COBRAData_to_text}}.
@@ -33,4 +33,3 @@ COBRAapp(cobradata_example)
 \author{
 Charlotte Soneson
 }
-

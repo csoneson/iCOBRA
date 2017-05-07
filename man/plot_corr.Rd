@@ -8,7 +8,7 @@ plot_corr(cobraplot, title = "", stripsize = 15, titlecol = "black",
   pointsize = 5, xaxisrange = c(-1, 1), corrtype = "pearson")
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -42,4 +42,3 @@ plot_corr(cobraplot, corrtype = "spearman")
 \author{
 Charlotte Soneson
 }
-

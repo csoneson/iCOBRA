@@ -3,9 +3,11 @@
 \docType{methods}
 \name{score}
 \alias{score}
-\alias{score,COBRAData-method}
 \alias{score<-}
+\alias{score}
+\alias{score,COBRAData-method}
 \alias{score<-,COBRAData,data.frame-method}
+\alias{score}
 \title{Accessor and replacement functions for \code{score} slot}
 \usage{
 score(x, ...)
@@ -17,7 +19,7 @@ score(x, ...) <- value
 \S4method{score}{COBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An \code{COBRAData} object.}
+\item{x}{A \code{COBRAData} object.}
 
 \item{...}{Additional arguments.}
 
@@ -28,7 +30,7 @@ The accessor function regurns a data frame containing scores for each
   feature and each method.
 }
 \description{
-Accessor and replacement functions for the \code{score} slot in an
+Accessor and replacement functions for the \code{score} slot in a
 \code{COBRAData} object.
 }
 \examples{
@@ -38,4 +40,3 @@ head(score(cobradata_example))
 \author{
 Charlotte Soneson
 }
-

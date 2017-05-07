@@ -2,6 +2,7 @@
 % Please edit documentation in R/COBRAData.R
 \docType{class}
 \name{COBRAData-class}
+\alias{COBRAData-class}
 \alias{.COBRAData}
 \alias{COBRAData}
 \alias{COBRAData-class}
@@ -10,7 +11,7 @@
 \title{\code{COBRAData} object and constructor}
 \usage{
 COBRAData(pval = data.frame(), padj = data.frame(), score = data.frame(),
-  truth = data.frame(), object_to_extend = NULL)
+  sval = data.frame(), truth = data.frame(), object_to_extend = NULL)
 
 COBRAData_from_text(truth_file, result_files, feature_id)
 
@@ -31,26 +32,32 @@ values of the scores should correspond to 'more significant' features.
 Missing values (\code{NA}s) are allowed. The row names should be feature
 names.}
 
+\item{sval}{A data frame with features as rows and methods as columns,
+containing s-values (analogous to q-values, but for sign errors, see
+Stephens (2017)). Missing values (\code{NA}s) are allowed. The row names
+should be feature names.}
+
 \item{truth}{A data frame with features as rows columns containing feature
 annotations such as, e.g., binary and continuous truths and additional
 annotations that can be used to stratify the performance calculations. The
 row names should be feature names.}
 
-\item{object_to_extend}{An \code{COBRAData} object to extend with the
+\item{object_to_extend}{A \code{COBRAData} object to extend with the
 provided information.}
 
 \item{truth_file}{A character string giving the path to a file with true
 labels and other feature annotations.}
 
 \item{result_files}{A character vector giving path(s) to file(s) with results
-(p-values, adjusted p-values, scores) for one or more methods. The column
-names of these files must be of the form "method:measure", where measure is
-one of P, adjP or score, depending on what is given in the column.}
+(p-values, adjusted p-values, s-values, scores) for one or more methods.
+The column names of these files must be of the form "method:measure", where
+measure is one of P, adjP, S or score, depending on what is given in the
+column.}
 
 \item{feature_id}{A character string giving the name of the column in the
 truth and result files that encodes the feature identifier.}
 
-\item{cobradata}{An \code{COBRAData} object}
+\item{cobradata}{A \code{COBRAData} object}
 }
 \value{
 \code{COBRAData} and \code{COBRAData_from_text} return a
@@ -58,11 +65,12 @@ truth and result files that encodes the feature identifier.}
 }
 \description{
 The \code{COBRAData} class contains slots to hold calculated p-values,
-adjusted p-values and general 'scores' for a set of features. The slots can
-contain values from multiple methods, and each method can contribute to one
-or more slots. The class also contains a slot giving the 'truth' (a binary
-assignment and/or a continuous score) for each feature, as well as additional
-annotations that can be used to stratify the performance calculations.
+adjusted p-values and general 'scores' for a set of features, as well as 
+s-values (see Stephens (2017)). The slots can contain values from multiple
+methods, and each method can contribute to one or more slots. The class also
+contains a slot giving the 'truth' (a binary assignment and/or a continuous
+score) for each feature, as well as additional annotations that can be used
+to stratify the performance calculations.
 }
 \details{
 If adjusted p-values are missing for some methods, for which nominal p-values
@@ -87,4 +95,3 @@ cobradata <- COBRAData(pval = pval, truth = truth)
 \author{
 Charlotte Soneson
 }
-

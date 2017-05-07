@@ -8,7 +8,7 @@ plot_scatter(cobraplot, title = "", stripsize = 10, titlecol = "black",
   pointsize = 3, doflip = FALSE, dolog = FALSE)
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -44,4 +44,3 @@ plot_scatter(cobraplot)
 \author{
 Charlotte Soneson
 }
-

@@ -6,12 +6,13 @@
 \usage{
 calculate_performance(cobradata, binary_truth = NULL, cont_truth = NULL,
   aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr",
-  "roc", "fpc", "overlap", "corr", "scatter", "deviation"), thrs = c(0.01,
-  0.05, 0.1), splv = "none", maxsplit = 3, onlyshared = FALSE,
-  thr_venn = 0.05, type_venn = "adjp", topn_venn = 100)
+  "roc", "fpc", "overlap", "corr", "scatter", "deviation", "fsrnbr",
+  "fsrnbrcurve"), thrs = c(0.01, 0.05, 0.1), svalthrs = c(0.01, 0.05, 0.1),
+  splv = "none", maxsplit = 3, onlyshared = FALSE, thr_venn = 0.05,
+  type_venn = "adjp", topn_venn = 100, rank_by_abs = TRUE)
 }
 \arguments{
-\item{cobradata}{An COBRAData object.}
+\item{cobradata}{A \code{COBRAData} object.}
 
 \item{binary_truth}{A character string giving the name of the column of
 truth(cobradata) that contains the binary truth (true assignment of
@@ -24,11 +25,14 @@ that the observations can be compared to).}
 \item{aspects}{A character vector giving the types of performance measures to
 calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
 "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
-"deviation").}
+"deviation", "fsrnbr", "fsrnbrcurve").}
 
 \item{thrs}{A numeric vector of adjusted p-value thresholds for which to
 calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 "fpr".}
+
+\item{svalthrs}{A numeric vector of s-value thresholds for which to calculate
+the FSR. Affects "fsrnbr".}
 
 \item{splv}{A character string giving the name of the column of
 truth(cobradata) that will be used to stratify the results. The default
@@ -55,13 +59,16 @@ different methods.}
 
 \item{topn_venn}{A numeric value giving the number of top-ranked features to
 compare between methods (if \code{type_venn} is "rank").}
+
+\item{rank_by_abs}{Whether to take the absolute value of the score before
+using it to rank the variables  for ROC, FPC, FDR/NBR and FDR/TPR curves.}
 }
 \value{
-An COBRAPerformance object
+A \code{COBRAPerformance} object
 }
 \description{
 Calculate performance measures from a given collection of p-values, adjusted
-p-values and scores provided in an \code{COBRAData} object.
+p-values and scores provided in a \code{COBRAData} object.
 }
 \details{
 Depending on the collection of observations that are available for a given
@@ -78,9 +85,9 @@ with the adjusted p-values (if provided). In other cases, the adjusted
 p-values will be used also for these aspects. For \code{roc} and \code{fpc},
 the \code{score} observations will be used if they are provided, otherwise
 p-values and, as a last instance, adjusted p-values. Finally, for the
-\code{corr}, \code{scatter} and \code{deviation} aspects, the \code{score}
-observations will be used if they are provided, otherwise no results will be
-calculated.
+\code{fsrnbr}, \code{corr}, \code{scatter} and \code{deviation} aspects, the
+\code{score} observations will be used if they are provided, otherwise no
+results will be calculated.
 }
 \examples{
 data(cobradata_example)
@@ -93,4 +100,3 @@ cobraperf <- calculate_performance(cobradata_example,
 \author{
 Charlotte Soneson
 }
-
