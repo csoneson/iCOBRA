@@ -4,14 +4,15 @@ library(iCOBRA)
 context("Check helper functions")
 
 test_that("get_coltype works", {
-  expect_equal(iCOBRA:::get_coltype("edgeR:P"), "pval")
-  expect_equal(iCOBRA:::get_coltype("voom:adjP"), "padj")
-  expect_equal(iCOBRA:::get_coltype("DESeq:2:score"), "score")
-  expect_is(iCOBRA:::get_coltype("voom"), "NULL")
+  expect_equal(iCOBRA:::get_coltype("Method1:P"), "pval")
+  expect_equal(iCOBRA:::get_coltype("Method2:adjP"), "padj")
+  expect_equal(iCOBRA:::get_coltype("Method3:score"), "score")
+  expect_equal(iCOBRA:::get_coltype("Method3:S"), "sval")
+  expect_is(iCOBRA:::get_coltype("Method2"), "NULL")
 })
 
 test_that("fix_res works", {
-  cobraperf <- calculate_performance(cobradata_example, binary_truth = "status",
+  cobraperf <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                     cont_truth = "logFC")
   cobraplot <- prepare_data_for_plot(cobraperf)
 
@@ -46,8 +47,8 @@ test_that("fix_res works", {
 })
 
 test_that("res_check works", {
-  expect_false(iCOBRA:::res_check(pval(cobradata_example)[, 1, drop = FALSE]))
-  expect_true(iCOBRA:::res_check(pval(cobradata_example)))
+  expect_false(iCOBRA:::res_check(pval(cobradata_example_sval)[, 1, drop = FALSE]))
+  expect_true(iCOBRA:::res_check(pval(cobradata_example_sval)))
 })
 
 test_that("fix_duplicates works", {

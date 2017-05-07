@@ -3,9 +3,11 @@
 \docType{methods}
 \name{padj}
 \alias{padj}
-\alias{padj,COBRAData-method}
 \alias{padj<-}
+\alias{padj}
+\alias{padj,COBRAData-method}
 \alias{padj<-,COBRAData,data.frame-method}
+\alias{padj}
 \title{Accessor and replacement functions for \code{padj} slot}
 \usage{
 padj(x, ...)
@@ -17,7 +19,7 @@ padj(x, ...) <- value
 \S4method{padj}{COBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An \code{COBRAData} object.}
+\item{x}{A \code{COBRAData} object.}
 
 \item{...}{Additional arguments.}
 
@@ -29,7 +31,7 @@ The accessor function returns a data frame containing adjusted
   p-values for each feature and each method.
 }
 \description{
-Accessor and replacement functions for the \code{padj} slot in an
+Accessor and replacement functions for the \code{padj} slot in a
 \code{COBRAData} object.
 }
 \examples{
@@ -39,4 +41,3 @@ head(padj(cobradata_example))
 \author{
 Charlotte Soneson
 }
-

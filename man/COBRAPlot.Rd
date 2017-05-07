@@ -2,12 +2,14 @@
 % Please edit documentation in R/COBRAPlot.R
 \docType{class}
 \name{COBRAPlot-class}
+\alias{COBRAPlot-class}
 \alias{.COBRAPlot}
 \alias{COBRAPlot}
 \alias{COBRAPlot-class}
 \title{\code{COBRAPlot} object and constructor}
 \usage{
 COBRAPlot(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
+  fsrnbr = data.frame(), fsrnbrcurve = data.frame(),
   fdrnbr = data.frame(), corr = data.frame(), fdrnbrcurve = data.frame(),
   tpr = data.frame(), fpr = data.frame(), roc = data.frame(),
   scatter = data.frame(), onlyshared = NA, fpc = data.frame(),
@@ -21,6 +23,14 @@ adjusted p-value thresholds.}
 \item{fdrtprcurve}{A data frame containing observed FDR and TPR values for a
 (potentially large) number of cutoffs applied to a 'score' (that can be
 p-value, adjusted p-value or a more general score).}
+
+\item{fsrnbr}{A data frame containing observed false sign rate (FSR) and the
+number of features considered to be significant at various s-value
+thresholds}
+
+\item{fsrnbrcurve}{A data frame containing observed false sign rate (FSR) and
+number of features considered to be significant for a (potentially large)
+number of cutoffs applied to the s-value}
 
 \item{fdrnbr}{A data frame containing observed FDR and the number of features
 considered to be significant at various adjusted p-value thresholds.}
@@ -80,7 +90,7 @@ facetted plot (separating different stratification levels into different
 panels) or for displaying all values in one plot panel.}
 }
 \value{
-An \code{COBRAPlot} object.
+A \code{COBRAPlot} object.
 }
 \description{
 The \code{COBRAPlot} class is similar to the \code{COBRAPerformance} class in
@@ -89,7 +99,7 @@ also contains other attributes that are necessary for plotting, such as color
 assignments. Several \code{COBRAPlot} objects can be generated from the same
 \code{COBRAPerformance} object, without having to go through the potentially
 time consuming task of recalculating all performance measures. Objects from
-this class are typically generated from an \code{COBRAPerformance} objects by
+this class are typically generated from a \code{COBRAPerformance} objects by
 means of the function \code{\link{prepare_data_for_plot}}.
 }
 \examples{
@@ -99,4 +109,3 @@ cobraplot <- COBRAPlot()
 \author{
 Charlotte Soneson
 }
-

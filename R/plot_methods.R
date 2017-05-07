@@ -303,9 +303,18 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
   if (aspc == "TPR") {
     plot_data_lines <- fdrtprcurve(cobraplot)
     plot_data_points <- fdrtpr(cobraplot)
+    xasp <- "FDR"
+    yasp <- aspc
   } else if (aspc == "NBR") {
     plot_data_lines <- fdrnbrcurve(cobraplot)
     plot_data_points <- fdrnbr(cobraplot)
+    xasp <- "FDR"
+    yasp <- aspc
+  } else if (aspc == "FSR") {
+    plot_data_lines <- fsrnbrcurve(cobraplot)
+    plot_data_points <- fsrnbr(cobraplot)
+    xasp <- "FSR"
+    yasp <- "NBR"
   }
 
   thresholds <- sort(unique(as.numeric(gsub("thr", "", plot_data_points$thr))))
@@ -320,7 +329,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
   }
 
   if ("curve" %in% plottype & "points" %in% plottype) {
-    pp <- ggplot(plot_data_lines, aes_string(x = "FDR", y = aspc,
+    pp <- ggplot(plot_data_lines, aes_string(x = xasp, y = yasp,
                                              group = "method",
                                              colour = "method")) +
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
@@ -335,32 +344,32 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
                         name = "") +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
-      ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
-           ifelse(aspc == "TPR", yaxisrange[2],
-                  max(plot_data_lines$NBR[plot_data_lines$FDR <=
-                                            xaxisrange[2]]))) +
-      scale_x_continuous(breaks = c(0, thresholds,
-                                    seq(0.1, xaxisrange[2], 0.1)),
-                         labels = c("", thresholds,
-                                    seq(0.1, xaxisrange[2], 0.1)),
+      ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
+           ifelse(yasp == "TPR", yaxisrange[2],
+                  max(plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
+                                                xaxisrange[2]]))) +
+      scale_x_continuous(breaks = c(thresholds,
+                                    seq(0, xaxisrange[2], 0.1)),
+                         labels = c(thresholds, "", 
+                                    seq(0, xaxisrange[2], 0.1)[-1]),
                          limits = c(xaxisrange[1], xaxisrange[2])) +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("curve" %in% plottype) {
     pp <- ggplot(plot_data_lines,
-                 aes_string(x = "FDR", y = aspc,
+                 aes_string(x = xasp, y = yasp,
                             group = "method", colour = "method")) +
       geom_path(size = linewidth) +
       xlim(xaxisrange[1], xaxisrange[2]) +
-      ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
-           ifelse(aspc == "TPR", yaxisrange[2],
-                  max(plot_data_lines$NBR[plot_data_lines$FDR <=
-                                            xaxisrange[2]]))) +
+      ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
+           ifelse(yasp == "TPR", yaxisrange[2],
+                  max(plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
+                                                xaxisrange[2]]))) +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("points" %in% plottype) {
-    pp <- ggplot(plot_data_points, aes_string(x = "FDR", y = aspc,
+    pp <- ggplot(plot_data_points, aes_string(x = xasp, y = yasp,
                                               group = "method")) +
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
@@ -374,14 +383,14 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
                         name = "") +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
-      ylim(ifelse(aspc == "TPR", yaxisrange[1], 0),
-           ifelse(aspc == "TPR", yaxisrange[2],
-                  max(plot_data_lines$NBR[plot_data_lines$FDR <=
-                                            xaxisrange[2]]))) +
-      scale_x_continuous(breaks = c(0, thresholds,
-                                    seq(0.1, xaxisrange[2], 0.1)),
-                         labels = c("", thresholds,
-                                    seq(0.1, xaxisrange[2], 0.1)),
+      ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
+           ifelse(yasp == "TPR", yaxisrange[2],
+                  max(plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
+                                                xaxisrange[2]]))) +
+      scale_x_continuous(breaks = c(thresholds,
+                                    seq(0, xaxisrange[2], 0.1)),
+                         labels = c(thresholds, "", 
+                                    seq(0, xaxisrange[2], 0.1)[-1]),
                          limits = c(xaxisrange[1], xaxisrange[2])) +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
@@ -485,6 +494,49 @@ plot_fdrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
                 titlecol = titlecol, pointsize = pointsize,
                 xaxisrange = xaxisrange, yaxisrange = NULL,
                 plottype = plottype, aspc = "NBR",
+                linewidth = linewidth)
+}
+
+#' Plot number of features with s-value below threshold vs FSR
+#'
+#' Plot the number of features with an s-value below a threshold vs the observed
+#' false sign rate (FSR), for given adjusted p-value thresholds and/or as curves
+#' traced out by considering all threshold values.
+#'
+#' @param cobraplot A \code{COBRAPlot} object.
+#' @param title A character string giving the title of the plot.
+#' @param stripsize A numeric value giving the size of the strip text, when the
+#'   results are stratified by an annotation.
+#' @param titlecol A character string giving the color of the title.
+#' @param pointsize A numeric value giving the size of the plot characters.
+#' @param xaxisrange A numeric vector with two elements, giving the lower and
+#'   upper boundary of the x-axis, respectively.
+#' @param plottype A character vector giving the type of plot to construct. Can
+#'   be any combination of the two elements "curve" and "points".
+#' @param linewidth The line width used for plotting
+#'
+#' @return A ggplot object
+#'
+#' @import ggplot2
+#' @export
+#' @author Charlotte Soneson
+#' @examples
+#' data(cobradata_example_sval)
+#' cobraperf <- calculate_performance(cobradata_example_sval,
+#'                                    cont_truth = "logFC",
+#'                                    aspects = c("fsrnbr", "fsrnbrcurve"))
+#' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
+#'                                    incltruth = TRUE)
+#' plot_fsrnbrcurve(cobraplot, plottype = c("curve", "points"))
+plot_fsrnbrcurve <- function(cobraplot, title = "", stripsize = 15,
+                             titlecol = "black", pointsize = 5,
+                             xaxisrange = c(0, 1),
+                             plottype = c("curve", "points"),
+                             linewidth = 1) {
+  plot_fdrcurve(cobraplot = cobraplot, title = title, stripsize = stripsize,
+                titlecol = titlecol, pointsize = pointsize,
+                xaxisrange = xaxisrange, yaxisrange = NULL,
+                plottype = plottype, aspc = "FSR",
                 linewidth = linewidth)
 }
 

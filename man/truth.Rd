@@ -3,9 +3,11 @@
 \docType{methods}
 \name{truth}
 \alias{truth}
-\alias{truth,COBRAData-method}
 \alias{truth<-}
+\alias{truth}
+\alias{truth,COBRAData-method}
 \alias{truth<-,COBRAData,data.frame-method}
+\alias{truth}
 \title{Accessor and replacement functions for \code{truth} slot}
 \usage{
 truth(x, ...)
@@ -17,7 +19,7 @@ truth(x, ...) <- value
 \S4method{truth}{COBRAData,data.frame}(x) <- value
 }
 \arguments{
-\item{x}{An \code{COBRAData} object.}
+\item{x}{A \code{COBRAData} object.}
 
 \item{...}{Additional arguments.}
 
@@ -31,7 +33,7 @@ The accessor function returns a data frame containing true
   annotations to use for stratification of performance calculations.
 }
 \description{
-Accessor and replacement functions for the \code{truth} slot in an
+Accessor and replacement functions for the \code{truth} slot in a
 \code{COBRAData} object.
 }
 \examples{
@@ -41,4 +43,3 @@ head(truth(cobradata_example))
 \author{
 Charlotte Soneson
 }
-

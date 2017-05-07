@@ -8,7 +8,7 @@ prepare_data_for_plot(cobraperf, keepmethods = NULL, incloverall = TRUE,
   colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE)
 }
 \arguments{
-\item{cobraperf}{An \code{COBRAPerformance} object.}
+\item{cobraperf}{A \code{COBRAPerformance} object.}
 
 \item{keepmethods}{A character vector consisting of methods to retain for
 plotting (these should be a subset of \code{basemethods(cobraperf)}), or
@@ -49,10 +49,10 @@ same panel but shown with different colors (\code{FALSE}).}
 Venn diagrams.}
 }
 \value{
-An \code{COBRAPlot} object
+A \code{COBRAPlot} object
 }
 \description{
-Prepare performance data provided in an \code{COBRAPerformance} object
+Prepare performance data provided in a \code{COBRAPerformance} object
 (obtained by \code{\link{calculate_performance}}) for plotting.
 }
 \examples{
@@ -73,4 +73,3 @@ cobraplot2 <- prepare_data_for_plot(cobraperf, keepmethods = NULL,
 \author{
 Charlotte Soneson
 }
-

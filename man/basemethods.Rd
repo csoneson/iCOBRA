@@ -3,6 +3,7 @@
 \docType{methods}
 \name{basemethods}
 \alias{basemethods}
+\alias{basemethods}
 \alias{basemethods,COBRAPerformance-method}
 \alias{basemethods,COBRAPlot-method}
 \title{Accessor function for basemethods}
@@ -12,7 +13,7 @@ basemethods(x, ...)
 \S4method{basemethods}{COBRAPerformance}(x)
 }
 \arguments{
-\item{x}{An \code{COBRAPerformance} or \code{COBRAPlot} object.}
+\item{x}{A \code{COBRAPerformance} or \code{COBRAPlot} object.}
 
 \item{...}{Additional arguments.}
 }
@@ -33,4 +34,3 @@ basemethods(cobraperf)
 \author{
 Charlotte Soneson
 }
-

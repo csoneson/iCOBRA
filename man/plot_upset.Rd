@@ -8,7 +8,7 @@ plot_upset(cobraplot, stratum = NULL, nsets = NULL, nintersects = NULL,
   sets.bar.color = NULL, ...)
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{stratum}{If results are stratified, the category to plot results for.
 Can be numeric or categorical (the name of the category).}
@@ -52,9 +52,6 @@ cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                    incltruth = TRUE)
 plot_upset(cobraplot, stratum = "[2.85e+00,1.45e+01)")
 }
-\author{
-Charlotte Soneson
-}
 \references{
 Lex and Gehlenborg (2014): Points of view: Sets and intersections. Nature
 Methods 11, 779.
@@ -62,4 +59,6 @@ Methods 11, 779.
 Lex et al (2014): UpSet: Visualization of intersecting sets. IEEE
 Transactions on Visualization and Computer Graphics 20(12), 1983-1992.
 }
-
+\author{
+Charlotte Soneson
+}

@@ -2,13 +2,15 @@
 % Please edit documentation in R/COBRAPerformance.R
 \docType{class}
 \name{COBRAPerformance-class}
+\alias{COBRAPerformance-class}
 \alias{.COBRAPerformance}
 \alias{COBRAPerformance}
 \alias{COBRAPerformance-class}
 \title{\code{COBRAPerformance} object and constructor}
 \usage{
 COBRAPerformance(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
-  fdrnbr = data.frame(), fdrnbrcurve = data.frame(), tpr = data.frame(),
+  fdrnbr = data.frame(), fdrnbrcurve = data.frame(),
+  fsrnbr = data.frame(), fsrnbrcurve = data.frame(), tpr = data.frame(),
   fpr = data.frame(), splv = "", roc = data.frame(), fpc = data.frame(),
   deviation = data.frame(), onlyshared = NA, overlap = data.frame(),
   maxsplit = NA_integer_, corr = data.frame(), scatter = data.frame())
@@ -28,6 +30,14 @@ considered to be significant at various adjusted p-value thresholds.}
 features considered to be significant for a (potentially large) number of
 cutoffs applied to a 'score' (that can be p-value, adjusted p-value or a
 more general score).}
+
+\item{fsrnbr}{A data frame containing observed false sign rate (FSR) and the
+number of features considered to be significant at various s-value
+thresholds}
+
+\item{fsrnbrcurve}{A data frame containing observed false sign rate (FSR) and
+number of features considered to be significant for a (potentially large)
+number of cutoffs applied to the s-value}
 
 \item{tpr}{A data frame containing observed TPR values at various adjusted
 p-value thresholds.}
@@ -72,7 +82,7 @@ p-values or more general scores) and true scores, which can be used to
 generate scatter plots.}
 }
 \value{
-An \code{COBRAPerformance} object.
+A \code{COBRAPerformance} object.
 }
 \description{
 The \code{COBRAPerformance} class holds various types of calculated
@@ -87,4 +97,3 @@ COBRAPerformance()
 \author{
 Charlotte Soneson
 }
-

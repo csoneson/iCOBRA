@@ -8,7 +8,7 @@ plot_fpc(cobraplot, title = "", stripsize = 15, titlecol = "black",
   maxnfdc = 500, linewidth = 1)
 }
 \arguments{
-\item{cobraplot}{An \code{COBRAPlot} object.}
+\item{cobraplot}{A \code{COBRAPlot} object.}
 
 \item{title}{A character string giving the title of the plot.}
 
@@ -39,4 +39,3 @@ plot_fpc(cobraplot, maxnfdc = 750)
 \author{
 Charlotte Soneson
 }
-

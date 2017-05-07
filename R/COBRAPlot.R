@@ -13,7 +13,7 @@
 #' assignments. Several \code{COBRAPlot} objects can be generated from the same
 #' \code{COBRAPerformance} object, without having to go through the potentially
 #' time consuming task of recalculating all performance measures. Objects from
-#' this class are typically generated from an \code{COBRAPerformance} objects by
+#' this class are typically generated from a \code{COBRAPerformance} objects by
 #' means of the function \code{\link{prepare_data_for_plot}}.
 #'
 #' @param plotcolors A character vector giving the color for each method (or
@@ -22,7 +22,7 @@
 #'   facetted plot (separating different stratification levels into different
 #'   panels) or for displaying all values in one plot panel.
 #'
-#' @return An \code{COBRAPlot} object.
+#' @return A \code{COBRAPlot} object.
 #' @inheritParams COBRAPerformance
 #' @include COBRAPerformance.R
 #'
@@ -37,6 +37,7 @@
 #' ## Empty COBRAPlot object
 #' cobraplot <- COBRAPlot()
 COBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
+                      fsrnbr = data.frame(), fsrnbrcurve = data.frame(), 
                       fdrnbr = data.frame(), corr = data.frame(),
                       fdrnbrcurve = data.frame(), tpr = data.frame(),
                       fpr = data.frame(), roc = data.frame(),
@@ -46,6 +47,7 @@ COBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
                       maxsplit = NA_integer_, facetted = NA) {
 
   .COBRAPlot(fdrtpr = fdrtpr, fdrtprcurve = fdrtprcurve,
+             fsrnbr = fsrnbr, fsrnbrcurve = fsrnbrcurve, 
              onlyshared = onlyshared, fdrnbr = fdrnbr,
              fdrnbrcurve = fdrnbrcurve, deviation = deviation,
              tpr = tpr, fpr = fpr, roc = roc, fpc = fpc, scatter = scatter,
@@ -56,10 +58,12 @@ COBRAPlot <- function(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
 setMethod("show", "COBRAPlot", function(object) {
   cat("An object of class \"", class(object), "\"\n", sep = "")
   for (sl in slotNames(object)) {
-    x <- slot(object, sl)
-    cat("@", sl, "\n", sep = "")
-    .printHead(x)
-    cat("\n")
+    if (.hasSlot(object, sl)) {
+      x <- slot(object, sl)
+      cat("@", sl, "\n", sep = "")
+      .printHead(x)
+      cat("\n")
+    }
   }
 })
 
@@ -123,6 +127,29 @@ setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPlot",
                                           value = "data.frame"),
                  function(x, value) {
                    x@fdrnbrcurve <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fsrnbr
+#' @aliases fsrnbr fsrnbr,COBRAPlot-method fsrnbr<-,COBRAPlot,data.frame-method
+setReplaceMethod("fsrnbr", signature(x = "COBRAPlot",
+                                     value = "data.frame"),
+                 function(x, value) {
+                   x <- update_cobraperformance(x, quiet = FALSE)
+                   x@fsrnbr <- value
+                   if (validObject(x))
+                     x
+                 })
+
+#' @rdname fsrnbrcurve
+#' @aliases fsrnbrcurve fsrnbrcurve,COBRAPlot-method
+#'   fsrnbrcurve<-,COBRAPlot,data.frame-method
+setReplaceMethod("fsrnbrcurve", signature(x = "COBRAPlot",
+                                          value = "data.frame"),
+                 function(x, value) {
+                   x <- update_cobraperformance(x, quiet = FALSE)
+                   x@fsrnbrcurve <- value
                    if (validObject(x))
                      x
                  })
@@ -230,7 +257,7 @@ setReplaceMethod("maxsplit", signature(x = "COBRAPlot",
 #'   assigned to each of the methods (or method/stratification level
 #'   combinations) represented in the \code{COBRAPlot} object.
 #'
-#' @param x An \code{COBRAPlot} object.
+#' @param x A \code{COBRAPlot} object.
 #' @param ... Additional arguments.
 #' @param value A character vector giving the colors assigned to each of the
 #'   methods (or method/stratification level combinations) represented in the
@@ -269,7 +296,7 @@ setReplaceMethod("plotcolors", signature(x = "COBRAPlot", value = "character"),
 #'   object is formatted for facetted plots (visualizing each stratification
 #'   level in a separate panel) or not.
 #'
-#' @param x An \code{COBRAPlot} object.
+#' @param x A \code{COBRAPlot} object.
 #' @param ... Additional arguments.
 #' @param value A logical value, indicating whether the object is formatted for
 #'   facetted plots (visualizing each stratification level in a separate panel)
@@ -311,6 +338,8 @@ setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
 #' cobraplot[, c("voom")]
 setMethod("[", "COBRAPlot",
           function(x, i = "missing", j, drop = "missing") {
+            x <- update_cobraperformance(x, quiet = FALSE)
+            
             if (length(intersect(j, basemethods(x))) == 0)
               stop("none of the provided method found in the object, ",
                    "no subsetting done")
@@ -333,6 +362,8 @@ setMethod("[", "COBRAPlot",
               x@fdrtpr <- x@fdrtpr[which(x@fdrtpr$basemethod %in% j), ]
             if (length(x@fdrnbr) != 0)
               x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
+            if (length(x@fsrnbr) != 0)
+              x@fsrnbr <- x@fsrnbr[which(x@fsrnbr$basemethod %in% j), ]
             if (length(x@deviation) != 0)
               x@deviation <- x@deviation[which(x@deviation$basemethod %in% j), ]
             if (length(x@fdrtprcurve) != 0)
@@ -341,6 +372,9 @@ setMethod("[", "COBRAPlot",
             if (length(x@fdrnbrcurve) != 0)
               x@fdrnbrcurve <-
                 x@fdrnbrcurve[which(x@fdrnbrcurve$basemethod %in% j), ]
+            if (length(x@fsrnbrcurve) != 0)
+              x@fsrnbrcurve <-
+                x@fsrnbrcurve[which(x@fsrnbrcurve$basemethod %in% j), ]
             if (length(x@corr) != 0)
               x@corr <- x@corr[which(x@corr$basemethod %in% j), ]
             if (length(x@scatter) != 0)
@@ -394,8 +428,10 @@ setValidity("COBRAPlot",
 #' as(cobraplot, "COBRAPerformance")
 setAs("COBRAPerformance", "COBRAPlot",
       function(from) {
+        from <- update_cobraperformance(from, quiet = TRUE)
         .COBRAPlot(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                    fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
+                   fsrnbr = from@fsrnbr, fsrnbrcurve = from@fsrnbrcurve, 
                    tpr = from@tpr, fpr = from@fpr, roc = from@roc,
                    fpc = from@fpc, onlyshared = from@onlyshared,
                    scatter = from@scatter, deviation = from@deviation,
@@ -410,8 +446,10 @@ setAs("COBRAPerformance", "COBRAPlot",
 #' @export
 setAs("COBRAPlot", "COBRAPerformance",
       function(from) {
+        from <- update_cobraperformance(from, quiet = TRUE)
         .COBRAPerformance(fdrtpr = from@fdrtpr, fdrtprcurve = from@fdrtprcurve,
                           fdrnbr = from@fdrnbr, fdrnbrcurve = from@fdrnbrcurve,
+                          fsrnbr = from@fsrnbr, fsrnbrcurve = from@fsrnbrcurve, 
                           tpr = from@tpr, fpr = from@fpr, roc = from@roc,
                           fpc = from@fpc, deviation = from@deviation,
                           corr = from@corr, onlyshared = from@onlyshared,

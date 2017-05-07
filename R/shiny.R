@@ -1,7 +1,7 @@
 #' Interactive shiny app to visualize results
 #'
 #' Interactive shiny app for visualization of results. The app can be
-#' initialized with an \code{COBRAData} object. If no object is provided, truth
+#' initialized with a \code{COBRAData} object. If no object is provided, truth
 #' and results are loaded into the app from text files (see the Instructions tab
 #' of the app for formatting instructions). Properly formatted text files can
 #' also be obtained using the function \code{\link{COBRAData_to_text}}.
@@ -33,7 +33,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
-                       "Binary classification and RAnking methods (v0.99.10)"),
+                       "Binary classification and RAnking methods (v1.3.0)"),
         titleWidth = 950),
 
       shinydashboard::dashboardSidebar(
@@ -149,8 +149,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  ## Decide what to include in FDR/TPR plots.
                  checkboxGroupInput(
                    "plottype",
-                   paste0("Display full curve and/or points in FDR/TPR and ",
-                          "FDR/NBR plots"),
+                   paste0("Display full curve and/or points in FDR/TPR, ",
+                          "FDR/NBR and FSR/NBR plots"),
                    c("curve", "points"), c("points")),
 
                  ## Decide whether or not to facet plots.
@@ -167,6 +167,16 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                   "performance will be evaluated. ",
                                   "Separate multiple values with comma"),
                            "right", options = list(container = "body")),
+                 
+                 ## Define the s-value thresholds to use in the plots.
+                 textInput(inputId = "svalthresholds", 
+                           label = "s-value thresholds",
+                           value = "0.01, 0.05, 0.1"),
+                 shinyBS::bsTooltip("svalthresholds",
+                                    paste0("Specific s-value thresholds at which the ",
+                                           "performance will be evaluated. ",
+                                           "Separate multiple values with comma"),
+                                    "right", options = list(container = "body")),
 
                  ## Define the plot height (in pixels).
                  numericInput(inputId = "plotheight",
@@ -225,6 +235,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                    DT::dataTableOutput("table.pval"),
                    h1("adjusted p-values"), 
                    DT::dataTableOutput("table.padj"),
+                   h1("s-values"), 
+                   DT::dataTableOutput("table.sval"),
                    h1("scores"), 
                    DT::dataTableOutput("table.score"),
                    value = "datapreview"),
@@ -462,6 +474,22 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                    ),
                    value = "upset"),
           
+          tabPanel("NBR vs FSR",
+                   uiOutput("plot.fsrnbrcurve"),
+                   fluidRow(
+                     column(4, sliderInput(inputId = "xrange_fsrnbr",
+                                           label = "x-axis limits",
+                                           min = 0, max = 1, value = c(0, 1),
+                                           step = 0.01)),
+                     column(2, br(), downloadButton("export.fsrnbrcurve",
+                                                    label = "Download plot")),
+                     column(2, br(), downloadButton("export.fsrnbr.df.rdata",
+                                                    label = "Download Rdata")),
+                     column(2, br(), uiOutput("fsrnbr.df.tsv.button"))
+                   ),
+                   DT::dataTableOutput("fsrnbrcurve_click_info"),
+                   value = "fsrnbrcurve"),
+          
           selected = "fdrtprcurve"
         )
       ))
@@ -606,7 +634,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
     output$columns <- renderUI({
       if (!is.null(cobradata)) {
         allm <- unique(c(colnames(pval(cobradata)), colnames(padj(cobradata)),
-                         colnames(score(cobradata))))
+                         colnames(sval(cobradata)), colnames(score(cobradata))))
         isolate(values$my_cobradata <- cobradata)
         isolate(values$all_methods <- allm)
         isolate(values$my_cobradata <- calculate_adjp(values$my_cobradata))
@@ -643,7 +671,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
               ## Rename column to only method name
               tmp <- tmp1[i]
               rownames(tmp) <- tmp1[, input$feature_id]
-              i <- gsub(":score$", "", gsub(":adjP$", "", gsub(":P$", "", i)))
+              i <- gsub(":S", "", gsub(":score$", "", gsub(":adjP$", "", 
+                                                           gsub(":P$", "", i))))
               colnames(tmp) <- i
 
               ## Add values to data collection
@@ -657,6 +686,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                 isolate(values$my_cobradata <-
                           COBRAData(padj = tmp,
                                    object_to_extend = values$my_cobradata))
+              } else if (coltype == "sval") {
+                isolate(values$my_cobradata <-
+                          COBRAData(sval = tmp,
+                                    object_to_extend = values$my_cobradata))
               } else if (coltype == "score") {
                 isolate(values$my_cobradata <-
                           COBRAData(score = tmp,
@@ -685,7 +718,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
-                                     aspects = "tpr", thrs = thrs,
+                                     aspects = "tpr", 
+                                     thrs = thrs,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -706,7 +740,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
-                                     aspects = "fdrtpr", thrs = thrs,
+                                     aspects = "fdrtpr", 
+                                     thrs = thrs,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -727,7 +762,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
-                                     aspects = "fpr", thrs = thrs,
+                                     aspects = "fpr", 
+                                     thrs = thrs,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -745,7 +781,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
-                                     aspects = "roc", thrs = NULL,
+                                     aspects = "roc",
+                                     thrs = NULL,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -763,7 +800,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
-                                     aspects = "fpc", thrs = thrs,
+                                     aspects = "fpc", 
+                                     thrs = thrs,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -781,7 +819,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = input$binary_truth,
                                      cont_truth = NULL,
-                                     aspects = "fdrtprcurve", thrs = thrs,
+                                     aspects = "fdrtprcurve", 
+                                     thrs = thrs,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -793,6 +832,47 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       }
     })
 
+    plotvalues_FSR <- reactive({
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$cont_truth != "none") {
+        thrs <- sort(unique(as.numeric(gsub(" ", "",
+                                            unlist(strsplit(input$svalthresholds,
+                                                            ","))))))
+        return(calculate_performance(values$my_cobradata,
+                                     binary_truth = NULL,
+                                     cont_truth = input$cont_truth,
+                                     aspects = "fsrnbr", 
+                                     svalthrs = thrs,
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
+      } else {
+        return(COBRAPerformance())
+      }
+    })
+    
+    plotvalues_FSRNBR <- reactive({
+      if ((input$goButton > 0 | isTRUE(autorun)) &
+          input$cont_truth != "none") {
+        return(calculate_performance(values$my_cobradata,
+                                     binary_truth = NULL,
+                                     cont_truth = input$cont_truth,
+                                     aspects = "fsrnbrcurve", 
+                                     svalthrs = thrs,
+                                     splv = input$splv,
+                                     maxsplit = input$maxsplit,
+                                     onlyshared = input$onlyshared,
+                                     thr_venn = NULL,
+                                     type_venn = "adjp",
+                                     topn_venn = NULL))
+      } else {
+        return(COBRAPerformance())
+      }
+    })
+    
     plotvalues_overlap <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun))) {
         if (input$binary_truth == "none") {
@@ -803,7 +883,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = bt,
                                      cont_truth = NULL,
-                                     aspects = "overlap", thrs = NULL,
+                                     aspects = "overlap", 
+                                     thrs = NULL,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -821,7 +902,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
-                                     aspects = "corr", thrs = NULL,
+                                     aspects = "corr", 
+                                     thrs = NULL,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -839,7 +921,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
-                                     aspects = "scatter", thrs = NULL,
+                                     aspects = "scatter", 
+                                     thrs = NULL,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -857,7 +940,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
-                                     aspects = "deviation", thrs = NULL,
+                                     aspects = "deviation", 
+                                     thrs = NULL,
                                      splv = input$splv,
                                      maxsplit = input$maxsplit,
                                      onlyshared = input$onlyshared,
@@ -876,20 +960,22 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
           withProgress(message = "Calculating...", value = 0, {
             all_vals <-
               COBRAPerformance(tpr = tpr(plotvalues_TPR()),
-                              fdrtpr = fdrtpr(plotvalues_FDR()),
-                              fdrnbr = fdrtpr(plotvalues_FDR()),
-                              fdrtprcurve = fdrtprcurve(plotvalues_FDRTPR()),
-                              fdrnbrcurve = fdrnbrcurve(plotvalues_FDRTPR()),
-                              fpr = fpr(plotvalues_FPR()),
-                              roc = roc(plotvalues_ROC()),
-                              fpc = fpc(plotvalues_FPC()),
-                              overlap = overlap(plotvalues_overlap()),
-                              maxsplit = input$maxsplit,
-                              splv = input$splv,
-                              corr = corr(plotvalues_corr()),
-                              scatter = scatter(plotvalues_scatter()),
-                              deviation = deviation(plotvalues_deviation()))
-
+                               fdrtpr = fdrtpr(plotvalues_FDR()),
+                               fdrnbr = fdrtpr(plotvalues_FDR()),
+                               fdrtprcurve = fdrtprcurve(plotvalues_FDRTPR()),
+                               fdrnbrcurve = fdrnbrcurve(plotvalues_FDRTPR()),
+                               fsrnbr = fsrnbr(plotvalues_FSR()),
+                               fsrnbrcurve = fsrnbrcurve(plotvalues_FSRNBR()),
+                               fpr = fpr(plotvalues_FPR()),
+                               roc = roc(plotvalues_ROC()),
+                               fpc = fpc(plotvalues_FPC()),
+                               overlap = overlap(plotvalues_overlap()),
+                               maxsplit = input$maxsplit,
+                               splv = input$splv,
+                               corr = corr(plotvalues_corr()),
+                               scatter = scatter(plotvalues_scatter()),
+                               deviation = deviation(plotvalues_deviation()))
+            
             all_vals <- prepare_data_for_plot(
               cobraperf = all_vals,
               keepmethods = input$cols,
@@ -1187,6 +1273,12 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       if (length(values$all_methods) == 0)
         return(NULL)
       DT::datatable(padj(values$my_cobradata))
+    })
+    
+    output$table.sval <- DT::renderDataTable({
+      if (length(values$all_methods) == 0)
+        return(NULL)
+      DT::datatable(sval(values$my_cobradata))
     })
     
     output$table.score <- DT::renderDataTable({
@@ -2019,6 +2111,138 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       fix_res(res, methodcol = methodcol,
               aspcts = c("FDR", "Number of detections"), tabtype = "large")
     })
+    
+    ## -------------------------- FSRNBR ------------------------------- ##
+    output$plot.fsrnbrcurve <- renderUI({
+      plotOutput("fsrnbrcurve", width = "100%",
+                 height = paste0(input$plotheight, "px"),
+                 hover = "fsrnbrcurve_plot_click")
+    })
+    
+    ## Figure for exporting
+    output$export.fsrnbrcurve <- downloadHandler(
+      filename = "shiny-plot.pdf",
+      content = function(file) {
+        grDevices::pdf(file, width = 12, height = input$plotheight/67)
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            (input$goButton == 0 & !isTRUE(autorun)) ||
+            !is_plottable(fsrnbrcurve(plotvalues()$all_vals)))
+          return(NULL)
+        print(plot_fsrnbrcurve(cobraplot = plotvalues()$all_vals,
+                               title = plotvalues()$title,
+                               stripsize = input$stripsize, titlecol = "white",
+                               pointsize = input$pointsize,
+                               xaxisrange = input$xrange_fsrnbr,
+                               plottype = input$plottype,
+                               linewidth = 1))
+        grDevices::dev.off()
+      })
+    
+    ## Data for exporting
+    output$export.fsrnbr.df.rdata <- downloadHandler(
+      filename = "fsrnbr-data.Rdata",
+      content = function(file) {
+        cobraplot <- isolate(plotvalues()$all_vals)
+        save(cobraplot, file = file)
+      })
+    
+    output$fsrnbr.df.tsv.button <- renderUI({
+      if ("curve" %in% input$plottype)
+        downloadButton("export.fsrnbr.df.tsv", label = "Download tsv (curve)")
+      else
+        downloadButton("export.fsrnbr.df.tsv", label = "Download tsv (points)")
+    })
+    
+    output$export.fsrnbr.df.tsv <- downloadHandler(
+      filename = "fsrnbr-data.tsv",
+      content = function(file) {
+        fsrnbr_curve_df <- isolate(fsrnbrcurve(plotvalues()$all_vals))
+        fsrnbr_point_df <- isolate(fsrnbr(plotvalues()$all_vals))
+        if ("curve" %in% input$plottype)
+          utils::write.table(fsrnbr_curve_df, file = file, quote = FALSE,
+                             row.names = FALSE, col.names = TRUE, sep = "\t")
+        else if ("points" %in% input$plottype)
+          utils::write.table(fsrnbr_point_df, file = file, quote = FALSE,
+                             row.names = FALSE, col.names = TRUE, sep = "\t")
+      })
+    
+    
+    output$fsrnbrcurve <- renderPlot({
+      ## Generate error messages if data not available.
+      validate(
+        need(length(values$all_methods) > 0 & length(input$cols) > 0 &
+               (input$goButton > 0 | isTRUE(autorun)),
+             paste0("No input data provided, or 'Start calculation!' has ",
+                    "not been clicked in order to launch calculations."))
+      )
+      validate(need(any(c("points", "curve") %in% input$plottype),
+                    "No plot type selected.")
+      )
+      if ("curve" %in% input$plottype)
+        validate(
+          need(is_plottable(fsrnbrcurve(plotvalues()$all_vals)),
+               paste0("FSR/NBR curves can not be displayed. Check that ",
+                      "cont_truth is not 'none' and that s-values are provided."))
+        )
+      if ("points" %in% input$plottype)
+        validate(
+          need(is_plottable(fsrnbr(plotvalues()$all_vals)),
+               paste0("FSR/NBR at specified adjusted p-value thresholds ",
+                      "can not be displayed. Check that cont_truth is not ",
+                      "'none' and that s-values are provided."))
+        )
+      
+      withProgress(message = "Updating plot...", value = 0, {
+        if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+            (input$goButton == 0 & !isTRUE(autorun)))
+          return(NULL)
+        if ("curve" %in% input$plottype &
+            !is_plottable(fsrnbrcurve(plotvalues()$all_vals)))
+          return(NULL)
+        if ("points" %in% input$plottype &
+            !is_plottable(fsrnbr(plotvalues()$all_vals)))
+          return(NULL)
+        if (!any(c("curve", "points") %in% input$plottype))
+          return(NULL)
+        plot_fsrnbrcurve(cobraplot = plotvalues()$all_vals,
+                         title = plotvalues()$title,
+                         stripsize = input$stripsize, titlecol = "white",
+                         pointsize = input$pointsize,
+                         xaxisrange = input$xrange_fsrnbr,
+                         plottype = input$plottype,
+                         linewidth = 1)
+      })
+    })
+    
+    output$fsrnbrcurve_click_info <- DT::renderDataTable({
+      if (length(values$all_methods) == 0 | length(input$cols) == 0 |
+          (input$goButton == 0 & !isTRUE(autorun)))
+        return(NULL)
+      if ("curve" %in% input$plottype &
+          !is_plottable(fsrnbrcurve(plotvalues()$all_vals)))
+        return(NULL)
+      if ("points" %in% input$plottype &
+          !is_plottable(fsrnbr(plotvalues()$all_vals)))
+        return(NULL)
+      if ("curve" %in% input$plottype)
+        tab_data <- isolate(fsrnbrcurve(plotvalues()$all_vals))
+      else tab_data <- isolate(fsrnbr(plotvalues()$all_vals))
+      if ("split" %in% input$facet_opt) {
+        res <- nearPoints(tab_data, input$fsrnbrcurve_plot_click,
+                          threshold = 5, maxpoints = 100,
+                          addDist = TRUE, panelvar1 = "splitval",
+                          xvar = "FSR", yvar = "NBR")
+      } else {
+        res <- nearPoints(tab_data, input$fsrnbrcurve_plot_click,
+                          threshold = 5, maxpoints = 100,
+                          addDist = TRUE, xvar = "FSR", yvar = "NBR")
+      }
+      methodcol <- "fullmethod"
+      fix_res(res, methodcol = methodcol,
+              aspcts = c("FSR", "Number of detections"), tabtype = "fsrnbr")
+    })
+    
+    
   }
   shinyApp(ui = p_layout, server = server_function)
 }
