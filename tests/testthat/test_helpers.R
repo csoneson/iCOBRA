@@ -16,6 +16,11 @@ test_that("fix_res works", {
                                     cont_truth = "logFC")
   cobraplot <- prepare_data_for_plot(cobraperf)
 
+  res <- fsrnbr(cobraplot)
+  res$dist_ <- runif(nrow(res))
+  dt <- iCOBRA:::fix_res(res, methodcol = "fullmethod", aspcts = "FSR", tabtype = "fsrnbr")
+  expect_is(dt, "datatables")
+  
   res <- tpr(cobraplot)
   res$dist_ <- runif(nrow(res))
   dt <- iCOBRA:::fix_res(res, methodcol = "fullmethod", aspcts = "TPR")

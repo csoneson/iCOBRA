@@ -46,6 +46,14 @@ The accessor function returns a data frame giving information about
 Accessor and replacement functions for the \code{fsrnbr} slot in a
 \code{COBRAPerformance} or \code{COBRAPlot} object.
 }
+\examples{
+cobradata <- cobradata_example_sval
+
+cobraperf <- calculate_performance(cobradata, 
+                                   cont_truth = "logFC", 
+                                   aspects = "fsrnbr")
+head(fsrnbr(cobraperf))
+}
 \author{
 Charlotte Soneson
 }
