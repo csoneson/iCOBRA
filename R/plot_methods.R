@@ -346,8 +346,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
-                  max(plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
-                                                xaxisrange[2]]))) +
+                  max(c(0, plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
+                                                     xaxisrange[2]])))) +
       scale_x_continuous(breaks = c(thresholds,
                                     seq(0, xaxisrange[2], 0.1)),
                          labels = c(thresholds, "", 
@@ -363,8 +363,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       xlim(xaxisrange[1], xaxisrange[2]) +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
-                  max(plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
-                                                xaxisrange[2]]))) +
+                  max(c(0, plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
+                                                     xaxisrange[2]])))) +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
@@ -385,8 +385,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
-                  max(plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
-                                                xaxisrange[2]]))) +
+                  max(c(0, plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
+                                                     xaxisrange[2]])))) +
       scale_x_continuous(breaks = c(thresholds,
                                     seq(0, xaxisrange[2], 0.1)),
                          labels = c(thresholds, "", 

@@ -17,6 +17,12 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #' @author Charlotte Soneson
 #' 
 #' @examples
+#' cobradata <- cobradata_example_sval
+#' 
+#' cobraperf <- calculate_performance(cobradata, 
+#'                                    binary_truth = "status", 
+#'                                    aspects = "fpr")
+#' cobraperf <- update_cobraperformance(cobraperf)
 update_cobraperformance <- function(object, quiet = FALSE) {
   mod <- FALSE
   if (!(.hasSlot(object, "fsrnbr"))) {
@@ -421,6 +427,12 @@ setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPerformance",
 #' @author Charlotte Soneson
 #' @export
 #' @examples
+#' cobradata <- cobradata_example_sval
+#' 
+#' cobraperf <- calculate_performance(cobradata, 
+#'                                    cont_truth = "logFC", 
+#'                                    aspects = "fsrnbr")
+#' head(fsrnbr(cobraperf))
 setMethod("fsrnbr", "COBRAPerformance", function(x) {
   if (.hasSlot(x, "fsrnbr")) x@fsrnbr
   else {
@@ -467,6 +479,12 @@ setReplaceMethod("fsrnbr", signature(x = "COBRAPerformance",
 #' @author Charlotte Soneson
 #' @export
 #' @examples
+#' cobradata <- cobradata_example_sval
+#' 
+#' cobraperf <- calculate_performance(cobradata, 
+#'                                    cont_truth = "logFC", 
+#'                                    aspects = "fsrnbrcurve")
+#' head(fsrnbrcurve(cobraperf))
 setMethod("fsrnbrcurve", "COBRAPerformance", function(x) {
   if (.hasSlot(x, "fsrnbrcurve")) x@fsrnbrcurve
   else {

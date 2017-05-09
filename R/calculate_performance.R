@@ -9,28 +9,33 @@ gen_thr_vec <- function(thresholds) {
 ## svals = s-values, to rank and cutoff based on
 get_curve_cont <- function(conttruth, estvals, svals, aspc) {
   if (aspc == "fsrnbr") {
+    ## Get total number of features with positive, negative and zero true sign
+    possign <- length(which(sign(conttruth) == 1))
+    negsign <- length(which(sign(conttruth) == -1))
+    zerosign <- length(which(sign(conttruth) == 0))
+    
+    ## subset to features with existing s-value
     kg <- intersect(names(conttruth), names(svals[!is.na(svals)]))
     svals <- sort(svals[match(kg, names(svals))])
     conttruth <- conttruth[match(names(svals), names(conttruth))]
     estvals <- estvals[match(names(svals), names(estvals))]
+    
     if (any(sign(conttruth) != 0)) {
-      
-      ## Make sure that genes without logFC estimate are counted as mismatching signs
+      ## Make sure that genes without logFC estimate are counted as having
+      ## mismatching signs
       if (any(is.na(estvals))) {
         estvals[is.na(estvals)] <- -conttruth[is.na(estvals)]
       }
       
+      ## Calculate the FSR at each s-value threshold
       unique_svals <- sort(unique(svals))
       fsrnbr <- as.data.frame(t(sapply(unique_svals, function(s) {
         ids <- which(svals <= s)
         nbr <- length(ids)
-        fs <- sum(abs(sign(conttruth[ids]) - sign(estvals[ids])) == 2)
+        fs <- length(which(abs(sign(conttruth[ids]) - sign(estvals[ids])) == 2))
         fsr <- fs/nbr
-        ts <- sum(sign(conttruth[ids]) == sign(estvals[ids]))
+        ts <- length(which(sign(conttruth[ids]) == sign(estvals[ids])))
         tot_called <- length(which(!is.na(svals)))
-        possign <- sum(sign(conttruth) == 1)
-        negsign <- sum(sign(conttruth) == -1)
-        zerosign <- sum(sign(conttruth) == 0)
         c(SVAL_CUTOFF = s, NBR = nbr, FS = fs, FSR = fsr, TS = ts, 
           TOT_CALLED = tot_called, POSSIGN = possign, NEGSIGN = negsign,
           ZEROSIGN = zerosign)
@@ -586,7 +591,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
 
       fdrs <- extend_resulttable(fdrs, splv, keeplevels, "FDR",
                                  vf, domelt = TRUE)
-      fdrs$satis <- ifelse(fdrs$FDR < as.numeric(gsub("thr", "", fdrs$thr)),
+      fdrs$satis <- ifelse(fdrs$FDR <= as.numeric(gsub("thr", "", fdrs$thr)),
                            "yes", "no")
       fdrs$method.satis <- paste0(fdrs$fullmethod, fdrs$satis)
     } else {
@@ -675,16 +680,19 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         allg <- get_keepfeatures(truth = truth(cobradata),
                                  df = svl, method = i,
                                  colm = cont_truth, onlyshared = onlyshared)
-        svl <- svl[match(allg, rownames(svl)), , drop = FALSE]
-        scr <- scr[match(allg, rownames(scr)), , drop = FALSE]
         truth <- truth(cobradata)[match(allg, rownames(truth(cobradata))), ,
                                   drop = FALSE]
-        trt <- truth[, cont_truth, drop = FALSE]
+        
+        svlv <- structure(svl[match(allg, rownames(svl)), ], names = allg)
+        scrv <- structure(scr[match(allg, rownames(scr)), ], names = allg)
+        trtv <- structure(truth[, cont_truth], names = rownames(truth))
+        stopifnot(all(names(svlv) == names(scrv)))
+        stopifnot(all(names(svlv) == names(trtv)))
         
         ## Make sure that genes without estimated logFCs are counted as having
         ## mismatching signs
-        if (any(is.na(scr[, i]))) {
-          scr[is.na(scr[, i]), i] <- -trt[, cont_truth][is.na(scr[, i])]
+        if (any(is.na(scrv))) {
+          scrv[is.na(scrv)] <- -trtv[is.na(scrv)]
         }
         
         kltmp <- get_keeplevels(truth = truth, splv = splv,
@@ -702,23 +710,20 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         totcalled <- gen_thr_vec(svalthrs)
         nbr <- gen_thr_vec(svalthrs)
         for (thr in svalthrs) {
-          passed <- setdiff(rownames(svl)[which(svl[i] <= thr)], NA)
-          tested <- setdiff(rownames(svl)[which(!is.na(svl[i]))], NA)
+          passed <- which(svlv <= thr)
+          tested <- which(!is.na(svlv))
+          nbr[paste0("thr", thr)] <- length(passed)
+          fs[paste0("thr", thr)] <- length(which(abs(sign(trtv[passed]) - sign(scrv[passed])) == 2))
+          ts[paste0("thr", thr)] <- length(which(sign(trtv[passed]) == sign(scrv[passed])))
+          possign[paste0("thr", thr)] <- length(which(sign(trtv) == 1))
+          negsign[paste0("thr", thr)] <- length(which(sign(trtv) == -1))
+          zerosign[paste0("thr", thr)] <- length(which(sign(trtv) == 0))
+          totcalled[paste0("thr", thr)] <- length(tested)
           if (length(passed) == 0) {
             fsr[paste0("thr", thr)] <- 0
           } else {
-            scrtmp <- scr[match(passed, rownames(scr)), i]
-            trttmp <- trt[match(passed, rownames(trt)), cont_truth]
-            fsr[paste0("thr", thr)] <-
-              length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))/length(passed)
+            fsr[paste0("thr", thr)] <- fs[paste0("thr", thr)]/length(passed)
           }
-          nbr[paste0("thr", thr)] <- length(passed)
-          fs[paste0("thr", thr)] <- length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))
-          ts[paste0("thr", thr)] <- length(which(sign(scrtmp) == sign(trttmp)))
-          possign[paste0("thr", thr)] <- length(which(sign(trttmp) == 1))
-          negsign[paste0("thr", thr)] <- length(which(sign(trttmp) == -1))
-          zerosign[paste0("thr", thr)] <- length(which(sign(trttmp) == 0))
-          totcalled[paste0("thr", thr)] <- length(tested)
         }
         FSR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
                                                            meas_type = inpcol,
@@ -741,25 +746,27 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
             zerosign <- gen_thr_vec(svalthrs)
             totcalled <- gen_thr_vec(svalthrs)
             nbr <- gen_thr_vec(svalthrs)
+            g <- rownames(truth)[which(truth[[splv]] == j)]
+            allg2 <- intersect(allg, g)
+            svlv2 <- svlv[match(allg2, names(svlv))]
+            scrv2 <- scrv[match(allg2, names(scrv))]
+            trtv2 <- trtv[match(allg2, names(scrv))]
             for (thr in svalthrs) {
-              g <- rownames(truth)[which(truth[[splv]] == j)]
-              passed <- setdiff(intersect(g, rownames(svl)[which(svl[i] <= thr)]), NA)
-              tested <- setdiff(intersect(g, rownames(svl)[which(!is.na(svl[i]))]), NA)
+              passed <- which(svlv2 <= thr)
+              tested <- which(!is.na(svlv2))
+              nbr[paste0("thr", thr)] <- length(passed)
+              fs[paste0("thr", thr)] <- length(which(abs(sign(trtv2[passed]) - 
+                                                           sign(scrv2[passed])) == 2))
+              ts[paste0("thr", thr)] <- length(which(sign(trtv2[passed]) == sign(scrv2[passed])))
+              possign[paste0("thr", thr)] <- length(which(sign(trtv2) == 1))
+              negsign[paste0("thr", thr)] <- length(which(sign(trtv2) == -1))
+              zerosign[paste0("thr", thr)] <- length(which(sign(trtv2) == 0))
+              totcalled[paste0("thr", thr)] <- length(tested)
               if (length(passed) == 0) {
                 fsr[paste0("thr", thr)] <- 0
               } else {
-                scrtmp <- scr[match(passed, rownames(scr)), i]
-                trttmp <- trt[match(passed, rownames(trt)), cont_truth]
-                fsr[paste0("thr", thr)] <-
-                  length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))/length(passed)
+                fsr[paste0("thr", thr)] <- fs[paste0("thr", thr)]/length(passed)
               }
-              nbr[paste0("thr", thr)] <- length(passed)
-              fs[paste0("thr", thr)] <- length(which(abs(sign(scrtmp) - sign(trttmp)) == 2))
-              ts[paste0("thr", thr)] <- length(which(sign(scrtmp) == sign(trttmp)))
-              possign[paste0("thr", thr)] <- length(which(sign(trttmp) == 1))
-              negsign[paste0("thr", thr)] <- length(which(sign(trttmp) == -1))
-              zerosign[paste0("thr", thr)] <- length(which(sign(trttmp) == 0))
-              totcalled[paste0("thr", thr)] <- length(tested)
             }
             FSR[[paste0(i, "_", splv, ":", j, "__", inpcol)]] <-
               list(basemethod = i, meas_type = inpcol, fsr = fsr, nbr = nbr,
@@ -785,7 +792,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       
       fsrs <- extend_resulttable(fsrs, splv, keeplevels, "FSR",
                                  vf, domelt = TRUE)
-      fsrs$satis <- ifelse(fsrs$FSR < as.numeric(gsub("thr", "", fsrs$thr)),
+      fsrs$satis <- ifelse(fsrs$FSR <= as.numeric(gsub("thr", "", fsrs$thr)),
                            "yes", "no")
       fsrs$method.satis <- paste0(fsrs$fullmethod, fsrs$satis)
       nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR", vf, domelt = TRUE)
@@ -1222,15 +1229,20 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     tmplist <- padj(cobradata)
     if (length(tmplist) > 0) {
       if (!is.null(binary_truth)) {
-        ## Add 'truth' to list of results
-        tmp2 <- 1 - truth(cobradata)[, binary_truth, drop = FALSE]
-        colnames(tmp2) <- "truth"
-        missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
-        tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
-                                       dimnames = list(missing_genes,
-                                                       colnames(tmplist))))
-        tmplist <- rbind(tmplist, tmpadd)
-        tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
+        ## Add 'truth' to list of results, if type_venn is not 'rank' since in
+        ## that case, the 'true' genes can be ranked in any order
+        if (type_venn == "rank") {
+          message("Note that including truth with type_venn = 'rank' is not supported, since true features may be ranked in arbitrary order")
+        } else {
+          tmp2 <- 1 - truth(cobradata)[, binary_truth, drop = FALSE]
+          colnames(tmp2) <- "truth"
+          missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
+          tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
+                                         dimnames = list(missing_genes,
+                                                         colnames(tmplist))))
+          tmplist <- rbind(tmplist, tmpadd)
+          tmplist$truth <- tmp2$truth[match(rownames(tmplist), rownames(tmp2))]
+        }
       }
 
       ## Create matrix indicating "significant" features
@@ -1506,7 +1518,7 @@ reorder_levels <- function(cobraplot, levels) {
 
   for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
                "fdrtprcurve", "fdrtpr", "fdrnbrcurve", "fdrnbr",
-               "fsrnbrcurve")) {
+               "fsrnbrcurve", "fsrnbr")) {
     if (length(slot(cobraplot, sl)) != 0) {
       levels_to_keep <- levels[which(levels %in% slot(cobraplot, sl)[, column])]
       if (length(setdiff(unique(slot(cobraplot, sl)[, column]),

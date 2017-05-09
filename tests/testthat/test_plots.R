@@ -4,6 +4,13 @@ library(iCOBRA)
 context("Check plot functions")
 
 local({
+  ## Test that overlap plotting with too many methods give NULL
+  tmp <- cobradata_example_sval
+  padj(tmp) <- cbind(padj(tmp), padj(tmp), padj(tmp))
+  ib1 <- calculate_performance(tmp, aspects = "overlap")
+  ib1 <- prepare_data_for_plot(ib1)
+  expect_is(plot_overlap(ib1), "NULL")
+
   ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
@@ -23,13 +30,16 @@ local({
     expect_is(plot_corr(ibp1), "ggplot")
     expect_is(plot_deviation(ibp1), "ggplot")
     expect_is(plot_fdrnbrcurve(ibp1), "ggplot")
+    expect_is(plot_fsrnbrcurve(ibp1), "ggplot")
     expect_is(plot_fdrtprcurve(ibp1), "ggplot")
     expect_is(plot_fpc(ibp1), "ggplot")
     expect_is(plot_fpr(ibp1), "ggplot")
     expect_is(plot_corr(ibp1), "ggplot")
     expect_is(plot_roc(ibp1), "ggplot")
     expect_is(plot_scatter(ibp1), "ggplot")
+    expect_is(plot_scatter(ibp1, dolog = TRUE), "ggplot")
     expect_is(plot_overlap(ibp1), "NULL")
+    expect_is(plot_upset(ibp1), "NULL")
   })
 
   ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = FALSE,
@@ -41,6 +51,7 @@ local({
     expect_is(plot_corr(ibp1), "ggplot")
     expect_is(plot_deviation(ibp1), "ggplot")
     expect_is(plot_fdrnbrcurve(ibp1), "ggplot")
+    expect_is(plot_fsrnbrcurve(ibp1), "ggplot")
     expect_is(plot_fdrtprcurve(ibp1), "ggplot")
     expect_is(plot_fpc(ibp1), "ggplot")
     expect_is(plot_fpr(ibp1), "ggplot")
@@ -48,6 +59,7 @@ local({
     expect_is(plot_roc(ibp1), "ggplot")
     expect_is(plot_scatter(ibp1), "ggplot")
     expect_is(plot_overlap(ibp1), "NULL")
+    expect_is(plot_upset(ibp1), "NULL")
   })
 })
 
@@ -68,11 +80,15 @@ test_that("Plot functions return ggplot objects for empty input", {
   expect_is(plot_fdrtprcurve(ibp1), "ggplot")
   expect_is(plot_fdrtprcurve(ibp1, plottype = "curve"), "ggplot")
   expect_is(plot_fdrtprcurve(ibp1, plottype = "points"), "ggplot")
+  expect_is(plot_fsrnbrcurve(ibp1), "ggplot")
+  expect_is(plot_fsrnbrcurve(ibp1, plottype = "curve"), "ggplot")
+  expect_is(plot_fsrnbrcurve(ibp1, plottype = "points"), "ggplot")
   expect_is(plot_fpr(ibp1), "ggplot")
   expect_is(plot_corr(ibp1), "ggplot")
   expect_is(plot_roc(ibp1), "ggplot")
   expect_is(plot_scatter(ibp1), "ggplot")
   expect_is(plot_overlap(ibp1), "NULL")
+  expect_is(plot_upset(ibp1), "NULL")
 })
 
 local({
@@ -157,6 +173,7 @@ test_that("Plot functions return ggplot objects after stratification", {
   expect_is(plot_deviation(ibp1, transf = "squared"), "ggplot")
   expect_error(plot_deviation(ibp1, transf = "square"))
   expect_is(plot_fdrnbrcurve(ibp1), "ggplot")
+  expect_is(plot_fsrnbrcurve(ibp1), "ggplot")
   expect_is(plot_fdrtprcurve(ibp1), "ggplot")
   expect_is(plot_fpc(ibp1), "ggplot")
   expect_is(plot_fpr(ibp1), "ggplot")
@@ -165,6 +182,7 @@ test_that("Plot functions return ggplot objects after stratification", {
   expect_is(plot_scatter(ibp1), "ggplot")
   expect_is(plot_overlap(ibp1), "list")
   expect_is(plot_overlap(ibp2), "list")
+  expect_is(plot_upset(ibp2, stratum = "[   0.000,   0.362)"), "NULL")
 })
 
 test_that("Plot functions return ggplot objects after stratification", {
@@ -188,6 +206,7 @@ test_that("Plot functions return ggplot objects after stratification", {
   expect_is(plot_deviation(ibp1, transf = "absolute"), "ggplot")
   expect_is(plot_deviation(ibp1, transf = "squared"), "ggplot")
   expect_error(plot_deviation(ibp1, transf = "square"))
+  expect_is(plot_fsrnbrcurve(ibp1), "ggplot")
   expect_is(plot_fdrnbrcurve(ibp1), "ggplot")
   expect_is(plot_fdrtprcurve(ibp1), "ggplot")
   expect_is(plot_fpc(ibp1), "ggplot")
