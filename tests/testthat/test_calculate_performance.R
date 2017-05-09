@@ -425,30 +425,30 @@ local({
     
     ## fsrnbr vs fsrnbrcurve
     nbr1 <- (subset(fsrnbr(ib1), fullmethod == "Method1_overall" & thr == "thr0.05"))[, "NBR"]
-    # expect_equivalent((subset(fsrnbr(ib1), fullmethod == "Method1_overall" &
-    #                             NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN", 
-    #                                               "NEGSIGN", "ZEROSIGN", "TOT_CALLED")],
-    #                   (subset(fsrnbrcurve(ib1), fullmethod == "Method1_overall" &
-    #                             NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN", 
-    #                                               "NEGSIGN", "ZEROSIGN", "TOT_CALLED")])
+    expect_equivalent((subset(fsrnbr(ib1), fullmethod == "Method1_overall" &
+                                NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN",
+                                                  "NEGSIGN", "ZEROSIGN", "TOT_CALLED")],
+                      (subset(fsrnbrcurve(ib1), fullmethod == "Method1_overall" &
+                                NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN",
+                                                  "NEGSIGN", "ZEROSIGN", "TOT_CALLED")])
     
     nbr1 <- (subset(fsrnbr(ib2), fullmethod == "Method1_expr_cat:[   0.000,   0.362)" &
                       thr == "thr0.05"))[, "NBR"]
     fsrnbrcurve(ib2)$NBR <- round(fsrnbrcurve(ib2)$NBR)
-    # expect_equivalent((subset(fsrnbr(ib2), fullmethod == "Method1_expr_cat:[   0.000,   0.362)" &
-    #                             NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN", 
-    #                                               "NEGSIGN", "ZEROSIGN", "TOT_CALLED")],
-    #                   (subset(fsrnbrcurve(ib2), fullmethod == "Method1_expr_cat:[   0.000,   0.362)" &
-    #                             NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN", 
-    #                                               "NEGSIGN", "ZEROSIGN", "TOT_CALLED")])
+    expect_equivalent((subset(fsrnbr(ib2), fullmethod == "Method1_expr_cat:[   0.000,   0.362)" &
+                                NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN",
+                                                  "NEGSIGN", "ZEROSIGN", "TOT_CALLED")],
+                      (subset(fsrnbrcurve(ib2), fullmethod == "Method1_expr_cat:[   0.000,   0.362)" &
+                                NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN",
+                                                  "NEGSIGN", "ZEROSIGN", "TOT_CALLED")])
     
     nbr1 <- (subset(fsrnbr(ib3), fullmethod == "Method1_overall" & thr == "thr0.05"))[, "NBR"]
-    # expect_equivalent((subset(fsrnbr(ib3), fullmethod == "Method1_overall" &
-    #                             NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN", 
-    #                                               "NEGSIGN", "ZEROSIGN", "TOT_CALLED")],
-    #                   (subset(fsrnbrcurve(ib3), fullmethod == "Method1_overall" &
-    #                             NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN", 
-    #                                               "NEGSIGN", "ZEROSIGN", "TOT_CALLED")])
+    expect_equivalent((subset(fsrnbr(ib3), fullmethod == "Method1_overall" &
+                                NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN",
+                                                  "NEGSIGN", "ZEROSIGN", "TOT_CALLED")],
+                      (subset(fsrnbrcurve(ib3), fullmethod == "Method1_overall" &
+                                NBR == nbr1))[, c("NBR", "FSR", "FS", "TS", "POSSIGN",
+                                                  "NEGSIGN", "ZEROSIGN", "TOT_CALLED")])
 
     ## FPC vs FP
     nbr1 <- (subset(fpc(ib1), fullmethod == "Method1_overall"))[, "topN"][150]
