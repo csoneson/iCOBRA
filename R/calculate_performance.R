@@ -1363,6 +1363,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
 #'   same panel but shown with different colors (\code{FALSE}).
 #' @param incltruth A logical indicating whether the truth should be included in
 #'   Venn diagrams.
+#' @param conditionalfill A logical indicating whether the points (in FDR/TPR,
+#'   FDR/NBR, FSR/NBR plots) should be filled conditional on whether they
+#'   satisfy the imposed criterion (e.g., false discovery rate control at
+#'   imposed threshold).
 #'
 #' @return A \code{COBRAPlot} object
 #'
@@ -1384,7 +1388,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
 #'                                    colorscheme = c("blue", "red", "green"))
 prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
                                   incloverall = TRUE, colorscheme = "hue_pal",
-                                  facetted = TRUE, incltruth = TRUE) {
+                                  facetted = TRUE, incltruth = TRUE,
+                                  conditionalfill = TRUE) {
   splitval <- NULL
   if (is.null(keepmethods)) {
     keepmethods <- basemethods(cobraperf)
@@ -1450,7 +1455,8 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
 
   ## Define colors
   use_colors <- define_colors(cobraperf = cobraperf, palette = colorscheme,
-                              facetted = facetted, incloverall = incloverall)
+                              facetted = facetted, incloverall = incloverall, 
+                              conditionalfill = conditionalfill)
 
   ## Exclude overall level
   for (sl in c("tpr", "fpr", "corr", "roc", "fpc", "scatter", "deviation",
