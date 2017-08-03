@@ -13,7 +13,7 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
     plot_data$method <- plot_data$fullmethod
   }
 
-  pp <-ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
+  pp <- ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
     geom_point(size = pointsize + 1,
                aes_string(colour = "method"), shape = 19) +
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
