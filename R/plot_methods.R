@@ -316,6 +316,13 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
     xasp <- "FSR"
     yasp <- "NBR"
   }
+  
+  if ("curve" %in% plottype && length(plot_data_lines) == 0) {
+    stop("The provided 'plottype' argument includes 'curve' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+  }
+  if ("points" %in% plottype && length(plot_data_points) == 0) {
+    stop("The provided 'plottype' argument includes 'points' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+  }
 
   thresholds <- sort(unique(as.numeric(gsub("thr", "", plot_data_points$thr))))
   plot_data_points$method2.satis <- paste0(plot_data_points$method,
