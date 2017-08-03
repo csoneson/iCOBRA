@@ -1,8 +1,7 @@
 Package: iCOBRA
 Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
-Version: 1.5.0
-Date: 2015-10-10
+Version: 1.5.1
 Authors@R: c(person(given = "Charlotte", family = "Soneson", 
     role = c("aut", "cre"),
     email = "charlottesoneson@gmail.com"))
