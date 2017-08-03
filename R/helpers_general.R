@@ -158,8 +158,19 @@ fixcolname <- function(df, prevv, newv) {
   df
 }
 
+isinvalidpalette <- function(palette) {
+  bnm <- strsplit(palette, " \\(")[[1]][1]
+  if (!(bnm %in% c("hue_pal", "rainbow", "heat", "terrain", "topo",
+                   "cm", "Accent", "Dark2", "Paired", "Pastel1",
+                   "Pastel2", "Set1", "Set2", "Set3")))
+    TRUE
+  else
+    FALSE
+}
+
 #' @importFrom scales hue_pal brewer_pal
-define_colors <- function(cobraperf, palette, facetted, incloverall) {
+define_colors <- function(cobraperf, palette, facetted, incloverall, 
+                          conditionalfill) {
   levs <- basemethod <- NULL
 
   basem <- basemethods(cobraperf)
@@ -168,7 +179,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
   inp_methods$fullmethod <- paste0(inp_methods$basemethod, inp_methods$levs)
 
   if (!isTRUE(incloverall))
-    inp_methods <- subset(inp_methods, levs != "overall")
+    inp_methods <- subset(inp_methods, levs != "_overall")
 
   ## Calculate number of required colors
   if (isTRUE(facetted)) {
@@ -181,13 +192,28 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
       tmp_methods <- c(tmp_methods, "truth")
     ncolors <- length(tmp_methods)
   }
+  tmp_methods <- as.character(tmp_methods)
 
   ## Define colors
-  if (length(palette) > 1) {
+  if (length(palette) > 1 || (length(palette) == 1 && isinvalidpalette(palette))) {
     ## User-specified color vector
+    
+    ## First get the pre-defined colors right
+    use_colors0 <- c()
+    if (any(tmp_methods %in% names(palette))) {
+      use_colors0 <- palette[intersect(tmp_methods, names(palette))]
+      tmp_methods <- setdiff(tmp_methods, names(use_colors0))
+      ncolors <- ncolors - length(use_colors0)
+      palette <- palette[!(names(palette) %in% names(use_colors0))]
+    }
+    ## Then exclude any color assigned to irrelevant method
+    excl <- which(names(palette) != "" & !(names(palette) %in% tmp_methods))
+    if (length(excl) > 0) {
+      palette <- palette[-excl]
+    }
+    
     if (length(palette) > ncolors) {
-      warning("too many colors supplied, only the first ", ncolors,
-              " will be used")
+      warning("too many colors supplied, only a subset will be used")
       use_colors1 <- palette[1:ncolors]
     } else if (length(palette) < ncolors) {
       warning("too few colors provided, ", ncolors - length(palette),
@@ -200,6 +226,8 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
     } else {
       use_colors1 <- palette
     }
+    names(use_colors1) <- tmp_methods
+    use_colors1 <- c(use_colors0, use_colors1)
   } else {
     bnm <- strsplit(palette, " \\(")[[1]][1]
     ## Check that the palette is valid, otherwise consider it a color
@@ -230,8 +258,8 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
           use_colors1 <- scales::hue_pal()(ncolors)
       }
     }
+    names(use_colors1) <- tmp_methods
   }
-  names(use_colors1) <- tmp_methods
 
   if (isTRUE(facetted)) {
     inp_methods$color <- use_colors1[match(inp_methods$basemethod,
@@ -252,11 +280,16 @@ define_colors <- function(cobraperf, palette, facetted, incloverall) {
   use_colors1 <- inp_methods$color
   names(use_colors1) <- inp_methods$fullmethod
 
-  ## Get colors for "FDR satisfied/not satisfied" (white or method color)
-  use_colors2 <- c(use_colors1, rep("white", length(use_colors1)))
+  ## Get colors for "FDR satisfied/not satisfied" (white or method color), if
+  ## conditionalfill = TRUE. If not, points will always be white.
+  if (conditionalfill) {
+    use_colors2 <- c(use_colors1, rep("white", length(use_colors1)))
+  } else {
+    use_colors2 <- rep("white", 2 * length(use_colors1))
+  }
   names(use_colors2) <- c(paste0(names(use_colors1), "yes"),
                           paste0(names(use_colors1), "no"))
-
+  
   use_colors <- c(use_colors1, use_colors2)
   return(use_colors)
 }
