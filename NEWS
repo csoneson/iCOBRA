@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.5.1
+------------------------
+	o Added support for false sign rate calculations
+
 CHANGES IN VERSION 0.99.10
 --------------------------
 	o Fixed the call to plot_upset to avoid duplicate definition of arguments
