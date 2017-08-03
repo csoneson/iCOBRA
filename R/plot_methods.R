@@ -318,11 +318,14 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
   }
   
   if ("curve" %in% plottype && length(plot_data_lines) == 0) {
-    stop("The provided 'plottype' argument includes 'curve' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+    message("The provided 'plottype' argument includes 'curve' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+    plottype <- setdiff(plottype, "curve")
   }
   if ("points" %in% plottype && length(plot_data_points) == 0) {
-    stop("The provided 'plottype' argument includes 'points' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+    message("The provided 'plottype' argument includes 'points' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+    plottype <- setdiff(plottype, "points")
   }
+  pp <- ggplot()
 
   thresholds <- sort(unique(as.numeric(gsub("thr", "", plot_data_points$thr))))
   plot_data_points$method2.satis <- paste0(plot_data_points$method,
@@ -335,7 +338,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
                                              plot_data_points$satis)
   }
 
-  if ("curve" %in% plottype & "points" %in% plottype) {
+  if ("curve" %in% plottype && "points" %in% plottype) {
     pp <- ggplot(plot_data_lines, aes_string(x = xasp, y = yasp,
                                              group = "method",
                                              colour = "method")) +

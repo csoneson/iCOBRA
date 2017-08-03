@@ -5,7 +5,8 @@
 \title{Prepare data for plotting}
 \usage{
 prepare_data_for_plot(cobraperf, keepmethods = NULL, incloverall = TRUE,
-  colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE)
+  colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE,
+  conditionalfill = TRUE)
 }
 \arguments{
 \item{cobraperf}{A \code{COBRAPerformance} object.}
@@ -47,6 +48,11 @@ same panel but shown with different colors (\code{FALSE}).}
 
 \item{incltruth}{A logical indicating whether the truth should be included in
 Venn diagrams.}
+
+\item{conditionalfill}{A logical indicating whether the points (in FDR/TPR,
+FDR/NBR, FSR/NBR plots) should be filled conditional on whether they
+satisfy the imposed criterion (e.g., false discovery rate control at
+imposed threshold).}
 }
 \value{
 A \code{COBRAPlot} object
