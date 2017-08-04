@@ -142,10 +142,15 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
   if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
+  
+  ## Number of colors/linetypes
+  nlevs <- length(unique(plot_data$method))
+  
   pp <- ggplot(plot_data, aes_string(x = ifelse(aspc == "roc", "FPR", "topN"),
                                      y = ifelse(aspc == "roc", "TPR", "FP"),
                                      group = "method", colour = "method")) +
-    geom_path(size = linewidth) +
+    geom_path(size = linewidth, aes_string(linetype = "method")) +
+    scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     xlim(ifelse(aspc == "roc", xaxisrange[1], 0),
@@ -338,6 +343,9 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
                                              plot_data_points$satis)
   }
 
+  ## Number of colors/linetypes
+  nlevs <- length(unique(plot_data_lines$method))
+  
   if ("curve" %in% plottype && "points" %in% plottype) {
     pp <- ggplot(plot_data_lines, aes_string(x = xasp, y = yasp,
                                              group = "method",
@@ -345,7 +353,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = linewidth) +
+      geom_path(size = linewidth, aes_string(linetype = "method")) +
+      scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
       geom_point(data = plot_data_points, size = pointsize + 1,
                  aes_string(colour = "method"), shape = 19) +
       geom_point(data = plot_data_points, size = pointsize,
@@ -369,7 +378,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
     pp <- ggplot(plot_data_lines,
                  aes_string(x = xasp, y = yasp,
                             group = "method", colour = "method")) +
-      geom_path(size = linewidth) +
+      geom_path(size = linewidth, aes_string(linetype = "method")) +
+      scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
       xlim(xaxisrange[1], xaxisrange[2]) +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
@@ -384,7 +394,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = linewidth, aes_string(colour = "method")) +
+      geom_path(size = linewidth, aes_string(colour = "method", linetype = "method")) +
+      scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
       geom_point(size = pointsize + 1,
                  aes_string(colour = "method"), shape = 19) +
       geom_point(size = pointsize,
