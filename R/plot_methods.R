@@ -6,16 +6,22 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
     plot_data <- fpr(cobraplot)
   else if (aspc == "TPR")
     plot_data <- tpr(cobraplot)
-  else if (aspc %in% c("SPEARMAN", "PEARSON"))
+  else if (aspc %in% c("SPEARMAN", "PEARSON")) {
     plot_data <- corr(cobraplot)
+    plot_data$thr <- as.character(plot_data$thr)
+  }
 
   if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
 
+  ## Number of thresholds
+  nthr <- length(unique(plot_data$thr))
+  
   pp <- ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
     geom_point(size = pointsize + 1,
-               aes_string(colour = "method"), shape = 19) +
+               aes_string(colour = "method", shape = "thr")) +
+    scale_shape_manual(values = rep(19, nthr), guide = FALSE) + 
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
     xlim(xaxisrange[1], xaxisrange[2]) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
@@ -301,7 +307,7 @@ plot_scatter <- function(cobraplot, title = "", stripsize = 10,
 }
 
 
-## ------------------- FDRTPR or FDRNBR ------------------------------ ##
+## ------------------- FDRTPR, FDRNBR or FSRNBR ---------------------- ##
 #' @import ggplot2
 plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
                           xaxisrange, yaxisrange, plottype, aspc, linewidth) {
@@ -345,6 +351,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
 
   ## Number of colors/linetypes
   nlevs <- length(unique(plot_data_lines$method))
+  ## Number of thresholds
+  nthr <- length(unique(plot_data_points$thr))
   
   if ("curve" %in% plottype && "points" %in% plottype) {
     pp <- ggplot(plot_data_lines, aes_string(x = xasp, y = yasp,
@@ -355,11 +363,11 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = thresholds, linetype = "dashed") +
       geom_path(size = linewidth, aes_string(linetype = "method")) +
       scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
-      geom_point(data = plot_data_points, size = pointsize + 1,
-                 aes_string(colour = "method"), shape = 19) +
       geom_point(data = plot_data_points, size = pointsize,
-                 aes_string(fill = "method2.satis", colour = "method"),
-                 shape = 21) +
+                 aes_string(fill = "method2.satis", colour = "method", 
+                            shape = "thr"),
+                 stroke = 1) +
+      scale_shape_manual(values = rep(21, nthr), guide = FALSE) + 
       scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
                         name = "") +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
@@ -396,11 +404,11 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = thresholds, linetype = "dashed") +
       geom_path(size = linewidth, aes_string(colour = "method", linetype = "method")) +
       scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
-      geom_point(size = pointsize + 1,
-                 aes_string(colour = "method"), shape = 19) +
       geom_point(size = pointsize,
-                 aes_string(fill = "method2.satis", colour = "method"),
-                 shape = 21) +
+                 aes_string(fill = "method2.satis", colour = "method",
+                            shape = "thr"),
+                 stroke = 1) +
+      scale_shape_manual(values = rep(21, nthr), guide = FALSE) + 
       scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
                         name = "") +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
