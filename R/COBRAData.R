@@ -144,7 +144,7 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
         message(nrow(pval), " new features and ",
                 ncol(pval), " new methods added to pval table")
       }
-      
+
       ## Merge provided padj data frame with existing padj data frame
       if (length(object_to_extend@padj) != 0) {
         if (length(padj) != 0) {
@@ -267,7 +267,8 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
       }
     }
   }
-  .COBRAData(pval = pval, padj = padj, score = score, sval = sval, truth = truth)
+  .COBRAData(pval = pval, padj = padj, score = score, 
+             sval = sval, truth = truth)
 }
 
 #' @rdname COBRAData
@@ -315,7 +316,7 @@ COBRAData_from_text <- function(truth_file, result_files, feature_id) {
     padj <- padj[, grep(":adjP$", colnames(padj), value = TRUE), drop = FALSE]
     colnames(padj) <- gsub(":adjP$", "", colnames(padj))
   }
-  
+
   if (ncol(sval) == 1) {
     sval <- data.frame()
   } else {
@@ -361,7 +362,7 @@ COBRAData_to_text <- function(cobradata, truth_file, result_files, feature_id) {
   if (!(length(padj)) == 0)
     colnames(padj) <- paste0(colnames(padj), ":adjP")
   padj[, feature_id] <- rownames(padj)
-  
+
   sval <- sval(cobradata)
   if (!(length(sval)) == 0)
     colnames(sval) <- paste0(colnames(sval), ":S")
@@ -574,7 +575,8 @@ setReplaceMethod("truth", signature(x = "COBRAData", value = "data.frame"),
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases \S4method{[}{COBRAData,ANY,ANY} \S4method{[}{COBRAData,ANY,ANY,ANY} [ [,COBRAData-method
+#' @aliases \S4method{[}{COBRAData,ANY,ANY} \S4method{[}{COBRAData,ANY,ANY,ANY}
+#'   [ [,COBRAData-method
 #' @param x A \code{COBRAData}, \code{COBRAPerformance} or \code{COBRAPlot}
 #'   object.
 #' @param i For \code{COBRAData} objects, a character vector of feature names to

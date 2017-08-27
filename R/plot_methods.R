@@ -18,7 +18,8 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
   ## Number of thresholds
   nthr <- length(unique(plot_data$thr))
   
-  pp <- ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
+  pp <- 
+    ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
     geom_point(size = pointsize + 1,
                aes_string(colour = "method", shape = "thr")) +
     scale_shape_manual(values = rep(19, nthr), guide = FALSE) + 
@@ -148,7 +149,7 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
   if (!(isTRUE(facetted(cobraplot)))) {
     plot_data$method <- plot_data$fullmethod
   }
-  
+
   ## Number of colors/linetypes
   nlevs <- length(unique(plot_data$method))
   
@@ -329,11 +330,15 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
   }
   
   if ("curve" %in% plottype && length(plot_data_lines) == 0) {
-    message("The provided 'plottype' argument includes 'curve' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+    message(paste0("The provided 'plottype' argument includes 'curve' but ", 
+                   "the required values are not calculated. Please include ", 
+                   "the appropriate aspect in calculate_performance()."))
     plottype <- setdiff(plottype, "curve")
   }
   if ("points" %in% plottype && length(plot_data_points) == 0) {
-    message("The provided 'plottype' argument includes 'points' but the required values are not calculated. Please include the appropriate aspect in calculate_performance().")
+    message(paste0("The provided 'plottype' argument includes 'points' but ", 
+                   "the required values are not calculated. Please include ", 
+                   "the appropriate aspect in calculate_performance()."))
     plottype <- setdiff(plottype, "points")
   }
   pp <- ggplot()
@@ -402,7 +407,8 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = linewidth, aes_string(colour = "method", linetype = "method")) +
+      geom_path(size = linewidth, 
+                aes_string(colour = "method", linetype = "method")) +
       scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
       geom_point(size = pointsize,
                  aes_string(fill = "method2.satis", colour = "method",
@@ -689,19 +695,23 @@ plot_upset <- function(cobraplot, stratum = NULL, nsets = NULL,
     if (all(colSums(overlap_table) == 0)) return(NULL)
     if (is.null(nsets)) nsets <- ncol(overlap_table)
     if (is.null(nintersects)) nintersects <- 2^(ncol(overlap_table)) - 1
-    if (is.null(sets.bar.color)) sets.bar.color <- plotcolors(cobraplot)[plotorder]
+    if (is.null(sets.bar.color)) 
+      sets.bar.color <- plotcolors(cobraplot)[plotorder]
     upset(overlap_table, nsets = nsets, nintersects = nintersects, 
           sets.bar.color = sets.bar.color, ...)
   } else {
     if (is.null(stratum)) stop("You must provide a stratum")
     plotorder <- 
-      colnames(overlap_table[[stratum]])[order(colSums(overlap_table[[stratum]]), 
-                                               seq(1:ncol(overlap_table[[stratum]])),
-                                               decreasing = "true")]
+      colnames(overlap_table[[stratum]])[
+        order(colSums(overlap_table[[stratum]]), 
+              seq(1:ncol(overlap_table[[stratum]])),
+              decreasing = "true")]
     if (all(colSums(overlap_table[[stratum]]) == 0)) return(NULL)
     if (is.null(nsets)) nsets <- ncol(overlap_table[[stratum]])
-    if (is.null(nintersects)) nintersects <- 2^(ncol(overlap_table[[stratum]])) - 1
-    if (is.null(sets.bar.color)) sets.bar.color <- plotcolors(cobraplot)[plotorder]
+    if (is.null(nintersects)) 
+      nintersects <- 2^(ncol(overlap_table[[stratum]])) - 1
+    if (is.null(sets.bar.color)) 
+      sets.bar.color <- plotcolors(cobraplot)[plotorder]
     upset(overlap_table[[stratum]], nsets = nsets, nintersects = nintersects,
           sets.bar.color = sets.bar.color, ...)
   }
