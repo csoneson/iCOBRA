@@ -24,7 +24,7 @@ Collate:
     'printHead.R'
     'shiny.R'
 Depends:
-    R (>= 3.2)
+    R (>= 3.4)
 Imports:
     shiny (>= 0.9.1.9008),
     shinydashboard,

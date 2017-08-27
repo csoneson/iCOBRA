@@ -920,7 +920,8 @@ setMethod("stratiflevels", "COBRAPerformance", function(x) {
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases [ [,COBRAPerformance-method \S4method{[}{COBRAPerformance,ANY,ANY} \S4method{[}{COBRAPerformance,ANY,ANY,ANY}
+#' @aliases [ [,COBRAPerformance-method \S4method{[}{COBRAPerformance,ANY,ANY}
+#'   \S4method{[}{COBRAPerformance,ANY,ANY,ANY}
 #' @return A subset of the original object, of the same class
 #' @export
 setMethod("[", "COBRAPerformance",
@@ -962,7 +963,7 @@ setMethod("[", "COBRAPerformance",
               x@fdrnbr <- x@fdrnbr[which(x@fdrnbr$basemethod %in% j), ]
             else
               x@fdrnbr <- data.frame()
-            
+
             if (length(x@fsrnbr) != 0 &&
                 length(intersect(j, x@fsrnbr$basemethod)) > 0)
               x@fsrnbr <- x@fsrnbr[which(x@fsrnbr$basemethod %in% j), ]
@@ -988,7 +989,7 @@ setMethod("[", "COBRAPerformance",
                 x@fdrnbrcurve[which(x@fdrnbrcurve$basemethod %in% j), ]
             else
               x@fdrnbrcurve <- data.frame()
-            
+
             if (length(x@fsrnbrcurve) != 0 &&
                 length(intersect(j,x@fsrnbrcurve$basemethod)) > 0)
               x@fsrnbrcurve <-

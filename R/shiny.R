@@ -33,7 +33,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
-                       "Binary classification and RAnking methods (v1.3.0)"),
+                       "Binary classification and RAnking methods (v1.5.2)"),
         titleWidth = 950),
 
       shinydashboard::dashboardSidebar(
@@ -167,16 +167,18 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                   "performance will be evaluated. ",
                                   "Separate multiple values with comma"),
                            "right", options = list(container = "body")),
-                 
+
                  ## Define the s-value thresholds to use in the plots.
                  textInput(inputId = "svalthresholds", 
                            label = "s-value thresholds",
                            value = "0.01, 0.05, 0.1"),
                  shinyBS::bsTooltip("svalthresholds",
-                                    paste0("Specific s-value thresholds at which the ",
-                                           "performance will be evaluated. ",
-                                           "Separate multiple values with comma"),
-                                    "right", options = list(container = "body")),
+                                    paste0("Specific s-value thresholds at ", 
+                                           "which the performance will be ", 
+                                           "evaluated. Separate multiple ", 
+                                           "values with comma"),
+                                    "right", 
+                                    options = list(container = "body")),
 
                  ## Define the plot height (in pixels).
                  numericInput(inputId = "plotheight",
@@ -463,7 +465,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                                             selected = "freq")),
                      column(2, radioButtons(inputId = "upset.order",
                                             label = "Order intersections",
-                                            choices = c("decreasing", "increasing"),
+                                            choices = c("decreasing", 
+                                                        "increasing"),
                                             selected = "decreasing")),
                      column(2, br(), downloadButton("export.upset",
                                                     label = "Download plot")),
@@ -835,9 +838,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
     plotvalues_FSR <- reactive({
       if ((input$goButton > 0 | isTRUE(autorun)) &
           input$cont_truth != "none") {
-        thrs <- sort(unique(as.numeric(gsub(" ", "",
-                                            unlist(strsplit(input$svalthresholds,
-                                                            ","))))))
+        thrs <- 
+          sort(unique(as.numeric(gsub(" ", "",
+                                      unlist(strsplit(input$svalthresholds,
+                                                      ","))))))
         return(calculate_performance(values$my_cobradata,
                                      binary_truth = NULL,
                                      cont_truth = input$cont_truth,
@@ -2111,7 +2115,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       fix_res(res, methodcol = methodcol,
               aspcts = c("FDR", "Number of detections"), tabtype = "large")
     })
-    
+
     ## -------------------------- FSRNBR ------------------------------- ##
     output$plot.fsrnbrcurve <- renderUI({
       plotOutput("fsrnbrcurve", width = "100%",
@@ -2182,7 +2186,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
         validate(
           need(is_plottable(fsrnbrcurve(plotvalues()$all_vals)),
                paste0("FSR/NBR curves can not be displayed. Check that ",
-                      "cont_truth is not 'none' and that s-values are provided."))
+                      "cont_truth is not 'none' and that s-values ", 
+                      "are provided."))
         )
       if ("points" %in% input$plottype)
         validate(

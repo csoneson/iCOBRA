@@ -195,7 +195,8 @@ define_colors <- function(cobraperf, palette, facetted, incloverall,
   tmp_methods <- as.character(tmp_methods)
 
   ## Define colors
-  if (length(palette) > 1 || (length(palette) == 1 && isinvalidpalette(palette))) {
+  if (length(palette) > 1 || 
+      (length(palette) == 1 && isinvalidpalette(palette))) {
     ## User-specified color vector
     
     ## First get the pre-defined colors right

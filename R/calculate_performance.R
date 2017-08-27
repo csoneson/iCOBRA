@@ -58,7 +58,7 @@ get_curve <- function(bintruth, vals, revr, aspc, rank_by_abs) {
       fpcorr <- length(which(bintruth == 0))/
         length(intersect(names(bintruth)[which(bintruth == 0)], kg))
     }
-    
+
     if (isTRUE(rank_by_abs))
       vals <- abs(vals)
     
@@ -207,7 +207,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
   all_methods <- unique(c(colnames(pval(cobradata)), colnames(padj(cobradata)),
-                          colnames(sval(cobradata)), colnames(score(cobradata))))
+                          colnames(sval(cobradata)), 
+                          colnames(score(cobradata))))
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
   if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects) &&
@@ -713,8 +714,10 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
           passed <- which(svlv <= thr)
           tested <- which(!is.na(svlv))
           nbr[paste0("thr", thr)] <- length(passed)
-          fs[paste0("thr", thr)] <- length(which(abs(sign(trtv[passed]) - sign(scrv[passed])) == 2))
-          ts[paste0("thr", thr)] <- length(which(sign(trtv[passed]) == sign(scrv[passed])))
+          fs[paste0("thr", thr)] <- 
+            length(which(abs(sign(trtv[passed]) - sign(scrv[passed])) == 2))
+          ts[paste0("thr", thr)] <- 
+            length(which(sign(trtv[passed]) == sign(scrv[passed])))
           possign[paste0("thr", thr)] <- length(which(sign(trtv) == 1))
           negsign[paste0("thr", thr)] <- length(which(sign(trtv) == -1))
           zerosign[paste0("thr", thr)] <- length(which(sign(trtv) == 0))
@@ -725,16 +728,17 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
             fsr[paste0("thr", thr)] <- fs[paste0("thr", thr)]/length(passed)
           }
         }
-        FSR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
-                                                           meas_type = inpcol,
-                                                           fsr = fsr,
-                                                           nbr = nbr,
-                                                           fs = fs, 
-                                                           ts = ts,
-                                                           possign = possign,
-                                                           negsign = negsign,
-                                                           zerosign = zerosign,
-                                                           totcalled = totcalled)
+        FSR[[paste0(i, "_overall", "__", inpcol)]] <- 
+          list(basemethod = i,
+               meas_type = inpcol,
+               fsr = fsr,
+               nbr = nbr,
+               fs = fs, 
+               ts = ts,
+               possign = possign,
+               negsign = negsign,
+               zerosign = zerosign,
+               totcalled = totcalled)
         
         if (splv != "none") {
           for (j in kltmp) {
@@ -755,9 +759,11 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
               passed <- which(svlv2 <= thr)
               tested <- which(!is.na(svlv2))
               nbr[paste0("thr", thr)] <- length(passed)
-              fs[paste0("thr", thr)] <- length(which(abs(sign(trtv2[passed]) - 
-                                                           sign(scrv2[passed])) == 2))
-              ts[paste0("thr", thr)] <- length(which(sign(trtv2[passed]) == sign(scrv2[passed])))
+              fs[paste0("thr", thr)] <- 
+                length(which(abs(sign(trtv2[passed]) - 
+                                   sign(scrv2[passed])) == 2))
+              ts[paste0("thr", thr)] <- 
+                length(which(sign(trtv2[passed]) == sign(scrv2[passed])))
               possign[paste0("thr", thr)] <- length(which(sign(trtv2) == 1))
               negsign[paste0("thr", thr)] <- length(which(sign(trtv2) == -1))
               zerosign[paste0("thr", thr)] <- length(which(sign(trtv2) == 0))
@@ -795,13 +801,18 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       fsrs$satis <- ifelse(fsrs$FSR <= as.numeric(gsub("thr", "", fsrs$thr)),
                            "yes", "no")
       fsrs$method.satis <- paste0(fsrs$fullmethod, fsrs$satis)
-      nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR", vf, domelt = TRUE)
+      nbrs <- extend_resulttable(nbrs, splv, keeplevels, "NBR",
+                                 vf, domelt = TRUE)
       tss <- extend_resulttable(tss, splv, keeplevels, "TS", vf, domelt = TRUE)
       fss <- extend_resulttable(fss, splv, keeplevels, "FS", vf, domelt = TRUE)
-      possigns <- extend_resulttable(possigns, splv, keeplevels, "POSSIGN", vf, domelt = TRUE)
-      negsigns <- extend_resulttable(negsigns, splv, keeplevels, "NEGSIGN", vf, domelt = TRUE)
-      zerosigns <- extend_resulttable(zerosigns, splv, keeplevels, "ZEROSIGN", vf, domelt = TRUE)
-      totcalleds <- extend_resulttable(totcalleds, splv, keeplevels, "TOT_CALLED", vf, domelt = TRUE)
+      possigns <- extend_resulttable(possigns, splv, keeplevels, "POSSIGN", 
+                                     vf, domelt = TRUE)
+      negsigns <- extend_resulttable(negsigns, splv, keeplevels, "NEGSIGN", 
+                                     vf, domelt = TRUE)
+      zerosigns <- extend_resulttable(zerosigns, splv, keeplevels, "ZEROSIGN", 
+                                      vf, domelt = TRUE)
+      totcalleds <- extend_resulttable(totcalleds, splv, keeplevels, 
+                                       "TOT_CALLED", vf, domelt = TRUE)
       
       fsrs <- Reduce(function(...) merge(..., all = TRUE), 
                      list(fsrs = fsrs, nbrs = nbrs, tss = tss, fss = fss, 
@@ -1232,12 +1243,15 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
         ## Add 'truth' to list of results, if type_venn is not 'rank' since in
         ## that case, the 'true' genes can be ranked in any order
         if (type_venn == "rank") {
-          message("Note that including truth with type_venn = 'rank' is not supported, since true features may be ranked in arbitrary order")
+          message(paste0("Note that including truth with type_venn = 'rank' ", 
+                         "is not supported, since true features may be ", 
+                         "ranked in arbitrary order"))
         } else {
           tmp2 <- 1 - truth(cobradata)[, binary_truth, drop = FALSE]
           colnames(tmp2) <- "truth"
           missing_genes <- setdiff(rownames(tmp2), rownames(tmplist))
-          tmpadd <- as.data.frame(matrix(NA, length(missing_genes), ncol(tmplist),
+          tmpadd <- as.data.frame(matrix(NA, length(missing_genes), 
+                                         ncol(tmplist),
                                          dimnames = list(missing_genes,
                                                          colnames(tmplist))))
           tmplist <- rbind(tmplist, tmpadd)

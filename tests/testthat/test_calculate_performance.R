@@ -422,7 +422,7 @@ local({
     expect_equal(fdrtprcurve(ib1), fdrnbrcurve(ib1))
     expect_equal(fdrtprcurve(ib2), fdrnbrcurve(ib2))
     expect_equal(fdrtprcurve(ib3), fdrnbrcurve(ib3))
-    
+
     ## fsrnbr vs fsrnbrcurve
     nbr1 <- (subset(fsrnbr(ib1), fullmethod == "Method1_overall" & thr == "thr0.05"))[, "NBR"]
     expect_equivalent((subset(fsrnbr(ib1), fullmethod == "Method1_overall" &
