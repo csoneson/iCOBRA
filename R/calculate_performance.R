@@ -1532,6 +1532,8 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
 #' cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
 #' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 #' }
+#' 
+#' @export
 reorder_levels <- function(cobraplot, levels) {
   if (isTRUE(facetted(cobraplot))) column <- "method"
   else column <- "fullmethod"
