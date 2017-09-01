@@ -33,6 +33,7 @@ cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
 plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
 }
+
 }
 \author{
 Charlotte Soneson
