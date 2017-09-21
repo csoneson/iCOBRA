@@ -624,10 +624,30 @@ setValidity("COBRAData",
                 valid <- FALSE
                 msg <- c(msg, paste0("pval slot is not numeric"))
               }
+              if (length(object@pval) != 0 &&
+                  any(object@pval[!is.na(object@pval)] < 0)) {
+                valid <- FALSE
+                msg <- c(msg, paste0("pval slot contains negative values"))
+              }
+              if (length(object@pval) != 0 &&
+                  any(object@pval[!is.na(object@pval)] > 1)) {
+                valid <- FALSE
+                msg <- c(msg, paste0("pval slot contains values larger than 1"))
+              }
               if (length(object@padj) != 0 &&
                   !all(sapply(object@padj, is.numeric))) {
                 valid <- FALSE
                 msg <- c(msg, paste0("padj slot is not numeric"))
+              }
+              if (length(object@padj) != 0 &&
+                  any(object@padj[!is.na(object@padj)] < 0)) {
+                valid <- FALSE
+                msg <- c(msg, paste0("padj slot contains negative values"))
+              }
+              if (length(object@padj) != 0 &&
+                  any(object@padj[!is.na(object@padj)] > 1)) {
+                valid <- FALSE
+                msg <- c(msg, paste0("padj slot contains values larger than 1"))
               }
               if (.hasSlot(object, "sval") && length(object@sval) != 0 &&
                   !all(sapply(object@sval, is.numeric))) {
