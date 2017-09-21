@@ -315,7 +315,8 @@ select_measure <- function(cobradata, method, asp) {
         tmp1 <- tmp1[match(nm, rownames(tmp1)), method]
         tmp2 <- tmp2[match(nm, rownames(tmp2)), method]
         sgn <- sign(diff(tmp1[order(tmp2)]))
-        if (length(unique(sgn[sgn != 0 & !is.na(sgn)])) == 1) ret <- "score"
+        ## Check that score is monotonically increasing with decreasing padj
+        if (all(sgn[sgn != 0 & !is.na(sgn)] == -1)) ret <- "score"
         else ret <- "padj"
       } else ret <- "score"
     } else if (method %in% names(pval(cobradata))) {
@@ -326,7 +327,8 @@ select_measure <- function(cobradata, method, asp) {
         tmp1 <- tmp1[match(nm, rownames(tmp1)), method]
         tmp2 <- tmp2[match(nm, rownames(tmp2)), method]
         sgn <- sign(diff(tmp1[order(tmp2)]))
-        if (length(unique(sgn[sgn != 0 & !is.na(sgn)])) == 1) ret <- "pval"
+        ## Check that pval is monotonically increasing with increasing padj
+        if (all(sgn[sgn != 0 & !is.na(sgn)] == 1)) ret <- "pval"
         else ret <- "padj"
       } else ret <- "pval"
     } else if (method %in% names(padj(cobradata))) {
