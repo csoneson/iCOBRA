@@ -453,7 +453,7 @@ local({
     ## FPC vs FP
     nbr1 <- (subset(fpc(ib1), fullmethod == "Method1_overall"))[, "topN"][150]
     cut1 <- (subset(fpc(ib1), fullmethod == "Method1_overall" & topN == nbr1))[, "FPC_CUTOFF"]
-    fp4 <- length(intersect(rownames(subset(score, abs(Method1) >= cut1)), 
+    fp4 <- length(intersect(rownames(subset(pval, abs(Method1) <= cut1)), 
                             rownames(subset(truth, status == 0))))
     expect_equal(fp4, (subset(fpc(ib1), fullmethod == "Method1_overall" & topN == nbr1))[, "FP"])
 
@@ -461,7 +461,7 @@ local({
     nbr1 <- (subset(fpc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)"))[, "topN"][150]
     cut1 <- (subset(fpc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)" &
                       topN == nbr1))[, "FPC_CUTOFF"]
-    fp4 <- length(intersect(rownames(subset(scoresub, abs(Method1) >= cut1)),
+    fp4 <- length(intersect(rownames(subset(pvalsub, abs(Method1) <= cut1)),
                             rownames(subset(truthsub, status == 0))))
     expect_equal(fp4, (subset(fpc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)" &
                                 topN == nbr1))[, "FP"])
@@ -469,7 +469,7 @@ local({
     ## FPC vs FP
     nbr1 <- (subset(fpc(ib3), fullmethod == "Method1_overall"))[, "topN"][150]
     cut1 <- (subset(fpc(ib3), fullmethod == "Method1_overall" & topN == nbr1))[, "FPC_CUTOFF"]
-    fp4 <- length(intersect(rownames(subset(score, abs(Method1) >= cut1)), 
+    fp4 <- length(intersect(rownames(subset(pval, abs(Method1) <= cut1)), 
                             rownames(subset(truth, status == 0))))
     expect_equal(fp4, (subset(fpc(ib3), fullmethod == "Method1_overall" & topN == nbr1))[, "FP"])
 
@@ -477,33 +477,33 @@ local({
     tpr1 <- (subset(roc(ib1), fullmethod == "Method1_overall"))[, "TPR"][155]
     fpr1 <- (subset(roc(ib1), fullmethod == "Method1_overall" & TPR == tpr1))[, "FPR"]
     cut1 <- (subset(roc(ib1), fullmethod == "Method1_overall" & TPR == tpr1))[, "ROC_CUTOFF"]
-    tp4 <- length(intersect(rownames(subset(score, abs(Method1) >= cut1)), 
+    tp4 <- length(intersect(rownames(subset(pval, abs(Method1) <= cut1)), 
                             rownames(subset(truth, status == 1))))
-    fp4 <- length(intersect(rownames(subset(score, abs(Method1) >= cut1)), 
+    fp4 <- length(intersect(rownames(subset(pval, abs(Method1) <= cut1)), 
                             rownames(subset(truth, status == 0))))
-    fn4 <- length(intersect(rownames(subset(score, abs(Method1) < cut1)), 
+    fn4 <- length(intersect(rownames(subset(pval, abs(Method1) > cut1)), 
                             rownames(subset(truth, status == 1))))
-    tn4 <- length(intersect(rownames(subset(score, abs(Method1) < cut1)), 
+    tn4 <- length(intersect(rownames(subset(pval, abs(Method1) > cut1)), 
                             rownames(subset(truth, status == 0))))
-    cc4 <- length(setdiff(rownames(subset(truth, status == 1)), rownames(subset(score, !is.na(Method1)))))
-    dd4 <- length(setdiff(rownames(subset(truth, status == 0)), rownames(subset(score, !is.na(Method1)))))
+    cc4 <- length(setdiff(rownames(subset(truth, status == 1)), rownames(subset(pval, !is.na(Method1)))))
+    dd4 <- length(setdiff(rownames(subset(truth, status == 0)), rownames(subset(pval, !is.na(Method1)))))
     expect_equal(fpr1, fp4/(fp4 + tn4 + dd4))
     expect_equal(tpr1, tp4/(tp4 + fn4 + cc4))
 
     ## ROC vs TPR/FPR
-    tpr1 <- (subset(roc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)"))[, "TPR"][165]
+    tpr1 <- (subset(roc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)"))[, "TPR"][465]
     fpr1 <- (subset(roc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)" & TPR == tpr1))[, "FPR"]
     cut1 <- (subset(roc(ib2), fullmethod == "Method1_expr_cat:[   2.628,  17.148)" & TPR == tpr1))[, "ROC_CUTOFF"]
-    tp4 <- length(intersect(rownames(subset(scoresub, abs(Method1) >= cut1)), 
+    tp4 <- length(intersect(rownames(subset(pvalsub, abs(Method1) <= cut1)), 
                             rownames(subset(truthsub, status == 1))))
-    fp4 <- length(intersect(rownames(subset(scoresub, abs(Method1) >= cut1)), 
+    fp4 <- length(intersect(rownames(subset(pvalsub, abs(Method1) <= cut1)), 
                             rownames(subset(truthsub, status == 0))))
-    fn4 <- length(intersect(rownames(subset(scoresub, abs(Method1) < cut1)), 
+    fn4 <- length(intersect(rownames(subset(pvalsub, abs(Method1) > cut1)), 
                             rownames(subset(truthsub, status == 1))))
-    tn4 <- length(intersect(rownames(subset(scoresub, abs(Method1) < cut1)), 
+    tn4 <- length(intersect(rownames(subset(pvalsub, abs(Method1) > cut1)), 
                             rownames(subset(truthsub, status == 0))))
-    cc4 <- length(setdiff(rownames(subset(truthsub, status == 1)), rownames(subset(scoresub, !is.na(Method1)))))
-    dd4 <- length(setdiff(rownames(subset(truthsub, status == 0)), rownames(subset(scoresub, !is.na(Method1)))))
+    cc4 <- length(setdiff(rownames(subset(truthsub, status == 1)), rownames(subset(pvalsub, !is.na(Method1)))))
+    dd4 <- length(setdiff(rownames(subset(truthsub, status == 0)), rownames(subset(pvalsub, !is.na(Method1)))))
     expect_equal(fpr1, fp4/(fp4 + tn4 + dd4))
     expect_equal(tpr1, tp4/(tp4 + fn4 + cc4))
 
@@ -511,16 +511,16 @@ local({
     tpr1 <- (subset(roc(ib3), fullmethod == "Method1_overall"))[, "TPR"][155]
     fpr1 <- (subset(roc(ib3), fullmethod == "Method1_overall" & TPR == tpr1))[, "FPR"]
     cut1 <- (subset(roc(ib3), fullmethod == "Method1_overall" & TPR == tpr1))[, "ROC_CUTOFF"]
-    tp4 <- length(intersect(rownames(subset(score, abs(Method1) >= cut1)), 
+    tp4 <- length(intersect(rownames(subset(pval, abs(Method1) <= cut1)), 
                             rownames(subset(truth, status == 1))))
-    fp4 <- length(intersect(rownames(subset(score, abs(Method1) >= cut1)), 
+    fp4 <- length(intersect(rownames(subset(pval, abs(Method1) <= cut1)), 
                             rownames(subset(truth, status == 0))))
-    fn4 <- length(intersect(rownames(subset(score, abs(Method1) < cut1)), 
+    fn4 <- length(intersect(rownames(subset(pval, abs(Method1) > cut1)), 
                             rownames(subset(truth, status == 1))))
-    tn4 <- length(intersect(rownames(subset(score, abs(Method1) < cut1)), 
+    tn4 <- length(intersect(rownames(subset(pval, abs(Method1) > cut1)), 
                             rownames(subset(truth, status == 0))))
-    cc4 <- length(setdiff(rownames(subset(truth, status == 1)), rownames(subset(score, !is.na(Method1)))))
-    dd4 <- length(setdiff(rownames(subset(truth, status == 0)), rownames(subset(score, !is.na(Method1)))))
+    cc4 <- length(setdiff(rownames(subset(truth, status == 1)), rownames(subset(pval, !is.na(Method1)))))
+    dd4 <- length(setdiff(rownames(subset(truth, status == 0)), rownames(subset(pval, !is.na(Method1)))))
     expect_equal(fpr1, fp4/(fp4 + tn4))
     expect_equal(tpr1, tp4/(tp4 + fn4))
   })

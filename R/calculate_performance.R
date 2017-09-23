@@ -53,9 +53,9 @@ get_curve <- function(bintruth, vals, revr, aspc, rank_by_abs) {
   if (any(bintruth[match(kg, names(bintruth))] == 0) &
       any(bintruth[match(kg, names(bintruth))] == 1)) {
     if (aspc %in% c("roc", "fdrtpr")) {
-      tpcorr <- length(which(bintruth == 1))/
+      tpcorr <- length(which(bintruth == 1)) /
         length(intersect(names(bintruth)[which(bintruth == 1)], kg))
-      fpcorr <- length(which(bintruth == 0))/
+      fpcorr <- length(which(bintruth == 0)) /
         length(intersect(names(bintruth)[which(bintruth == 0)], kg))
     }
 
@@ -179,6 +179,10 @@ get_curve <- function(bintruth, vals, revr, aspc, rank_by_abs) {
 #'   compare between methods (if \code{type_venn} is "rank").
 #' @param rank_by_abs Whether to take the absolute value of the score before
 #'   using it to rank the variables  for ROC, FPC, FDR/NBR and FDR/TPR curves.
+#' @param prefer_pval Whether to preferentially rank variables by p-values or
+#'   adjusted p-values rather than score for ROC and FPC calculations. From
+#'   version 1.5.5, this is the default behaviour. To obtain the behaviour of
+#'   previous versions, set to \code{FALSE}.
 #'
 #' @return A \code{COBRAPerformance} object
 #'
@@ -202,7 +206,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
                                   svalthrs = c(0.01, 0.05, 0.1), splv = "none",
                                   maxsplit = 3, onlyshared = FALSE,
                                   thr_venn = 0.05, type_venn = "adjp",
-                                  topn_venn = 100, rank_by_abs = TRUE) {
+                                  topn_venn = 100, rank_by_abs = TRUE, 
+                                  prefer_pval = TRUE) {
 
   ## Get all methods represented in the test result object
   ## (with at least one type of result)
@@ -217,7 +222,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
       outDS <- outNONDS <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fpr")
+      inpcol <- select_measure(cobradata, i, asp = "fpr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -386,7 +392,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outSPEARMAN <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "corr")
+      inpcol <- select_measure(cobradata, i, asp = "corr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -462,7 +469,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outTPR <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "tpr")
+      inpcol <- select_measure(cobradata, i, asp = "tpr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -528,7 +536,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outFDR <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fdr")
+      inpcol <- select_measure(cobradata, i, asp = "fdr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -552,7 +561,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
             } else {
               fdr[paste0("thr", thr)] <-
                 length(setdiff(
-                  signif, rownames(truth)[which(truth[, binary_truth] == 1)]))/
+                  signif, rownames(truth)[which(truth[, binary_truth] == 1)])) /
                 length(signif)
             }
           }
@@ -607,7 +616,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outFPR <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fpr")
+      inpcol <- select_measure(cobradata, i, asp = "fpr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -628,7 +638,7 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
             signif <- rownames(tmp)[which(tmp[i] <= thr)]
             fpr[paste0("thr", thr)] <-
               length(intersect(
-                signif, rownames(truth)[which(truth[, binary_truth] == 0)]))/
+                signif, rownames(truth)[which(truth[, binary_truth] == 0)])) /
               length(which(truth[, binary_truth] == 0))
           }
           FPR[[paste0(i, "_overall", "__", inpcol)]] <- list(basemethod = i,
@@ -674,7 +684,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outFSR <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fsrnbr")
+      inpcol <- select_measure(cobradata, i, asp = "fsrnbr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         svl <- slot(cobradata, inpcol)[i]
         scr <- slot(cobradata, "score")[i]
@@ -830,7 +841,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outFSRNBR <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fsrnbr")
+      inpcol <- select_measure(cobradata, i, asp = "fsrnbr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         scr <- slot(cobradata, "score")[i]
@@ -903,7 +915,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outFDRTPR <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fdrtpr")
+      inpcol <- select_measure(cobradata, i, asp = "fdrtpr", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -985,7 +998,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outROC <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "roc")
+      inpcol <- select_measure(cobradata, i, asp = "roc", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -1053,7 +1067,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outSCATTER <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "scatter")
+      inpcol <- select_measure(cobradata, i, asp = "scatter", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -1113,7 +1128,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outDEVIATION <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "deviation")
+      inpcol <- select_measure(cobradata, i, asp = "deviation", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -1172,7 +1188,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
     outFPC <- list()
     keeplevels <- c()
     for (i in all_methods) {
-      inpcol <- select_measure(cobradata, i, asp = "fpc")
+      inpcol <- select_measure(cobradata, i, asp = "fpc", 
+                               prefer_pval = prefer_pval)
       if (!is.null(inpcol)) {
         tmp <- slot(cobradata, inpcol)[i]
         allg <- get_keepfeatures(truth = truth(cobradata),
@@ -1523,15 +1540,12 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
 #' @author Charlotte Soneson
 #'
 #' @examples
-#' \dontrun{
-#' data(cobradata_example)
-#' cobraperf <- calculate_performance(cobradata_example,
+#' data(cobradata_example_sval)
+#' cobraperf <- calculate_performance(cobradata_example_sval,
 #'                                    binary_truth = "status", aspects = "fpr")
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                    incltruth = TRUE)
-#' cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
-#' plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
-#' }
+#' cobraplot <- reorder_levels(cobraplot, c("Method2", "Method1"))
 #' 
 #' @export
 reorder_levels <- function(cobraplot, levels) {
