@@ -1,3 +1,9 @@
+CHANGES IN VERSION 1.5.5
+------------------------
+  o The default selection of the measure to use for ROC and FP curves have been changed to improve consistency. Now, the preferred order is pval, padj, score. The behaviour of previous versions can be obtained by setting prefer_pval = FALSE in calculate_performance(). Note that the type of measure that is used to calculate a certain performance value can be retrieved from the respective slots of the COBRAPerformance and COBRAPlot objects.
+  o Improved robustness in selection of measure to use for FDR/TPR and FDR/NBR curves, especially for methods where both p-values and scores are available.
+  o Additional validity checks for pval and padj slots
+
 CHANGES IN VERSION 1.5.1
 ------------------------
 	o Added support for false sign rate calculations
@@ -57,7 +63,7 @@ CHANGES IN VERSION 0.3.8
 CHANGES IN VERSION 0.3.7
 ------------------------
 	o Fixed bug causing problems for Venn diagrams if only one method is available
-        o Included information texts in app
+  o Included information texts in app
 
 CHANGES IN VERSION 0.3.5
 ------------------------

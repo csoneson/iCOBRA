@@ -295,8 +295,24 @@ define_colors <- function(cobraperf, palette, facetted, incloverall,
   return(use_colors)
 }
 
+symdiff <- function(x, y) { 
+  setdiff(union(x, y), intersect(x, y))
+}
 
-select_measure <- function(cobradata, method, asp) {
+check_agreement <- function(x, y, method, expsgn) {
+  x <- x[method]
+  y <- y[method]
+  ok <- length(symdiff(rownames(x[!is.na(x[[method]]), , drop = FALSE]), 
+                       rownames(y[!is.na(y[[method]]), , drop = FALSE]))) == 0
+  nm <- intersect(rownames(x), rownames(y))
+  x <- x[match(nm, rownames(x)), method]
+  y <- y[match(nm, rownames(y)), method]
+  sgn <- sign(diff(x[order(y)]))
+  ## Check that x and y are monotonically related, with the right sign
+  all(sgn[sgn != 0 & !is.na(sgn)] == expsgn) && ok
+}
+
+select_measure <- function(cobradata, method, asp, prefer_pval) {
   cobradata <- update_cobradata(cobradata, quiet = TRUE)
   ret <- NULL
   if (asp %in% c("nbr", "fpr", "fdr", "tpr")) {
@@ -307,38 +323,44 @@ select_measure <- function(cobradata, method, asp) {
         method %in% names(sval(cobradata))) ret <- "sval"
     else ret <- NULL
   } else if (asp %in% c("fdrtpr", "fdrnbr")) {
-    if (method %in% names(score(cobradata))) {
+    if (method %in% names(pval(cobradata))) {
       if (method %in% names(padj(cobradata))) {
-        tmp1 <- padj(cobradata)[method]
-        tmp2 <- score(cobradata)[method]
-        nm <- intersect(rownames(tmp1), rownames(tmp2))
-        tmp1 <- tmp1[match(nm, rownames(tmp1)), method]
-        tmp2 <- tmp2[match(nm, rownames(tmp2)), method]
-        sgn <- sign(diff(tmp1[order(tmp2)]))
-        ## Check that score is monotonically increasing with decreasing padj
-        if (all(sgn[sgn != 0 & !is.na(sgn)] == -1)) ret <- "score"
-        else ret <- "padj"
-      } else ret <- "score"
-    } else if (method %in% names(pval(cobradata))) {
-      if (method %in% names(padj(cobradata))) {
-        tmp1 <- padj(cobradata)[method]
-        tmp2 <- pval(cobradata)[method]
-        nm <- intersect(rownames(tmp1), rownames(tmp2))
-        tmp1 <- tmp1[match(nm, rownames(tmp1)), method]
-        tmp2 <- tmp2[match(nm, rownames(tmp2)), method]
-        sgn <- sign(diff(tmp1[order(tmp2)]))
         ## Check that pval is monotonically increasing with increasing padj
-        if (all(sgn[sgn != 0 & !is.na(sgn)] == 1)) ret <- "pval"
-        else ret <- "padj"
+        if (check_agreement(padj(cobradata), pval(cobradata), method, 1)) {
+          ret <- "pval"
+        } else if (method %in% names(score(cobradata))) {
+          ## Check that score is monotonically increasing with decreasing padj
+          if (check_agreement(padj(cobradata), score(cobradata), method, -1)) {
+            ret <- "score"
+          } else { 
+            ret <- "padj"
+          }
+        } else { 
+          ret <- "padj"
+        }
       } else ret <- "pval"
+    } else if (method %in% names(score(cobradata))) {
+      if (method %in% names(padj(cobradata))) {
+        ## Check that score is monotonically increasing with decreasing padj
+        if (check_agreement(padj(cobradata), score(cobradata), method, -1)) {
+          ret <- "score"
+        } else ret <- "padj"
+      } else ret <- "score"
     } else if (method %in% names(padj(cobradata))) {
       ret <- "padj"
     } else ret <- NULL
   } else if (asp %in% c("roc", "fpc")) {
-    if (method %in% names(score(cobradata))) ret <- "score"
-    else if (method %in% names(pval(cobradata))) ret <- "pval"
-    else if (method %in% names(padj(cobradata))) ret <- "padj"
-    else ret <- NULL
+    if (prefer_pval) {
+      if (method %in% names(pval(cobradata))) ret <- "pval"
+      else if (method %in% names(padj(cobradata))) ret <- "padj"
+      else if (method %in% names(score(cobradata))) ret <- "score"
+      else ret <- NULL
+    } else {
+      if (method %in% names(score(cobradata))) ret <- "score"
+      else if (method %in% names(pval(cobradata))) ret <- "pval"
+      else if (method %in% names(padj(cobradata))) ret <- "padj"
+      else ret <- NULL
+    }
   } else if (asp %in% c("corr", "scatter", "deviation")) {
     if (method %in% names(score(cobradata))) ret <- "score"
     else ret <- NULL
