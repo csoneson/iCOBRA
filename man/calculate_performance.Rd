@@ -9,7 +9,8 @@ calculate_performance(cobradata, binary_truth = NULL, cont_truth = NULL,
   "roc", "fpc", "overlap", "corr", "scatter", "deviation", "fsrnbr",
   "fsrnbrcurve"), thrs = c(0.01, 0.05, 0.1), svalthrs = c(0.01, 0.05, 0.1),
   splv = "none", maxsplit = 3, onlyshared = FALSE, thr_venn = 0.05,
-  type_venn = "adjp", topn_venn = 100, rank_by_abs = TRUE)
+  type_venn = "adjp", topn_venn = 100, rank_by_abs = TRUE,
+  prefer_pval = TRUE)
 }
 \arguments{
 \item{cobradata}{A \code{COBRAData} object.}
@@ -62,6 +63,11 @@ compare between methods (if \code{type_venn} is "rank").}
 
 \item{rank_by_abs}{Whether to take the absolute value of the score before
 using it to rank the variables  for ROC, FPC, FDR/NBR and FDR/TPR curves.}
+
+\item{prefer_pval}{Whether to preferentially rank variables by p-values or
+adjusted p-values rather than score for ROC and FPC calculations. From
+version 1.5.5, this is the default behaviour. To obtain the behaviour of
+previous versions, set to \code{FALSE}.}
 }
 \value{
 A \code{COBRAPerformance} object

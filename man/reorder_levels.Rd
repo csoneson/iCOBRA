@@ -24,15 +24,12 @@ to the "method" column. If facetted(cobraplot) is FALSE, it will be applied
 to the "fullmethod" column.
 }
 \examples{
-\dontrun{
-data(cobradata_example)
-cobraperf <- calculate_performance(cobradata_example,
+data(cobradata_example_sval)
+cobraperf <- calculate_performance(cobradata_example_sval,
                                    binary_truth = "status", aspects = "fpr")
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                    incltruth = TRUE)
-cobraplot <- reorder_levels(cobraplot, c("voom", "edgeR"))
-plot_fpr(cobraplot, xaxisrange = c(0, 0.25))
-}
+cobraplot <- reorder_levels(cobraplot, c("Method2", "Method1"))
 
 }
 \author{
