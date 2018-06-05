@@ -24,6 +24,9 @@ local({
   tmp[sample(1:length(tmp), 100)] <- NA
   iCOBRA::score(cobradata)$Method1 <- tmp
   
+  ## Add a truth column represented with logical values instead of 0/1
+  truth(cobradata)$statuslogical <- as.logical(truth(cobradata)$status)
+  
   ## No stratification, onlyshared = FALSE
   ib1 <- calculate_performance(cobradata, binary_truth = "status",
                                cont_truth = "logFC",
@@ -35,6 +38,18 @@ local({
                                thrs = c(0.05), splv = "none",
                                onlyshared = FALSE, thr_venn = 0.05, 
                                rank_by_abs = TRUE)
+  
+  ## The same, but with the logical truth
+  ib1logical <- calculate_performance(cobradata, binary_truth = "statuslogical",
+                                      cont_truth = "logFC",
+                                      aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr",
+                                                  "fdrnbrcurve", "tpr", "fpr",
+                                                  "roc", "fpc", "overlap", "corr",
+                                                  "scatter", "deviation", 
+                                                  "fsrnbr", "fsrnbrcurve"),
+                                      thrs = c(0.05), splv = "none",
+                                      onlyshared = FALSE, thr_venn = 0.05, 
+                                      rank_by_abs = TRUE)
 
   ## Stratification, onlyshared = FALSE
   ib2 <- calculate_performance(cobradata, binary_truth = "status",
@@ -131,10 +146,15 @@ local({
   test_that("Shared values in output objects are equal", {
     ibp1 <- prepare_data_for_plot(ib1, keepmethod = NULL, incloverall = TRUE,
                                   incltruth = TRUE)
+    ibp1logical <- prepare_data_for_plot(ib1logical, keepmethod = NULL, 
+                                         incloverall = TRUE, incltruth = TRUE)
     expect_equivalent(colSums(overlap(ibp1))["Method1"],
                       (subset(tpr(ib1), fullmethod == "Method1_overall" &
                                 thr == "thr0.05"))[, "NBR"])
-
+    expect_equivalent(colSums(overlap(ibp1logical))["Method1"],
+                      (subset(tpr(ib1logical), fullmethod == "Method1_overall" &
+                                thr == "thr0.05"))[, "NBR"])
+    
     ## TP (fdrtpr, fdrnbr, tpr, fpr)
     expect_equal((subset(fdrtpr(ib1), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"],
                  (subset(fdrnbr(ib1), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"])
@@ -142,6 +162,14 @@ local({
                  (subset(tpr(ib1), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"])
     expect_equal((subset(fdrtpr(ib1), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"],
                  (subset(fpr(ib1), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"])
+    
+    expect_equal((subset(fdrtpr(ib1logical), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"],
+                 (subset(fdrnbr(ib1logical), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"])
+    expect_equal((subset(fdrtpr(ib1logical), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"],
+                 (subset(tpr(ib1logical), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"])
+    expect_equal((subset(fdrtpr(ib1logical), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"],
+                 (subset(fpr(ib1logical), fullmethod == "Method2_overall" & thr == "thr0.05"))[, "TP"])
+    
     expect_equal((subset(fdrtpr(ib2), fullmethod == "Method2_expr_cat:[   0.000,   0.362)" &
                            thr == "thr0.05"))[, "TP"],
                  (subset(fdrnbr(ib2), fullmethod == "Method2_expr_cat:[   0.000,   0.362)" &

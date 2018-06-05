@@ -214,6 +214,12 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   all_methods <- unique(c(colnames(pval(cobradata)), colnames(padj(cobradata)),
                           colnames(sval(cobradata)), 
                           colnames(score(cobradata))))
+  
+  ## If the binary_truth column is logical, convert to 0/1 values
+  if (is.logical(truth(cobradata)[, binary_truth])) {
+    message("binary_truth column is logical, converting to numeric (0/1)")
+    truth(cobradata)[, binary_truth] <- as.numeric(truth(cobradata)[, binary_truth])
+  }
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
   if (any(c("tpr", "fdr", "fdrtpr", "fpr", "fdrnbr") %in% aspects) &&
