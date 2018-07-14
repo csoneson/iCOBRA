@@ -16,17 +16,17 @@ We have also collected a set of benchmarking data sets, addressing different asp
 
 ## Installation
 
-`iCOBRA` can be installed from `Bioconductor` using `biocLite()`:
+`iCOBRA` can be installed from `Bioconductor` using `BiocManager`:
 
 ```
-source("http://bioconductor.org/biocLite.R")
-biocLite("iCOBRA")
+install.packages("BiocManager")
+BiocManager::install("iCOBRA")
 ```
 
 or, optionally, 
 
 ```
-biocLite("markrobinsonuzh/iCOBRA")
+BiocManager::install("markrobinsonuzh/iCOBRA")
 ```
 
 
