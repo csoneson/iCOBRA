@@ -1,10 +1,11 @@
 Package: iCOBRA
 Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
-Version: 1.11.0
+Version: 1.11.1
 Authors@R: c(person(given = "Charlotte", family = "Soneson", 
     role = c("aut", "cre"),
-    email = "charlottesoneson@gmail.com"))
+    email = "charlottesoneson@gmail.com",
+    comment = c(ORCID = "0000-0003-3833-2169")))
 Description: This package provides functions for calculation and visualization
     of performance metrics for evaluation of ranking and binary classification
     (assignment) methods. It also contains a shiny application for interactive
