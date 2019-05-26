@@ -39,7 +39,7 @@ local({
     expect_is(plot_scatter(ibp1), "ggplot")
     expect_is(plot_scatter(ibp1, dolog = TRUE), "ggplot")
     expect_is(plot_overlap(ibp1), "NULL")
-    expect_is(plot_upset(ibp1), "NULL")
+    expect_is(plot_upset(ibp1), "upset")
   })
 
   ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = FALSE,
@@ -59,7 +59,7 @@ local({
     expect_is(plot_roc(ibp1), "ggplot")
     expect_is(plot_scatter(ibp1), "ggplot")
     expect_is(plot_overlap(ibp1), "NULL")
-    expect_is(plot_upset(ibp1), "NULL")
+    expect_is(plot_upset(ibp1), "upset")
   })
 })
 
@@ -88,7 +88,7 @@ test_that("Plot functions return ggplot objects for empty input", {
   expect_is(plot_roc(ibp1), "ggplot")
   expect_is(plot_scatter(ibp1), "ggplot")
   expect_is(plot_overlap(ibp1), "NULL")
-  expect_is(plot_upset(ibp1), "NULL")
+  expect_is(plot_upset(ibp1), "upset")
 })
 
 local({
@@ -182,7 +182,7 @@ test_that("Plot functions return ggplot objects after stratification", {
   expect_is(plot_scatter(ibp1), "ggplot")
   expect_is(plot_overlap(ibp1), "list")
   expect_is(plot_overlap(ibp2), "list")
-  expect_is(plot_upset(ibp2, stratum = "[   0.000,   0.362)"), "NULL")
+  expect_is(plot_upset(ibp2, stratum = "[   0.000,   0.362)"), "upset")
 })
 
 test_that("Plot functions return ggplot objects after stratification", {
