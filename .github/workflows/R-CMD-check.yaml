@@ -98,7 +98,6 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        env:
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
