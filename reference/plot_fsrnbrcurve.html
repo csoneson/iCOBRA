@@ -124,9 +124,9 @@ false sign rate (FSR), for given adjusted p-value thresholds and/or as curves
 traced out by considering all threshold values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_fsrnbrcurve</span>(<span class='no'>cobraplot</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>stripsize</span> <span class='kw'>=</span> <span class='fl'>15</span>,
-  <span class='kw'>titlecol</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>xaxisrange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>),
-  <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"curve"</span>, <span class='st'>"points"</span>), <span class='kw'>linewidth</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_fsrnbrcurve</span>(<span class='kw'>cobraplot</span>, title = <span class='st'>""</span>, stripsize = <span class='fl'>15</span>,
+  titlecol = <span class='st'>"black"</span>, pointsize = <span class='fl'>5</span>, xaxisrange = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>),
+  plottype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"curve"</span>, <span class='st'>"points"</span>), linewidth = <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,14 +171,17 @@ be any combination of the two elements "curve" and "points".</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example_sval</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example_sval</span>,
-                                   <span class='kw'>cont_truth</span> <span class='kw'>=</span> <span class='st'>"logFC"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fsrnbr"</span>, <span class='st'>"fsrnbrcurve"</span>))</div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSR/NBR calculations</span></div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSRNBR calculations</span></div><div class='input'><span class='no'>cobraplot</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span>(<span class='no'>cobraperf</span>, <span class='kw'>colorscheme</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>,
-                                   <span class='kw'>incltruth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>plot_fsrnbrcurve</span>(<span class='no'>cobraplot</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"curve"</span>, <span class='st'>"points"</span>))</div><div class='img'><img src='plot_fsrnbrcurve-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example_sval</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example_sval</span>,
+                                   cont_truth = <span class='st'>"logFC"</span>,
+                                   aspects = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fsrnbr"</span>, <span class='st'>"fsrnbrcurve"</span>))</div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSR/NBR calculations</span></div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSRNBR calculations</span></div><div class='input'><span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, colorscheme = <span class='st'>"Dark2"</span>,
+                                   incltruth = <span class='fl'>TRUE</span>)
+<span class='fu'>plot_fsrnbrcurve</span>(<span class='kw'>cobraplot</span>, plottype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"curve"</span>, <span class='st'>"points"</span>))</div><div class='img'><img src='plot_fsrnbrcurve-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -122,18 +122,18 @@ COBRAPerformance or COBRAPlot object." />
 <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>deviation</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>deviation</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>deviation</span>(<span class='no'>x</span>, <span class='no'>...</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>deviation</span>(<span class='kw'>x</span>, <span class='kw'>...</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPerformance</span>
-<span class='fu'>deviation</span>(<span class='no'>x</span>)
+<span class='fu'>deviation</span>(<span class='kw'>x</span>)
 
 <span class='co'># S4 method for COBRAPerformance,data.frame</span>
-<span class='fu'>deviation</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>deviation</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPlot,data.frame</span>
-<span class='fu'>deviation</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
+<span class='fu'>deviation</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,11 +159,14 @@ level.</p></td>
     <p>The accessor function returns a data frame giving information
   necessary to plots of deviations between observed and true scores for each
   method and each stratification level.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>, <span class='kw'>cont_truth</span> <span class='kw'>=</span> <span class='st'>"logFC"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"deviation"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>deviation</span>(<span class='no'>cobraperf</span>))</div><div class='output co'>#&gt;     DEVIATION         feature method basemethod    meas    fullmethod splitval
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>, cont_truth = <span class='st'>"logFC"</span>,
+                                   aspects = <span class='st'>"deviation"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>deviation</span>(<span class='kw'>cobraperf</span>))</div><div class='output co'>#&gt;     DEVIATION         feature method basemethod    meas    fullmethod splitval
 #&gt; 1  0.22706080 ENSG00000000457  edgeR      edgeR __score edgeR_overall  overall
 #&gt; 2  0.31050478 ENSG00000000460  edgeR      edgeR __score edgeR_overall  overall
 #&gt; 3  0.04985025 ENSG00000000938  edgeR      edgeR __score edgeR_overall  overall

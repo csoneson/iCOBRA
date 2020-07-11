@@ -119,12 +119,12 @@
 
     <div class="ref-description">
     <p>Prepare performance data provided in a <code>COBRAPerformance</code> object
-(obtained by <code><a href='calculate_performance.html'>calculate_performance</a></code>) for plotting.</p>
+(obtained by <code>calculate_performance</code>) for plotting.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prepare_data_for_plot</span>(<span class='no'>cobraperf</span>, <span class='kw'>keepmethods</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>incloverall</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>colorscheme</span> <span class='kw'>=</span> <span class='st'>"hue_pal"</span>, <span class='kw'>facetted</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>incltruth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conditionalfill</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, keepmethods = <span class='kw'>NULL</span>, incloverall = <span class='fl'>TRUE</span>,
+  colorscheme = <span class='st'>"hue_pal"</span>, facetted = <span class='fl'>TRUE</span>, incltruth = <span class='fl'>TRUE</span>,
+  conditionalfill = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,20 +192,23 @@ imposed threshold).</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>COBRAPlot</code> object</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>,
-                                   <span class='kw'>binary_truth</span> <span class='kw'>=</span> <span class='st'>"status"</span>,
-                                   <span class='kw'>cont_truth</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fdrtpr"</span>, <span class='st'>"fdrtprcurve"</span>,
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>,
+                                   binary_truth = <span class='st'>"status"</span>,
+                                   cont_truth = <span class='st'>"none"</span>,
+                                   aspects = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fdrtpr"</span>, <span class='st'>"fdrtprcurve"</span>,
                                                <span class='st'>"tpr"</span>, <span class='st'>"roc"</span>),
-                                   <span class='kw'>thrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>), <span class='kw'>splv</span> <span class='kw'>=</span> <span class='st'>"none"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='no'>cobraplot</span> <span class='kw'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='no'>cobraperf</span>, <span class='kw'>keepmethods</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                                   <span class='kw'>colorscheme</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>)
+                                   thrs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>), splv = <span class='st'>"none"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, keepmethods = <span class='kw'>NULL</span>,
+                                   colorscheme = <span class='st'>"Dark2"</span>)
 
 <span class='co'>## User-specified colors</span>
-<span class='no'>cobraplot2</span> <span class='kw'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='no'>cobraperf</span>, <span class='kw'>keepmethods</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                                   <span class='kw'>colorscheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>, <span class='st'>"green"</span>))</div></pre>
+<span class='kw'>cobraplot2</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, keepmethods = <span class='kw'>NULL</span>,
+                                   colorscheme = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>, <span class='st'>"green"</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

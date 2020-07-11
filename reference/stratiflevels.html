@@ -122,10 +122,10 @@ in a COBRAPerformance or COBRAPlot object." />
 in a <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stratiflevels</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>stratiflevels</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S4 method for COBRAPerformance</span>
-<span class='fu'>stratiflevels</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>stratiflevels</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,13 +144,16 @@ in a <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
 
     <p>A character vector of all stratification levels represented in the
   object</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>,
-                                   <span class='kw'>binary_truth</span> <span class='kw'>=</span> <span class='st'>"status"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"fdrtpr"</span>, <span class='kw'>splv</span> <span class='kw'>=</span> <span class='st'>"expr_cat"</span>,
-                                   <span class='kw'>maxsplit</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='fu'>stratiflevels</span>(<span class='no'>cobraperf</span>)</div><div class='output co'>#&gt; [1] "expr_cat:[0.00e+00,2.77e-01)" "expr_cat:[1.45e+01,2.43e+04]"
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>,
+                                   binary_truth = <span class='st'>"status"</span>,
+                                   aspects = <span class='st'>"fdrtpr"</span>, splv = <span class='st'>"expr_cat"</span>,
+                                   maxsplit = <span class='fl'>4</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='fu'>stratiflevels</span>(<span class='kw'>cobraperf</span>)</div><div class='output co'>#&gt; [1] "expr_cat:[0.00e+00,2.77e-01)" "expr_cat:[1.45e+01,2.43e+04]"
 #&gt; [3] "expr_cat:[2.77e-01,2.85e+00)" "expr_cat:[2.85e+00,1.45e+01)"
 #&gt; [5] "overall"                     </div></pre>
   </div>

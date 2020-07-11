@@ -125,10 +125,10 @@ also be obtained using the function COBRAData_to_text." />
 initialized with a <code>COBRAData</code> object. If no object is provided, truth
 and results are loaded into the app from text files (see the Instructions tab
 of the app for formatting instructions). Properly formatted text files can
-also be obtained using the function <code><a href='COBRAData.html'>COBRAData_to_text</a></code>.</p>
+also be obtained using the function <code>COBRAData_to_text</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>COBRAapp</span>(<span class='kw'>cobradata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>autorun</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>COBRAapp</span>(cobradata = <span class='kw'>NULL</span>, autorun = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,11 +149,14 @@ calculation!' button.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns (and runs) an object representing the shiny app.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>COBRAapp</span>(<span class='no'>cobradata_example</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>COBRAapp</span>(<span class='kw'>cobradata_example</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

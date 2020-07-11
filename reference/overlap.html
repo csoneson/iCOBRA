@@ -122,18 +122,18 @@ COBRAPerformance or COBRAPlot object." />
 <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>overlap</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>overlap</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>overlap</span>(<span class='no'>x</span>, <span class='no'>...</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>overlap</span>(<span class='kw'>x</span>, <span class='kw'>...</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPerformance</span>
-<span class='fu'>overlap</span>(<span class='no'>x</span>)
+<span class='fu'>overlap</span>(<span class='kw'>x</span>)
 
 <span class='co'># S4 method for COBRAPerformance,list_df</span>
-<span class='fu'>overlap</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>overlap</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPlot,list_df</span>
-<span class='fu'>overlap</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
+<span class='fu'>overlap</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,12 +159,15 @@ stratification level.</p></td>
     <p>The accessor function returns a data frame or a list, giving
   information about which feature that are classified as 'positive' by each
   method and for each stratification level.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>,
-                                   <span class='kw'>binary_truth</span> <span class='kw'>=</span> <span class='st'>"status"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"overlap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>overlap</span>(<span class='no'>cobraperf</span>))</div><div class='output co'>#&gt;                 edgeR voom truth
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>,
+                                   binary_truth = <span class='st'>"status"</span>,
+                                   aspects = <span class='st'>"overlap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>overlap</span>(<span class='kw'>cobraperf</span>))</div><div class='output co'>#&gt;                 edgeR voom truth
 #&gt; ENSG00000000457     0    0     0
 #&gt; ENSG00000000460     0    0     0
 #&gt; ENSG00000000938     0    0     0

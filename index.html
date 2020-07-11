@@ -91,7 +91,7 @@ BiocManager::install("iCOBRA")</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#quick-start-guide" class="anchor"></a>Quick start guide</h2>
 <p>The <code>iCOBRA</code> workflow starts from an object of class <code>COBRAData</code>, containing (adjusted) p-values and/or scores for a set of features as well as the true status of the features. An example data set is provided in the package</p>
-<pre><code><a href="https://rdrr.io/pkg/iCOBRA/man">library(iCOBRA)
+<pre><code><a href="https://github.com/markrobinsonuzh/iCOBRA">library(iCOBRA)
 data(cobradata_example)</a></code></pre>
 <p>The function <code><a href="reference/calculate_performance.html">calculate_performance()</a></code> calculates the different performance metrics for a <code>COBRAData</code> object. By default, all performance metrics are calculated, but a subset can be selected using the <code>aspects</code> argument.</p>
 <pre><code>cobraperf &lt;- calculate_performance(cobradata_example, binary_truth = "status",

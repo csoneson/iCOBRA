@@ -122,15 +122,15 @@ COBRAPlot object." />
 <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotcolors</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>plotcolors</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>plotcolors</span>(<span class='no'>x</span>, <span class='no'>...</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>plotcolors</span>(<span class='kw'>x</span>, <span class='kw'>...</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPlot</span>
-<span class='fu'>plotcolors</span>(<span class='no'>x</span>)
+<span class='fu'>plotcolors</span>(<span class='kw'>x</span>)
 
 <span class='co'># S4 method for COBRAPlot,character</span>
-<span class='fu'>plotcolors</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
+<span class='fu'>plotcolors</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,13 +156,16 @@ methods (or method/stratification level combinations) represented in the
     <p>The accessor function returns a character vector giving the colors
   assigned to each of the methods (or method/stratification level
   combinations) represented in the <code>COBRAPlot</code> object.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>,
-                                   <span class='kw'>binary_truth</span> <span class='kw'>=</span> <span class='st'>"status"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"fdrtpr"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='no'>cobraplot</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span>(<span class='no'>cobraperf</span>)
-<span class='fu'>plotcolors</span>(<span class='no'>cobraplot</span>)</div><div class='output co'>#&gt;            edgeR             voom    edgeR_overall     voom_overall 
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>,
+                                   binary_truth = <span class='st'>"status"</span>,
+                                   aspects = <span class='st'>"fdrtpr"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>)
+<span class='fu'>plotcolors</span>(<span class='kw'>cobraplot</span>)</div><div class='output co'>#&gt;            edgeR             voom    edgeR_overall     voom_overall 
 #&gt;        "#F8766D"        "#00BFC4"        "#F8766D"        "#00BFC4" 
 #&gt;         edgeRyes          voomyes edgeR_overallyes  voom_overallyes 
 #&gt;        "#F8766D"        "#00BFC4"        "#F8766D"        "#00BFC4" 

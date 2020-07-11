@@ -122,18 +122,18 @@ COBRAPerformance or COBRAPlot object." />
 <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fsrnbr</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>fsrnbr</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>fsrnbr</span>(<span class='no'>x</span>, <span class='no'>...</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>fsrnbr</span>(<span class='kw'>x</span>, <span class='kw'>...</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPerformance</span>
-<span class='fu'>fsrnbr</span>(<span class='no'>x</span>)
+<span class='fu'>fsrnbr</span>(<span class='kw'>x</span>)
 
 <span class='co'># S4 method for COBRAPerformance,data.frame</span>
-<span class='fu'>fsrnbr</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>fsrnbr</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S4 method for COBRAPlot,data.frame</span>
-<span class='fu'>fsrnbr</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
+<span class='fu'>fsrnbr</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,13 +161,16 @@ frame is returned for simplicity.</p></td>
     <p>The accessor function returns a data frame giving information about
   the observed FSR and the number of features called positive for each method
   and each stratification level, at various s-value thresholds.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cobradata</span> <span class='kw'>&lt;-</span> <span class='no'>cobradata_example_sval</span>
+    <pre class="examples"><div class='input'><span class='kw'>cobradata</span> <span class='op'>&lt;-</span> <span class='kw'>cobradata_example_sval</span>
 
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata</span>,
-                                   <span class='kw'>cont_truth</span> <span class='kw'>=</span> <span class='st'>"logFC"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"fsrnbr"</span>)</div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSR/NBR calculations</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>fsrnbr</span>(<span class='no'>cobraperf</span>))</div><div class='output co'>#&gt;       thr  method basemethod   meas      fullmethod splitval         FSR satis
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata</span>, 
+                                   cont_truth = <span class='st'>"logFC"</span>, 
+                                   aspects = <span class='st'>"fsrnbr"</span>)</div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSR/NBR calculations</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>fsrnbr</span>(<span class='kw'>cobraperf</span>))</div><div class='output co'>#&gt;       thr  method basemethod   meas      fullmethod splitval         FSR satis
 #&gt; 1 thr0.01 Method1    Method1 __sval Method1_overall  overall 0.000000000   yes
 #&gt; 2 thr0.01 Method2    Method2 __sval Method2_overall  overall 0.000000000   yes
 #&gt; 3 thr0.05 Method1    Method1 __sval Method1_overall  overall 0.001612903   yes

@@ -122,7 +122,7 @@ available in a COBRAData object." />
 available in a <code>COBRAData</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_adjp</span>(<span class='no'>cobradata</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"BH"</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate_adjp</span>(<span class='kw'>cobradata</span>, method = <span class='st'>"BH"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,10 +142,13 @@ available in a <code>COBRAData</code> object.</p>
 
     <p>A <code>COBRAData</code> object, extended with the calculated adjusted
   p-values.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobradata_example</span> <span class='kw'>&lt;-</span> <span class='fu'>calculate_adjp</span>(<span class='no'>cobradata_example</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"BH"</span>)</div><div class='output co'>#&gt; <span class='message'>Adding empty sval slot to object</span></div><div class='output co'>#&gt; <span class='message'>Object up to date</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobradata_example</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_adjp</span>(<span class='kw'>cobradata_example</span>, method = <span class='st'>"BH"</span>)</div><div class='output co'>#&gt; <span class='message'>Adding empty sval slot to object</span></div><div class='output co'>#&gt; <span class='message'>Object up to date</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

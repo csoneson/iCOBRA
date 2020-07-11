@@ -126,8 +126,8 @@ as a "perfect" method. Note that if the results are stratified, only one
 category at a time can be displayed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_upset</span>(<span class='no'>cobraplot</span>, <span class='kw'>stratum</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nsets</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nintersects</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>sets.bar.color</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_upset</span>(<span class='kw'>cobraplot</span>, stratum = <span class='kw'>NULL</span>, nsets = <span class='kw'>NULL</span>, nintersects = <span class='kw'>NULL</span>,
+  sets.bar.color = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,20 +172,23 @@ default, they are extracted from the <code>plotcolors</code> slot of the
 Methods 11, 779.</p>
 <p>Lex et al (2014): UpSet: Visualization of intersecting sets. IEEE
 Transactions on Visualization and Computer Graphics 20(12), 1983-1992.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cobradata_example</span>)
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>,
-                                   <span class='kw'>binary_truth</span> <span class='kw'>=</span> <span class='st'>"status"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"overlap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='no'>cobraplot</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span>(<span class='no'>cobraperf</span>, <span class='kw'>colorscheme</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>,
-                                   <span class='kw'>incltruth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>plot_upset</span>(<span class='no'>cobraplot</span>)</div><div class='img'><img src='plot_upset-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_upset</span>(<span class='no'>cobraplot</span>, <span class='kw'>order.by</span> <span class='kw'>=</span> <span class='st'>"freq"</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='plot_upset-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>cobraperf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span>(<span class='no'>cobradata_example</span>,
-                                   <span class='kw'>binary_truth</span> <span class='kw'>=</span> <span class='st'>"status"</span>,
-                                   <span class='kw'>aspects</span> <span class='kw'>=</span> <span class='st'>"overlap"</span>,
-                                   <span class='kw'>splv</span> <span class='kw'>=</span> <span class='st'>"expr_cat"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='no'>cobraplot</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span>(<span class='no'>cobraperf</span>, <span class='kw'>colorscheme</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>,
-                                   <span class='kw'>incltruth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>plot_upset</span>(<span class='no'>cobraplot</span>, <span class='kw'>stratum</span> <span class='kw'>=</span> <span class='st'>"[2.85e+00,1.45e+01)"</span>)</div><div class='img'><img src='plot_upset-3.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>,
+                                   binary_truth = <span class='st'>"status"</span>,
+                                   aspects = <span class='st'>"overlap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, colorscheme = <span class='st'>"Dark2"</span>,
+                                   incltruth = <span class='fl'>TRUE</span>)
+<span class='fu'>plot_upset</span>(<span class='kw'>cobraplot</span>)</div><div class='img'><img src='plot_upset-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_upset</span>(<span class='kw'>cobraplot</span>, order.by = <span class='st'>"freq"</span>, decreasing = <span class='fl'>TRUE</span>)</div><div class='img'><img src='plot_upset-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>, 
+                                   binary_truth = <span class='st'>"status"</span>, 
+                                   aspects = <span class='st'>"overlap"</span>,
+                                   splv = <span class='st'>"expr_cat"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, colorscheme = <span class='st'>"Dark2"</span>, 
+                                   incltruth = <span class='fl'>TRUE</span>)
+<span class='fu'>plot_upset</span>(<span class='kw'>cobraplot</span>, stratum = <span class='st'>"[2.85e+00,1.45e+01)"</span>)</div><div class='img'><img src='plot_upset-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

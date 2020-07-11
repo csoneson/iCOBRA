@@ -123,15 +123,15 @@ calculate_performance." />
     <p>The <code>COBRAPerformance</code> class holds various types of calculated
 performance measures. Objects from this class are typically generated from
 <code>COBRAData</code> objects by means of the function
-<code><a href='calculate_performance.html'>calculate_performance</a></code>.</p>
+<code>calculate_performance</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>COBRAPerformance</span>(<span class='kw'>fdrtpr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>fdrtprcurve</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  <span class='kw'>fdrnbr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>fdrnbrcurve</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  <span class='kw'>fsrnbr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>fsrnbrcurve</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>tpr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  <span class='kw'>fpr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>splv</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>roc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>fpc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  <span class='kw'>deviation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>onlyshared</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>overlap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  <span class='kw'>maxsplit</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), <span class='kw'>scatter</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>())</pre>
+    <pre class="usage"><span class='fu'>COBRAPerformance</span>(fdrtpr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fdrtprcurve = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
+  fdrnbr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fdrnbrcurve = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
+  fsrnbr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fsrnbrcurve = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), tpr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
+  fpr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), splv = <span class='st'>""</span>, roc = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fpc = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
+  deviation = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), onlyshared = <span class='fl'>NA</span>, overlap = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
+  maxsplit = <span class='fl'>NA_integer_</span>, corr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), scatter = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -240,6 +240,9 @@ generate scatter plots.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>COBRAPerformance</code> object.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Empty COBRAPerformance object</span>
