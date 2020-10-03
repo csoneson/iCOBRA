@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title><code>COBRAPlot</code> object and constructor — COBRAPlot-class • iCOBRA</title>
+<title>COBRAPlot object and constructor — COBRAPlot-class • iCOBRA</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="<code>COBRAPlot</code> object and constructor — COBRAPlot-class" />
+<meta property="og:title" content="COBRAPlot object and constructor — COBRAPlot-class" />
 <meta property="og:description" content="The COBRAPlot class is similar to the COBRAPerformance class in
 that it holds various types of calculated performance measures. However, it
 also contains other attributes that are necessary for plotting, such as color
@@ -79,19 +79,13 @@ means of the function prepare_data_for_plot." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.17.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.17.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/iCOBRA.html">Get started</a>
 </li>
 <li>
@@ -131,16 +125,30 @@ assignments. Several <code>COBRAPlot</code> objects can be generated from the sa
 <code>COBRAPerformance</code> object, without having to go through the potentially
 time consuming task of recalculating all performance measures. Objects from
 this class are typically generated from a <code>COBRAPerformance</code> objects by
-means of the function <code>prepare_data_for_plot</code>.</p>
+means of the function <code><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>COBRAPlot</span>(fdrtpr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fdrtprcurve = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  fsrnbr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fsrnbrcurve = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  fdrnbr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), corr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fdrnbrcurve = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  tpr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), fpr = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), roc = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  scatter = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), onlyshared = <span class='fl'>NA</span>, fpc = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(),
-  overlap = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), plotcolors = <span class='st'>""</span>, splv = <span class='st'>""</span>,
-  deviation = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(), maxsplit = <span class='fl'>NA_integer_</span>, facetted = <span class='fl'>NA</span>)</pre>
+    <pre class="usage"><span class='fu'>COBRAPlot</span><span class='op'>(</span>
+  fdrtpr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  fdrtprcurve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  fsrnbr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  fsrnbrcurve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  fdrnbr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  corr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  fdrnbrcurve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  tpr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  fpr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  roc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  scatter <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  onlyshared <span class='op'>=</span> <span class='cn'>NA</span>,
+  fpc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  overlap <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  plotcolors <span class='op'>=</span> <span class='st'>""</span>,
+  splv <span class='op'>=</span> <span class='st'>""</span>,
+  deviation <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  maxsplit <span class='op'>=</span> <span class='cn'>NA_integer_</span>,
+  facetted <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -266,7 +274,8 @@ panels) or for displaying all values in one plot panel.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Empty COBRAPlot object</span>
-<span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>COBRAPlot</span>()</div></pre>
+<span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>COBRAPlot</span><span class='op'>(</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -282,7 +291,7 @@ panels) or for displaying all values in one plot panel.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

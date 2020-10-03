@@ -73,19 +73,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.17.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.17.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/iCOBRA.html">Get started</a>
 </li>
 <li>
@@ -119,12 +113,18 @@
 
     <div class="ref-description">
     <p>Prepare performance data provided in a <code>COBRAPerformance</code> object
-(obtained by <code>calculate_performance</code>) for plotting.</p>
+(obtained by <code><a href='calculate_performance.html'>calculate_performance</a></code>) for plotting.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, keepmethods = <span class='kw'>NULL</span>, incloverall = <span class='fl'>TRUE</span>,
-  colorscheme = <span class='st'>"hue_pal"</span>, facetted = <span class='fl'>TRUE</span>, incltruth = <span class='fl'>TRUE</span>,
-  conditionalfill = <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>prepare_data_for_plot</span><span class='op'>(</span>
+  <span class='va'>cobraperf</span>,
+  keepmethods <span class='op'>=</span> <span class='cn'>NULL</span>,
+  incloverall <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  colorscheme <span class='op'>=</span> <span class='st'>"hue_pal"</span>,
+  facetted <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  incltruth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  conditionalfill <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -136,7 +136,7 @@
     <tr>
       <th>keepmethods</th>
       <td><p>A character vector consisting of methods to retain for
-plotting (these should be a subset of <code>basemethods(cobraperf)</code>), or
+plotting (these should be a subset of <code><a href='basemethods.html'>basemethods(cobraperf)</a></code>), or
 NULL (indicating that all methods represented in cobraperf should be
 retained).</p></td>
     </tr>
@@ -197,18 +197,20 @@ imposed threshold).</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>cobradata_example</span>)
-<span class='kw'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_performance</span>(<span class='kw'>cobradata_example</span>,
-                                   binary_truth = <span class='st'>"status"</span>,
-                                   cont_truth = <span class='st'>"none"</span>,
-                                   aspects = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fdrtpr"</span>, <span class='st'>"fdrtprcurve"</span>,
-                                               <span class='st'>"tpr"</span>, <span class='st'>"roc"</span>),
-                                   thrs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>), splv = <span class='st'>"none"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='kw'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, keepmethods = <span class='kw'>NULL</span>,
-                                   colorscheme = <span class='st'>"Dark2"</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
+<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,
+                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,
+                                   cont_truth <span class='op'>=</span> <span class='st'>"none"</span>,
+                                   aspects <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fdrtpr"</span>, <span class='st'>"fdrtprcurve"</span>,
+                                               <span class='st'>"tpr"</span>, <span class='st'>"roc"</span><span class='op'>)</span>,
+                                   thrs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span><span class='op'>)</span>, splv <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span><span class='op'>(</span><span class='va'>cobraperf</span>, keepmethods <span class='op'>=</span> <span class='cn'>NULL</span>,
+                                   colorscheme <span class='op'>=</span> <span class='st'>"Dark2"</span><span class='op'>)</span>
 
 <span class='co'>## User-specified colors</span>
-<span class='kw'>cobraplot2</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span>(<span class='kw'>cobraperf</span>, keepmethods = <span class='kw'>NULL</span>,
-                                   colorscheme = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>, <span class='st'>"green"</span>))</div></pre>
+<span class='va'>cobraplot2</span> <span class='op'>&lt;-</span> <span class='fu'>prepare_data_for_plot</span><span class='op'>(</span><span class='va'>cobraperf</span>, keepmethods <span class='op'>=</span> <span class='cn'>NULL</span>,
+                                   colorscheme <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue"</span>, <span class='st'>"red"</span>, <span class='st'>"green"</span><span class='op'>)</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -224,7 +226,7 @@ imposed threshold).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
