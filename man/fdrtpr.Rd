@@ -5,15 +5,10 @@
 \name{fdrtpr}
 \alias{fdrtpr}
 \alias{fdrtpr<-}
-\alias{fdrtpr}
 \alias{fdrtpr,COBRAPerformance-method}
 \alias{fdrtpr<-,COBRAPerformance,data.frame-method}
 \alias{fdrtpr,COBRAPlot-method}
 \alias{fdrtpr<-,COBRAPlot,data.frame-method}
-\alias{fdrtpr}
-\alias{fdrtpr<-,COBRAPlot,data.frame-method}
-\alias{fdrtpr}
-\alias{fdrtpr,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{fdrtpr} slot}
 \usage{
 fdrtpr(x, ...)

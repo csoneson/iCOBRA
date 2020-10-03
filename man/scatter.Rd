@@ -5,15 +5,10 @@
 \name{scatter}
 \alias{scatter}
 \alias{scatter<-}
-\alias{scatter}
 \alias{scatter,COBRAPerformance-method}
 \alias{scatter<-,COBRAPerformance,data.frame-method}
 \alias{scatter,COBRAPlot-method}
 \alias{scatter<-,COBRAPlot,data.frame-method}
-\alias{scatter}
-\alias{scatter<-,COBRAPlot,data.frame-method}
-\alias{scatter}
-\alias{scatter,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{scatter} slot}
 \usage{
 scatter(x, ...)

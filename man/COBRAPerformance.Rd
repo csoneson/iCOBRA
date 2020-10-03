@@ -5,15 +5,27 @@
 \alias{COBRAPerformance-class}
 \alias{.COBRAPerformance}
 \alias{COBRAPerformance}
-\alias{COBRAPerformance-class}
 \title{\code{COBRAPerformance} object and constructor}
 \usage{
-COBRAPerformance(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
-  fdrnbr = data.frame(), fdrnbrcurve = data.frame(),
-  fsrnbr = data.frame(), fsrnbrcurve = data.frame(), tpr = data.frame(),
-  fpr = data.frame(), splv = "", roc = data.frame(), fpc = data.frame(),
-  deviation = data.frame(), onlyshared = NA, overlap = data.frame(),
-  maxsplit = NA_integer_, corr = data.frame(), scatter = data.frame())
+COBRAPerformance(
+  fdrtpr = data.frame(),
+  fdrtprcurve = data.frame(),
+  fdrnbr = data.frame(),
+  fdrnbrcurve = data.frame(),
+  fsrnbr = data.frame(),
+  fsrnbrcurve = data.frame(),
+  tpr = data.frame(),
+  fpr = data.frame(),
+  splv = "",
+  roc = data.frame(),
+  fpc = data.frame(),
+  deviation = data.frame(),
+  onlyshared = NA,
+  overlap = data.frame(),
+  maxsplit = NA_integer_,
+  corr = data.frame(),
+  scatter = data.frame()
+)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various

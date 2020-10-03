@@ -4,10 +4,8 @@
 \name{plotcolors}
 \alias{plotcolors}
 \alias{plotcolors<-}
-\alias{plotcolors}
 \alias{plotcolors,COBRAPlot-method}
 \alias{plotcolors<-,COBRAPlot,character-method}
-\alias{plotcolors}
 \title{Accessor and replacement functions for \code{plotcolors} slot}
 \usage{
 plotcolors(x, ...)

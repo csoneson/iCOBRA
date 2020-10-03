@@ -4,9 +4,15 @@
 \alias{prepare_data_for_plot}
 \title{Prepare data for plotting}
 \usage{
-prepare_data_for_plot(cobraperf, keepmethods = NULL, incloverall = TRUE,
-  colorscheme = "hue_pal", facetted = TRUE, incltruth = TRUE,
-  conditionalfill = TRUE)
+prepare_data_for_plot(
+  cobraperf,
+  keepmethods = NULL,
+  incloverall = TRUE,
+  colorscheme = "hue_pal",
+  facetted = TRUE,
+  incltruth = TRUE,
+  conditionalfill = TRUE
+)
 }
 \arguments{
 \item{cobraperf}{A \code{COBRAPerformance} object.}

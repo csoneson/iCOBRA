@@ -3,7 +3,6 @@
 \docType{methods}
 \name{stratiflevels}
 \alias{stratiflevels}
-\alias{stratiflevels}
 \alias{stratiflevels,COBRAPerformance-method}
 \alias{stratiflevels,COBRAPlot-method}
 \title{Accessor function for stratification levels}

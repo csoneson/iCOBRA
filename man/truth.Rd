@@ -4,10 +4,8 @@
 \name{truth}
 \alias{truth}
 \alias{truth<-}
-\alias{truth}
 \alias{truth,COBRAData-method}
 \alias{truth<-,COBRAData,data.frame-method}
-\alias{truth}
 \title{Accessor and replacement functions for \code{truth} slot}
 \usage{
 truth(x, ...)

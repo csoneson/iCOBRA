@@ -4,8 +4,15 @@
 \alias{plot_scatter}
 \title{Plot scatter plots}
 \usage{
-plot_scatter(cobraplot, title = "", stripsize = 10, titlecol = "black",
-  pointsize = 3, doflip = FALSE, dolog = FALSE)
+plot_scatter(
+  cobraplot,
+  title = "",
+  stripsize = 10,
+  titlecol = "black",
+  pointsize = 3,
+  doflip = FALSE,
+  dolog = FALSE
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

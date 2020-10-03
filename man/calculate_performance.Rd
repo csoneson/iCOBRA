@@ -4,13 +4,23 @@
 \alias{calculate_performance}
 \title{Calculate performance measures}
 \usage{
-calculate_performance(cobradata, binary_truth = NULL, cont_truth = NULL,
-  aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr",
-  "roc", "fpc", "overlap", "corr", "scatter", "deviation", "fsrnbr",
-  "fsrnbrcurve"), thrs = c(0.01, 0.05, 0.1), svalthrs = c(0.01, 0.05, 0.1),
-  splv = "none", maxsplit = 3, onlyshared = FALSE, thr_venn = 0.05,
-  type_venn = "adjp", topn_venn = 100, rank_by_abs = TRUE,
-  prefer_pval = TRUE)
+calculate_performance(
+  cobradata,
+  binary_truth = NULL,
+  cont_truth = NULL,
+  aspects = c("fdrtpr", "fdrtprcurve", "fdrnbr", "fdrnbrcurve", "tpr", "fpr", "roc",
+    "fpc", "overlap", "corr", "scatter", "deviation", "fsrnbr", "fsrnbrcurve"),
+  thrs = c(0.01, 0.05, 0.1),
+  svalthrs = c(0.01, 0.05, 0.1),
+  splv = "none",
+  maxsplit = 3,
+  onlyshared = FALSE,
+  thr_venn = 0.05,
+  type_venn = "adjp",
+  topn_venn = 100,
+  rank_by_abs = TRUE,
+  prefer_pval = TRUE
+)
 }
 \arguments{
 \item{cobradata}{A \code{COBRAData} object.}

@@ -4,10 +4,8 @@
 \name{score}
 \alias{score}
 \alias{score<-}
-\alias{score}
 \alias{score,COBRAData-method}
 \alias{score<-,COBRAData,data.frame-method}
-\alias{score}
 \title{Accessor and replacement functions for \code{score} slot}
 \usage{
 score(x, ...)

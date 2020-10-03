@@ -4,7 +4,8 @@
 \name{cobradata_example_sval}
 \alias{cobradata_example_sval}
 \title{Example data set with three differential gene expression methods}
-\format{A \code{COBRAData} object with five slots:
+\format{
+A \code{COBRAData} object with five slots:
 \describe{
   \item{pval}{data frame with p-values for 2,399 genes, from three different
   methods.}
@@ -21,7 +22,8 @@
   (status column), the number of isoforms (n_isoforms column), the true
   log fold change (logFC and logFC_cat columns) and average expression level
   (expr and expr_cat columns) for 3,858 genes.}
-  }}
+  }
+}
 \usage{
 cobradata_example_sval
 }

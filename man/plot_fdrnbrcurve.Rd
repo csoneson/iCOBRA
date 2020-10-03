@@ -4,9 +4,16 @@
 \alias{plot_fdrnbrcurve}
 \title{Plot number of significant features vs FDR}
 \usage{
-plot_fdrnbrcurve(cobraplot, title = "", stripsize = 15,
-  titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
-  plottype = c("curve", "points"), linewidth = 1)
+plot_fdrnbrcurve(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  pointsize = 5,
+  xaxisrange = c(0, 1),
+  plottype = c("curve", "points"),
+  linewidth = 1
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

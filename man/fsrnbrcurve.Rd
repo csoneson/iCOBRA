@@ -5,15 +5,10 @@
 \name{fsrnbrcurve}
 \alias{fsrnbrcurve}
 \alias{fsrnbrcurve<-}
-\alias{fsrnbrcurve}
 \alias{fsrnbrcurve,COBRAPerformance-method}
 \alias{fsrnbrcurve<-,COBRAPerformance,data.frame-method}
 \alias{fsrnbrcurve,COBRAPlot-method}
 \alias{fsrnbrcurve<-,COBRAPlot,data.frame-method}
-\alias{fsrnbrcurve}
-\alias{fsrnbrcurve<-,COBRAPlot,data.frame-method}
-\alias{fsrnbrcurve}
-\alias{fsrnbrcurve,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{fsrnbrcurve} slot}
 \usage{
 fsrnbrcurve(x, ...)

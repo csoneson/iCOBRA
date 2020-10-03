@@ -4,9 +4,16 @@
 \alias{plot_fsrnbrcurve}
 \title{Plot number of features with s-value below threshold vs FSR}
 \usage{
-plot_fsrnbrcurve(cobraplot, title = "", stripsize = 15,
-  titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
-  plottype = c("curve", "points"), linewidth = 1)
+plot_fsrnbrcurve(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  pointsize = 5,
+  xaxisrange = c(0, 1),
+  plottype = c("curve", "points"),
+  linewidth = 1
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

@@ -5,15 +5,10 @@
 \name{fpr}
 \alias{fpr}
 \alias{fpr<-}
-\alias{fpr}
 \alias{fpr,COBRAPerformance-method}
 \alias{fpr<-,COBRAPerformance,data.frame-method}
 \alias{fpr,COBRAPlot-method}
 \alias{fpr<-,COBRAPlot,data.frame-method}
-\alias{fpr}
-\alias{fpr<-,COBRAPlot,data.frame-method}
-\alias{fpr}
-\alias{fpr,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{fpr} slot}
 \usage{
 fpr(x, ...)

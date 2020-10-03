@@ -3,7 +3,6 @@
 \docType{methods}
 \name{basemethods}
 \alias{basemethods}
-\alias{basemethods}
 \alias{basemethods,COBRAPerformance-method}
 \alias{basemethods,COBRAPlot-method}
 \title{Accessor function for basemethods}

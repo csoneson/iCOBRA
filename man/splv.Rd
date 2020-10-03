@@ -5,15 +5,10 @@
 \name{splv}
 \alias{splv}
 \alias{splv<-}
-\alias{splv}
 \alias{splv,COBRAPerformance-method}
 \alias{splv<-,COBRAPerformance,character-method}
 \alias{splv,COBRAPlot-method}
 \alias{splv<-,COBRAPlot,character-method}
-\alias{splv}
-\alias{splv<-,COBRAPlot,character-method}
-\alias{splv}
-\alias{splv,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{splv} slot}
 \usage{
 splv(x, ...)

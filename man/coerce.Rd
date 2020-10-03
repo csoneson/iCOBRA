@@ -6,7 +6,6 @@
 \alias{coerce,COBRAPerformance,COBRAPlot-method}
 \alias{coerce,}
 \alias{COBRAPlot,COBRAPerformance-method}
-\alias{coerce}
 \alias{coerce,COBRAPlot,COBRAPerformance-method}
 \title{Convert an object to another class}
 \arguments{

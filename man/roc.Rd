@@ -5,15 +5,10 @@
 \name{roc}
 \alias{roc}
 \alias{roc<-}
-\alias{roc}
 \alias{roc,COBRAPerformance-method}
 \alias{roc<-,COBRAPerformance,data.frame-method}
 \alias{roc,COBRAPlot-method}
 \alias{roc<-,COBRAPlot,data.frame-method}
-\alias{roc}
-\alias{roc<-,COBRAPlot,data.frame-method}
-\alias{roc}
-\alias{roc,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{roc} slot}
 \usage{
 roc(x, ...)

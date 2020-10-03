@@ -4,8 +4,15 @@
 \alias{plot_corr}
 \title{Plot correlations}
 \usage{
-plot_corr(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  pointsize = 5, xaxisrange = c(-1, 1), corrtype = "pearson")
+plot_corr(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  pointsize = 5,
+  xaxisrange = c(-1, 1),
+  corrtype = "pearson"
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

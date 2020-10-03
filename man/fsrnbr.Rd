@@ -5,15 +5,10 @@
 \name{fsrnbr}
 \alias{fsrnbr}
 \alias{fsrnbr<-}
-\alias{fsrnbr}
 \alias{fsrnbr,COBRAPerformance-method}
 \alias{fsrnbr<-,COBRAPerformance,data.frame-method}
 \alias{fsrnbr,COBRAPlot-method}
 \alias{fsrnbr<-,COBRAPlot,data.frame-method}
-\alias{fsrnbr}
-\alias{fsrnbr<-,COBRAPlot,data.frame-method}
-\alias{fsrnbr}
-\alias{fsrnbr,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{fsrnbr} slot}
 \usage{
 fsrnbr(x, ...)

@@ -5,15 +5,10 @@
 \name{fpc}
 \alias{fpc}
 \alias{fpc<-}
-\alias{fpc}
 \alias{fpc,COBRAPerformance-method}
 \alias{fpc<-,COBRAPerformance,data.frame-method}
 \alias{fpc,COBRAPlot-method}
 \alias{fpc<-,COBRAPlot,data.frame-method}
-\alias{fpc}
-\alias{fpc<-,COBRAPlot,data.frame-method}
-\alias{fpc}
-\alias{fpc,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{fpc} slot}
 \usage{
 fpc(x, ...)

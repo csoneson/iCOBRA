@@ -5,15 +5,10 @@
 \name{deviation}
 \alias{deviation}
 \alias{deviation<-}
-\alias{deviation}
 \alias{deviation,COBRAPerformance-method}
 \alias{deviation<-,COBRAPerformance,data.frame-method}
 \alias{deviation,COBRAPlot-method}
 \alias{deviation<-,COBRAPlot,data.frame-method}
-\alias{deviation}
-\alias{deviation<-,COBRAPlot,data.frame-method}
-\alias{deviation}
-\alias{deviation,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{deviation} slot}
 \usage{
 deviation(x, ...)

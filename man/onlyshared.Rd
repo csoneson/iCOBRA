@@ -5,15 +5,10 @@
 \name{onlyshared}
 \alias{onlyshared}
 \alias{onlyshared<-}
-\alias{onlyshared}
 \alias{onlyshared,COBRAPerformance-method}
 \alias{onlyshared<-,COBRAPerformance,logical-method}
 \alias{onlyshared,COBRAPlot-method}
 \alias{onlyshared<-,COBRAPlot,logical-method}
-\alias{onlyshared}
-\alias{onlyshared<-,COBRAPlot,logical-method}
-\alias{onlyshared}
-\alias{onlyshared,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{onlyshared} slot}
 \usage{
 onlyshared(x, ...)

@@ -4,10 +4,8 @@
 \name{facetted}
 \alias{facetted}
 \alias{facetted<-}
-\alias{facetted}
 \alias{facetted,COBRAPlot-method}
 \alias{facetted<-,COBRAPlot,logical-method}
-\alias{facetted}
 \title{Accessor and replacement functions for \code{facetted} slot}
 \usage{
 facetted(x, ...)

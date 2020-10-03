@@ -4,8 +4,15 @@
 \alias{plot_roc}
 \title{Plot ROC curves}
 \usage{
-plot_roc(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  xaxisrange = c(0, 1), yaxisrange = c(0, 1), linewidth = 1)
+plot_roc(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  xaxisrange = c(0, 1),
+  yaxisrange = c(0, 1),
+  linewidth = 1
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

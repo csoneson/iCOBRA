@@ -8,13 +8,9 @@
 \alias{\S4method{[}{COBRAData,ANY,ANY,ANY}}
 \alias{[}
 \alias{[,COBRAData-method}
-\alias{Extract}
-\alias{[}
 \alias{[,COBRAPerformance-method}
 \alias{\S4method{[}{COBRAPerformance,ANY,ANY}}
 \alias{\S4method{[}{COBRAPerformance,ANY,ANY,ANY}}
-\alias{Extract}
-\alias{[}
 \alias{[,COBRAPlot-method}
 \alias{\S4method{[}{COBRAPlot,ANY,ANY}}
 \alias{\S4method{[}{COBRAPlot,ANY,ANY,ANY}}

@@ -4,9 +4,17 @@
 \alias{plot_fdrtprcurve}
 \title{Plot TPR vs FDR}
 \usage{
-plot_fdrtprcurve(cobraplot, title = "", stripsize = 15,
-  titlecol = "black", pointsize = 5, xaxisrange = c(0, 1),
-  yaxisrange = c(0, 1), plottype = c("curve", "points"), linewidth = 1)
+plot_fdrtprcurve(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  pointsize = 5,
+  xaxisrange = c(0, 1),
+  yaxisrange = c(0, 1),
+  plottype = c("curve", "points"),
+  linewidth = 1
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

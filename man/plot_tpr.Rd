@@ -4,8 +4,14 @@
 \alias{plot_tpr}
 \title{Plot TPR}
 \usage{
-plot_tpr(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  pointsize = 5, xaxisrange = c(0, 1))
+plot_tpr(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  pointsize = 5,
+  xaxisrange = c(0, 1)
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

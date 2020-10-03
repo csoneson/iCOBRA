@@ -5,16 +5,29 @@
 \alias{COBRAPlot-class}
 \alias{.COBRAPlot}
 \alias{COBRAPlot}
-\alias{COBRAPlot-class}
 \title{\code{COBRAPlot} object and constructor}
 \usage{
-COBRAPlot(fdrtpr = data.frame(), fdrtprcurve = data.frame(),
-  fsrnbr = data.frame(), fsrnbrcurve = data.frame(),
-  fdrnbr = data.frame(), corr = data.frame(), fdrnbrcurve = data.frame(),
-  tpr = data.frame(), fpr = data.frame(), roc = data.frame(),
-  scatter = data.frame(), onlyshared = NA, fpc = data.frame(),
-  overlap = data.frame(), plotcolors = "", splv = "",
-  deviation = data.frame(), maxsplit = NA_integer_, facetted = NA)
+COBRAPlot(
+  fdrtpr = data.frame(),
+  fdrtprcurve = data.frame(),
+  fsrnbr = data.frame(),
+  fsrnbrcurve = data.frame(),
+  fdrnbr = data.frame(),
+  corr = data.frame(),
+  fdrnbrcurve = data.frame(),
+  tpr = data.frame(),
+  fpr = data.frame(),
+  roc = data.frame(),
+  scatter = data.frame(),
+  onlyshared = NA,
+  fpc = data.frame(),
+  overlap = data.frame(),
+  plotcolors = "",
+  splv = "",
+  deviation = data.frame(),
+  maxsplit = NA_integer_,
+  facetted = NA
+)
 }
 \arguments{
 \item{fdrtpr}{A data frame containing observed FDR and TPR values at various

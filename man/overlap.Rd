@@ -5,15 +5,10 @@
 \name{overlap}
 \alias{overlap}
 \alias{overlap<-}
-\alias{overlap}
 \alias{overlap,COBRAPerformance-method}
 \alias{overlap<-,COBRAPerformance,list_df-method}
 \alias{overlap,COBRAPlot-method}
 \alias{overlap<-,COBRAPlot,list_df-method}
-\alias{overlap}
-\alias{overlap<-,COBRAPlot,list_df-method}
-\alias{overlap}
-\alias{overlap,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{overlap} slot}
 \usage{
 overlap(x, ...)

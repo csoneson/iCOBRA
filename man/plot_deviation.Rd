@@ -4,9 +4,16 @@
 \alias{plot_deviation}
 \title{Plot deviations}
 \usage{
-plot_deviation(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  xaxisrange = NULL, plottype = "boxplot", dojitter = TRUE,
-  transf = "raw")
+plot_deviation(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  xaxisrange = NULL,
+  plottype = "boxplot",
+  dojitter = TRUE,
+  transf = "raw"
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

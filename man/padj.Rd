@@ -4,10 +4,8 @@
 \name{padj}
 \alias{padj}
 \alias{padj<-}
-\alias{padj}
 \alias{padj,COBRAData-method}
 \alias{padj<-,COBRAData,data.frame-method}
-\alias{padj}
 \title{Accessor and replacement functions for \code{padj} slot}
 \usage{
 padj(x, ...)

@@ -5,15 +5,10 @@
 \name{tpr}
 \alias{tpr}
 \alias{tpr<-}
-\alias{tpr}
 \alias{tpr,COBRAPerformance-method}
 \alias{tpr<-,COBRAPerformance,data.frame-method}
 \alias{tpr,COBRAPlot-method}
 \alias{tpr<-,COBRAPlot,data.frame-method}
-\alias{tpr}
-\alias{tpr<-,COBRAPlot,data.frame-method}
-\alias{tpr}
-\alias{tpr,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{tpr} slot}
 \usage{
 tpr(x, ...)

@@ -5,13 +5,18 @@
 \alias{COBRAData-class}
 \alias{.COBRAData}
 \alias{COBRAData}
-\alias{COBRAData-class}
 \alias{COBRAData_from_text}
 \alias{COBRAData_to_text}
 \title{\code{COBRAData} object and constructor}
 \usage{
-COBRAData(pval = data.frame(), padj = data.frame(), score = data.frame(),
-  sval = data.frame(), truth = data.frame(), object_to_extend = NULL)
+COBRAData(
+  pval = data.frame(),
+  padj = data.frame(),
+  score = data.frame(),
+  sval = data.frame(),
+  truth = data.frame(),
+  object_to_extend = NULL
+)
 
 COBRAData_from_text(truth_file, result_files, feature_id)
 

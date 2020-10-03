@@ -5,12 +5,9 @@
 \name{corr}
 \alias{corr}
 \alias{corr<-}
-\alias{corr}
 \alias{corr,COBRAPerformance-method}
 \alias{corr<-,COBRAPerformance,data.frame-method}
-\alias{corr}
 \alias{corr<-,COBRAPlot,data.frame-method}
-\alias{corr}
 \alias{corr,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{corr} slot}
 \usage{

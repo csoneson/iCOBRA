@@ -5,15 +5,10 @@
 \name{maxsplit}
 \alias{maxsplit}
 \alias{maxsplit<-}
-\alias{maxsplit}
 \alias{maxsplit,COBRAPerformance-method}
 \alias{maxsplit<-,COBRAPerformance,numeric-method}
 \alias{maxsplit,COBRAPlot-method}
 \alias{maxsplit<-,COBRAPlot,numeric-method}
-\alias{maxsplit}
-\alias{maxsplit<-,COBRAPlot,numeric-method}
-\alias{maxsplit}
-\alias{maxsplit,COBRAPlot-method}
 \title{Accessor and replacement functions for \code{maxsplit} slot}
 \usage{
 maxsplit(x, ...)

@@ -4,10 +4,8 @@
 \name{sval}
 \alias{sval}
 \alias{sval<-}
-\alias{sval}
 \alias{sval,COBRAData-method}
 \alias{sval<-,COBRAData,data.frame-method}
-\alias{sval}
 \title{Accessor and replacement functions for \code{sval} slot}
 \usage{
 sval(x, ...)

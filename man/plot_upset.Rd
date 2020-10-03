@@ -4,8 +4,14 @@
 \alias{plot_upset}
 \title{Create UpSet plots}
 \usage{
-plot_upset(cobraplot, stratum = NULL, nsets = NULL, nintersects = NULL,
-  sets.bar.color = NULL, ...)
+plot_upset(
+  cobraplot,
+  stratum = NULL,
+  nsets = NULL,
+  nintersects = NULL,
+  sets.bar.color = NULL,
+  ...
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

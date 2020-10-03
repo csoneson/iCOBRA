@@ -4,8 +4,14 @@
 \alias{plot_fpc}
 \title{Plot FP curves}
 \usage{
-plot_fpc(cobraplot, title = "", stripsize = 15, titlecol = "black",
-  maxnfdc = 500, linewidth = 1)
+plot_fpc(
+  cobraplot,
+  title = "",
+  stripsize = 15,
+  titlecol = "black",
+  maxnfdc = 500,
+  linewidth = 1
+)
 }
 \arguments{
 \item{cobraplot}{A \code{COBRAPlot} object.}

@@ -4,10 +4,8 @@
 \name{pval}
 \alias{pval}
 \alias{pval<-}
-\alias{pval}
 \alias{pval,COBRAData-method}
 \alias{pval<-,COBRAData,data.frame-method}
-\alias{pval}
 \title{Accessor and replacement functions for \code{pval} slot}
 \usage{
 pval(x, ...)
