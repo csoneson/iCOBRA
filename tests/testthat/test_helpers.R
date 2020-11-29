@@ -3,6 +3,12 @@
 library(iCOBRA)
 context("Check helper functions")
 
+test_that("is_plottable works", {
+  expect_false(iCOBRA:::is_plottable(NULL))
+  expect_false(iCOBRA:::is_plottable(data.frame()))
+  expect_false(iCOBRA:::is_plottable(logical(0)))
+})
+
 test_that("get_coltype works", {
   expect_equal(iCOBRA:::get_coltype("Method1:P"), "pval")
   expect_equal(iCOBRA:::get_coltype("Method2:adjP"), "padj")

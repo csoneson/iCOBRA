@@ -503,6 +503,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
   ##                          Define server                             ##
   ## ------------------------------------------------------------------ ##
 
+  #nocov start
   server_function <- function(input, output, session) {
     values <- reactiveValues()
     values$my_cobradata <- COBRAData()
@@ -2248,6 +2249,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
     })
     
     
-  }
+  } ## end of server_function
+  #nocov end
+  
   shinyApp(ui = p_layout, server = server_function)
 }
