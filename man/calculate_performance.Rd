@@ -33,8 +33,8 @@ variables into two classes, represented by 0/1).}
 truth(cobradata) that contains the continuous truth (a continuous value
 that the observations can be compared to).}
 
-\item{aspects}{A character vector giving the types of performance measures to
-calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
+\item{aspects}{A character vector giving the types of performance measures 
+to calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
 "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
 "deviation", "fsrnbr", "fsrnbrcurve").}
 

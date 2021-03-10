@@ -2,7 +2,8 @@
 % Please edit documentation in R/COBRAData.R
 \name{update_cobradata}
 \alias{update_cobradata}
-\title{Update \code{COBRAData} object to the current version of the class format}
+\title{Update \code{COBRAData} object to the current version of the class 
+format}
 \usage{
 update_cobradata(object, quiet = FALSE)
 }

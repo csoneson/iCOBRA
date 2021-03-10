@@ -605,7 +605,7 @@ plot_overlap <- function(cobraplot, ...) {
   if (length(overlap_table) == 0)
     return(NULL)
 
-  if (class(overlap_table) != "list") {
+  if (!is(overlap_table, "list")) {
     if (ncol(overlap_table) < 6) {
       if (ncol(overlap_table) == 5)
         cols <- rep(circle.col[colnames(overlap_table)], 2)[2:6]
@@ -619,7 +619,7 @@ plot_overlap <- function(cobraplot, ...) {
     ncl <- ceiling(sqrt(length(overlap_table)))
     nrw <- ceiling(length(overlap_table)/ncl)
     graphics::par(mfrow = c(nrw, ncl), mar = c(4, 1, 1, 1))
-    for (i in 1:length(overlap_table)) {
+    for (i in seq_len(length(overlap_table))) {
       if (ncol(overlap_table[[i]]) < 6) {
         if (ncol(overlap_table[[i]]) == 5)
           cols <- rep(circle.col[colnames(overlap_table[[i]])], 2)[2:6]
@@ -688,10 +688,11 @@ plot_upset <- function(cobraplot, stratum = NULL, nsets = NULL,
   if (length(overlap_table) == 0)
     return(NULL)
   
-  if (class(overlap_table) != "list") {
-    plotorder <- colnames(overlap_table)[order(colSums(overlap_table), 
-                                               seq(1:ncol(overlap_table)),
-                                               decreasing = "true")]
+  if (!is(overlap_table, "list")) {
+    plotorder <- 
+      colnames(overlap_table)[order(colSums(overlap_table), 
+                                    seq(seq_len(ncol(overlap_table))),
+                                    decreasing = "true")]
     if (all(colSums(overlap_table) == 0)) return(NULL)
     if (is.null(nsets)) nsets <- ncol(overlap_table)
     if (is.null(nintersects)) nintersects <- 2^(ncol(overlap_table)) - 1
@@ -704,7 +705,7 @@ plot_upset <- function(cobraplot, stratum = NULL, nsets = NULL,
     plotorder <- 
       colnames(overlap_table[[stratum]])[
         order(colSums(overlap_table[[stratum]]), 
-              seq(1:ncol(overlap_table[[stratum]])),
+              seq(seq_len(ncol(overlap_table[[stratum]]))),
               decreasing = "true")]
     if (all(colSums(overlap_table[[stratum]]) == 0)) return(NULL)
     if (is.null(nsets)) nsets <- ncol(overlap_table[[stratum]])

@@ -26,8 +26,9 @@ also be obtained using the function \code{\link{COBRAData_to_text}}.
 }
 \examples{
 data(cobradata_example)
-\dontrun{
-COBRAapp(cobradata_example)
+app <- COBRAapp(cobradata_example)
+if (interactive()) {
+  shiny::runApp(app)
 }
 }
 \author{

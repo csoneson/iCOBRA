@@ -26,13 +26,13 @@
   switch(which, OneD = {
     n <- length(x)
     if (n > 20) {
-      print(x[1:5])
+      print(x[seq_len(5)])
       cat(n - 5, "more elements ...\n")
     } else print(x)
   }, TwoD = {
     n <- d[1]
     if (n > 10) {
-      print(x[1:5, , drop = FALSE])
+      print(x[seq_len(5), , drop = FALSE])
       cat(n - 5, "more rows ...\n")
     } else print(x)
 #   }, Array = {

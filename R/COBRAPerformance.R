@@ -874,7 +874,7 @@ setMethod("basemethods", "COBRAPerformance", function(x) {
     tryCatch(slot(x, w)$basemethod,
              error = function(e) NULL)
   }))
-  if (class(x@overlap) == "list")
+  if (is(x@overlap, "list"))
     x2 <- unlist(lapply(x@overlap, function(w) colnames(w)))
   else
     x2 <- colnames(x@overlap)
@@ -910,7 +910,7 @@ setMethod("stratiflevels", "COBRAPerformance", function(x) {
     tryCatch(as.character(slot(x, w)$splitval),
              error = function(e) NULL)
   }))
-  if (class(x@overlap) == "list")
+  if (is(x@overlap, "list"))
     x2 <- paste0(x@splv, ":", names(x@overlap))
   else
     x2 <- "overall"
@@ -1010,7 +1010,7 @@ setMethod("[", "COBRAPerformance",
               x@scatter <- data.frame()
 
             if (length(x@overlap) != 0) {
-              if (class(x@overlap) == "data.frame") {
+              if (is(x@overlap, "data.frame")) {
                 if (length(intersect(c(j, "truth"), colnames(x@overlap))) > 0) {
                   x@overlap <-
                     x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),

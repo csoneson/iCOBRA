@@ -23,7 +23,7 @@ get_keepfeatures <- function(truth, df, method, colm, onlyshared) {
 is_plottable <- function(obj) {
   if (is.null(obj))
     FALSE
-  else if (class(obj) == "data.frame" && nrow(obj) == 0)
+  else if (is(obj, "data.frame") && nrow(obj) == 0)
     FALSE
   else if (length(obj) == 0)
     FALSE
@@ -50,7 +50,7 @@ get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
         tbl <- table(truth[[splv]])
       }
       tbl <- sort(tbl, decreasing = TRUE)
-      keeplevels <- names(tbl)[1:min(maxsplit, length(tbl))]
+      keeplevels <- names(tbl)[seq_len(min(maxsplit, length(tbl)))]
     }
   } else {
     keeplevels <- "overall"
@@ -215,7 +215,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall,
     
     if (length(palette) > ncolors) {
       warning("too many colors supplied, only a subset will be used")
-      use_colors1 <- palette[1:ncolors]
+      use_colors1 <- palette[seq_len(ncolors)]
     } else if (length(palette) < ncolors) {
       warning("too few colors provided, ", ncolors - length(palette),
               " random colors will be added")
@@ -223,7 +223,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall,
                        setdiff(sample(grDevices::colors(),
                                       length(grDevices::colors())),
                                c("white",
-                                 palette))[1:(ncolors - length(palette))])
+                                 palette))[seq_len(ncolors - length(palette))])
     } else {
       use_colors1 <- palette
     }
@@ -240,7 +240,7 @@ define_colors <- function(cobraperf, palette, facetted, incloverall,
                        setdiff(sample(grDevices::colors(),
                                       length(grDevices::colors())),
                                c("white",
-                                 palette))[1:(ncolors - length(palette))])
+                                 palette))[seq_len(ncolors - length(palette))])
     } else {
       ## Pre-defined palette
       maxnbr <- c(Accent = 8, Dark2 = 8, Paired = 12, Pastel1 = 9,

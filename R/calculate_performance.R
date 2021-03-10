@@ -148,8 +148,8 @@ get_curve <- function(bintruth, vals, revr, aspc, rank_by_abs) {
 #' @param cont_truth A character string giving the name of the column of
 #'   truth(cobradata) that contains the continuous truth (a continuous value
 #'   that the observations can be compared to).
-#' @param aspects A character vector giving the types of performance measures to
-#'   calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
+#' @param aspects A character vector giving the types of performance measures 
+#'   to calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
 #'   "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
 #'   "deviation", "fsrnbr", "fsrnbrcurve").
 #' @param thrs A numeric vector of adjusted p-value thresholds for which to
@@ -218,7 +218,8 @@ calculate_performance <- function(cobradata, binary_truth = NULL,
   ## If the binary_truth column is logical, convert to 0/1 values
   if (is.logical(truth(cobradata)[, binary_truth])) {
     message("binary_truth column is logical, converting to numeric (0/1)")
-    truth(cobradata)[, binary_truth] <- as.numeric(truth(cobradata)[, binary_truth])
+    truth(cobradata)[, binary_truth] <- 
+      as.numeric(truth(cobradata)[, binary_truth])
   }
 
   ## ------------------- NBR, TP, FP etc (always calculated) ------------ ##
@@ -1442,7 +1443,7 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
   ## If truth not included, keep all features and set NAs to 0
   if (!isTRUE(incltruth)) {
     if (length(overlap(cobraperf)) != 0) {
-      if (class(overlap(cobraperf)) == "data.frame") {
+      if (is(overlap(cobraperf), "data.frame")) {
         overlap(cobraperf) <-
           overlap(cobraperf)[, setdiff(colnames(overlap(cobraperf)), "truth"),
                             drop = FALSE]
@@ -1460,7 +1461,7 @@ prepare_data_for_plot <- function(cobraperf, keepmethods = NULL,
     ## If onlyshared = FALSE, remove all features where truth!=NA
     ## If onlyshared = TRUE, remove all features with any NA
     if (length(overlap(cobraperf)) != 0) {
-      if (class(overlap(cobraperf)) == "data.frame") {
+      if (is(overlap(cobraperf), "data.frame")) {
         if ("truth" %in% colnames(overlap(cobraperf))) {
           if (isTRUE(onlyshared(cobraperf))) {
             overlap(cobraperf) <-

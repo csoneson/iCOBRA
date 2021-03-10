@@ -8,8 +8,9 @@ Authors@R: c(person(given = "Charlotte", family = "Soneson",
     comment = c(ORCID = "0000-0003-3833-2169")))
 Description: This package provides functions for calculation and visualization
     of performance metrics for evaluation of ranking and binary classification
-    (assignment) methods. It also contains a shiny application for interactive
-    exploration of results.
+    (assignment) methods. Various types of performance plots can be generated
+    programmatically. The package also contains a shiny application for 
+    interactive exploration of results.
 License: GPL (>=2)
 LazyData: TRUE
 Collate: 
@@ -25,7 +26,7 @@ Collate:
     'printHead.R'
     'shiny.R'
 Depends:
-    R (>= 3.4)
+    R (>= 4.0)
 Imports:
     shiny (>= 0.9.1.9008),
     shinydashboard,
@@ -43,7 +44,8 @@ Suggests:
     knitr,
     testthat
 VignetteBuilder: knitr
-biocViews: Classification
+biocViews: Classification, Visualization
+Encoding: UTF-8
 RoxygenNote: 7.1.1
-URL: https://github.com/markrobinsonuzh/iCOBRA
-BugReports: https://github.com/markrobinsonuzh/iCOBRA/issues
+URL: https://github.com/csoneson/iCOBRA
+BugReports: https://github.com/csoneson/iCOBRA/issues

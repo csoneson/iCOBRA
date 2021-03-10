@@ -19,8 +19,9 @@
 #' @export
 #' @examples
 #' data(cobradata_example)
-#' \dontrun{
-#' COBRAapp(cobradata_example)
+#' app <- COBRAapp(cobradata_example)
+#' if (interactive()) {
+#'   shiny::runApp(app)
 #' }
 COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
   ## ------------------------------------------------------------------ ##
@@ -1036,10 +1037,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       filename = "overlap-data.tsv",
       content = function(file) {
         overlap_df <- overlap(plotvalues()$all_vals)
-        if (class(overlap_df) == "list") {
+        if (is(overlap_df, "list")) {
           overlap_df <- lapply(overlap_df,
                                function(w) cbind(feature = rownames(w), w))
-          for (i in 1:length(overlap_df)) {
+          for (i in seq_len(length(overlap_df))) {
              overlap_df[[i]]$featureclass <- names(overlap_df)[i]
           }
           overlap_df <- do.call(rbind, overlap_df)
@@ -1065,9 +1066,9 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                            "p-values are provided."))
       )
       validate(
-        need((class(overlap(plotvalues()$all_vals)) == "list" &&
+        need((is(overlap(plotvalues()$all_vals), "list") &&
                 ncol(overlap(plotvalues()$all_vals)[[1]]) <= 5) |
-               (class(overlap(plotvalues()$all_vals)) == "data.frame" &&
+               (is(overlap(plotvalues()$all_vals), "data.frame") &&
                   ncol(overlap(plotvalues()$all_vals)) <= 5),
              paste0("Venn diagrams can not be constructed if more than five ",
                     "methods are selected (including the truth, ",
@@ -1092,7 +1093,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
           !is_plottable(overlap(plotvalues()$all_vals)))
         return(NULL)
       else {
-        if (class(overlap(plotvalues()$all_vals)) != "list")
+        if (!is(overlap(plotvalues()$all_vals), "list"))
           selectInput("upset.stratum", "Select category",
                       "overall", selectize = TRUE)
         else
@@ -1133,10 +1134,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
       filename = "upset-data.tsv",
       content = function(file) {
         overlap_df <- overlap(plotvalues()$all_vals)
-        if (class(overlap_df) == "list") {
+        if (is(overlap_df, "list")) {
           overlap_df <- lapply(overlap_df,
                                function(w) cbind(feature = rownames(w), w))
-          for (i in 1:length(overlap_df)) {
+          for (i in seq_len(length(overlap_df))) {
             overlap_df[[i]]$featureclass <- names(overlap_df)[i]
           }
           overlap_df <- do.call(rbind, overlap_df)

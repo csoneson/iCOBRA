@@ -381,7 +381,7 @@ setMethod("[", "COBRAPlot",
             if (length(x@scatter) != 0)
               x@scatter <- x@scatter[which(x@scatter$basemethod %in% j), ]
             if (length(x@overlap) != 0) {
-              if (class(x@overlap) == "data.frame") {
+              if (is(x@overlap, "data.frame")) {
                 x@overlap <-
                   x@overlap[, which(colnames(x@overlap) %in% c(j, "truth")),
                             drop = FALSE]
