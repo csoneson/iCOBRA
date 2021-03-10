@@ -107,6 +107,33 @@ COBRAData <- function(pval = data.frame(), padj = data.frame(),
                       score = data.frame(), sval = data.frame(), 
                       truth = data.frame(), object_to_extend = NULL) {
 
+  ## All objects should have sensible row names
+  if (nrow(pval) > 0 && is.numeric(attr(pval, "row.names"))) 
+    warning("'pval' appears to have non-informative (numeric) row names.", 
+            "Note that row names will be used to match values across ",
+            "the slots in the COBRAData object, so they should be ",
+            "provided in a consistent form across all the slots.")
+  if (nrow(padj) > 0 && is.numeric(attr(padj, "row.names"))) 
+    warning("'padj' appears to have non-informative (numeric) row names.", 
+            "Note that row names will be used to match values across ",
+            "the slots in the COBRAData object, so they should be ",
+            "provided in a consistent form across all the slots.")
+  if (nrow(score) > 0 && is.numeric(attr(score, "row.names"))) 
+    warning("'score' appears to have non-informative (numeric) row names.", 
+            "Note that row names will be used to match values across ",
+            "the slots in the COBRAData object, so they should be ",
+            "provided in a consistent form across all the slots.")
+  if (nrow(sval) > 0 && is.numeric(attr(sval, "row.names"))) 
+    warning("'sval' appears to have non-informative (numeric) row names.", 
+            "Note that row names will be used to match values across ",
+            "the slots in the COBRAData object, so they should be ",
+            "provided in a consistent form across all the slots.")
+  if (nrow(truth) > 0 && is.numeric(attr(truth, "row.names"))) 
+    warning("'truth' appears to have non-informative (numeric) row names.", 
+            "Note that row names will be used to match values across ",
+            "the slots in the COBRAData object, so they should be ",
+            "provided in a consistent form across all the slots.")
+  
   if (!(is.null(object_to_extend))) {
     if (!(class(object_to_extend) == "COBRAData")) {
       stop("object_to_extend must be a COBRAData object")

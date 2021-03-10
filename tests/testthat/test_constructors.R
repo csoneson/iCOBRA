@@ -318,3 +318,59 @@ test_that("reordering levels in COBRAPlot object works", {
   expect_is(cobraplot, "COBRAPlot")
   expect_equal(levels(fpr(cobraplot)$method), c("Method3", "Method1", "Method2"))
 })
+
+test_that("creating objects from data frames without row names generates warning", {
+  pval <- c(0.0058, 0.771, 0.024, 0.741, 0.247)
+  padj <- p.adjust(pval, method = "BH")
+  score <- 1:5
+  expect_warning({
+    ib <- COBRAData(pval = data.frame(m1 = pval, row.names = NULL),
+                    padj = data.frame(m1 = padj, row.names = NULL),
+                    score = data.frame(m1 = score, row.names = NULL),
+                    truth = data.frame(status = c(0, 1, 0, 1, 0),
+                                       row.names = NULL))
+  })
+})
+
+test_that(paste0("creating objects from data frames with mixed present/missing", 
+                 "row names generates error"), {
+  pval <- c(0.0058, 0.771, 0.024, 0.741, 0.247)
+  padj <- p.adjust(pval, method = "BH")
+  score <- 1:5
+  expect_error({
+    suppressWarnings({
+      ib <- COBRAData(pval = data.frame(m1 = pval, row.names = paste0("F", 1:5)),
+                      padj = data.frame(m1 = padj, row.names = NULL),
+                      score = data.frame(m1 = score, row.names = NULL),
+                      truth = data.frame(status = c(0, 1, 0, 1, 0),
+                                         row.names = NULL))
+    })
+  })
+  expect_error({
+    suppressWarnings({
+      ib <- COBRAData(pval = data.frame(m1 = pval, row.names = NULL),
+                      padj = data.frame(m1 = padj, row.names = paste0("F", 1:5)),
+                      score = data.frame(m1 = score, row.names = NULL),
+                      truth = data.frame(status = c(0, 1, 0, 1, 0),
+                                         row.names = NULL))
+    })
+  })
+  expect_error({
+    suppressWarnings({
+      ib <- COBRAData(pval = data.frame(m1 = pval, row.names = NULL),
+                      padj = data.frame(m1 = padj, row.names = NULL),
+                      score = data.frame(m1 = score, row.names = paste0("F", 1:5)),
+                      truth = data.frame(status = c(0, 1, 0, 1, 0),
+                                         row.names = NULL))
+    })
+  })
+  expect_error({
+    suppressWarnings({
+      ib <- COBRAData(pval = data.frame(m1 = pval, row.names = NULL),
+                      padj = data.frame(m1 = padj, row.names = NULL),
+                      score = data.frame(m1 = score, row.names = NULL),
+                      truth = data.frame(status = c(0, 1, 0, 1, 0),
+                                         row.names = paste0("F", 1:5)))
+    })
+  })
+})

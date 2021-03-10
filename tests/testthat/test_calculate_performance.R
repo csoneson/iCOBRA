@@ -24,6 +24,11 @@ local({
   tmp[sample(1:length(tmp), 100)] <- NA
   iCOBRA::score(cobradata)$Method1 <- tmp
   
+  ## Change order of rows in padj
+  tmp <- iCOBRA::padj(cobradata)
+  tmp <- tmp[sample(seq_len(nrow(tmp)), size = nrow(tmp)), ]
+  iCOBRA::padj(cobradata) <- tmp
+  
   ## Add a truth column represented with logical values instead of 0/1
   truth(cobradata)$statuslogical <- as.logical(truth(cobradata)$status)
   

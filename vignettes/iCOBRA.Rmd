@@ -33,7 +33,9 @@ The starting point for an evaluation is typically a collection of feature
 'scores' (p-values, adjusted p-values or any other ranking score) and the truth
 (information about the true status, or the true scores for the features). These
 values are stored in an `COBRAData` object. Here, we will start from an example
-`COBRAData` object provided with the package.
+`COBRAData` object provided with the package. Each slot in the `COBRAData` 
+object should be a `data.frame`, with row names representing feature IDs. The 
+row names will be used to match features across slots. 
 
 ```{r}
 library(iCOBRA)
