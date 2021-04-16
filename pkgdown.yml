@@ -1,7 +1,7 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1.9000
-pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
+pkgdown: 1.6.1.9001
+pkgdown_sha: 8e0838e273462cec420dfa20f240c684a33425d9
 articles:
   iCOBRA: iCOBRA.html
-last_built: 2020-11-29T09:44Z
+last_built: 2021-04-16T05:50Z
 

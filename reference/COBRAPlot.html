@@ -52,6 +52,8 @@ means of the function prepare_data_for_plot." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -63,9 +65,18 @@ means of the function prepare_data_for_plot." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,7 +90,7 @@ means of the function prepare_data_for_plot." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
       </span>
     </div>
 
@@ -94,8 +105,8 @@ means of the function prepare_data_for_plot." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/markrobinsonuzh/iCOBRA/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/csoneson/iCOBRA/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -113,7 +124,7 @@ means of the function prepare_data_for_plot." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1><code>COBRAPlot</code> object and constructor</h1>
-    <small class="dont-index">Source: <a href='https://github.com/markrobinsonuzh/iCOBRA/blob/master/R/COBRAPlot.R'><code>R/COBRAPlot.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/csoneson/iCOBRA/blob/master/R/COBRAPlot.R'><code>R/COBRAPlot.R</code></a></small>
     <div class="hidden name"><code>COBRAPlot.Rd</code></div>
     </div>
 
@@ -128,7 +139,7 @@ this class are typically generated from a <code>COBRAPerformance</code> objects 
 means of the function <code><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>COBRAPlot</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'><a href='COBRAPlot.html'>COBRAPlot</a></span><span class='op'>(</span>
   fdrtpr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   fdrtprcurve <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   fsrnbr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
@@ -274,7 +285,7 @@ panels) or for displaying all values in one plot panel.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Empty COBRAPlot object</span>
-<span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'>COBRAPlot</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='COBRAPlot.html'>COBRAPlot</a></span><span class='op'>(</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -287,11 +298,11 @@ panels) or for displaying all values in one plot panel.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Charlotte Soneson.</p>
+  <p><p>Developed by Charlotte Soneson.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -299,6 +310,8 @@ panels) or for displaying all values in one plot panel.</p></td>
 
   
 
+
+  
 
   </body>
 </html>
