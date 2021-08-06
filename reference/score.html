@@ -59,9 +59,6 @@ COBRAData object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ COBRAData object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,7 +124,7 @@ COBRAData object." />
 <code>COBRAData</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>score</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>score</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>score</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
@@ -135,7 +132,7 @@ COBRAData object." />
 <span class='fu'>score</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for COBRAData,data.frame</span>
-<span class='fu'>score</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+<span class='fu'>score</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,15 +160,16 @@ COBRAData object." />
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>score</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                      edgeR       voom      DESeq2
-#&gt; ENSG00000000457 0.22706080 0.23980596 0.274811698
-#&gt; ENSG00000000460 0.31050478 0.27677537 0.359226203
-#&gt; ENSG00000000938 0.04985025 0.03344113 0.001526355
-#&gt; ENSG00000000971 0.03900847 0.02263371 0.008182751
-#&gt; ENSG00000001460 3.81423112 4.18152876 3.741077290
-#&gt; ENSG00000001461 0.17201376 0.17911584 0.217548745</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>score</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      edgeR       voom      DESeq2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 0.22706080 0.23980596 0.274811698</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 0.31050478 0.27677537 0.359226203</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000938 0.04985025 0.03344113 0.001526355</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 0.03900847 0.02263371 0.008182751</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001460 3.81423112 4.18152876 3.741077290</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001461 0.17201376 0.17911584 0.217548745</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

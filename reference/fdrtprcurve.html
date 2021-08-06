@@ -59,9 +59,6 @@ COBRAPerformance or COBRAPlot object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ COBRAPerformance or COBRAPlot object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,7 +124,7 @@ COBRAPerformance or COBRAPlot object." />
 <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
@@ -138,7 +135,7 @@ COBRAPerformance or COBRAPlot object." />
 <span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
 <span class='co'># S4 method for COBRAPlot,data.frame</span>
-<span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+<span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,25 +165,27 @@ observed FDR vs TPR for each method and each stratification level.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,
-                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,
-                                   aspects <span class='op'>=</span> <span class='st'>"fdrtprcurve"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;         FDR       TPR NBR       CUTOFF  TP FP   TN  FN TOT_CALLED DIFF NONDIFF
-#&gt; 1       NaN 0.0000000   0         -Inf   0  0 1580 819       2399  831    3027
-#&gt; 2 0.1606648 0.3646209 361 0.000000e+00 303 58 1522 516       2399  831    3027
-#&gt; 3 0.1589041 0.3694344 365 1.110223e-16 307 58 1522 512       2399  831    3027
-#&gt; 4 0.1584699 0.3706378 366 2.220446e-16 308 58 1522 511       2399  831    3027
-#&gt; 5 0.1580381 0.3718412 367 3.330669e-16 309 58 1522 510       2399  831    3027
-#&gt; 6 0.1576087 0.3730445 368 5.551115e-16 310 58 1522 509       2399  831    3027
-#&gt;   method basemethod   meas    fullmethod splitval
-#&gt; 1  edgeR      edgeR __pval edgeR_overall  overall
-#&gt; 2  edgeR      edgeR __pval edgeR_overall  overall
-#&gt; 3  edgeR      edgeR __pval edgeR_overall  overall
-#&gt; 4  edgeR      edgeR __pval edgeR_overall  overall
-#&gt; 5  edgeR      edgeR __pval edgeR_overall  overall
-#&gt; 6  edgeR      edgeR __pval edgeR_overall  overall</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,</span>
+<span class='r-in'>                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>                                   aspects <span class='op'>=</span> <span class='st'>"fdrtprcurve"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>fdrtprcurve</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         FDR       TPR NBR       CUTOFF  TP FP   TN  FN TOT_CALLED DIFF NONDIFF</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1       NaN 0.0000000   0         -Inf   0  0 1580 819       2399  831    3027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.1606648 0.3646209 361 0.000000e+00 303 58 1522 516       2399  831    3027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0.1589041 0.3694344 365 1.110223e-16 307 58 1522 512       2399  831    3027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 0.1584699 0.3706378 366 2.220446e-16 308 58 1522 511       2399  831    3027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 0.1580381 0.3718412 367 3.330669e-16 309 58 1522 510       2399  831    3027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 0.1576087 0.3730445 368 5.551115e-16 310 58 1522 509       2399  831    3027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   method basemethod   meas    fullmethod splitval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  edgeR      edgeR __pval edgeR_overall  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  edgeR      edgeR __pval edgeR_overall  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  edgeR      edgeR __pval edgeR_overall  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  edgeR      edgeR __pval edgeR_overall  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  edgeR      edgeR __pval edgeR_overall  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  edgeR      edgeR __pval edgeR_overall  overall</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

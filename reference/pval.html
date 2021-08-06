@@ -59,9 +59,6 @@ COBRAData object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ COBRAData object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,7 +124,7 @@ COBRAData object." />
 <code>COBRAData</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pval</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>pval</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>pval</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
@@ -135,7 +132,7 @@ COBRAData object." />
 <span class='fu'>pval</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for COBRAData,data.frame</span>
-<span class='fu'>pval</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+<span class='fu'>pval</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,15 +161,16 @@ method.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>pval</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                        edgeR         voom       DESeq2
-#&gt; ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02
-#&gt; ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02
-#&gt; ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01
-#&gt; ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01
-#&gt; ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23
-#&gt; ENSG00000001461 2.200312e-01 1.444503e-01 8.245376e-02</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>pval</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                        edgeR         voom       DESeq2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001461 2.200312e-01 1.444503e-01 8.245376e-02</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

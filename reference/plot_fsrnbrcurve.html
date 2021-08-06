@@ -60,9 +60,6 @@ traced out by considering all threshold values." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -85,7 +82,7 @@ traced out by considering all threshold values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -129,7 +126,7 @@ false sign rate (FSR), for given adjusted p-value thresholds and/or as curves
 traced out by considering all threshold values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_fsrnbrcurve</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>plot_fsrnbrcurve</span><span class='op'>(</span>
   <span class='va'>cobraplot</span>,
   title <span class='op'>=</span> <span class='st'>""</span>,
   stripsize <span class='op'>=</span> <span class='fl'>15</span>,
@@ -138,7 +135,7 @@ traced out by considering all threshold values.</p>
   xaxisrange <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>,
   plottype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"curve"</span>, <span class='st'>"points"</span><span class='op'>)</span>,
   linewidth <span class='op'>=</span> <span class='fl'>1</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,14 +185,20 @@ be any combination of the two elements "curve" and "points".</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example_sval</span><span class='op'>)</span>
-<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example_sval</span>,
-                                   cont_truth <span class='op'>=</span> <span class='st'>"logFC"</span>,
-                                   aspects <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fsrnbr"</span>, <span class='st'>"fsrnbrcurve"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSR/NBR calculations</span></div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSRNBR calculations</span></div><div class='input'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span><span class='op'>(</span><span class='va'>cobraperf</span>, colorscheme <span class='op'>=</span> <span class='st'>"Dark2"</span>,
-                                   incltruth <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>plot_fsrnbrcurve</span><span class='op'>(</span><span class='va'>cobraplot</span>, plottype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"curve"</span>, <span class='st'>"points"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_fsrnbrcurve-1.png' alt='' width='700' height='433' /></div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example_sval</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example_sval</span>,</span>
+<span class='r-in'>                                   cont_truth <span class='op'>=</span> <span class='st'>"logFC"</span>,</span>
+<span class='r-in'>                                   aspects <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fsrnbr"</span>, <span class='st'>"fsrnbrcurve"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column Method3 is being ignored for FSR/NBR calculations</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column Method3 is being ignored for FSRNBR calculations</span>
+<span class='r-in'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span><span class='op'>(</span><span class='va'>cobraperf</span>, colorscheme <span class='op'>=</span> <span class='st'>"Dark2"</span>,</span>
+<span class='r-in'>                                   incltruth <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>plot_fsrnbrcurve</span><span class='op'>(</span><span class='va'>cobraplot</span>, plottype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"curve"</span>, <span class='st'>"points"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+<span class='r-plt'><img src='plot_fsrnbrcurve-1.png' alt='' width='700' height='433' /></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

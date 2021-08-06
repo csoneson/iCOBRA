@@ -59,9 +59,6 @@ COBRAPerformance or COBRAPlot object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ COBRAPerformance or COBRAPlot object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,7 +124,7 @@ COBRAPerformance or COBRAPlot object." />
 <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
@@ -138,7 +135,7 @@ COBRAPerformance or COBRAPlot object." />
 <span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
 <span class='co'># S4 method for COBRAPlot,data.frame</span>
-<span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+<span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,26 +168,28 @@ frame is returned for simplicity.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>cobradata</span> <span class='op'>&lt;-</span> <span class='va'>cobradata_example_sval</span>
-
-<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata</span>, 
-                                   cont_truth <span class='op'>=</span> <span class='st'>"logFC"</span>, 
-                                   aspects <span class='op'>=</span> <span class='st'>"fsrnbr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>column Method3 is being ignored for FSR/NBR calculations</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       thr  method basemethod   meas      fullmethod splitval         FSR satis
-#&gt; 1 thr0.01 Method1    Method1 __sval Method1_overall  overall 0.000000000   yes
-#&gt; 2 thr0.01 Method2    Method2 __sval Method2_overall  overall 0.000000000   yes
-#&gt; 3 thr0.05 Method1    Method1 __sval Method1_overall  overall 0.001612903   yes
-#&gt; 4 thr0.05 Method2    Method2 __sval Method2_overall  overall 0.000000000   yes
-#&gt; 5  thr0.1 Method1    Method1 __sval Method1_overall  overall 0.002869440   yes
-#&gt; 6  thr0.1 Method2    Method2 __sval Method2_overall  overall 0.003072197   yes
-#&gt;         method.satis NBR  TS FS POSSIGN NEGSIGN ZEROSIGN TOT_CALLED
-#&gt; 1 Method1_overallyes 508 387  0     420     422     3016       2418
-#&gt; 2 Method2_overallyes 392 308  0     420     422     3016       2418
-#&gt; 3 Method1_overallyes 620 447  1     420     422     3016       2418
-#&gt; 4 Method2_overallyes 565 406  0     420     422     3016       2418
-#&gt; 5 Method1_overallyes 697 476  2     420     422     3016       2418
-#&gt; 6 Method2_overallyes 651 446  2     420     422     3016       2418</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>cobradata</span> <span class='op'>&lt;-</span> <span class='va'>cobradata_example_sval</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata</span>, </span>
+<span class='r-in'>                                   cont_truth <span class='op'>=</span> <span class='st'>"logFC"</span>, </span>
+<span class='r-in'>                                   aspects <span class='op'>=</span> <span class='st'>"fsrnbr"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column Method3 is being ignored for FSR/NBR calculations</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>fsrnbr</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       thr  method basemethod   meas      fullmethod splitval         FSR satis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 thr0.01 Method1    Method1 __sval Method1_overall  overall 0.000000000   yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 thr0.01 Method2    Method2 __sval Method2_overall  overall 0.000000000   yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 thr0.05 Method1    Method1 __sval Method1_overall  overall 0.001612903   yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 thr0.05 Method2    Method2 __sval Method2_overall  overall 0.000000000   yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  thr0.1 Method1    Method1 __sval Method1_overall  overall 0.002869440   yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  thr0.1 Method2    Method2 __sval Method2_overall  overall 0.003072197   yes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         method.satis NBR  TS FS POSSIGN NEGSIGN ZEROSIGN TOT_CALLED</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 Method1_overallyes 508 387  0     420     422     3016       2418</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 Method2_overallyes 392 308  0     420     422     3016       2418</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 Method1_overallyes 620 447  1     420     422     3016       2418</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 Method2_overallyes 565 406  0     420     422     3016       2418</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 Method1_overallyes 697 476  2     420     422     3016       2418</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 Method2_overallyes 651 446  2     420     422     3016       2418</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

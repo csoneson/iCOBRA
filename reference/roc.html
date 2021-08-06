@@ -59,9 +59,6 @@ COBRAPerformance or COBRAPlot object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ COBRAPerformance or COBRAPlot object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,7 +124,7 @@ COBRAPerformance or COBRAPlot object." />
 <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>roc</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>roc</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>roc</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
@@ -138,7 +135,7 @@ COBRAPerformance or COBRAPlot object." />
 <span class='fu'>roc</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
 <span class='co'># S4 method for COBRAPlot,data.frame</span>
-<span class='fu'>roc</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+<span class='fu'>roc</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,24 +165,26 @@ for each method and each stratification level.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,
-                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>, aspects <span class='op'>=</span> <span class='st'>"roc"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>roc</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;          FPR       TPR   ROC_CUTOFF method basemethod   meas    fullmethod
-#&gt; 1 0.00000000 0.0000000         -Inf  edgeR      edgeR __pval edgeR_overall
-#&gt; 2 0.01916089 0.3646209 0.000000e+00  edgeR      edgeR __pval edgeR_overall
-#&gt; 3 0.01916089 0.3694344 1.110223e-16  edgeR      edgeR __pval edgeR_overall
-#&gt; 4 0.01916089 0.3706378 2.220446e-16  edgeR      edgeR __pval edgeR_overall
-#&gt; 5 0.01916089 0.3718412 3.330669e-16  edgeR      edgeR __pval edgeR_overall
-#&gt; 6 0.01916089 0.3730445 5.551115e-16  edgeR      edgeR __pval edgeR_overall
-#&gt;   splitval
-#&gt; 1  overall
-#&gt; 2  overall
-#&gt; 3  overall
-#&gt; 4  overall
-#&gt; 5  overall
-#&gt; 6  overall</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,</span>
+<span class='r-in'>                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>, aspects <span class='op'>=</span> <span class='st'>"roc"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>roc</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          FPR       TPR   ROC_CUTOFF method basemethod   meas    fullmethod</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 0.00000000 0.0000000         -Inf  edgeR      edgeR __pval edgeR_overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0.01916089 0.3646209 0.000000e+00  edgeR      edgeR __pval edgeR_overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0.01916089 0.3694344 1.110223e-16  edgeR      edgeR __pval edgeR_overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 0.01916089 0.3706378 2.220446e-16  edgeR      edgeR __pval edgeR_overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 0.01916089 0.3718412 3.330669e-16  edgeR      edgeR __pval edgeR_overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 0.01916089 0.3730445 5.551115e-16  edgeR      edgeR __pval edgeR_overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   splitval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  overall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  overall</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

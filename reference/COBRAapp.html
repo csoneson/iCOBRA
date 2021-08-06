@@ -62,9 +62,6 @@ also be obtained using the function COBRAData_to_text." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -87,7 +84,7 @@ also be obtained using the function COBRAData_to_text." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -133,7 +130,7 @@ of the app for formatting instructions). Properly formatted text files can
 also be obtained using the function <code><a href='COBRAData.html'>COBRAData_to_text</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>COBRAapp</span><span class='op'>(</span>cobradata <span class='op'>=</span> <span class='cn'>NULL</span>, autorun <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>COBRAapp</span><span class='op'>(</span>cobradata <span class='op'>=</span> <span class='cn'>NULL</span>, autorun <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,12 +156,12 @@ calculation!' button.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='va'>app</span> <span class='op'>&lt;-</span> <span class='fu'>COBRAapp</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/runApp.html'>runApp</a></span><span class='op'>(</span><span class='va'>app</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>app</span> <span class='op'>&lt;-</span> <span class='fu'>COBRAapp</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/runApp.html'>runApp</a></span><span class='op'>(</span><span class='va'>app</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

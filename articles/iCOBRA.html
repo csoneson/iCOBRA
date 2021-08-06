@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -69,7 +69,7 @@
       <h1 data-toc-skip>iCOBRA User Guide</h1>
                         <h4 data-toc-skip class="author">Charlotte Soneson</h4>
             
-            <h4 data-toc-skip class="date">2021-04-16</h4>
+            <h4 data-toc-skip class="date">2021-08-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/csoneson/iCOBRA/blob/master/vignettes/iCOBRA.Rmd" class="external-link"><code>vignettes/iCOBRA.Rmd</code></a></small>
       <div class="hidden name"><code>iCOBRA.Rmd</code></div>
@@ -82,10 +82,10 @@
 <p>For more detailed information regarding the calculations, handling of missing values etc, please consult the “Instructions” tab of the shiny application, available via the function <code><a href="../reference/COBRAapp.html">COBRAapp()</a></code>.</p>
 <div id="basic-workflow" class="section level1">
 <h1 class="hasAnchor">
-<a href="#basic-workflow" class="anchor"></a>Basic workflow</h1>
+<a href="#basic-workflow" class="anchor" aria-hidden="true"></a>Basic workflow</h1>
 <div id="creating-a-data-set" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-a-data-set" class="anchor"></a>Creating a data set</h2>
+<a href="#creating-a-data-set" class="anchor" aria-hidden="true"></a>Creating a data set</h2>
 <p>The starting point for an evaluation is typically a collection of feature ‘scores’ (p-values, adjusted p-values or any other ranking score) and the truth (information about the true status, or the true scores for the features). These values are stored in an <code>COBRAData</code> object. Here, we will start from an example <code>COBRAData</code> object provided with the package. Each slot in the <code>COBRAData</code> object should be a <code>data.frame</code>, with row names representing feature IDs. The row names will be used to match features across slots.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/csoneson/iCOBRA" class="external-link">iCOBRA</a></span><span class="op">)</span>
@@ -140,7 +140,7 @@
 </div>
 <div id="calculating-performance-scores" class="section level2">
 <h2 class="hasAnchor">
-<a href="#calculating-performance-scores" class="anchor"></a>Calculating performance scores</h2>
+<a href="#calculating-performance-scores" class="anchor" aria-hidden="true"></a>Calculating performance scores</h2>
 <p>Next, we calculate the performance scores using the COBRAData object. We can perform both assignment-based and correlation-based evaluations, and thus we have to provide information about which columns in the truth data frame that are to be interpreted as the binary (assignment) truth and continuous truth score, respectively. Here, we let the “status” column (indicating the true differential expression status of the genes) represent the true classification, and the true log-fold change represent the true score, to which the observed scores will be compared.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, 
@@ -160,7 +160,7 @@
 </div>
 <div id="preparing-performance-object-for-plotting" class="section level2">
 <h2 class="hasAnchor">
-<a href="#preparing-performance-object-for-plotting" class="anchor"></a>Preparing performance object for plotting</h2>
+<a href="#preparing-performance-object-for-plotting" class="anchor" aria-hidden="true"></a>Preparing performance object for plotting</h2>
 <p>After calculating the performance scores, we prepare the object for plotting. In this step, we will assign colors to each of the methods, and we can decide to keep only a subset of the methods. We also decide whether the plotting should be done with or without facetting (i.e., splitting the plots into panels based on the stratification variable). This choice will determine the number of colors that are needed to distinguish between all method/stratification level combinations.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, 
@@ -168,7 +168,7 @@
 </div>
 <div id="plotting" class="section level2">
 <h2 class="hasAnchor">
-<a href="#plotting" class="anchor"></a>Plotting</h2>
+<a href="#plotting" class="anchor" aria-hidden="true"></a>Plotting</h2>
 <p>When the data has been prepared for plotting, we can apply any of the provided plot functions to visualize different aspects of the results.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></code></pre></div>
@@ -183,10 +183,10 @@
 </div>
 <div id="modifications-to-the-basic-workflow" class="section level1">
 <h1 class="hasAnchor">
-<a href="#modifications-to-the-basic-workflow" class="anchor"></a>Modifications to the basic workflow</h1>
+<a href="#modifications-to-the-basic-workflow" class="anchor" aria-hidden="true"></a>Modifications to the basic workflow</h1>
 <div id="stratification" class="section level2">
 <h2 class="hasAnchor">
-<a href="#stratification" class="anchor"></a>Stratification</h2>
+<a href="#stratification" class="anchor" aria-hidden="true"></a>Stratification</h2>
 <p>All results can be stratified by any annotation provided in the truth slot of the COBRAData object. Note that only the largest categories will be retained (the number of retained categories is determined by the maxsplit argument), and thus stratifying by continuous annotations is not supported (each category would likely contain just one observation). Here, we show how the stratification is performed, and how it changes the plots generated above.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, 
@@ -205,7 +205,7 @@
 </div>
 <div id="modification-of-plots" class="section level2">
 <h2 class="hasAnchor">
-<a href="#modification-of-plots" class="anchor"></a>Modification of plots</h2>
+<a href="#modification-of-plots" class="anchor" aria-hidden="true"></a>Modification of plots</h2>
 <p>The plotting functions (except plot_overlap) return ggplot objects. Some basic settings (such as the size of the plot characters, the size of the text in the panel headers and the axis ranges) can be set directly in the plot functions. Others can be modified manually. For example, to reduce the size of the axis labels, an appropriate theme can be added to the ggplot object returned by the plot functions:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
@@ -236,7 +236,7 @@
 </div>
 <div id="custom-color-assignment" class="section level2">
 <h2 class="hasAnchor">
-<a href="#custom-color-assignment" class="anchor"></a>Custom color assignment</h2>
+<a href="#custom-color-assignment" class="anchor" aria-hidden="true"></a>Custom color assignment</h2>
 <p>The colors can either be chosen by one of the pre-defined color palettes, or provided by the user as a character vector. Note that the number of colors that are required depends on the facetting, and that not all methods may be shown in all plots (depending on the provided score types). If the wrong number of colors is provided, iCOBRA will automatically add or remove colors.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, 
@@ -252,7 +252,7 @@
 </div>
 <div id="interactive-exploration" class="section level2">
 <h2 class="hasAnchor">
-<a href="#interactive-exploration" class="anchor"></a>Interactive exploration</h2>
+<a href="#interactive-exploration" class="anchor" aria-hidden="true"></a>Interactive exploration</h2>
 <p>iCOBRA contains an interactive shiny application, for interactive exploration of results. It can be called with an COBRAData object, or with no arguments. In the latter case, results can be loaded into the app from text files.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/COBRAapp.html">COBRAapp</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span>

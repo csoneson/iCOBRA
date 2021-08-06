@@ -64,9 +64,6 @@ may be arranged in the same order." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -89,7 +86,7 @@ may be arranged in the same order." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -136,14 +133,14 @@ by methods (columns). Numeric indices are not allowed, since not all slots
 may be arranged in the same order.</p>
     </div>
 
-    <pre class="usage"># S4 method for COBRAData
+    <div class="ref-usage sourceCode"><pre><code># S4 method for COBRAData
 [(x, i, j = "missing", drop = "missing")
 
 # S4 method for COBRAPerformance
 [(x, i = "missing", j, drop = "missing")
 
 # S4 method for COBRAPlot
-[(x, i = "missing", j, drop = "missing")</pre>
+[(x, i = "missing", j, drop = "missing")</code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,172 +171,180 @@ character vector with method names to retain.</p></td>
     <p>A subset of the original object, of the same class</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='va'>cobradata_example</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ENSG00000000457"</span>, <span class='st'>"ENSG00000000971"</span>,
-                    <span class='st'>"ENSG00000000460"</span><span class='op'>)</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; An object of class "COBRAData"
-#&gt; @pval
-#&gt;                     edgeR       voom     DESeq2
-#&gt; ENSG00000000457 0.1178024 0.05147484 0.01627063
-#&gt; ENSG00000000971 0.8449686 0.89394930 0.96278259
-#&gt; ENSG00000000460 0.1101413 0.12767845 0.03281416
-#&gt; 
-#&gt; @padj
-#&gt;                     edgeR      voom
-#&gt; ENSG00000000457 0.2833295 0.1375146
-#&gt; ENSG00000000971 0.9382227 0.9492325
-#&gt; ENSG00000000460 0.2700376 0.2826398
-#&gt; 
-#&gt; @sval
-#&gt; data frame with 0 columns and 3 rows
-#&gt; 
-#&gt; @score
-#&gt;                      edgeR       voom      DESeq2
-#&gt; ENSG00000000457 0.22706080 0.23980596 0.274811698
-#&gt; ENSG00000000971 0.03900847 0.02263371 0.008182751
-#&gt; ENSG00000000460 0.31050478 0.27677537 0.359226203
-#&gt; 
-#&gt; @truth
-#&gt;                 status n_isoforms logFC       logFC_cat       expr
-#&gt; ENSG00000000457      0          5     0 [ 0.000, 0.297)   8.525774
-#&gt; ENSG00000000971      0          6     0 [ 0.000, 0.297) 163.547797
-#&gt; ENSG00000000460      0         10     0 [ 0.000, 0.297)   3.314544
-#&gt;                            expr_cat
-#&gt; ENSG00000000457 [2.85e+00,1.45e+01)
-#&gt; ENSG00000000971 [1.45e+01,2.43e+04]
-#&gt; ENSG00000000460 [2.85e+00,1.45e+01)
-#&gt; </div><div class='input'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,
-                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,
-                                   aspects <span class='op'>=</span> <span class='st'>"fdrtpr"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='va'>cobraperf</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"voom"</span><span class='op'>)</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; An object of class "COBRAPerformance"
-#&gt; @fdrtpr
-#&gt;       thr method basemethod   meas   fullmethod splitval NBR  TP  FP   TN  FN
-#&gt; 2 thr0.01   voom       voom __padj voom_overall  overall 684 502 182 1398 317
-#&gt; 4 thr0.05   voom       voom __padj voom_overall  overall 783 543 240 1340 276
-#&gt; 6  thr0.1   voom       voom __padj voom_overall  overall 866 568 298 1282 251
-#&gt;   TOT_CALLED DIFF NONDIFF       TPR       FDR satis   method.satis
-#&gt; 2       2399  831    3027 0.6040915 0.2660819    no voom_overallno
-#&gt; 4       2399  831    3027 0.6534296 0.3065134    no voom_overallno
-#&gt; 6       2399  831    3027 0.6835138 0.3441109    no voom_overallno
-#&gt; 
-#&gt; @fdrtprcurve
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fdrnbr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fdrnbrcurve
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fsrnbr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fsrnbrcurve
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @deviation
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @tpr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fpr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @roc
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @scatter
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fpc
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @overlap
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @corr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @maxsplit
-#&gt; [1] 3
-#&gt; 
-#&gt; @splv
-#&gt; [1] "none"
-#&gt; 
-#&gt; @onlyshared
-#&gt; [1] FALSE
-#&gt; </div><div class='input'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span>
-<span class='va'>cobraplot</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"voom"</span><span class='op'>)</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span class='message'>Object up to date</span></div><div class='output co'>#&gt; An object of class "COBRAPlot"
-#&gt; @plotcolors
-#&gt;            voom    voom_overall         voomyes voom_overallyes          voomno 
-#&gt;       "#00BFC4"       "#00BFC4"       "#00BFC4"       "#00BFC4"         "white" 
-#&gt;  voom_overallno 
-#&gt;         "white" 
-#&gt; 
-#&gt; @facetted
-#&gt; [1] TRUE
-#&gt; 
-#&gt; @fdrtpr
-#&gt;       thr method basemethod   meas   fullmethod splitval NBR  TP  FP   TN  FN
-#&gt; 2 thr0.01   voom       voom __padj voom_overall  overall 684 502 182 1398 317
-#&gt; 4 thr0.05   voom       voom __padj voom_overall  overall 783 543 240 1340 276
-#&gt; 6  thr0.1   voom       voom __padj voom_overall  overall 866 568 298 1282 251
-#&gt;   TOT_CALLED DIFF NONDIFF       TPR       FDR satis   method.satis num_method
-#&gt; 2       2399  831    3027 0.6040915 0.2660819    no voom_overallno          2
-#&gt; 4       2399  831    3027 0.6534296 0.3065134    no voom_overallno          2
-#&gt; 6       2399  831    3027 0.6835138 0.3441109    no voom_overallno          2
-#&gt; 
-#&gt; @fdrtprcurve
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fdrnbr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fdrnbrcurve
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fsrnbr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fsrnbrcurve
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @deviation
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @tpr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fpr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @roc
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @scatter
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @fpc
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @overlap
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @corr
-#&gt; data frame with 0 columns and 0 rows
-#&gt; 
-#&gt; @maxsplit
-#&gt; [1] 3
-#&gt; 
-#&gt; @splv
-#&gt; [1] "none"
-#&gt; 
-#&gt; @onlyshared
-#&gt; [1] FALSE
-#&gt; </div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobradata_example</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ENSG00000000457"</span>, <span class='st'>"ENSG00000000971"</span>,</span>
+<span class='r-in'>                    <span class='st'>"ENSG00000000460"</span><span class='op'>)</span>, <span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> An object of class "COBRAData"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @pval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     edgeR       voom     DESeq2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 0.1178024 0.05147484 0.01627063</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 0.8449686 0.89394930 0.96278259</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 0.1101413 0.12767845 0.03281416</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @padj</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     edgeR      voom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 0.2833295 0.1375146</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 0.9382227 0.9492325</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 0.2700376 0.2826398</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @sval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 3 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      edgeR       voom      DESeq2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 0.22706080 0.23980596 0.274811698</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 0.03900847 0.02263371 0.008182751</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 0.31050478 0.27677537 0.359226203</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @truth</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 status n_isoforms logFC       logFC_cat       expr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457      0          5     0 [ 0.000, 0.297)   8.525774</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971      0          6     0 [ 0.000, 0.297) 163.547797</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460      0         10     0 [ 0.000, 0.297)   3.314544</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            expr_cat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 [2.85e+00,1.45e+01)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 [1.45e+01,2.43e+04]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 [2.85e+00,1.45e+01)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,</span>
+<span class='r-in'>                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>                                   aspects <span class='op'>=</span> <span class='st'>"fdrtpr"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column DESeq2 is being ignored for NBRS calculations</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column DESeq2 is being ignored for TPR calculations</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column DESeq2 is being ignored for FDR calculations</span>
+<span class='r-in'><span class='va'>cobraperf</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"voom"</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> An object of class "COBRAPerformance"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrtpr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       thr method basemethod   meas   fullmethod splitval NBR  TP  FP   TN  FN</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 thr0.01   voom       voom __padj voom_overall  overall 684 502 182 1398 317</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 thr0.05   voom       voom __padj voom_overall  overall 783 543 240 1340 276</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  thr0.1   voom       voom __padj voom_overall  overall 866 568 298 1282 251</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   TOT_CALLED DIFF NONDIFF       TPR       FDR satis   method.satis</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       2399  831    3027 0.6040915 0.2660819    no voom_overallno</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4       2399  831    3027 0.6534296 0.3065134    no voom_overallno</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       2399  831    3027 0.6835138 0.3441109    no voom_overallno</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrtprcurve</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrnbr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrnbrcurve</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fsrnbr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fsrnbrcurve</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @deviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @tpr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fpr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @roc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @scatter</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fpc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @overlap</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @corr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @maxsplit</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @splv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "none"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @onlyshared</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobraplot</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"voom"</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Object up to date</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> An object of class "COBRAPlot"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @plotcolors</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            voom    voom_overall         voomyes voom_overallyes          voomno </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       "#00BFC4"       "#00BFC4"       "#00BFC4"       "#00BFC4"         "white" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  voom_overallno </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         "white" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @facetted</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrtpr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       thr method basemethod   meas   fullmethod splitval NBR  TP  FP   TN  FN</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 thr0.01   voom       voom __padj voom_overall  overall 684 502 182 1398 317</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 thr0.05   voom       voom __padj voom_overall  overall 783 543 240 1340 276</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  thr0.1   voom       voom __padj voom_overall  overall 866 568 298 1282 251</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   TOT_CALLED DIFF NONDIFF       TPR       FDR satis   method.satis num_method</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2       2399  831    3027 0.6040915 0.2660819    no voom_overallno          2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4       2399  831    3027 0.6534296 0.3065134    no voom_overallno          2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6       2399  831    3027 0.6835138 0.3441109    no voom_overallno          2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrtprcurve</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrnbr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fdrnbrcurve</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fsrnbr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fsrnbrcurve</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @deviation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @tpr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fpr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @roc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @scatter</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @fpc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @overlap</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @corr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data frame with 0 columns and 0 rows</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @maxsplit</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @splv</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "none"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> @onlyshared</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

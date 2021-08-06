@@ -59,9 +59,6 @@ COBRAData object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ COBRAData object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,7 +124,7 @@ COBRAData object." />
 <code>COBRAData</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>truth</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>truth</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>truth</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span>
 
@@ -135,7 +132,7 @@ COBRAData object." />
 <span class='fu'>truth</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='co'># S4 method for COBRAData,data.frame</span>
-<span class='fu'>truth</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
+<span class='fu'>truth</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,22 +163,23 @@ of performance calculations.</p></td>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>truth</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                 status n_isoforms      logFC       logFC_cat       expr
-#&gt; ENSG00000000457      0          5 0.00000000 [ 0.000, 0.297)   8.525774
-#&gt; ENSG00000000460      0         10 0.00000000 [ 0.000, 0.297)   3.314544
-#&gt; ENSG00000000938      0          8 0.00000000 [ 0.000, 0.297)  11.543626
-#&gt; ENSG00000000971      0          6 0.00000000 [ 0.000, 0.297) 163.547797
-#&gt; ENSG00000001460      1         13 3.93942204 [ 3.540,24.063]   3.792523
-#&gt; ENSG00000001461      1          8 0.06022442 [ 0.000, 0.297)  20.396122
-#&gt;                            expr_cat
-#&gt; ENSG00000000457 [2.85e+00,1.45e+01)
-#&gt; ENSG00000000460 [2.85e+00,1.45e+01)
-#&gt; ENSG00000000938 [2.85e+00,1.45e+01)
-#&gt; ENSG00000000971 [1.45e+01,2.43e+04]
-#&gt; ENSG00000001460 [2.85e+00,1.45e+01)
-#&gt; ENSG00000001461 [1.45e+01,2.43e+04]</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>truth</span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 status n_isoforms      logFC       logFC_cat       expr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457      0          5 0.00000000 [ 0.000, 0.297)   8.525774</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460      0         10 0.00000000 [ 0.000, 0.297)   3.314544</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000938      0          8 0.00000000 [ 0.000, 0.297)  11.543626</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971      0          6 0.00000000 [ 0.000, 0.297) 163.547797</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001460      1         13 3.93942204 [ 3.540,24.063]   3.792523</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001461      1          8 0.06022442 [ 0.000, 0.297)  20.396122</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            expr_cat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000457 [2.85e+00,1.45e+01)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000460 [2.85e+00,1.45e+01)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000938 [2.85e+00,1.45e+01)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000000971 [1.45e+01,2.43e+04]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001460 [2.85e+00,1.45e+01)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ENSG00000001461 [1.45e+01,2.43e+04]</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

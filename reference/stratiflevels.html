@@ -59,9 +59,6 @@ in a COBRAPerformance or COBRAPlot object." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -84,7 +81,7 @@ in a COBRAPerformance or COBRAPlot object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -127,10 +124,10 @@ in a COBRAPerformance or COBRAPlot object." />
 in a <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stratiflevels</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>stratiflevels</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S4 method for COBRAPerformance</span>
-<span class='fu'>stratiflevels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+<span class='fu'>stratiflevels</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,15 +151,20 @@ in a <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,
-                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,
-                                   aspects <span class='op'>=</span> <span class='st'>"fdrtpr"</span>, splv <span class='op'>=</span> <span class='st'>"expr_cat"</span>,
-                                   maxsplit <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for NBRS calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for TPR calculations</span></div><div class='output co'>#&gt; <span class='message'>column DESeq2 is being ignored for FDR calculations</span></div><div class='input'><span class='fu'>stratiflevels</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "expr_cat:[0.00e+00,2.77e-01)" "expr_cat:[1.45e+01,2.43e+04]"
-#&gt; [3] "expr_cat:[2.77e-01,2.85e+00)" "expr_cat:[2.85e+00,1.45e+01)"
-#&gt; [5] "overall"                     </div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,</span>
+<span class='r-in'>                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>                                   aspects <span class='op'>=</span> <span class='st'>"fdrtpr"</span>, splv <span class='op'>=</span> <span class='st'>"expr_cat"</span>,</span>
+<span class='r-in'>                                   maxsplit <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column DESeq2 is being ignored for NBRS calculations</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column DESeq2 is being ignored for TPR calculations</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> column DESeq2 is being ignored for FDR calculations</span>
+<span class='r-in'><span class='fu'>stratiflevels</span><span class='op'>(</span><span class='va'>cobraperf</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "expr_cat:[0.00e+00,2.77e-01)" "expr_cat:[1.45e+01,2.43e+04]"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3] "expr_cat:[2.77e-01,2.85e+00)" "expr_cat:[2.85e+00,1.45e+01)"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "overall"                     </span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

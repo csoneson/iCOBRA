@@ -61,9 +61,6 @@ if applicable) can be compared." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -86,7 +83,7 @@ if applicable) can be compared." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.19.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0</span>
       </span>
     </div>
 
@@ -131,7 +128,7 @@ as a "perfect" method. Note that maximally five methods (including the truth,
 if applicable) can be compared.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_overlap</span><span class='op'>(</span><span class='va'>cobraplot</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>plot_overlap</span><span class='op'>(</span><span class='va'>cobraplot</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,14 +151,16 @@ if applicable) can be compared.</p>
     <p>Charlotte Soneson</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span>
-<span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,
-                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,
-                                   aspects <span class='op'>=</span> <span class='st'>"overlap"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span></div><div class='input'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span><span class='op'>(</span><span class='va'>cobraperf</span>, colorscheme <span class='op'>=</span> <span class='st'>"Dark2"</span>,
-                                   incltruth <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>plot_overlap</span><span class='op'>(</span><span class='va'>cobraplot</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_overlap-1.png' alt='' width='700' height='433' /></div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>cobradata_example</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>cobraperf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calculate_performance.html'>calculate_performance</a></span><span class='op'>(</span><span class='va'>cobradata_example</span>,</span>
+<span class='r-in'>                                   binary_truth <span class='op'>=</span> <span class='st'>"status"</span>,</span>
+<span class='r-in'>                                   aspects <span class='op'>=</span> <span class='st'>"overlap"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
+<span class='r-in'><span class='va'>cobraplot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='prepare_data_for_plot.html'>prepare_data_for_plot</a></span><span class='op'>(</span><span class='va'>cobraperf</span>, colorscheme <span class='op'>=</span> <span class='st'>"Dark2"</span>,</span>
+<span class='r-in'>                                   incltruth <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>plot_overlap</span><span class='op'>(</span><span class='va'>cobraplot</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='plot_overlap-1.png' alt='' width='700' height='433' /></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
