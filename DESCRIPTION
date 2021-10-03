@@ -39,7 +39,8 @@ Imports:
     DT,
     limma,
     methods,
-    UpSetR
+    UpSetR,
+    markdown
 Suggests:
     knitr,
     rmarkdown,
@@ -47,6 +48,6 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Classification, Visualization
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 URL: https://github.com/csoneson/iCOBRA
 BugReports: https://github.com/csoneson/iCOBRA/issues
