@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.21.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/csoneson/iCOBRA/">
+  <a href="https://github.com/csoneson/iCOBRA/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -69,24 +69,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="icobra---interactive-benchmarking-of-ranking-and-assignment-methods" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#icobra---interactive-benchmarking-of-ranking-and-assignment-methods" class="anchor" aria-hidden="true"></a>iCOBRA - Interactive benchmarking of ranking and assignment methods</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="icobra---interactive-benchmarking-of-ranking-and-assignment-methods">iCOBRA - Interactive benchmarking of ranking and assignment methods<a class="anchor" aria-label="anchor" href="#icobra---interactive-benchmarking-of-ranking-and-assignment-methods"></a>
+</h1></div>
 <p><code>iCOBRA</code> is a package to calculate and visualize performance metrics for ranking and binary assignment methods. A typical use case could be, for example, comparing methods calling differential expression in gene expression experiments, which could be seen as either a ranking problem (estimating the correct effect size and ordering the genes by significance) or a binary assignment problem (classifying the genes into differentially expressed and non-differentially expressed).</p>
 <p><code>iCOBRA</code> can be used either directly from the console, or via the interactive shiny application (see the function <code><a href="reference/COBRAapp.html">COBRAapp()</a></code>). It can also be accessed from the web server <a href="http://imlspenticton.uzh.ch:3838/iCOBRA/" class="external-link">http://imlspenticton.uzh.ch:3838/iCOBRA/</a></p>
 <p>We have also collected a set of benchmarking data sets, addressing different aspects of genomic data analysis. The collection is reachable via the following link: <a href="http://imlspenticton.uzh.ch/robinson_lab/benchmark_collection/" class="external-link">http://imlspenticton.uzh.ch/robinson_lab/benchmark_collection/</a></p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p><code>iCOBRA</code> can be installed from <code>Bioconductor</code> using <code>BiocManager</code>:</p>
 <pre><code>install.packages("BiocManager")
 BiocManager::install("iCOBRA")</code></pre>
 <p>or, optionally,</p>
 <pre><code>BiocManager::install("markrobinsonuzh/iCOBRA")</code></pre>
 </div>
-<div id="quick-start-guide" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quick-start-guide" class="anchor" aria-hidden="true"></a>Quick start guide</h2>
+<div class="section level2">
+<h2 id="quick-start-guide">Quick start guide<a class="anchor" aria-label="anchor" href="#quick-start-guide"></a>
+</h2>
 <p>The <code>iCOBRA</code> workflow starts from an object of class <code>COBRAData</code>, containing (adjusted) p-values and/or scores for a set of features as well as the true status of the features. An example data set is provided in the package</p>
 <pre><code><a href="https://github.com/csoneson/iCOBRA" class="external-link">library(iCOBRA)
 data(cobradata_example)</a></code></pre>
@@ -102,15 +102,15 @@ data(cobradata_example)</a></code></pre>
 <pre><code>plot_fdrtprcurve(cobraplot)
 plot_corr(cobraplot, corrtype = "spearman")</code></pre>
 </div>
-<div id="vignette" class="section level2">
-<h2 class="hasAnchor">
-<a href="#vignette" class="anchor" aria-hidden="true"></a>Vignette</h2>
-<p>The vignette can be found in the <code>vignettes/</code> directory. Further information is also available in the âInstructionsâ tab of the shiny app. After installation, the vignette can be accessed from the R console by typing</p>
+<div class="section level2">
+<h2 id="vignette">Vignette<a class="anchor" aria-label="anchor" href="#vignette"></a>
+</h2>
+<p>The vignette can be found in the <code>vignettes/</code> directory. Further information is also available in the ‘Instructions’ tab of the shiny app. After installation, the vignette can be accessed from the R console by typing</p>
 <pre><code>browseVignettes("iCOBRA")</code></pre>
 </div>
-<div id="benchmarking-data-set-collection" class="section level2">
-<h2 class="hasAnchor">
-<a href="#benchmarking-data-set-collection" class="anchor" aria-hidden="true"></a>Benchmarking data set collection</h2>
+<div class="section level2">
+<h2 id="benchmarking-data-set-collection">Benchmarking data set collection<a class="anchor" aria-label="anchor" href="#benchmarking-data-set-collection"></a>
+</h2>
 <p>To facilitate future benchmarking studies, we have collected a set of benchmarking data sets on <a href="http://imlspenticton.uzh.ch/robinson_lab/benchmark_collection/" class="external-link">http://imlspenticton.uzh.ch/robinson_lab/benchmark_collection/</a>. The page provides links to raw data as well as evaluation results suitable for import into <code>iCOBRA</code>.</p>
 </div>
 </div>
@@ -120,12 +120,9 @@ plot_corr(cobraplot, corrtype = "spearman")</code></pre>
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/iCOBRA">https://​www.bioconductor.org/​packages/​iCOBRA</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/csoneson/iCOBRA/">https://​github.com/​csoneson/​iCOBRA/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/csoneson/iCOBRA/issues">https://​github.com/​csoneson/​iCOBRA/​issues</a>
-</li>
+<li><a href="https://www.bioconductor.org/packages/iCOBRA" class="external-link">View on Bioconductor</a></li>
+<li><a href="https://github.com/csoneson/iCOBRA/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/csoneson/iCOBRA/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -147,7 +144,7 @@ plot_corr(cobraplot, corrtype = "spearman")</code></pre>
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Charlotte Soneson <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3833-2169" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Charlotte Soneson <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3833-2169" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
