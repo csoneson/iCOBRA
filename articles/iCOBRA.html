@@ -69,7 +69,7 @@
       <h1 data-toc-skip>iCOBRA User Guide</h1>
                         <h4 data-toc-skip class="author">Charlotte Soneson</h4>
             
-            <h4 data-toc-skip class="date">2021-10-27</h4>
+            <h4 data-toc-skip class="date">2021-10-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/csoneson/iCOBRA/blob/HEAD/vignettes/iCOBRA.Rmd" class="external-link"><code>vignettes/iCOBRA.Rmd</code></a></small>
       <div class="hidden name"><code>iCOBRA.Rmd</code></div>
@@ -91,52 +91,52 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/csoneson/iCOBRA" class="external-link">iCOBRA</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "COBRAData"
-## attr(,"package")
-## [1] "iCOBRA"</code></pre>
+<pre><code><span class="co">## [1] "COBRAData"</span>
+<span class="co">## attr(,"package")</span>
+<span class="co">## [1] "iCOBRA"</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobradata_example</span></code></pre></div>
-<pre><code>## An object of class "COBRAData"
-## @pval
-##                        edgeR         voom       DESeq2
-## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02
-## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02
-## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01
-## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01
-## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23
-## 2394 more rows ...
-## 
-## @padj
-##                        edgeR         voom
-## ENSG00000000457 2.833295e-01 1.375146e-01
-## ENSG00000000460 2.700376e-01 2.826398e-01
-## ENSG00000000938 9.232794e-01 9.399669e-01
-## ENSG00000000971 9.382227e-01 9.492325e-01
-## ENSG00000001460 6.333969e-20 4.574862e-09
-## 2394 more rows ...
-## 
-## @score
-##                      edgeR       voom      DESeq2
-## ENSG00000000457 0.22706080 0.23980596 0.274811698
-## ENSG00000000460 0.31050478 0.27677537 0.359226203
-## ENSG00000000938 0.04985025 0.03344113 0.001526355
-## ENSG00000000971 0.03900847 0.02263371 0.008182751
-## ENSG00000001460 3.81423112 4.18152876 3.741077290
-## 2394 more rows ...
-## 
-## @truth
-##                 status n_isoforms    logFC       logFC_cat       expr            expr_cat
-## ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774 [2.85e+00,1.45e+01)
-## ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544 [2.85e+00,1.45e+01)
-## ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626 [2.85e+00,1.45e+01)
-## ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797 [1.45e+01,2.43e+04]
-## ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523 [2.85e+00,1.45e+01)
-## 3853 more rows ...</code></pre>
+<pre><code><span class="co">## An object of class "COBRAData"</span>
+<span class="co">## @pval</span>
+<span class="co">##                        edgeR         voom       DESeq2</span>
+<span class="co">## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span>
+<span class="co">## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span>
+<span class="co">## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span>
+<span class="co">## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span>
+<span class="co">## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span>
+<span class="co">## 2394 more rows ...</span>
+<span class="co">## </span>
+<span class="co">## @padj</span>
+<span class="co">##                        edgeR         voom</span>
+<span class="co">## ENSG00000000457 2.833295e-01 1.375146e-01</span>
+<span class="co">## ENSG00000000460 2.700376e-01 2.826398e-01</span>
+<span class="co">## ENSG00000000938 9.232794e-01 9.399669e-01</span>
+<span class="co">## ENSG00000000971 9.382227e-01 9.492325e-01</span>
+<span class="co">## ENSG00000001460 6.333969e-20 4.574862e-09</span>
+<span class="co">## 2394 more rows ...</span>
+<span class="co">## </span>
+<span class="co">## @score</span>
+<span class="co">##                      edgeR       voom      DESeq2</span>
+<span class="co">## ENSG00000000457 0.22706080 0.23980596 0.274811698</span>
+<span class="co">## ENSG00000000460 0.31050478 0.27677537 0.359226203</span>
+<span class="co">## ENSG00000000938 0.04985025 0.03344113 0.001526355</span>
+<span class="co">## ENSG00000000971 0.03900847 0.02263371 0.008182751</span>
+<span class="co">## ENSG00000001460 3.81423112 4.18152876 3.741077290</span>
+<span class="co">## 2394 more rows ...</span>
+<span class="co">## </span>
+<span class="co">## @truth</span>
+<span class="co">##                 status n_isoforms    logFC       logFC_cat       expr            expr_cat</span>
+<span class="co">## ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774 [2.85e+00,1.45e+01)</span>
+<span class="co">## ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544 [2.85e+00,1.45e+01)</span>
+<span class="co">## ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626 [2.85e+00,1.45e+01)</span>
+<span class="co">## ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797 [1.45e+01,2.43e+04]</span>
+<span class="co">## ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523 [2.85e+00,1.45e+01)</span>
+<span class="co">## 3853 more rows ...</span></code></pre>
 <p>For the methods that don’t have adjusted p-values, we will calculate adjusted p-values from nominal p-values.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobradata_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_adjp.html">calculate_adjp</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></code></pre></div>
-<pre><code>## Adding empty sval slot to object</code></pre>
-<pre><code>## Object up to date</code></pre>
+<pre><code><span class="co">## Adding empty sval slot to object</span></code></pre>
+<pre><code><span class="co">## Object up to date</span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="calculating-performance-scores">Calculating performance scores<a class="anchor" aria-label="anchor" href="#calculating-performance-scores"></a>
@@ -146,17 +146,17 @@
 <code class="sourceCode R"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, 
                                   cont_truth <span class="op">=</span> <span class="st">"logFC"</span>, splv <span class="op">=</span> <span class="st">"none"</span>,
                                   maxsplit <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
-<pre><code>## column edgeR is being ignored for FSR/NBR calculations</code></pre>
-<pre><code>## column voom is being ignored for FSR/NBR calculations</code></pre>
-<pre><code>## column DESeq2 is being ignored for FSR/NBR calculations</code></pre>
-<pre><code>## column edgeR is being ignored for FSRNBR calculations</code></pre>
-<pre><code>## column voom is being ignored for FSRNBR calculations</code></pre>
-<pre><code>## column DESeq2 is being ignored for FSRNBR calculations</code></pre>
+<pre><code><span class="co">## column edgeR is being ignored for FSR/NBR calculations</span></code></pre>
+<pre><code><span class="co">## column voom is being ignored for FSR/NBR calculations</span></code></pre>
+<pre><code><span class="co">## column DESeq2 is being ignored for FSR/NBR calculations</span></code></pre>
+<pre><code><span class="co">## column edgeR is being ignored for FSRNBR calculations</span></code></pre>
+<pre><code><span class="co">## column voom is being ignored for FSRNBR calculations</span></code></pre>
+<pre><code><span class="co">## column DESeq2 is being ignored for FSRNBR calculations</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">slotNames</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "fdrtpr"      "fdrtprcurve" "fdrnbr"      "fdrnbrcurve" "fsrnbr"      "fsrnbrcurve"
-##  [7] "deviation"   "tpr"         "fpr"         "roc"         "scatter"     "fpc"        
-## [13] "overlap"     "corr"        "maxsplit"    "splv"        "onlyshared"</code></pre>
+<pre><code><span class="co">##  [1] "fdrtpr"      "fdrtprcurve" "fdrnbr"      "fdrnbrcurve" "fsrnbr"      "fsrnbrcurve"</span>
+<span class="co">##  [7] "deviation"   "tpr"         "fpr"         "roc"         "scatter"     "fpc"        </span>
+<span class="co">## [13] "overlap"     "corr"        "maxsplit"    "splv"        "onlyshared"</span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="preparing-performance-object-for-plotting">Preparing performance object for plotting<a class="anchor" aria-label="anchor" href="#preparing-performance-object-for-plotting"></a>
@@ -191,12 +191,12 @@
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, 
                                   cont_truth <span class="op">=</span> <span class="st">"status"</span>, splv <span class="op">=</span> <span class="st">"expr_cat"</span><span class="op">)</span></code></pre></div>
-<pre><code>## column edgeR is being ignored for FSR/NBR calculations</code></pre>
-<pre><code>## column voom is being ignored for FSR/NBR calculations</code></pre>
-<pre><code>## column DESeq2 is being ignored for FSR/NBR calculations</code></pre>
-<pre><code>## column edgeR is being ignored for FSRNBR calculations</code></pre>
-<pre><code>## column voom is being ignored for FSRNBR calculations</code></pre>
-<pre><code>## column DESeq2 is being ignored for FSRNBR calculations</code></pre>
+<pre><code><span class="co">## column edgeR is being ignored for FSR/NBR calculations</span></code></pre>
+<pre><code><span class="co">## column voom is being ignored for FSR/NBR calculations</span></code></pre>
+<pre><code><span class="co">## column DESeq2 is being ignored for FSR/NBR calculations</span></code></pre>
+<pre><code><span class="co">## column edgeR is being ignored for FSRNBR calculations</span></code></pre>
+<pre><code><span class="co">## column voom is being ignored for FSRNBR calculations</span></code></pre>
+<pre><code><span class="co">## column DESeq2 is being ignored for FSRNBR calculations</span></code></pre>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, 
                                   facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -269,51 +269,51 @@
                              result_files <span class="op">=</span> <span class="st">"cobradata_results.txt"</span>, 
                              feature_id <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span>
 <span class="va">cobra</span></code></pre></div>
-<pre><code>## An object of class "COBRAData"
-## @pval
-##                        edgeR         voom       DESeq2
-## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02
-## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02
-## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01
-## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01
-## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23
-## 2394 more rows ...
-## 
-## @padj
-##                        edgeR         voom       DESeq2
-## ENSG00000000457 2.833295e-01 1.375146e-01 4.760152e-02
-## ENSG00000000460 2.700376e-01 2.826398e-01 8.717737e-02
-## ENSG00000000938 9.232794e-01 9.399669e-01 9.985675e-01
-## ENSG00000000971 9.382227e-01 9.492325e-01 9.868048e-01
-## ENSG00000001460 6.333969e-20 4.574862e-09 6.742682e-22
-## 2394 more rows ...
-## 
-## @sval
-## data frame with 0 columns and 0 rows
-## 
-## @score
-##                      edgeR       voom      DESeq2
-## ENSG00000000457 0.22706080 0.23980596 0.274811698
-## ENSG00000000460 0.31050478 0.27677537 0.359226203
-## ENSG00000000938 0.04985025 0.03344113 0.001526355
-## ENSG00000000971 0.03900847 0.02263371 0.008182751
-## ENSG00000001460 3.81423112 4.18152876 3.741077290
-## 2394 more rows ...
-## 
-## @truth
-##                         feature status n_isoforms    logFC       logFC_cat       expr
-## ENSG00000000457 ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774
-## ENSG00000000460 ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544
-## ENSG00000000938 ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626
-## ENSG00000000971 ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797
-## ENSG00000001460 ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523
-##                            expr_cat
-## ENSG00000000457 [2.85e+00,1.45e+01)
-## ENSG00000000460 [2.85e+00,1.45e+01)
-## ENSG00000000938 [2.85e+00,1.45e+01)
-## ENSG00000000971 [1.45e+01,2.43e+04]
-## ENSG00000001460 [2.85e+00,1.45e+01)
-## 3853 more rows ...</code></pre>
+<pre><code><span class="co">## An object of class "COBRAData"</span>
+<span class="co">## @pval</span>
+<span class="co">##                        edgeR         voom       DESeq2</span>
+<span class="co">## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span>
+<span class="co">## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span>
+<span class="co">## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span>
+<span class="co">## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span>
+<span class="co">## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span>
+<span class="co">## 2394 more rows ...</span>
+<span class="co">## </span>
+<span class="co">## @padj</span>
+<span class="co">##                        edgeR         voom       DESeq2</span>
+<span class="co">## ENSG00000000457 2.833295e-01 1.375146e-01 4.760152e-02</span>
+<span class="co">## ENSG00000000460 2.700376e-01 2.826398e-01 8.717737e-02</span>
+<span class="co">## ENSG00000000938 9.232794e-01 9.399669e-01 9.985675e-01</span>
+<span class="co">## ENSG00000000971 9.382227e-01 9.492325e-01 9.868048e-01</span>
+<span class="co">## ENSG00000001460 6.333969e-20 4.574862e-09 6.742682e-22</span>
+<span class="co">## 2394 more rows ...</span>
+<span class="co">## </span>
+<span class="co">## @sval</span>
+<span class="co">## data frame with 0 columns and 0 rows</span>
+<span class="co">## </span>
+<span class="co">## @score</span>
+<span class="co">##                      edgeR       voom      DESeq2</span>
+<span class="co">## ENSG00000000457 0.22706080 0.23980596 0.274811698</span>
+<span class="co">## ENSG00000000460 0.31050478 0.27677537 0.359226203</span>
+<span class="co">## ENSG00000000938 0.04985025 0.03344113 0.001526355</span>
+<span class="co">## ENSG00000000971 0.03900847 0.02263371 0.008182751</span>
+<span class="co">## ENSG00000001460 3.81423112 4.18152876 3.741077290</span>
+<span class="co">## 2394 more rows ...</span>
+<span class="co">## </span>
+<span class="co">## @truth</span>
+<span class="co">##                         feature status n_isoforms    logFC       logFC_cat       expr</span>
+<span class="co">## ENSG00000000457 ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774</span>
+<span class="co">## ENSG00000000460 ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544</span>
+<span class="co">## ENSG00000000938 ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626</span>
+<span class="co">## ENSG00000000971 ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797</span>
+<span class="co">## ENSG00000001460 ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523</span>
+<span class="co">##                            expr_cat</span>
+<span class="co">## ENSG00000000457 [2.85e+00,1.45e+01)</span>
+<span class="co">## ENSG00000000460 [2.85e+00,1.45e+01)</span>
+<span class="co">## ENSG00000000938 [2.85e+00,1.45e+01)</span>
+<span class="co">## ENSG00000000971 [1.45e+01,2.43e+04]</span>
+<span class="co">## ENSG00000001460 [2.85e+00,1.45e+01)</span>
+<span class="co">## 3853 more rows ...</span></code></pre>
 <p>The screenshot below shows the appearance of the iCOBRA shiny app, using the example data set.</p>
 <p><img src="screenshot_COBRAapp.png" style="width:800px;"></p>
 </div>
