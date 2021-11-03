@@ -1,7 +1,7 @@
 Package: iCOBRA
 Type: Package
 Title: Comparison and Visualization of Ranking and Assignment Methods
-Version: 1.22.0
+Version: 1.22.1
 Authors@R: c(person(given = "Charlotte", family = "Soneson", 
     role = c("aut", "cre"),
     email = "charlottesoneson@gmail.com",
@@ -47,6 +47,6 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Classification, Visualization
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 URL: https://github.com/csoneson/iCOBRA
 BugReports: https://github.com/csoneson/iCOBRA/issues

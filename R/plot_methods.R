@@ -22,7 +22,7 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
     ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
     geom_point(size = pointsize + 1,
                aes_string(colour = "method", shape = "thr")) +
-    scale_shape_manual(values = rep(19, nthr), guide = FALSE) + 
+    scale_shape_manual(values = rep(19, nthr), guide = "none") + 
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
     xlim(xaxisrange[1], xaxisrange[2]) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
@@ -157,7 +157,7 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
                                      y = ifelse(aspc == "roc", "TPR", "FP"),
                                      group = "method", colour = "method")) +
     geom_path(size = linewidth, aes_string(linetype = "method")) +
-    scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
+    scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
     scale_color_manual(values = plotcolors(cobraplot), name = "") +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     xlim(ifelse(aspc == "roc", xaxisrange[1], 0),
@@ -367,13 +367,13 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
       geom_path(size = linewidth, aes_string(linetype = "method")) +
-      scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
+      scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
       geom_point(data = plot_data_points, size = pointsize,
                  aes_string(fill = "method2.satis", colour = "method", 
                             shape = "thr"),
                  stroke = 1) +
-      scale_shape_manual(values = rep(21, nthr), guide = FALSE) + 
-      scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
+      scale_shape_manual(values = rep(21, nthr), guide = "none") + 
+      scale_fill_manual(values = plotcolors(cobraplot), guide = "none",
                         name = "") +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
@@ -392,7 +392,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
                  aes_string(x = xasp, y = yasp,
                             group = "method", colour = "method")) +
       geom_path(size = linewidth, aes_string(linetype = "method")) +
-      scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
+      scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
       xlim(xaxisrange[1], xaxisrange[2]) +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
@@ -409,13 +409,13 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       geom_vline(xintercept = thresholds, linetype = "dashed") +
       geom_path(size = linewidth, 
                 aes_string(colour = "method", linetype = "method")) +
-      scale_linetype_manual(values = rep("solid", nlevs), guide = FALSE) + 
+      scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
       geom_point(size = pointsize,
                  aes_string(fill = "method2.satis", colour = "method",
                             shape = "thr"),
                  stroke = 1) +
-      scale_shape_manual(values = rep(21, nthr), guide = FALSE) + 
-      scale_fill_manual(values = plotcolors(cobraplot), guide = FALSE,
+      scale_shape_manual(values = rep(21, nthr), guide = "none") + 
+      scale_fill_manual(values = plotcolors(cobraplot), guide = "none",
                         name = "") +
       scale_color_manual(values = plotcolors(cobraplot), name = "") +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
