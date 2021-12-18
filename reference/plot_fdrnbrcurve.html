@@ -19,7 +19,7 @@ traced out by considering all threshold values."><!-- mathjax --><script src="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
       </span>
     </div>
 
@@ -56,7 +56,8 @@ discovery rate (FDR), for given adjusted p-value thresholds and/or as curves
 traced out by considering all threshold values.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_fdrnbrcurve</span><span class="op">(</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_fdrnbrcurve</span><span class="op">(</span>
   <span class="va">cobraplot</span>,
   title <span class="op">=</span> <span class="st">""</span>,
   stripsize <span class="op">=</span> <span class="fl">15</span>,
@@ -66,8 +67,8 @@ traced out by considering all threshold values.</p>
   plottype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"curve"</span>, <span class="st">"points"</span><span class="op">)</span>,
   linewidth <span class="op">=</span> <span class="fl">1</span>
 <span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cobraplot</dt>
@@ -98,11 +99,10 @@ be any combination of the two elements "curve" and "points".</p></dd>
     <h2>Author</h2>
     <p>Charlotte Soneson</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span>
 <span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span>
 <span class="r-in">                                   aspects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fdrnbr"</span>, <span class="st">"fdrnbrcurve"</span><span class="op">)</span><span class="op">)</span></span>
@@ -129,7 +129,7 @@ be any combination of the two elements "curve" and "points".</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
 </div>
 
       </footer></div>
