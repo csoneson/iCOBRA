@@ -36,7 +36,8 @@ Nothing, displays a graph
 }
 \description{
 Generate UpSet plots showing the overlaps among sets of significant feature
-for a given adjusted p-value threshold. Optionally, the truth can be included
+for a given adjusted p-value threshold (see \code{thr_venn} argument of
+\code{calculate_performance}). Optionally, the truth can be included
 as a "perfect" method. Note that if the results are stratified, only one 
 category at a time can be displayed.
 }

@@ -16,7 +16,8 @@ Nothing, displays a graph
 }
 \description{
 Plot a Venn diagram showing the overlaps among sets of significant feature
-for a given adjusted p-value threshold. Optionally, the truth can be included
+for a given adjusted p-value threshold (see \code{thr_venn} argument of
+\code{calculate_performance}). Optionally, the truth can be included
 as a "perfect" method. Note that maximally five methods (including the truth,
 if applicable) can be compared.
 }
