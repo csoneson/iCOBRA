@@ -46,6 +46,10 @@ jobs:
         uses: r-lib/actions/setup-pandoc@master
         if: matrix.config.image == null
 
+      - name: Set bitmapType
+        if: runner.os == 'macOS'
+        run: echo 'options(bitmapType = "cairo")' >> $HOME/.Rprofile
+        
       - name: Install remotes
         run: |
           install.packages('remotes')
@@ -103,7 +107,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", env = c(R_PROFILE_USER = "$HOME/.Rprofile"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: BiocCheck
