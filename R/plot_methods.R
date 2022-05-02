@@ -23,7 +23,7 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
     geom_point(size = pointsize + 1,
                aes_string(colour = "method", shape = "thr")) +
     scale_shape_manual(values = rep(19, nthr), guide = "none") + 
-    scale_color_manual(values = plotcolors(cobraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     xlim(xaxisrange[1], xaxisrange[2]) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
@@ -158,7 +158,7 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
                                      group = "method", colour = "method")) +
     geom_path(size = linewidth, aes_string(linetype = "method")) +
     scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
-    scale_color_manual(values = plotcolors(cobraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     xlim(ifelse(aspc == "roc", xaxisrange[1], 0),
          ifelse(aspc == "roc", xaxisrange[2], maxnfdc)) +
@@ -291,7 +291,7 @@ plot_scatter <- function(cobraplot, title = "", stripsize = 10,
   pp <- ggplot(plot_data, aes_string(x = "OBSERVATION", y = "TRUTH",
                                      colour = "fullmethod")) +
     geom_point(size = pointsize) +
-    scale_color_manual(values = plotcolors(cobraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
   if (isTRUE(facetted(cobraplot))) {
@@ -375,7 +375,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       scale_shape_manual(values = rep(21, nthr), guide = "none") + 
       scale_fill_manual(values = plotcolors(cobraplot), guide = "none",
                         name = "") +
-      scale_color_manual(values = plotcolors(cobraplot), name = "") +
+      scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
                   max(c(0, plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
@@ -398,7 +398,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
            ifelse(yasp == "TPR", yaxisrange[2],
                   max(c(0, plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
                                                      xaxisrange[2]])))) +
-      scale_color_manual(values = plotcolors(cobraplot), name = "") +
+      scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("points" %in% plottype) {
@@ -417,7 +417,7 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       scale_shape_manual(values = rep(21, nthr), guide = "none") + 
       scale_fill_manual(values = plotcolors(cobraplot), guide = "none",
                         name = "") +
-      scale_color_manual(values = plotcolors(cobraplot), name = "") +
+      scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
            ifelse(yasp == "TPR", yaxisrange[2],
                   max(c(0, plot_data_lines[[yasp]][plot_data_lines[[xasp]] <=
@@ -774,7 +774,7 @@ plot_deviation <- function(cobraplot, title = "", stripsize = 15,
                                             "absDEVIATION", "sqDEVIATION")),
                           group = "method", colour = "method")) +
     coord_flip() +
-    scale_color_manual(values = plotcolors(cobraplot), name = "") +
+    scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
     ggtitle(title)
   if (plottype == "boxplot") {
