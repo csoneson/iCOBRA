@@ -20,7 +20,7 @@ calculate_performance."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -59,25 +59,25 @@ performance measures. Objects from this class are typically generated from
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">COBRAPerformance</span><span class="op">(</span>
-  fdrtpr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fdrtprcurve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fdrnbr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fdrnbrcurve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fsrnbr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fsrnbrcurve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  tpr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fpr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  splv <span class="op">=</span> <span class="st">""</span>,
-  roc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  fpc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  deviation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  onlyshared <span class="op">=</span> <span class="cn">NA</span>,
-  overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  maxsplit <span class="op">=</span> <span class="cn">NA_integer_</span>,
-  corr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  scatter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">COBRAPerformance</span><span class="op">(</span></span>
+<span>  fdrtpr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fdrtprcurve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fdrnbr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fdrnbrcurve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fsrnbr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fsrnbrcurve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  tpr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fpr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  splv <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  roc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  fpc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  deviation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  onlyshared <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  overlap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  maxsplit <span class="op">=</span> <span class="cn">NA_integer_</span>,</span>
+<span>  corr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  scatter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -85,72 +85,107 @@ performance measures. Objects from this class are typically generated from
     <dl><dt>fdrtpr</dt>
 <dd><p>A data frame containing observed FDR and TPR values at various
 adjusted p-value thresholds.</p></dd>
+
+
 <dt>fdrtprcurve</dt>
 <dd><p>A data frame containing observed FDR and TPR values for a
 (potentially large) number of cutoffs applied to a 'score' (that can be
 p-value, adjusted p-value or a more general score).</p></dd>
+
+
 <dt>fdrnbr</dt>
 <dd><p>A data frame containing observed FDR and the number of features
 considered to be significant at various adjusted p-value thresholds.</p></dd>
+
+
 <dt>fdrnbrcurve</dt>
 <dd><p>A data frame containing observed FDR and number of
 features considered to be significant for a (potentially large) number of
 cutoffs applied to a 'score' (that can be p-value, adjusted p-value or a
 more general score).</p></dd>
+
+
 <dt>fsrnbr</dt>
 <dd><p>A data frame containing observed false sign rate (FSR) and the
 number of features considered to be significant at various s-value
 thresholds</p></dd>
+
+
 <dt>fsrnbrcurve</dt>
 <dd><p>A data frame containing observed false sign rate (FSR) and
 number of features considered to be significant for a (potentially large)
 number of cutoffs applied to the s-value</p></dd>
+
+
 <dt>tpr</dt>
 <dd><p>A data frame containing observed TPR values at various adjusted
 p-value thresholds.</p></dd>
+
+
 <dt>fpr</dt>
 <dd><p>A data frame containing observed FPR values at various adjusted
 p-value thresholds.</p></dd>
+
+
 <dt>splv</dt>
 <dd><p>A character string giving the name of the stratification factor,
 "none" if the results are not stratified.</p></dd>
+
+
 <dt>roc</dt>
 <dd><p>A data frame containing observed FPR and TPR values  for a
 (potentially large) number of cutoffs applied to a 'score' (that can be
 p-value, adjusted p-value or a more general score), which can be used to
 generate a ROC curve.</p></dd>
+
+
 <dt>fpc</dt>
 <dd><p>A data frame containing observed numbers of false positive
 findings among the N top-ranked features (ranked by p-values, adjusted
 p-values or more general scores), for a (potentially large) number of Ns,
 which can be used to generate a false positive curve.</p></dd>
+
+
 <dt>deviation</dt>
 <dd><p>A data frame containing deviations between observed scores
 and true scores.</p></dd>
+
+
 <dt>onlyshared</dt>
 <dd><p>A logical value indicating whether only features shared
 between the results and the truth should be retained, or if all features
 present in the truth should be used.</p></dd>
+
+
 <dt>overlap</dt>
 <dd><p>A data frame or list of data frames with binary values
 indicating, for each of a number of methods and number of features, whether
 the method consider the feature 'positive' (significant, 1) or 'negative'
 (non-significant, 0). If it is a list of data frames, each list element
 corresponds to one level of a stratifying factor.</p></dd>
+
+
 <dt>maxsplit</dt>
 <dd><p>A numeric value indicating the largest number of levels to
 retain if the results have been stratified by an annotation.</p></dd>
+
+
 <dt>corr</dt>
 <dd><p>A data frame containing observed (Pearson and Spearman)
 correlation values between observed and true scores.</p></dd>
+
+
 <dt>scatter</dt>
 <dd><p>A data frame containing observed 'scores' (p-values, adjusted
 p-values or more general scores) and true scores, which can be used to
 generate scatter plots.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>COBRAPerformance</code> object.</p>
+    
+
+<p>A <code>COBRAPerformance</code> object.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -159,8 +194,8 @@ generate scatter plots.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Empty COBRAPerformance object</span></span>
-<span class="r-in"><span class="fu">COBRAPerformance</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Empty COBRAPerformance object</span></span></span>
+<span class="r-in"><span><span class="fu">COBRAPerformance</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "COBRAPerformance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> @fdrtpr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data frame with 0 columns and 0 rows</span>
@@ -227,7 +262,7 @@ generate scatter plots.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

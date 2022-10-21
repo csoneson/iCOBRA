@@ -18,7 +18,7 @@ p-values and scores provided in a COBRAData object."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -55,87 +55,116 @@ p-values and scores provided in a <code>COBRAData</code> object.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">calculate_performance</span><span class="op">(</span>
-  <span class="va">cobradata</span>,
-  binary_truth <span class="op">=</span> <span class="cn">NULL</span>,
-  cont_truth <span class="op">=</span> <span class="cn">NULL</span>,
-  aspects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fdrtpr"</span>, <span class="st">"fdrtprcurve"</span>, <span class="st">"fdrnbr"</span>, <span class="st">"fdrnbrcurve"</span>, <span class="st">"tpr"</span>, <span class="st">"fpr"</span>, <span class="st">"roc"</span>,
-    <span class="st">"fpc"</span>, <span class="st">"overlap"</span>, <span class="st">"corr"</span>, <span class="st">"scatter"</span>, <span class="st">"deviation"</span>, <span class="st">"fsrnbr"</span>, <span class="st">"fsrnbrcurve"</span><span class="op">)</span>,
-  thrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  svalthrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  splv <span class="op">=</span> <span class="st">"none"</span>,
-  maxsplit <span class="op">=</span> <span class="fl">3</span>,
-  onlyshared <span class="op">=</span> <span class="cn">FALSE</span>,
-  thr_venn <span class="op">=</span> <span class="fl">0.05</span>,
-  type_venn <span class="op">=</span> <span class="st">"adjp"</span>,
-  topn_venn <span class="op">=</span> <span class="fl">100</span>,
-  rank_by_abs <span class="op">=</span> <span class="cn">TRUE</span>,
-  prefer_pval <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calculate_performance</span><span class="op">(</span></span>
+<span>  <span class="va">cobradata</span>,</span>
+<span>  binary_truth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cont_truth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  aspects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fdrtpr"</span>, <span class="st">"fdrtprcurve"</span>, <span class="st">"fdrnbr"</span>, <span class="st">"fdrnbrcurve"</span>, <span class="st">"tpr"</span>, <span class="st">"fpr"</span>, <span class="st">"roc"</span>,</span>
+<span>    <span class="st">"fpc"</span>, <span class="st">"overlap"</span>, <span class="st">"corr"</span>, <span class="st">"scatter"</span>, <span class="st">"deviation"</span>, <span class="st">"fsrnbr"</span>, <span class="st">"fsrnbrcurve"</span><span class="op">)</span>,</span>
+<span>  thrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  svalthrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  splv <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  maxsplit <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  onlyshared <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  thr_venn <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  type_venn <span class="op">=</span> <span class="st">"adjp"</span>,</span>
+<span>  topn_venn <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  rank_by_abs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  prefer_pval <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cobradata</dt>
 <dd><p>A <code>COBRAData</code> object.</p></dd>
+
+
 <dt>binary_truth</dt>
 <dd><p>A character string giving the name of the column of
 truth(cobradata) that contains the binary truth (true assignment of
 variables into two classes, represented by 0/1).</p></dd>
+
+
 <dt>cont_truth</dt>
 <dd><p>A character string giving the name of the column of
 truth(cobradata) that contains the continuous truth (a continuous value
 that the observations can be compared to).</p></dd>
+
+
 <dt>aspects</dt>
 <dd><p>A character vector giving the types of performance measures 
 to calculate. Must be a subset of c("fdrtpr", "fdrtprcurve", "fdrnbr",
 "fdrnbrcurve", "tpr", "fpr", "roc", "fpc", "overlap", "corr", "scatter",
 "deviation", "fsrnbr", "fsrnbrcurve").</p></dd>
+
+
 <dt>thrs</dt>
 <dd><p>A numeric vector of adjusted p-value thresholds for which to
 calculate the performance measures. Affects "fdrtpr", "fdrnbr", "tpr" and
 "fpr".</p></dd>
+
+
 <dt>svalthrs</dt>
 <dd><p>A numeric vector of s-value thresholds for which to calculate
 the FSR. Affects "fsrnbr".</p></dd>
+
+
 <dt>splv</dt>
 <dd><p>A character string giving the name of the column of
 truth(cobradata) that will be used to stratify the results. The default
 value is "none", indicating no stratification.</p></dd>
+
+
 <dt>maxsplit</dt>
 <dd><p>A numeric value giving the maximal number of categories to
 keep in the stratification. The largest categories containing both positive
 and negative features will be retained. By setting this argument to `Inf`
 or `NA_integer_`, all categories (as well as the order of categories) will
 be retained.</p></dd>
+
+
 <dt>onlyshared</dt>
 <dd><p>A logical, indicating whether to only consider features for
 which both the true assignment and a result (p-value, adjusted p-value or
 score) is given. If FALSE, all features contained in the truth table are
 used.</p></dd>
+
+
 <dt>thr_venn</dt>
 <dd><p>A numeric value giving the adjusted p-value threshold to use
 to create Venn diagrams (if <code>type_venn</code> is "adjp").</p></dd>
+
+
 <dt>type_venn</dt>
 <dd><p>Either "adjp" or "rank", indicating whether Venn diagrams
 should be constructed based on features with adjusted p-values below a
 certain threshold, or based on the same number of top-ranked features by
 different methods.</p></dd>
+
+
 <dt>topn_venn</dt>
 <dd><p>A numeric value giving the number of top-ranked features to
 compare between methods (if <code>type_venn</code> is "rank").</p></dd>
+
+
 <dt>rank_by_abs</dt>
 <dd><p>Whether to take the absolute value of the score before
 using it to rank the variables  for ROC, FPC, FDR/NBR and FDR/TPR curves.</p></dd>
+
+
 <dt>prefer_pval</dt>
 <dd><p>Whether to preferentially rank variables by p-values or
 adjusted p-values rather than score for ROC and FPC calculations. From
 version 1.5.5, this is the default behaviour. To obtain the behaviour of
 previous versions, set to <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>COBRAPerformance</code> object</p>
+    
+
+<p>A <code>COBRAPerformance</code> object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -164,12 +193,12 @@ results will be calculated.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu">calculate_performance</span><span class="op">(</span><span class="va">cobradata_example</span>,</span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fdrtpr"</span>, <span class="st">"fdrtprcurve"</span>,</span>
-<span class="r-in">                                               <span class="st">"tpr"</span>, <span class="st">"roc"</span><span class="op">)</span>,</span>
-<span class="r-in">                                   thrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>, splv <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu">calculate_performance</span><span class="op">(</span><span class="va">cobradata_example</span>,</span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fdrtpr"</span>, <span class="st">"fdrtprcurve"</span>,</span></span>
+<span class="r-in"><span>                                               <span class="st">"tpr"</span>, <span class="st">"roc"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                   thrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span><span class="op">)</span>, splv <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for NBRS calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for TPR calculations</span>
@@ -188,7 +217,7 @@ results will be calculated.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

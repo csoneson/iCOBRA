@@ -18,7 +18,7 @@ thresholds."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -55,36 +55,49 @@ thresholds.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_fpr</span><span class="op">(</span>
-  <span class="va">cobraplot</span>,
-  title <span class="op">=</span> <span class="st">""</span>,
-  stripsize <span class="op">=</span> <span class="fl">15</span>,
-  titlecol <span class="op">=</span> <span class="st">"black"</span>,
-  pointsize <span class="op">=</span> <span class="fl">5</span>,
-  xaxisrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_fpr</span><span class="op">(</span></span>
+<span>  <span class="va">cobraplot</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  stripsize <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  titlecol <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>  pointsize <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  xaxisrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cobraplot</dt>
 <dd><p>A <code>COBRAPlot</code> object.</p></dd>
+
+
 <dt>title</dt>
 <dd><p>A character string giving the title of the plot.</p></dd>
+
+
 <dt>stripsize</dt>
 <dd><p>A numeric value giving the size of the strip text, when the
 results are stratified by an annotation.</p></dd>
+
+
 <dt>titlecol</dt>
 <dd><p>A character string giving the color of the title.</p></dd>
+
+
 <dt>pointsize</dt>
 <dd><p>A numeric value giving the size of the plot characters.</p></dd>
+
+
 <dt>xaxisrange</dt>
 <dd><p>A numeric vector with two elements, giving the lower and
 upper boundary of the x-axis, respectively.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A ggplot object</p>
+    
+
+<p>A ggplot object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -93,15 +106,15 @@ upper boundary of the x-axis, respectively.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>, aspects <span class="op">=</span> <span class="st">"fpr"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>, aspects <span class="op">=</span> <span class="st">"fpr"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for NBRS calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for FPR calculations</span>
-<span class="r-in"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>,</span>
-<span class="r-in">                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plot_fpr</span><span class="op">(</span><span class="va">cobraplot</span>, xaxisrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>,</span></span>
+<span class="r-in"><span>                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_fpr</span><span class="op">(</span><span class="va">cobraplot</span>, xaxisrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_fpr-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -117,7 +130,7 @@ upper boundary of the x-axis, respectively.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

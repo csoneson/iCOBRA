@@ -21,7 +21,7 @@ category at a time can be displayed.'><!-- mathjax --><script src="https://cdnjs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -61,39 +61,52 @@ category at a time can be displayed.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_upset</span><span class="op">(</span>
-  <span class="va">cobraplot</span>,
-  stratum <span class="op">=</span> <span class="cn">NULL</span>,
-  nsets <span class="op">=</span> <span class="cn">NULL</span>,
-  nintersects <span class="op">=</span> <span class="cn">NULL</span>,
-  sets.bar.color <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_upset</span><span class="op">(</span></span>
+<span>  <span class="va">cobraplot</span>,</span>
+<span>  stratum <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nsets <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nintersects <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sets.bar.color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cobraplot</dt>
 <dd><p>A <code>COBRAPlot</code> object.</p></dd>
+
+
 <dt>stratum</dt>
 <dd><p>If results are stratified, the category to plot results for.
 Can be numeric or categorical (the name of the category).</p></dd>
+
+
 <dt>nsets</dt>
 <dd><p>The number of methods to include. By default, it is determined
 automatically from the <code>cobraplot</code> object.</p></dd>
+
+
 <dt>nintersects</dt>
 <dd><p>The number of set intersections to display. By default, it
 is determined automatically from the <code>cobraplot</code> object.</p></dd>
+
+
 <dt>sets.bar.color</dt>
 <dd><p>The colors to use for the bars in the UpSet plot. By
 default, they are extracted from the <code>plotcolors</code> slot of the
 <code>cobraplot</code> object.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments to <code><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">UpSetR::upset</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Nothing, displays a graph</p>
+    
+
+<p>Nothing, displays a graph</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -109,26 +122,26 @@ Transactions on Visualization and Computer Graphics 20(12), 1983-1992.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="st">"overlap"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="st">"overlap"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
-<span class="r-in"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>,</span>
-<span class="r-in">                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>,</span></span>
+<span class="r-in"><span>                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_upset-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span>, order.by <span class="op">=</span> <span class="st">"freq"</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span>, order.by <span class="op">=</span> <span class="st">"freq"</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_upset-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, </span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>, </span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="st">"overlap"</span>,</span>
-<span class="r-in">                                   splv <span class="op">=</span> <span class="st">"expr_cat"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, </span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>, </span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="st">"overlap"</span>,</span></span>
+<span class="r-in"><span>                                   splv <span class="op">=</span> <span class="st">"expr_cat"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
-<span class="r-in"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, </span>
-<span class="r-in">                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span>, stratum <span class="op">=</span> <span class="st">"[2.85e+00,1.45e+01)"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, </span></span>
+<span class="r-in"><span>                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span>, stratum <span class="op">=</span> <span class="st">"[2.85e+00,1.45e+01)"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_upset-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -144,7 +157,7 @@ Transactions on Visualization and Computer Graphics 20(12), 1983-1992.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ COBRAPerformance or COBRAPlot object."><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -55,36 +55,43 @@ COBRAPerformance or COBRAPlot object."><!-- mathjax --><script src="https://cdnj
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for COBRAPerformance</span>
-<span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for COBRAPerformance,data.frame</span>
-<span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for COBRAPlot,data.frame</span>
-<span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for COBRAPerformance</span></span>
+<span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for COBRAPerformance,data.frame</span></span>
+<span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for COBRAPlot,data.frame</span></span>
+<span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A <code>COBRAPerformance</code> or <code>COBRAPlot</code> object.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>A data frame giving information necessary to generate curves of 
 observed FSR vs number of features called positive for each method and each
 stratification level. If the object does not have an fsrnbrcurve slot
 (older versions of the class did not have this slot), an empty data frame
 is returned for simplicity.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The accessor function returns a data frame giving information
+    
+
+<p>The accessor function returns a data frame giving information
   necessary to generate curves of observed FSR vs number of features called
   positive for each method and each stratification level.</p>
     </div>
@@ -95,13 +102,13 @@ is returned for simplicity.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cobradata</span> <span class="op">&lt;-</span> <span class="va">cobradata_example_sval</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata</span>, </span>
-<span class="r-in">                                   cont_truth <span class="op">=</span> <span class="st">"logFC"</span>, </span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="st">"fsrnbrcurve"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cobradata</span> <span class="op">&lt;-</span> <span class="va">cobradata_example_sval</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata</span>, </span></span>
+<span class="r-in"><span>                                   cont_truth <span class="op">=</span> <span class="st">"logFC"</span>, </span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="st">"fsrnbrcurve"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column Method3 is being ignored for FSRNBR calculations</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">fsrnbrcurve</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   FSR NBR       CUTOFF TS FS TOT_CALLED POSSIGN NEGSIGN ZEROSIGN  method</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   0   1 3.154663e-47  1  0       2418     420     422     3016 Method1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   0   2 7.291524e-47  2  0       2418     420     422     3016 Method1</span>
@@ -130,7 +137,7 @@ is returned for simplicity.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

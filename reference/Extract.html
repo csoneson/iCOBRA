@@ -23,7 +23,7 @@ may be arranged in the same order."><!-- mathjax --><script src="https://cdnjs.c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -79,25 +79,34 @@ may be arranged in the same order.</p>
     <dl><dt>x</dt>
 <dd><p>A <code>COBRAData</code>, <code>COBRAPerformance</code> or <code>COBRAPlot</code>
 object.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>For <code>COBRAData</code> objects, a character vector of feature names to
 retain.</p></dd>
+
+
 <dt>j</dt>
 <dd><p>For <code>COBRAPerformance</code> and <code>COBRAPlot</code> objects, a
 character vector with method names to retain.</p></dd>
+
+
 <dt>drop</dt>
 <dd><p>not used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A subset of the original object, of the same class</p>
+    
+
+<p>A subset of the original object, of the same class</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cobradata_example</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENSG00000000457"</span>, <span class="st">"ENSG00000000971"</span>,</span>
-<span class="r-in">                    <span class="st">"ENSG00000000460"</span><span class="op">)</span>, <span class="op">]</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cobradata_example</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ENSG00000000457"</span>, <span class="st">"ENSG00000000971"</span>,</span></span>
+<span class="r-in"><span>                    <span class="st">"ENSG00000000460"</span><span class="op">)</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "COBRAData"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> @pval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     edgeR       voom     DESeq2</span>
@@ -130,14 +139,14 @@ character vector with method names to retain.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSG00000000971 [1.45e+01,2.43e+04]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ENSG00000000460 [2.85e+00,1.45e+01)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="st">"fdrtpr"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="st">"fdrtpr"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for NBRS calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for TPR calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for FDR calculations</span>
-<span class="r-in"><span class="va">cobraperf</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"voom"</span><span class="op">)</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">cobraperf</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"voom"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "COBRAPerformance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> @fdrtpr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       thr method basemethod   meas   fullmethod splitval NBR  TP  FP   TN  FN</span>
@@ -197,8 +206,8 @@ character vector with method names to retain.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> @onlyshared</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cobraplot</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"voom"</span><span class="op">)</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cobraplot</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"voom"</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Object up to date</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An object of class "COBRAPlot"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> @plotcolors</span>
@@ -282,7 +291,7 @@ character vector with method names to retain.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -63,13 +63,13 @@
 
       
 
-      </header><script src="iCOBRA_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>iCOBRA User Guide</h1>
                         <h4 data-toc-skip class="author">Charlotte Soneson</h4>
             
-            <h4 data-toc-skip class="date">2022-02-20</h4>
+            <h4 data-toc-skip class="date">2022-10-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/csoneson/iCOBRA/blob/HEAD/vignettes/iCOBRA.Rmd" class="external-link"><code>vignettes/iCOBRA.Rmd</code></a></small>
       <div class="hidden name"><code>iCOBRA.Rmd</code></div>
@@ -88,96 +88,96 @@
 </h3>
 <p>The starting point for an evaluation is typically a collection of feature ‘scores’ (p-values, adjusted p-values or any other ranking score) and the truth (information about the true status, or the true scores for the features). These values are stored in an <code>COBRAData</code> object. Here, we will start from an example <code>COBRAData</code> object provided with the package. Each slot in the <code>COBRAData</code> object should be a <code>data.frame</code>, with row names representing feature IDs. The row names will be used to match features across slots.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/csoneson/iCOBRA" class="external-link">iCOBRA</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] "COBRAData"</span>
-<span class="co">## attr(,"package")</span>
-<span class="co">## [1] "iCOBRA"</span></code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/csoneson/iCOBRA" class="external-link">iCOBRA</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "COBRAData"</span></span>
+<span><span class="co">## attr(,"package")</span></span>
+<span><span class="co">## [1] "iCOBRA"</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobradata_example</span></code></pre></div>
-<pre><code><span class="co">## An object of class "COBRAData"</span>
-<span class="co">## @pval</span>
-<span class="co">##                        edgeR         voom       DESeq2</span>
-<span class="co">## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span>
-<span class="co">## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span>
-<span class="co">## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span>
-<span class="co">## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span>
-<span class="co">## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span>
-<span class="co">## 2394 more rows ...</span>
-<span class="co">## </span>
-<span class="co">## @padj</span>
-<span class="co">##                        edgeR         voom</span>
-<span class="co">## ENSG00000000457 2.833295e-01 1.375146e-01</span>
-<span class="co">## ENSG00000000460 2.700376e-01 2.826398e-01</span>
-<span class="co">## ENSG00000000938 9.232794e-01 9.399669e-01</span>
-<span class="co">## ENSG00000000971 9.382227e-01 9.492325e-01</span>
-<span class="co">## ENSG00000001460 6.333969e-20 4.574862e-09</span>
-<span class="co">## 2394 more rows ...</span>
-<span class="co">## </span>
-<span class="co">## @score</span>
-<span class="co">##                      edgeR       voom      DESeq2</span>
-<span class="co">## ENSG00000000457 0.22706080 0.23980596 0.274811698</span>
-<span class="co">## ENSG00000000460 0.31050478 0.27677537 0.359226203</span>
-<span class="co">## ENSG00000000938 0.04985025 0.03344113 0.001526355</span>
-<span class="co">## ENSG00000000971 0.03900847 0.02263371 0.008182751</span>
-<span class="co">## ENSG00000001460 3.81423112 4.18152876 3.741077290</span>
-<span class="co">## 2394 more rows ...</span>
-<span class="co">## </span>
-<span class="co">## @truth</span>
-<span class="co">##                 status n_isoforms    logFC       logFC_cat       expr            expr_cat</span>
-<span class="co">## ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774 [2.85e+00,1.45e+01)</span>
-<span class="co">## ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544 [2.85e+00,1.45e+01)</span>
-<span class="co">## ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626 [2.85e+00,1.45e+01)</span>
-<span class="co">## ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797 [1.45e+01,2.43e+04]</span>
-<span class="co">## ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523 [2.85e+00,1.45e+01)</span>
-<span class="co">## 3853 more rows ...</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cobradata_example</span></span></code></pre></div>
+<pre><code><span><span class="co">## An object of class "COBRAData"</span></span>
+<span><span class="co">## @pval</span></span>
+<span><span class="co">##                        edgeR         voom       DESeq2</span></span>
+<span><span class="co">## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span></span>
+<span><span class="co">## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span></span>
+<span><span class="co">## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span></span>
+<span><span class="co">## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span></span>
+<span><span class="co">## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span></span>
+<span><span class="co">## 2394 more rows ...</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @padj</span></span>
+<span><span class="co">##                        edgeR         voom</span></span>
+<span><span class="co">## ENSG00000000457 2.833295e-01 1.375146e-01</span></span>
+<span><span class="co">## ENSG00000000460 2.700376e-01 2.826398e-01</span></span>
+<span><span class="co">## ENSG00000000938 9.232794e-01 9.399669e-01</span></span>
+<span><span class="co">## ENSG00000000971 9.382227e-01 9.492325e-01</span></span>
+<span><span class="co">## ENSG00000001460 6.333969e-20 4.574862e-09</span></span>
+<span><span class="co">## 2394 more rows ...</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @score</span></span>
+<span><span class="co">##                      edgeR       voom      DESeq2</span></span>
+<span><span class="co">## ENSG00000000457 0.22706080 0.23980596 0.274811698</span></span>
+<span><span class="co">## ENSG00000000460 0.31050478 0.27677537 0.359226203</span></span>
+<span><span class="co">## ENSG00000000938 0.04985025 0.03344113 0.001526355</span></span>
+<span><span class="co">## ENSG00000000971 0.03900847 0.02263371 0.008182751</span></span>
+<span><span class="co">## ENSG00000001460 3.81423112 4.18152876 3.741077290</span></span>
+<span><span class="co">## 2394 more rows ...</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @truth</span></span>
+<span><span class="co">##                 status n_isoforms    logFC       logFC_cat       expr            expr_cat</span></span>
+<span><span class="co">## ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797 [1.45e+01,2.43e+04]</span></span>
+<span><span class="co">## ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## 3853 more rows ...</span></span></code></pre>
 <p>For the methods that don’t have adjusted p-values, we will calculate adjusted p-values from nominal p-values.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobradata_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_adjp.html">calculate_adjp</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Adding empty sval slot to object</span></code></pre>
-<pre><code><span class="co">## Object up to date</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cobradata_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_adjp.html">calculate_adjp</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Adding empty sval slot to object</span></span></code></pre>
+<pre><code><span><span class="co">## Object up to date</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="calculating-performance-scores">Calculating performance scores<a class="anchor" aria-label="anchor" href="#calculating-performance-scores"></a>
 </h3>
 <p>Next, we calculate the performance scores using the COBRAData object. We can perform both assignment-based and correlation-based evaluations, and thus we have to provide information about which columns in the truth data frame that are to be interpreted as the binary (assignment) truth and continuous truth score, respectively. Here, we let the “status” column (indicating the true differential expression status of the genes) represent the true classification, and the true log-fold change represent the true score, to which the observed scores will be compared.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, 
-                                  cont_truth <span class="op">=</span> <span class="st">"logFC"</span>, splv <span class="op">=</span> <span class="st">"none"</span>,
-                                  maxsplit <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## column edgeR is being ignored for FSR/NBR calculations</span></code></pre>
-<pre><code><span class="co">## column voom is being ignored for FSR/NBR calculations</span></code></pre>
-<pre><code><span class="co">## column DESeq2 is being ignored for FSR/NBR calculations</span></code></pre>
-<pre><code><span class="co">## column edgeR is being ignored for FSRNBR calculations</span></code></pre>
-<pre><code><span class="co">## column voom is being ignored for FSRNBR calculations</span></code></pre>
-<pre><code><span class="co">## column DESeq2 is being ignored for FSRNBR calculations</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, </span>
+<span>                                  cont_truth <span class="op">=</span> <span class="st">"logFC"</span>, splv <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>                                  maxsplit <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## column edgeR is being ignored for FSR/NBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column voom is being ignored for FSR/NBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column DESeq2 is being ignored for FSR/NBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column edgeR is being ignored for FSRNBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column voom is being ignored for FSRNBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column DESeq2 is being ignored for FSRNBR calculations</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">slotNames</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##  [1] "fdrtpr"      "fdrtprcurve" "fdrnbr"      "fdrnbrcurve" "fsrnbr"      "fsrnbrcurve"</span>
-<span class="co">##  [7] "deviation"   "tpr"         "fpr"         "roc"         "scatter"     "fpc"        </span>
-<span class="co">## [13] "overlap"     "corr"        "maxsplit"    "splv"        "onlyshared"</span></code></pre>
+<code class="sourceCode R"><span><span class="fu">slotNames</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "fdrtpr"      "fdrtprcurve" "fdrnbr"      "fdrnbrcurve" "fsrnbr"      "fsrnbrcurve"</span></span>
+<span><span class="co">##  [7] "deviation"   "tpr"         "fpr"         "roc"         "scatter"     "fpc"        </span></span>
+<span><span class="co">## [13] "overlap"     "corr"        "maxsplit"    "splv"        "onlyshared"</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="preparing-performance-object-for-plotting">Preparing performance object for plotting<a class="anchor" aria-label="anchor" href="#preparing-performance-object-for-plotting"></a>
 </h3>
 <p>After calculating the performance scores, we prepare the object for plotting. In this step, we will assign colors to each of the methods, and we can decide to keep only a subset of the methods. We also decide whether the plotting should be done with or without facetting (i.e., splitting the plots into panels based on the stratification variable). This choice will determine the number of colors that are needed to distinguish between all method/stratification level combinations.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, 
-                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, </span>
+<span>                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
 </h3>
 <p>When the data has been prepared for plotting, we can apply any of the provided plot functions to visualize different aspects of the results.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_fdrtprcurve.html">plot_fdrtprcurve</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_fdrtprcurve.html">plot_fdrtprcurve</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 </div>
 </div>
@@ -189,18 +189,18 @@
 </h3>
 <p>All results can be stratified by any annotation provided in the truth slot of the COBRAData object. Note that only the largest categories will be retained (the number of retained categories is determined by the maxsplit argument), and thus stratifying by continuous annotations is not supported (each category would likely contain just one observation). Here, we show how the stratification is performed, and how it changes the plots generated above.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, 
-                                  cont_truth <span class="op">=</span> <span class="st">"status"</span>, splv <span class="op">=</span> <span class="st">"expr_cat"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## column edgeR is being ignored for FSR/NBR calculations</span></code></pre>
-<pre><code><span class="co">## column voom is being ignored for FSR/NBR calculations</span></code></pre>
-<pre><code><span class="co">## column DESeq2 is being ignored for FSR/NBR calculations</span></code></pre>
-<pre><code><span class="co">## column edgeR is being ignored for FSRNBR calculations</span></code></pre>
-<pre><code><span class="co">## column voom is being ignored for FSRNBR calculations</span></code></pre>
-<pre><code><span class="co">## column DESeq2 is being ignored for FSRNBR calculations</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, binary_truth <span class="op">=</span> <span class="st">"status"</span>, </span>
+<span>                                  cont_truth <span class="op">=</span> <span class="st">"status"</span>, splv <span class="op">=</span> <span class="st">"expr_cat"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## column edgeR is being ignored for FSR/NBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column voom is being ignored for FSR/NBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column DESeq2 is being ignored for FSR/NBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column edgeR is being ignored for FSRNBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column voom is being ignored for FSRNBR calculations</span></span></code></pre>
+<pre><code><span><span class="co">## column DESeq2 is being ignored for FSRNBR calculations</span></span></code></pre>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, 
-                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, </span>
+<span>                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 </div>
 <div class="section level3">
@@ -208,30 +208,30 @@
 </h3>
 <p>The plotting functions (except plot_overlap) return ggplot objects. Some basic settings (such as the size of the plot characters, the size of the text in the panel headers and the axis ranges) can be set directly in the plot functions. Others can be modified manually. For example, to reduce the size of the axis labels, an appropriate theme can be added to the ggplot object returned by the plot functions:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
-<span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span>, stripsize <span class="op">=</span> <span class="fl">7.5</span>, pointsize <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">pp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>,
-                                      hjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span>, stripsize <span class="op">=</span> <span class="fl">7.5</span>, pointsize <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">pp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>                                      hjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <p>It is also possible to modify the facetting and/or label position by adding a facet_wrap statement (note that the stratification variable is denoted “splitval”):</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>,
-                                      hjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">splitval</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>                                      hjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">splitval</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <p>The plot_overlap function generates venn diagram(s), using the vennDiagram function from the limma package. It can be provided with any additional arguments that are accepted by limma::vennDiagram, e.g. to change the size of the text:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span>, cex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span>, cex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-12-2.png" width="672"></p>
 </div>
 <div class="section level3">
@@ -239,15 +239,15 @@
 </h3>
 <p>The colors can either be chosen by one of the pre-defined color palettes, or provided by the user as a character vector. Note that the number of colors that are required depends on the facetting, and that not all methods may be shown in all plots (depending on the provided score types). If the wrong number of colors is provided, iCOBRA will automatically add or remove colors.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, 
-                                  colorscheme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"pink"</span><span class="op">)</span>, 
-                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span>, stripsize <span class="op">=</span> <span class="fl">7.5</span>, pointsize <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">pp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>,
-                                      hjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,
-           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, </span>
+<span>                                  colorscheme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"green"</span>, <span class="st">"pink"</span><span class="op">)</span>, </span>
+<span>                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span>, stripsize <span class="op">=</span> <span class="fl">7.5</span>, pointsize <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">pp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>                                      hjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iCOBRA_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 </div>
 <div class="section level3">
@@ -255,65 +255,65 @@
 </h3>
 <p>iCOBRA contains an interactive shiny application, for interactive exploration of results. It can be called with an COBRAData object, or with no arguments. In the latter case, results can be loaded into the app from text files.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/COBRAapp.html">COBRAapp</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span>
-<span class="fu"><a href="../reference/COBRAapp.html">COBRAapp</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/COBRAapp.html">COBRAapp</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/COBRAapp.html">COBRAapp</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Formatting instructions for the text files can be found in the Instructions tab. To generate text files from an existing COBRAData object, use the <code><a href="../reference/COBRAData.html">COBRAData_to_text()</a></code> function:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/COBRAData.html">COBRAData_to_text</a></span><span class="op">(</span>cobradata <span class="op">=</span> <span class="va">cobradata_example</span>, 
-                  truth_file <span class="op">=</span> <span class="st">"cobradata_truth.txt"</span>,
-                  result_files <span class="op">=</span> <span class="st">"cobradata_results.txt"</span>, 
-                  feature_id <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/COBRAData.html">COBRAData_to_text</a></span><span class="op">(</span>cobradata <span class="op">=</span> <span class="va">cobradata_example</span>, </span>
+<span>                  truth_file <span class="op">=</span> <span class="st">"cobradata_truth.txt"</span>,</span>
+<span>                  result_files <span class="op">=</span> <span class="st">"cobradata_results.txt"</span>, </span>
+<span>                  feature_id <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span></span></code></pre></div>
 <p>Similarly, a COBRAData object can be generated from a set of text files, using the <code><a href="../reference/COBRAData.html">COBRAData_from_text()</a></code> function:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cobra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/COBRAData.html">COBRAData_from_text</a></span><span class="op">(</span>truth_file <span class="op">=</span> <span class="st">"cobradata_truth.txt"</span>, 
-                             result_files <span class="op">=</span> <span class="st">"cobradata_results.txt"</span>, 
-                             feature_id <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span>
-<span class="va">cobra</span></code></pre></div>
-<pre><code><span class="co">## An object of class "COBRAData"</span>
-<span class="co">## @pval</span>
-<span class="co">##                        edgeR         voom       DESeq2</span>
-<span class="co">## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span>
-<span class="co">## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span>
-<span class="co">## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span>
-<span class="co">## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span>
-<span class="co">## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span>
-<span class="co">## 2394 more rows ...</span>
-<span class="co">## </span>
-<span class="co">## @padj</span>
-<span class="co">##                        edgeR         voom       DESeq2</span>
-<span class="co">## ENSG00000000457 2.833295e-01 1.375146e-01 4.760152e-02</span>
-<span class="co">## ENSG00000000460 2.700376e-01 2.826398e-01 8.717737e-02</span>
-<span class="co">## ENSG00000000938 9.232794e-01 9.399669e-01 9.985675e-01</span>
-<span class="co">## ENSG00000000971 9.382227e-01 9.492325e-01 9.868048e-01</span>
-<span class="co">## ENSG00000001460 6.333969e-20 4.574862e-09 6.742682e-22</span>
-<span class="co">## 2394 more rows ...</span>
-<span class="co">## </span>
-<span class="co">## @sval</span>
-<span class="co">## data frame with 0 columns and 0 rows</span>
-<span class="co">## </span>
-<span class="co">## @score</span>
-<span class="co">##                      edgeR       voom      DESeq2</span>
-<span class="co">## ENSG00000000457 0.22706080 0.23980596 0.274811698</span>
-<span class="co">## ENSG00000000460 0.31050478 0.27677537 0.359226203</span>
-<span class="co">## ENSG00000000938 0.04985025 0.03344113 0.001526355</span>
-<span class="co">## ENSG00000000971 0.03900847 0.02263371 0.008182751</span>
-<span class="co">## ENSG00000001460 3.81423112 4.18152876 3.741077290</span>
-<span class="co">## 2394 more rows ...</span>
-<span class="co">## </span>
-<span class="co">## @truth</span>
-<span class="co">##                         feature status n_isoforms    logFC       logFC_cat       expr</span>
-<span class="co">## ENSG00000000457 ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774</span>
-<span class="co">## ENSG00000000460 ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544</span>
-<span class="co">## ENSG00000000938 ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626</span>
-<span class="co">## ENSG00000000971 ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797</span>
-<span class="co">## ENSG00000001460 ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523</span>
-<span class="co">##                            expr_cat</span>
-<span class="co">## ENSG00000000457 [2.85e+00,1.45e+01)</span>
-<span class="co">## ENSG00000000460 [2.85e+00,1.45e+01)</span>
-<span class="co">## ENSG00000000938 [2.85e+00,1.45e+01)</span>
-<span class="co">## ENSG00000000971 [1.45e+01,2.43e+04]</span>
-<span class="co">## ENSG00000001460 [2.85e+00,1.45e+01)</span>
-<span class="co">## 3853 more rows ...</span></code></pre>
+<code class="sourceCode R"><span><span class="va">cobra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/COBRAData.html">COBRAData_from_text</a></span><span class="op">(</span>truth_file <span class="op">=</span> <span class="st">"cobradata_truth.txt"</span>, </span>
+<span>                             result_files <span class="op">=</span> <span class="st">"cobradata_results.txt"</span>, </span>
+<span>                             feature_id <span class="op">=</span> <span class="st">"feature"</span><span class="op">)</span></span>
+<span><span class="va">cobra</span></span></code></pre></div>
+<pre><code><span><span class="co">## An object of class "COBRAData"</span></span>
+<span><span class="co">## @pval</span></span>
+<span><span class="co">##                        edgeR         voom       DESeq2</span></span>
+<span><span class="co">## ENSG00000000457 1.178024e-01 5.147484e-02 1.627063e-02</span></span>
+<span><span class="co">## ENSG00000000460 1.101413e-01 1.276784e-01 3.281416e-02</span></span>
+<span><span class="co">## ENSG00000000938 8.128245e-01 8.712829e-01 9.942761e-01</span></span>
+<span><span class="co">## ENSG00000000971 8.449686e-01 8.939493e-01 9.627826e-01</span></span>
+<span><span class="co">## ENSG00000001460 8.343203e-21 6.007010e-10 9.303159e-23</span></span>
+<span><span class="co">## 2394 more rows ...</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @padj</span></span>
+<span><span class="co">##                        edgeR         voom       DESeq2</span></span>
+<span><span class="co">## ENSG00000000457 2.833295e-01 1.375146e-01 4.760152e-02</span></span>
+<span><span class="co">## ENSG00000000460 2.700376e-01 2.826398e-01 8.717737e-02</span></span>
+<span><span class="co">## ENSG00000000938 9.232794e-01 9.399669e-01 9.985675e-01</span></span>
+<span><span class="co">## ENSG00000000971 9.382227e-01 9.492325e-01 9.868048e-01</span></span>
+<span><span class="co">## ENSG00000001460 6.333969e-20 4.574862e-09 6.742682e-22</span></span>
+<span><span class="co">## 2394 more rows ...</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @sval</span></span>
+<span><span class="co">## data frame with 0 columns and 0 rows</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @score</span></span>
+<span><span class="co">##                      edgeR       voom      DESeq2</span></span>
+<span><span class="co">## ENSG00000000457 0.22706080 0.23980596 0.274811698</span></span>
+<span><span class="co">## ENSG00000000460 0.31050478 0.27677537 0.359226203</span></span>
+<span><span class="co">## ENSG00000000938 0.04985025 0.03344113 0.001526355</span></span>
+<span><span class="co">## ENSG00000000971 0.03900847 0.02263371 0.008182751</span></span>
+<span><span class="co">## ENSG00000001460 3.81423112 4.18152876 3.741077290</span></span>
+<span><span class="co">## 2394 more rows ...</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## @truth</span></span>
+<span><span class="co">##                         feature status n_isoforms    logFC       logFC_cat       expr</span></span>
+<span><span class="co">## ENSG00000000457 ENSG00000000457      0          5 0.000000 [ 0.000, 0.297)   8.525774</span></span>
+<span><span class="co">## ENSG00000000460 ENSG00000000460      0         10 0.000000 [ 0.000, 0.297)   3.314544</span></span>
+<span><span class="co">## ENSG00000000938 ENSG00000000938      0          8 0.000000 [ 0.000, 0.297)  11.543626</span></span>
+<span><span class="co">## ENSG00000000971 ENSG00000000971      0          6 0.000000 [ 0.000, 0.297) 163.547797</span></span>
+<span><span class="co">## ENSG00000001460 ENSG00000001460      1         13 3.939422 [ 3.540,24.063]   3.792523</span></span>
+<span><span class="co">##                            expr_cat</span></span>
+<span><span class="co">## ENSG00000000457 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## ENSG00000000460 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## ENSG00000000938 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## ENSG00000000971 [1.45e+01,2.43e+04]</span></span>
+<span><span class="co">## ENSG00000001460 [2.85e+00,1.45e+01)</span></span>
+<span><span class="co">## 3853 more rows ...</span></span></code></pre>
 <p>The screenshot below shows the appearance of the iCOBRA shiny app, using the example data set.</p>
 <p><img src="screenshot_COBRAapp.png" style="width:800px;"></p>
 </div>
@@ -337,7 +337,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer>

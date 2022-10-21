@@ -21,7 +21,7 @@ also be obtained using the function COBRAData_to_text."><!-- mathjax --><script 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@ also be obtained using the function <code><a href="COBRAData.html">COBRAData_to_
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">COBRAapp</span><span class="op">(</span>cobradata <span class="op">=</span> <span class="cn">NULL</span>, autorun <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">COBRAapp</span><span class="op">(</span>cobradata <span class="op">=</span> <span class="cn">NULL</span>, autorun <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,14 +69,19 @@ also be obtained using the function <code><a href="COBRAData.html">COBRAData_to_
     <dl><dt>cobradata</dt>
 <dd><p>An (optional) <code>COBRAData</code> object. If not given, the
 user can load results from text files.</p></dd>
+
+
 <dt>autorun</dt>
 <dd><p>A logical indicating whether the app calculations should start
 automatically on launch, or wait for the user to press the 'Start
 calculation!' button.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns (and runs) an object representing the shiny app.</p>
+    
+
+<p>Returns (and runs) an object representing the shiny app.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -85,15 +90,18 @@ calculation!' button.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">COBRAapp</span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">COBRAapp</span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This Font Awesome icon ('folder-o') does not exist:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * if providing a custom `html_dependency` these `name` checks can </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   be deactivated with `verify_fa = FALSE`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This Font Awesome icon ('paint-brush') does not exist:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> * if providing a custom `html_dependency` these `name` checks can </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   be deactivated with `verify_fa = FALSE`</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Navigation containers expect a collection of `bslib::nav()`/`shiny::tabPanel()`s and/or `bslib::nav_menu()`/`shiny::navbarMenu()`s. Consider using `header` or `footer` if you wish to place content above (or below) every panel's contents.</span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -108,7 +116,7 @@ calculation!' button.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ COBRAPlot object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -55,31 +55,38 @@ COBRAPlot object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">facetted</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">facetted</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span>
-
-<span class="co"># S4 method for COBRAPlot</span>
-<span class="fu">facetted</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="co"># S4 method for COBRAPlot,logical</span>
-<span class="fu">facetted</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">facetted</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">facetted</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for COBRAPlot</span></span>
+<span><span class="fu">facetted</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for COBRAPlot,logical</span></span>
+<span><span class="fu">facetted</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A <code>COBRAPlot</code> object.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>A logical value, indicating whether the object is formatted for
 facetted plots (visualizing each stratification level in a separate panel)
 or not.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The accessor function returns a logical value, indicating whether the
+    
+
+<p>The accessor function returns a logical value, indicating whether the
   object is formatted for facetted plots (visualizing each stratification
   level in a separate panel) or not.</p>
     </div>
@@ -90,16 +97,16 @@ or not.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="st">"fdrtpr"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>,</span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="st">"fdrtpr"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Object doesn't have a slot sval. Please run update_cobradata(). For consistency, I will return an empty data.frame</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for NBRS calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for TPR calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column DESeq2 is being ignored for FDR calculations</span>
-<span class="r-in"><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">facetted</span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">facetted</span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
@@ -115,7 +122,7 @@ or not.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

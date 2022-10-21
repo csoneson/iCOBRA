@@ -20,7 +20,7 @@ previous version of the package to the latest version."><!-- mathjax --><script 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
       </span>
     </div>
 
@@ -58,20 +58,25 @@ previous version of the package to the latest version.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">update_cobraperformance</span><span class="op">(</span><span class="va">object</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">update_cobraperformance</span><span class="op">(</span><span class="va">object</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>A <code>COBRAPerformance</code> or <code>COBRAPlot</code> object</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Set to TRUE to disable messages listing the modifications that
 are applied to the object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An updated <code>COBRAPerformance</code> or <code>COBRAPlot</code> object</p>
+    
+
+<p>An updated <code>COBRAPerformance</code> or <code>COBRAPlot</code> object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -80,14 +85,14 @@ are applied to the object</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cobradata</span> <span class="op">&lt;-</span> <span class="va">cobradata_example_sval</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata</span>, </span>
-<span class="r-in">                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>, </span>
-<span class="r-in">                                   aspects <span class="op">=</span> <span class="st">"fpr"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cobradata</span> <span class="op">&lt;-</span> <span class="va">cobradata_example_sval</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata</span>, </span></span>
+<span class="r-in"><span>                                   binary_truth <span class="op">=</span> <span class="st">"status"</span>, </span></span>
+<span class="r-in"><span>                                   aspects <span class="op">=</span> <span class="st">"fpr"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column Method3 is being ignored for NBRS calculations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> column Method3 is being ignored for FPR calculations</span>
-<span class="r-in"><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu">update_cobraperformance</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu">update_cobraperformance</span><span class="op">(</span><span class="va">cobraperf</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Object up to date</span>
 </code></pre></div>
     </div>
@@ -103,7 +108,7 @@ are applied to the object</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
