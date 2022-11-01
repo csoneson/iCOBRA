@@ -21,7 +21,7 @@ also be obtained using the function COBRAData_to_text."><!-- mathjax --><script 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iCOBRA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.27.0</span>
       </span>
     </div>
 
@@ -92,12 +92,7 @@ calculation!' button.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">COBRAapp</span><span class="op">(</span><span class="va">cobradata_example</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This Font Awesome icon ('folder-o') does not exist:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * if providing a custom `html_dependency` these `name` checks can </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   be deactivated with `verify_fa = FALSE`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This Font Awesome icon ('paint-brush') does not exist:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * if providing a custom `html_dependency` these `name` checks can </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   be deactivated with `verify_fa = FALSE`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The `name` provided ('folder-o') does not correspond to a known icon</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Navigation containers expect a collection of `bslib::nav()`/`shiny::tabPanel()`s and/or `bslib::nav_menu()`/`shiny::navbarMenu()`s. Consider using `header` or `footer` if you wish to place content above (or below) every panel's contents.</span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
