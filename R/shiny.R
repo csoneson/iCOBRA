@@ -16,6 +16,7 @@
 #' @import shiny
 #' @import shinydashboard
 #' @importFrom shinyBS bsTooltip
+#' @importFrom utils packageVersion
 #' @export
 #' @examples
 #' data(cobradata_example)
@@ -34,7 +35,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
 
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
-                       "Binary classification and RAnking methods (v1.5.2)"),
+                       "Binary classification and RAnking methods (v", 
+                       packageVersion("iCOBRA"), ")"),
         titleWidth = 950),
 
       shinydashboard::dashboardSidebar(
@@ -89,7 +91,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                    "right", options = list(container = "body"))),
 
         ## Settings and inputs for results
-        shinydashboard::menuItem("Results", icon = icon("folder-o"),
+        shinydashboard::menuItem("Results", icon = icon("folder-open"),
                  ## Load the file containing the results.
                  uiOutput("choose_result_file"),
                  shinyBS::bsTooltip(
