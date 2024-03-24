@@ -26,13 +26,13 @@ Collate:
     'printHead.R'
     'shiny.R'
 Depends:
-    R (>= 4.0)
+    R (>= 4.4.0)
 Imports:
     shiny (>= 0.9.1.9008),
     shinydashboard,
     shinyBS,
     reshape2,
-    ggplot2 (>= 2.0.0),
+    ggplot2 (>= 3.4.0),
     scales,
     ROCR,
     dplyr,
