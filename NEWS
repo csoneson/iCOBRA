@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.31.2
+-------------------------
+  o Added 'Close app' button to close the shiny app
+  
 CHANGES IN VERSION 1.5.5
 ------------------------
   o The default selection of the measure to use for ROC and FP curves have been changed to improve consistency. Now, the preferred order is pval, padj, score. The behaviour of previous versions can be obtained by setting prefer_pval = FALSE in calculate_performance(). Note that the type of measure that is used to calculate a certain performance value can be retrieved from the respective slots of the COBRAPerformance and COBRAPlot objects.

@@ -206,7 +206,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
                  shinyBS::bsTooltip("stripsize",
                            paste0("The font size used for panel headers in",
                                   " facetted plots."),
-                           "right", options = list(container = "body")))
+                           "right", options = list(container = "body"))),
+        
+        ## Button to close app
+        shiny::actionButton("close_app", "Close app")
       ),
 
       ## Outputs
@@ -2251,6 +2254,10 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE) {
               aspcts = c("FSR", "Number of detections"), tabtype = "fsrnbr")
     })
     
+    ## Close app
+    shiny::observeEvent(input$close_app, {
+      shiny::stopApp()
+    })
     
   } ## end of server_function
   #nocov end
