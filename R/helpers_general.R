@@ -32,6 +32,7 @@ is_plottable <- function(obj) {
 }
 
 #' @import dplyr
+#' @importFrom rlang .data
 get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
   if (splv != "none") {
     if (!is.finite(maxsplit)) {
@@ -39,9 +40,10 @@ get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
     } else {
       if (!is.null(binary_truth)) {
         nbrtrulydiff <-
-          as.data.frame(truth %>% group_by_(splv) %>%
-                          summarise_(nbrdiff = paste0("length(which(",
-                                                      binary_truth, "== 1))")),
+          as.data.frame(truth %>% group_by(.data[[splv]]) %>%
+                          summarise(nbrdiff = length(which(.data[[binary_truth]] == 1))),
+                          # summarise_(nbrdiff = paste0("length(which(",
+                          #                             binary_truth, "== 1))")),
                         stringsAsFactors = FALSE)
         tokeep <- nbrtrulydiff[nbrtrulydiff$nbrdiff > 0, splv]
         tbl <- table(truth[[splv]])
