@@ -294,7 +294,9 @@ test_that("extending an object of the wrong class doesn't work", {
 })
 
 test_that("updating COBRAData object works", {
-  expect_is(sval(cobradata_example), "data.frame")
+  expect_warning({
+    expect_is(sval(cobradata_example), "data.frame")
+  }, "Object doesn't have a slot sval")
   cobradata <- update_cobradata(cobradata_example)
   expect_is(cobradata, "COBRAData")
   expect_is(cobradata@sval, "data.frame")

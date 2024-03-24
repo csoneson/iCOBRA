@@ -98,9 +98,11 @@ local({
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
-                                colorscheme = c("blue"), facetted = TRUE,
-                                incltruth = TRUE)
+  expect_warning({
+    ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
+                                  colorscheme = c("blue"), facetted = TRUE,
+                                  incltruth = TRUE)
+  }, "too few colors provided, 1 random colors will be added")
 
   test_that("Plot functions return ggplot objects with only one color", {
     expect_is(plot_tpr(ibp1), "ggplot")
@@ -108,9 +110,11 @@ local({
     expect_equal(length(unique(plotcolors(ibp1))), 3)
   })
 
-  ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
-                                colorscheme = c("blue", "green", "yellow", "red"),
-                                facetted = TRUE, incltruth = TRUE)
+  expect_warning({
+    ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
+                                  colorscheme = c("blue", "green", "yellow", "red"),
+                                  facetted = TRUE, incltruth = TRUE)
+  }, "too many colors supplied, only a subset will be used")
 
   test_that("Plot functions return ggplot objects with too many colors", {
     expect_is(plot_tpr(ibp1), "ggplot")
@@ -126,9 +130,11 @@ local({
                                thrs = c(0.05), splv = "none", onlyshared = FALSE,
                                thr_venn = 0.05)
 
-  ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
-                                colorscheme = c("blue", "green"), facetted = TRUE,
-                                incltruth = TRUE)
+  expect_warning({
+    ibp1 <- prepare_data_for_plot(ib1, keepmethods = NULL, incloverall = TRUE,
+                                  colorscheme = c("blue", "green"), facetted = TRUE,
+                                  incltruth = TRUE)
+  }, "too few colors provided, 1 random colors will be added")
 
   test_that("Plot functions return ggplot objects with too few colors", {
     expect_is(plot_tpr(ibp1), "ggplot")

@@ -1,5 +1,6 @@
 ## ------------------- FDR or TPR or CORR ----------------------------- ##
 #' @import ggplot2
+#' @importFrom rlang .data
 plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
                          xaxisrange, aspc) {
   if (aspc == "FPR")
@@ -19,9 +20,9 @@ plot_fpr_tpr <- function(cobraplot, title, stripsize, titlecol, pointsize,
   nthr <- length(unique(plot_data$thr))
   
   pp <- 
-    ggplot(plot_data, aes_string(x = aspc, y = "method", group = "method")) +
+    ggplot(plot_data, aes(x = .data[[aspc]], y = method, group = method)) +
     geom_point(size = pointsize + 1,
-               aes_string(colour = "method", shape = "thr")) +
+               aes(colour = method, shape = thr)) +
     scale_shape_manual(values = rep(19, nthr), guide = "none") + 
     scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     xlim(xaxisrange[1], xaxisrange[2]) +
@@ -153,10 +154,12 @@ plot_roc_fpc <- function(cobraplot, title, stripsize, titlecol, xaxisrange,
   ## Number of colors/linetypes
   nlevs <- length(unique(plot_data$method))
   
-  pp <- ggplot(plot_data, aes_string(x = ifelse(aspc == "roc", "FPR", "topN"),
-                                     y = ifelse(aspc == "roc", "TPR", "FP"),
-                                     group = "method", colour = "method")) +
-    geom_path(size = linewidth, aes_string(linetype = "method")) +
+  plotxx <- ifelse(aspc == "roc", "FPR", "topN")
+  plotyy <- ifelse(aspc == "roc", "TPR", "FP")
+  pp <- ggplot(plot_data, aes(x = .data[[plotxx]],
+                              y = .data[[plotyy]],
+                              group = method, colour = method)) +
+    geom_path(linewidth = linewidth, aes(linetype = method)) +
     scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
     scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
@@ -288,8 +291,8 @@ plot_scatter <- function(cobraplot, title = "", stripsize = 10,
   if (isTRUE(facetted(cobraplot))) {
     plot_data$fullmethod <- plot_data$method
   }
-  pp <- ggplot(plot_data, aes_string(x = "OBSERVATION", y = "TRUTH",
-                                     colour = "fullmethod")) +
+  pp <- ggplot(plot_data, aes(x = OBSERVATION, y = TRUTH,
+                              colour = fullmethod)) +
     geom_point(size = pointsize) +
     scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +
@@ -360,17 +363,17 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
   nthr <- length(unique(plot_data_points$thr))
   
   if ("curve" %in% plottype && "points" %in% plottype) {
-    pp <- ggplot(plot_data_lines, aes_string(x = xasp, y = yasp,
-                                             group = "method",
-                                             colour = "method")) +
+    pp <- ggplot(plot_data_lines, aes(x = .data[[xasp]], y = .data[[yasp]],
+                                      group = method,
+                                      colour = method)) +
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = linewidth, aes_string(linetype = "method")) +
+      geom_path(linewidth = linewidth, aes(linetype = method)) +
       scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
       geom_point(data = plot_data_points, size = pointsize,
-                 aes_string(fill = "method2.satis", colour = "method", 
-                            shape = "thr"),
+                 aes(fill = method2.satis, colour = method, 
+                     shape = thr),
                  stroke = 1) +
       scale_shape_manual(values = rep(21, nthr), guide = "none") + 
       scale_fill_manual(values = plotcolors(cobraplot), guide = "none",
@@ -389,9 +392,9 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       ggtitle(title)
   } else if ("curve" %in% plottype) {
     pp <- ggplot(plot_data_lines,
-                 aes_string(x = xasp, y = yasp,
-                            group = "method", colour = "method")) +
-      geom_path(size = linewidth, aes_string(linetype = "method")) +
+                 aes(x = .data[[xasp]], y = .data[[yasp]],
+                     group = method, colour = method)) +
+      geom_path(linewidth = linewidth, aes(linetype = method)) +
       scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
       xlim(xaxisrange[1], xaxisrange[2]) +
       ylim(ifelse(yasp == "TPR", yaxisrange[1], 0),
@@ -402,17 +405,17 @@ plot_fdrcurve <- function(cobraplot, title, stripsize, titlecol, pointsize,
       plot_theme(stripsize = stripsize, titlecol = titlecol) +
       ggtitle(title)
   } else if ("points" %in% plottype) {
-    pp <- ggplot(plot_data_points, aes_string(x = xasp, y = yasp,
-                                              group = "method")) +
+    pp <- ggplot(plot_data_points, aes(x = .data[[xasp]], y = .data[[yasp]],
+                                       group = method)) +
       geom_vline(xintercept = seq(0, xaxisrange[2], 0.1),
                  colour = "lightgrey", linetype = "dashed") +
       geom_vline(xintercept = thresholds, linetype = "dashed") +
-      geom_path(size = linewidth, 
-                aes_string(colour = "method", linetype = "method")) +
+      geom_path(linewidth = linewidth, 
+                aes(colour = method, linetype = method)) +
       scale_linetype_manual(values = rep("solid", nlevs), guide = "none") + 
       geom_point(size = pointsize,
-                 aes_string(fill = "method2.satis", colour = "method",
-                            shape = "thr"),
+                 aes(fill = method2.satis, colour = method,
+                     shape = thr),
                  stroke = 1) +
       scale_shape_manual(values = rep(21, nthr), guide = "none") + 
       scale_fill_manual(values = plotcolors(cobraplot), guide = "none",
@@ -767,12 +770,13 @@ plot_deviation <- function(cobraplot, title = "", stripsize = 15,
     plot_data$method <- plot_data$fullmethod
   }
 
+  plotyy <- ifelse(transf == "raw", "DEVIATION",
+                   ifelse(transf == "absolute",
+                          "absDEVIATION", "sqDEVIATION"))
   pp <- ggplot(
-    plot_data, aes_string(x = "method",
-                          y = ifelse(transf == "raw", "DEVIATION",
-                                     ifelse(transf == "absolute",
-                                            "absDEVIATION", "sqDEVIATION")),
-                          group = "method", colour = "method")) +
+    plot_data, aes(x = method,
+                   y = .data[[plotyy]],
+                   group = method, colour = method)) +
     coord_flip() +
     scale_color_manual(values = plotcolors(cobraplot), name = "", limits = force) +
     plot_theme(stripsize = stripsize, titlecol = titlecol) +

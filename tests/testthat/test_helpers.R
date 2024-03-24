@@ -67,3 +67,29 @@ test_that("fix_duplicates works", {
   expect_equal(nrow(iCOBRA:::fix_duplicates(df, "gene", "m1:P")), 4)
   expect_equal(iCOBRA:::fix_duplicates(df, "gene", "m1:P")[, "m1:P"], c(0.1, 0.5, 0.3, 0.01))
 })
+
+test_that("get_keeplevels works", {
+  set.seed(42L)
+  tmptruth <- data.frame(status = sample(c(0, 1), size = 100, replace = TRUE),
+                         splitvar = sample(LETTERS[seq_len(10)], size = 100, replace = TRUE))
+  expect_equal(get_keeplevels(truth = tmptruth, splv = "splitvar", 
+                              binary_truth = "status", maxsplit = 3), 
+               c("A", "J", "B"))
+  expect_equal(get_keeplevels(truth = tmptruth, splv = "splitvar", 
+                              binary_truth = "status", maxsplit = 6), 
+               c("A", "J", "B", "F", "I", "E"))
+  
+  tmptruth$status[tmptruth$splitvar == "B"] <- 0
+  tmptruth$status[tmptruth$splitvar == "J"] <- 1
+  expect_equal(get_keeplevels(truth = tmptruth, splv = "splitvar", 
+                              binary_truth = "status", maxsplit = 4), 
+               c("A", "J", "F", "I"))
+  
+  expect_equal(get_keeplevels(truth = tmptruth, splv = "none", 
+                              binary_truth = "status", maxsplit = 4), 
+               "overall")
+  
+  expect_equal(get_keeplevels(truth = tmptruth, splv = "splitvar", 
+                              binary_truth = NULL, maxsplit = 4), 
+               c("A", "J", "B", "F"))
+})
