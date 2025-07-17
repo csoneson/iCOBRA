@@ -45,6 +45,7 @@ Imports:
     rlang
 Suggests:
     knitr,
+    markdown,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
