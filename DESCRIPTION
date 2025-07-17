@@ -41,7 +41,6 @@ Imports:
     limma,
     methods,
     UpSetR,
-    markdown,
     utils,
     rlang
 Suggests:
