@@ -221,7 +221,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
           width = 12,
 
           ## Define output size of error messages
-          tags$head(
+          header = tags$head(
             tags$style(HTML("
                             .shiny-output-error-validation {
                             font-size: 17px;
