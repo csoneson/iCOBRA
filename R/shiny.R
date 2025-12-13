@@ -17,7 +17,7 @@
 #' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny
 #' @import shinydashboard
-#' @importFrom shinyBS bsTooltip
+#' @importFrom prompter use_prompt add_prompt
 #' @importFrom utils packageVersion
 #' @export
 #' @examples
@@ -35,7 +35,7 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
   p_layout <-
     shinydashboard::dashboardPage(
       skin = "blue",
-
+      
       shinydashboard::dashboardHeader(
         title = paste0("iCOBRA - interactive COmparative evaluation of ",
                        "Binary classification and RAnking methods (v", 
@@ -44,15 +44,21 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
 
       shinydashboard::dashboardSidebar(
         width = 350,
+        # initialize prompter for tooltips
+        prompter::use_prompt(),
+        # required to be able to use linebreaks (\n) in tooltips
+        tags$head(
+          tags$style(
+            HTML("[class*=hint--][aria-label]:after {
+              white-space: pre;
+            }")
+          )
+        ),
+        
         ## Settings and inputs for the truth
         shinydashboard::menuItem("Truth", icon = icon("database"),
                  ## Load the file containing the truth.
                  uiOutput("choose_truth_file"),
-                 shinyBS::bsTooltip(
-                   "truth", paste0("Select the file containing the true status",
-                                   " of each feature. See the Instructions ",
-                                   "tab for formatting instructions."),
-                   "right", options = list(container = "body")),
 
                  ## Define the column containing the feature identifier
                  ## (for both truth and results)
@@ -66,50 +72,40 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
 
                  ## Define the variable used to stratify the results,
                  ## based on the columns available in the truth file.
-                 uiOutput("splitvar"),
-                 shinyBS::bsTooltip(
-                   "splitvar",
-                   paste0("Select a feature attribute by which to stratify ",
-                          "the result representations."),
-                           "right", options = list(container = "body")),
+                 uiOutput("splitvar") |>
+                   prompter::add_prompt(
+                     message = paste0("Select a feature attribute by which to stratify\n",
+                                      "the result representations."),
+                     position = "right"
+                   ),
 
                  ## Define the maximal number of categories to retain
                  ## in stratification.
-                 uiOutput("choosemaxsplit"),
-                 shinyBS::bsTooltip(
-                   "choosemaxsplit",
-                   paste0("Set the number of categories to show if the results",
-                          " are stratified by a variable annotation. The most ",
-                          "frequent categories with both positive and negative",
-                          " instances will be retained"),
-                   "right", options = list(container = "body")),
+                 uiOutput("choosemaxsplit") |>
+                 prompter::add_prompt(
+                   message = paste0("Set the number of categories to show if the results\n",
+                                    "are stratified by a variable annotation. The most \n",
+                                    "frequent categories with both positive and negative\n",
+                                    "instances will be retained"),
+                   position = "right"
+                 ),
 
                  ## Decide whether or not to include the "overall" category when
                  ## stratifying the results.
-                 uiOutput("chooseincludeoverall"),
-                 shinyBS::bsTooltip(
-                   "includeoverall",
-                   paste0("Select whether or not to include the 'overall' ",
-                          "class when showing stratified results."),
-                   "right", options = list(container = "body"))),
+                 uiOutput("chooseincludeoverall")),
 
         ## Settings and inputs for results
         shinydashboard::menuItem("Results", icon = icon("folder-open"),
                  ## Load the file containing the results.
                  uiOutput("choose_result_file"),
-                 shinyBS::bsTooltip(
-                   "file1", paste0("Select file containing results from one or",
-                                   " multiple methods. See the Instructions ",
-                                   "tab for formatting instructions."),
-                   "right", options = list(container = "body")),
-
+                 
                  ## Decide which methods to include in the results.
                  ## Depends on the loaded result files.
-                 uiOutput("columns"),
-                 shinyBS::bsTooltip(
-                   "columns",
-                   paste0("Select the methods for which to show the results."),
-                   "right", options = list(container = "body")),
+                 uiOutput("columns") |>
+                   prompter::add_prompt(
+                     message = "Select the methods for which to show the results.",
+                     position = "right"
+                   ),
 
                  ## Decide whether to base evaluations on all genes in
                  ## truth table, or only on variables for which both a truth
@@ -119,14 +115,14 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
                    label = paste0("Calculate performance based only on ",
                                   "features shared between truth and result ",
                                   "tables."),
-                   value = FALSE),
-                 shinyBS::bsTooltip(
-                   "onlyshared",
-                   paste0("Calculate performance based only on ",
-                          "features shared between truth and result ",
-                          "tables. Otherwise, all features in the ",
-                          "truth table will be used."),
-                   "right", options = list(container = "body")),
+                   value = FALSE) |>
+                   prompter::add_prompt(
+                     message = paste0("Calculate performance based only on\n",
+                                      "features shared between truth and result\n",
+                                      "tables. Otherwise, all features in the\n",
+                                      "truth table will be used."),
+                     position = "right"
+                   ),
 
                  actionButton("goButton", "Start calculation!",
                               icon = icon("plane"))),
@@ -142,15 +138,15 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
                      "Set1 (max 8 methods)", "Set2 (max 7 methods)",
                      "Set3 (max 11 methods)", "rainbow", "heat", "terrain",
                      "topo", "cm"),
-                   selectize = TRUE),
-                 shinyBS::bsTooltip(
-                   "colorscheme",
-                   paste0("Choose color palette. Some palettes are only ",
-                          "applicable if the number of methods ",
-                          "(or method/stratification level combinations) is ",
-                          "below a certain threshold. If this threshold is ",
-                          "exceeded, the colorscheme will default to hue_pal."),
-                   "right", options = list(container = "body")),
+                   selectize = TRUE) |>
+                   prompter::add_prompt(
+                     message = paste0("Choose color palette. Some palettes are only\n",
+                                      "applicable if the number of methods\n",
+                                      "(or method/stratification level combinations) is\n",
+                                      "below a certain threshold. If this threshold is\n",
+                                      "exceeded, the colorscheme will default to hue_pal."),
+                     position = "right"
+                   ),
 
                  ## Decide what to include in FDR/TPR plots.
                  checkboxGroupInput(
@@ -167,50 +163,54 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
 
                  ## Define the q-value thresholds to use in the plots.
                  textInput(inputId = "fdrthresholds", label = "FDR thresholds",
-                           value = "0.01, 0.05, 0.1"),
-                 shinyBS::bsTooltip("fdrthresholds",
-                           paste0("Specific FDR thresholds at which the ",
-                                  "performance will be evaluated. ",
-                                  "Separate multiple values with comma"),
-                           "right", options = list(container = "body")),
+                           value = "0.01, 0.05, 0.1") |>
+                   prompter::add_prompt(
+                     message = paste0("Specific FDR thresholds at which the\n",
+                                      "performance will be evaluated.\n",
+                                      "Separate multiple values with comma"),
+                     position = "right"
+                   ),
 
                  ## Define the s-value thresholds to use in the plots.
                  textInput(inputId = "svalthresholds", 
                            label = "s-value thresholds",
-                           value = "0.01, 0.05, 0.1"),
-                 shinyBS::bsTooltip("svalthresholds",
-                                    paste0("Specific s-value thresholds at ", 
-                                           "which the performance will be ", 
-                                           "evaluated. Separate multiple ", 
-                                           "values with comma"),
-                                    "right", 
-                                    options = list(container = "body")),
+                           value = "0.01, 0.05, 0.1") |>
+                   prompter::add_prompt(
+                     message = paste0("Specific s-value thresholds at\n", 
+                                      "which the performance will be\n", 
+                                      "evaluated. Separate multiple\n", 
+                                      "values with comma"),
+                     position = "right"
+                   ),
 
                  ## Define the plot height (in pixels).
                  numericInput(inputId = "plotheight",
                               label = "Plot height (numeric, in pixels)",
-                              value = 600, min = 200, max = 2000, step = 10),
-                 shinyBS::bsTooltip("plotheight",
-                           paste0("The height of the plots (in pixels). ",
-                                  "Default 800."),
-                           "right", options = list(container = "body")),
+                              value = 600, min = 200, max = 2000, step = 10) |>
+                   prompter::add_prompt(
+                     message = paste0("The height of the plots (in pixels).\n",
+                                      "Default 800."),
+                     position = "right"
+                   ),
 
                  ## Define the pointsize used in the plots.
                  numericInput(inputId = "pointsize", label = "Point size",
-                              value = 5),
-                 shinyBS::bsTooltip("pointsize",
-                           paste0("The point size used in the plots."),
-                           "right", options = list(container = "body")),
+                              value = 5) |>
+                   prompter::add_prompt(
+                     message = "The point size used in the plots.",
+                     position = "right"
+                   ),
 
                  ## Define the fontsize used in the panel headers.
                  numericInput(inputId = "stripsize",
                               label = "Font size for panel headers",
-                              value = 15),
-                 shinyBS::bsTooltip("stripsize",
-                           paste0("The font size used for panel headers in",
-                                  " facetted plots."),
-                           "right", options = list(container = "body"))),
-        
+                              value = 15) |>
+                   prompter::add_prompt(
+                     message = paste0("The font size used for panel headers in\n",
+                                      "facetted plots."),
+                     position = "right"
+                   )),
+
         ## Button to close app
         shiny::uiOutput("close_app_ui")
       ),
@@ -419,42 +419,42 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
                      column(1, radioButtons(inputId = "incltruth",
                                             label = "Include truth",
                                             choices = c("yes", "no"),
-                                            selected = "yes")),
-                     shinyBS::bsTooltip(
-                       "incltruth",
-                       paste0("Whether or nor to include the truth as a ",
-                              "(perfect) method in the Venn diagrams. Note ",
-                              "that maximally five methods (including the ",
-                              "truth) can be included."),
-                       "bottom", options = list(container = "body")),
+                                            selected = "yes") |>
+                              prompter::add_prompt(
+                                message = paste0("Whether or nor to include the truth as a\n",
+                                                 "(perfect) method in the Venn diagrams. Note\n",
+                                                 "that maximally five methods (including the\n",
+                                                 "truth) can be included."),
+                                position = "right"
+                              )),
                      column(1, radioButtons(inputId = "vennType",
                                             label = "Type of threshold",
                                             choices = c("adjp", "rank"),
-                                            selected = "adjp")),
-                     shinyBS::bsTooltip(
-                       "vennType",
-                       paste0("How to determine the set of features to ",
-                              "compare between methods. "),
-                       "bottom", options = list(container = "body")),
+                                            selected = "adjp") |>
+                              prompter::add_prompt(
+                                message = paste0("How to determine the set of features to\n",
+                                                 "compare between methods. "),
+                                position = "right"
+                              )),
                      column(2, numericInput(
                        inputId = "adjpVenn",
                        label = "Adjusted p-value threshold",
-                       value = 0.05, min = 0, max = 1, step = 0.01)),
-                     shinyBS::bsTooltip(
-                       "adjpVenn",
-                       paste0("The adjusted p-value threshold used to extract ",
-                              "the sets of significant variables to use for ",
-                              "the Venn diagram. "),
-                       "bottom", options = list(container = "body")),
+                       value = 0.05, min = 0, max = 1, step = 0.01) |>
+                         prompter::add_prompt(
+                           message = paste0("The adjusted p-value threshold used to extract\n",
+                                            "the sets of significant variables to use for\n",
+                                            "the Venn diagram."),
+                           position = "right"
+                         )),
                      column(2, numericInput(
                        inputId = "rankVenn",
                        label = "Rank threshold",
-                       value = 100, min = 0, max = 1e10, step = 1)),
-                     shinyBS::bsTooltip(
-                       "rankVenn",
-                       paste0("The rank used to extract the top-ranked ",
-                              "features to compare in the Venn diagram. "),
-                       "bottom", options = list(container = "body")),
+                       value = 100, min = 0, max = 1e10, step = 1) |>
+                         prompter::add_prompt(
+                           message = paste0("The rank used to extract the top-ranked\n",
+                                            "features to compare in the Venn diagram."),
+                           position = "right"
+                         )),
                      column(2, br(), downloadButton("export.overlap",
                                                     label = "Download plot")),
                      column(2, br(), downloadButton("export.overlap.df.rdata",
@@ -525,7 +525,12 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
                          accept = c("text/csv", "text/comma-separated-values",
                                     "text/tab-separated-values", "text/plain",
                                     ".csv", ".tsv", ".tab", ".txt"),
-                         multiple = FALSE))
+                         multiple = FALSE) |>
+                 prompter::add_prompt(
+                   message = paste0("Select the file containing the true status\n",
+                                    "of each feature. See the Instructions\n",
+                                    "tab for formatting instructions."),
+                   position = "right"))
       }
     })
 
@@ -627,7 +632,12 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
     output$chooseincludeoverall <- renderUI({
       radioButtons(inputId = "includeoverall",
                    label = "Include 'overall' class when stratifying",
-                   choices = c("yes", "no"), selected = "yes")
+                   choices = c("yes", "no"), selected = "yes") |>
+        prompter::add_prompt(
+          message = paste0("Select whether or not to include the 'overall' ",
+                           "class when showing stratified results."),
+          position = "right"
+        )
     })
 
     ## Render the UI element to upload result file(s)
@@ -638,7 +648,13 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
         return(fileInput(inputId = "file1", label = "Add file with results",
                          accept = c("text/csv", "text/comma-separated-values",
                                     "text/tab-separated-values", "text/plain",
-                                    ".csv", ".tsv"), multiple = FALSE))
+                                    ".csv", ".tsv"), multiple = FALSE) |>
+                 prompter::add_prompt(
+                   message = paste0("Select file containing results from one or\n",
+                                    "multiple methods. See the Instructions\n",
+                                    "tab for formatting instructions."),
+                   position = "right"
+                 ))
       }
     })
 
