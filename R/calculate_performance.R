@@ -85,32 +85,32 @@ get_curve <- function(bintruth, vals, revr, aspc, rank_by_abs) {
       alphas <- unlist(mes@alpha.values)
 
     if (aspc == "roc") {
-      roc = cbind(FPR = unlist(mes@x.values) / fpcorr,
-                  TPR = unlist(mes@y.values) / tpcorr,
-                  ROC_CUTOFF = alphas)
+      roc <- cbind(FPR = unlist(mes@x.values) / fpcorr,
+                   TPR = unlist(mes@y.values) / tpcorr,
+                   ROC_CUTOFF = alphas)
       return(roc)
     } else if (aspc == "fpc") {
-      fpc = cbind(topN = unlist(mes@x.values) * length(kg),
-                  FP = unlist(mes@y.values) *
-                    length(which(bintruth[match(kg, names(bintruth))] == 0)),
-                  FPC_CUTOFF = alphas)
+      fpc <- cbind(topN = unlist(mes@x.values) * length(kg),
+                   FP = unlist(mes@y.values) *
+                     length(which(bintruth[match(kg, names(bintruth))] == 0)),
+                   FPC_CUTOFF = alphas)
       return(fpc)
     } else if (aspc == "fdrtpr") {
-      fdrtpr = cbind(FDR = 1 - unlist(mes@x.values),
-                     TPR = unlist(mes@y.values) / tpcorr,
-                     NBR = round(unlist(mes2@x.values) * length(kg)),
-                     CUTOFF = alphas,
-                     FP = unlist(mes2@y.values) *
-                       length(which(bintruth[match(kg, names(bintruth))] == 0)),
-                     TOT_CALLED = length(kg))
-      fdrtpr = cbind(fdrtpr,
-                     TP = fdrtpr[, "TPR"] * length(which(bintruth == 1)))
-      fdrtpr = cbind(fdrtpr, FN = length(
+      fdrtpr <- cbind(FDR = 1 - unlist(mes@x.values),
+                      TPR = unlist(mes@y.values) / tpcorr,
+                      NBR = round(unlist(mes2@x.values) * length(kg)),
+                      CUTOFF = alphas,
+                      FP = unlist(mes2@y.values) *
+                        length(which(bintruth[match(kg, names(bintruth))] == 0)),
+                      TOT_CALLED = length(kg))
+      fdrtpr <- cbind(fdrtpr,
+                      TP = fdrtpr[, "TPR"] * length(which(bintruth == 1)))
+      fdrtpr <- cbind(fdrtpr, FN = length(
         which(bintruth[match(kg, names(bintruth))] == 1)) - fdrtpr[, "TP"])
-      fdrtpr = cbind(fdrtpr, TN = fdrtpr[, "TOT_CALLED"] - fdrtpr[, "TP"] -
-                       fdrtpr[, "FN"] - fdrtpr[, "FP"])
-      fdrtpr = cbind(fdrtpr, DIFF = length(which(bintruth == 1)))
-      fdrtpr = cbind(fdrtpr, NONDIFF = length(which(bintruth == 0)))
+      fdrtpr <- cbind(fdrtpr, TN = fdrtpr[, "TOT_CALLED"] - fdrtpr[, "TP"] -
+                        fdrtpr[, "FN"] - fdrtpr[, "FP"])
+      fdrtpr <- cbind(fdrtpr, DIFF = length(which(bintruth == 1)))
+      fdrtpr <- cbind(fdrtpr, NONDIFF = length(which(bintruth == 0)))
       return(fdrtpr)
     }
   } else {
