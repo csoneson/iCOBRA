@@ -18,6 +18,7 @@ test_that("get_coltype works", {
 })
 
 test_that("fix_res works", {
+  data(cobradata_example_sval)
   cobraperf <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                     cont_truth = "logFC")
   cobraplot <- prepare_data_for_plot(cobraperf)
@@ -58,6 +59,7 @@ test_that("fix_res works", {
 })
 
 test_that("res_check works", {
+  data(cobradata_example_sval)
   expect_false(iCOBRA:::res_check(pval(cobradata_example_sval)[, 1, drop = FALSE]))
   expect_true(iCOBRA:::res_check(pval(cobradata_example_sval)))
 })

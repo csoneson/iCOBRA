@@ -28,4 +28,6 @@
 #'   (expr and expr_cat columns) for 3,858 genes.}
 #'   }
 #' @return A \code{COBRAData} object.
-"cobradata_example_sval"
+#' @name cobradata_example_sval
+#' @docType data
+NULL

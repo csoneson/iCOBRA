@@ -5,6 +5,7 @@ context("Check plot functions")
 
 local({
   ## Test that overlap plotting with too many methods give NULL
+  data(cobradata_example_sval)
   tmp <- cobradata_example_sval
   padj(tmp) <- cbind(padj(tmp), padj(tmp), padj(tmp))
   ib1 <- calculate_performance(tmp, aspects = "overlap")
@@ -92,6 +93,7 @@ test_that("Plot functions return ggplot objects for empty input", {
 })
 
 local({
+  data(cobradata_example_sval)
   ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("tpr"),
@@ -124,6 +126,7 @@ local({
 })
 
 local({
+  data(cobradata_example_sval)
   ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
                                aspects = c("fdrtprcurve"),
@@ -154,6 +157,7 @@ local({
 })
 
 test_that("Plot functions return ggplot objects after stratification", {
+  data(cobradata_example_sval)
   ## Facetted, stratified
   ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
@@ -192,6 +196,7 @@ test_that("Plot functions return ggplot objects after stratification", {
 })
 
 test_that("Plot functions return ggplot objects after stratification", {
+  data(cobradata_example_sval)
   ## Facetted, stratified
   ib1 <- calculate_performance(cobradata_example_sval, binary_truth = "status",
                                cont_truth = "logFC",
@@ -229,6 +234,7 @@ test_that("Plot functions return ggplot objects after stratification", {
 })
 
 test_that("maxsplit=Inf works as expected", {
+  data(cobradata_example_sval)
   ## Facetted, stratified
   cde <- cobradata_example_sval
   truth(cde)$expr_cat <- factor(truth(cde)$expr_cat)

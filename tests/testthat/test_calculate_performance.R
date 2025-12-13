@@ -5,6 +5,7 @@ context("Check calculation of performance scores")
 
 local({
   ## Remove some genes from the truth
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   truth(cobradata) <- truth(cobradata)[1:3000, , drop = FALSE]
 
@@ -796,6 +797,7 @@ local({
 })
 
 test_that("getcurve returns NULL if not both positive and negative instances are present", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   truth(cobradata)$status <- 0
   cobraperf <- calculate_performance(cobradata, binary_truth <- "status",
@@ -807,6 +809,7 @@ test_that("getcurve returns NULL if not both positive and negative instances are
 })
 
 test_that("calculate_performance without score works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   score(cobradata) <- data.frame()
   ib1 <- calculate_performance(cobradata, binary_truth = "status",
@@ -817,6 +820,7 @@ test_that("calculate_performance without score works", {
 })
 
 test_that("calculate_performance without adj.p works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   padj(cobradata) <- data.frame()
   ib1 <- calculate_performance(cobradata, binary_truth = "status",
@@ -827,6 +831,7 @@ test_that("calculate_performance without adj.p works", {
 })
 
 test_that("calculate_performance with only adj.p works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   pval(cobradata) <- data.frame()
   score(cobradata) <- data.frame()
@@ -838,6 +843,7 @@ test_that("calculate_performance with only adj.p works", {
 })
 
 test_that("calculate_performance with empty input works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   padj(cobradata) <- data.frame()
   pval(cobradata) <- data.frame()
@@ -851,6 +857,7 @@ test_that("calculate_performance with empty input works", {
 })
 
 test_that("calculate_performance without significant features works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   padj(cobradata) <- data.frame(Method1 = rep(1, nrow(padj(cobradata))),
                                 Method2 = rep(1, nrow(padj(cobradata))),
@@ -877,6 +884,7 @@ test_that("calculate_performance without significant features works", {
 })
 
 test_that("overlap calculations are correct", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   truth(cobradata) <- truth(cobradata)[1:3000, , drop = FALSE]
   ## Set some adjusted p-values to NA
@@ -951,6 +959,7 @@ test_that("overlap calculations are correct", {
 })
 
 test_that("overlap calculations based on rank are correct", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   truth(cobradata) <- truth(cobradata)[1:3000, , drop = FALSE]
   ## Set some adjusted p-values to NA

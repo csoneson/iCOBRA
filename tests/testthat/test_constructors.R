@@ -142,6 +142,7 @@ test_that("extending COBRAData objects works as expected", {
 })
 
 test_that("export functions return correct class", {
+  data(cobradata_example_sval)
   expect_is(COBRAData_to_text(cobradata_example_sval, feature_id = "feature",
                              truth_file = "test_truth.txt",
                              result_files = "test_results.txt"), "NULL")
@@ -149,6 +150,7 @@ test_that("export functions return correct class", {
 
 test_that(paste0("COBRAPerformance constructor and calculate_performance ",
                  "generate COBRAPerformance objects"), {
+                   data(cobradata_example_sval)
                    expect_is(COBRAPerformance(), "COBRAPerformance")
                    expect_is(calculate_performance(cobradata_example_sval,
                                                    binary_truth = "status",
@@ -161,6 +163,7 @@ test_that(paste0("COBRAPerformance constructor and calculate_performance ",
 
 test_that(paste0("COBRAPlot constructor and prepare_data_for_plot ",
                  "generate COBRAPlot objects"), {
+                   data(cobradata_example_sval)
                    expect_is(COBRAPlot(), "COBRAPlot")
                    expect_is(
                      prepare_data_for_plot(
@@ -170,6 +173,7 @@ test_that(paste0("COBRAPlot constructor and prepare_data_for_plot ",
 })
 
 test_that("replacement still returns valid objects", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   pval(cobradata) <- pval(cobradata)[1:500, ]
   padj(cobradata) <- padj(cobradata)[1:1000, ]
@@ -226,6 +230,7 @@ test_that("replacement still returns valid objects", {
 })
 
 test_that("show returns NULL", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                     cont_truth = "logFC", aspects = "tpr")
@@ -242,6 +247,7 @@ test_that("show returns NULL", {
 })
 
 test_that("subsetting of objects works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                      cont_truth = "logFC", aspects = "tpr")
@@ -280,6 +286,7 @@ test_that("subsetting of objects works", {
 })
 
 test_that("extending an object still returns valid objects", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   cobradata <- COBRAData(pval = pval(cobradata), object_to_extend = cobradata)
   cobradata <- COBRAData(sval = sval(cobradata), object_to_extend = cobradata)
@@ -287,6 +294,7 @@ test_that("extending an object still returns valid objects", {
 })
 
 test_that("extending an object of the wrong class doesn't work", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                      cont_truth = "logFC", aspects = "tpr")
@@ -294,6 +302,7 @@ test_that("extending an object of the wrong class doesn't work", {
 })
 
 test_that("updating COBRAData object works", {
+  data(cobradata_example)
   expect_warning({
     expect_is(sval(cobradata_example), "data.frame")
   }, "Object doesn't have a slot sval")
@@ -303,6 +312,7 @@ test_that("updating COBRAData object works", {
 })
 
 test_that("updating COBRAPerformance object works", {
+  data(cobradata_example_sval)
   cobradata <- cobradata_example_sval
   cobraperf <- calculate_performance(cobradata, binary_truth = "status",
                                      cont_truth = "logFC", aspects = "tpr")
@@ -312,6 +322,7 @@ test_that("updating COBRAPerformance object works", {
 })
 
 test_that("reordering levels in COBRAPlot object works", {
+  data(cobradata_example_sval)
   cobraperf <- calculate_performance(calculate_adjp(cobradata_example_sval),
                                      binary_truth = "status", aspects = "fpr")
   cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",

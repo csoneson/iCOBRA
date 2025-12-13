@@ -24,9 +24,6 @@ A \code{COBRAData} object with five slots:
   (expr and expr_cat columns) for 3,858 genes.}
   }
 }
-\usage{
-cobradata_example_sval
-}
 \value{
 A \code{COBRAData} object.
 }
@@ -40,4 +37,3 @@ true differential expression status for each gene as well as various
 additional annotations such as the true log fold change, the number of
 isoforms of the gene and the average expression level.
 }
-\keyword{datasets}

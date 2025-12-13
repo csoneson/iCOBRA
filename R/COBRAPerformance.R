@@ -17,6 +17,7 @@ methods::setClassUnion("list_df", c("list", "data.frame"))
 #' @author Charlotte Soneson
 #' 
 #' @examples
+#' data(cobradata_example_sval)
 #' cobradata <- cobradata_example_sval
 #' 
 #' cobraperf <- calculate_performance(cobradata, 
@@ -427,9 +428,9 @@ setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPerformance",
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' cobradata <- cobradata_example_sval
+#' data(cobradata_example_sval)
 #' 
-#' cobraperf <- calculate_performance(cobradata, 
+#' cobraperf <- calculate_performance(cobradata_example_sval, 
 #'                                    cont_truth = "logFC", 
 #'                                    aspects = "fsrnbr")
 #' head(fsrnbr(cobraperf))
@@ -479,9 +480,9 @@ setReplaceMethod("fsrnbr", signature(x = "COBRAPerformance",
 #' @author Charlotte Soneson
 #' @export
 #' @examples
-#' cobradata <- cobradata_example_sval
+#' data(cobradata_example_sval)
 #' 
-#' cobraperf <- calculate_performance(cobradata, 
+#' cobraperf <- calculate_performance(cobradata_example_sval, 
 #'                                    cont_truth = "logFC", 
 #'                                    aspects = "fsrnbrcurve")
 #' head(fsrnbrcurve(cobraperf))

@@ -42,9 +42,9 @@ Accessor and replacement functions for the \code{fsrnbrcurve} slot in a
 \code{COBRAPerformance} or \code{COBRAPlot} object.
 }
 \examples{
-cobradata <- cobradata_example_sval
+data(cobradata_example_sval)
 
-cobraperf <- calculate_performance(cobradata, 
+cobraperf <- calculate_performance(cobradata_example_sval, 
                                    cont_truth = "logFC", 
                                    aspects = "fsrnbrcurve")
 head(fsrnbrcurve(cobraperf))
