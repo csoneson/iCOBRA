@@ -13,7 +13,6 @@ Description: This package provides functions for calculation and visualization
     programmatically. The package also contains a shiny application for 
     interactive exploration of results.
 License: GPL (>=2)
-LazyData: TRUE
 Collate: 
     'AllGenerics.R'
     'COBRAData.R'
