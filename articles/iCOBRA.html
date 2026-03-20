@@ -54,7 +54,7 @@
                         <h4 data-toc-skip class="author">Charlotte
 Soneson</h4>
             
-            <h4 data-toc-skip class="date">2025-12-13</h4>
+            <h4 data-toc-skip class="date">2026-03-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/csoneson/iCOBRA/blob/devel/vignettes/iCOBRA.Rmd" class="external-link"><code>vignettes/iCOBRA.Rmd</code></a></small>
       <div class="d-none name"><code>iCOBRA.Rmd</code></div>
@@ -189,13 +189,13 @@ provided plot functions to visualize different aspects of the
 results.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/plot-tpr-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/plot-tpr-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_fdrtprcurve.html">plot_fdrtprcurve</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/plot-fdrtprcurve-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/plot-fdrtprcurve-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/plot-overlap-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/plot-overlap-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 </div>
 <div class="section level2">
@@ -224,7 +224,7 @@ the plots generated above.</p>
 <code class="sourceCode R"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>, </span>
 <span>                                  facetted <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_tpr.html">plot_tpr</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/plot-strat-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/plot-strat-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="modification-of-plots">Modification of plots<a class="anchor" aria-label="anchor" href="#modification-of-plots"></a>
@@ -243,7 +243,7 @@ be added to the ggplot object returned by the plot functions:</p>
 <span>           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/mod-plots-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/mod-plots-1.png" class="r-plt" alt="" width="672"></p>
 <p>It is also possible to modify the facetting and/or label position by
 adding a facet_wrap statement (note that the stratification variable is
 denoted “splitval”):</p>
@@ -255,17 +255,17 @@ denoted “splitval”):</p>
 <span>           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>           legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">splitval</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/mod-plots-facet-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/mod-plots-facet-1.png" class="r-plt" alt="" width="672"></p>
 <p>The plot_overlap function generates venn diagram(s), using the
 vennDiagram function from the limma package. It can be provided with any
 additional arguments that are accepted by limma::vennDiagram, e.g. to
 change the size of the text:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/venn-args-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/venn-args-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_overlap.html">plot_overlap</a></span><span class="op">(</span><span class="va">cobraplot</span>, cex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/venn-args-2.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/venn-args-2.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-color-assignment">Custom color assignment<a class="anchor" aria-label="anchor" href="#custom-color-assignment"></a>
@@ -286,7 +286,7 @@ automatically add or remove colors.</p>
 <span>           axis.text.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>           axis.title.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>           axis.title.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="iCOBRA_files/figure-html/custom-colors-1.png" class="r-plt" width="672"></p>
+<p><img src="iCOBRA_files/figure-html/custom-colors-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="interactive-exploration">Interactive exploration<a class="anchor" aria-label="anchor" href="#interactive-exploration"></a>
@@ -368,13 +368,13 @@ using the example data set.</p>
 </h2>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## R Under development (unstable) (2025-12-12 r89163)</span></span>
-<span><span class="co">## Platform: aarch64-apple-darwin20</span></span>
-<span><span class="co">## Running under: macOS Sequoia 15.7.2</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2026-03-19 r89661)</span></span>
+<span><span class="co">## Platform: aarch64-apple-darwin23</span></span>
+<span><span class="co">## Running under: macOS Sequoia 15.7.4</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
-<span><span class="co">## BLAS:   /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib </span></span>
-<span><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.6-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1</span></span>
+<span><span class="co">## BLAS:   /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRblas.0.dylib </span></span>
+<span><span class="co">## LAPACK: /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8</span></span>
@@ -386,25 +386,25 @@ using the example data set.</p>
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] ggplot2_4.0.0 iCOBRA_1.39.2</span></span>
+<span><span class="co">## [1] ggplot2_4.0.2 iCOBRA_1.39.2</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] sass_0.4.10          generics_0.1.4       stringi_1.8.7        digest_0.6.38       </span></span>
+<span><span class="co">##  [1] sass_0.4.10          generics_0.1.4       stringi_1.8.7        digest_0.6.39       </span></span>
 <span><span class="co">##  [5] magrittr_2.0.4       evaluate_1.0.5       grid_4.6.0           RColorBrewer_1.1-3  </span></span>
 <span><span class="co">##  [9] fastmap_1.2.0        plyr_1.8.9           jsonlite_2.0.0       limma_3.67.0        </span></span>
 <span><span class="co">## [13] gridExtra_2.3        promises_1.5.0       prompter_1.2.1       scales_1.4.0        </span></span>
-<span><span class="co">## [17] UpSetR_1.4.0         textshaping_1.0.4    jquerylib_0.1.4      shinydashboard_0.7.3</span></span>
-<span><span class="co">## [21] cli_3.6.5            shiny_1.11.1         rlang_1.1.6          withr_3.0.2         </span></span>
-<span><span class="co">## [25] cachem_1.1.0         yaml_2.3.10          otel_0.2.0           tools_4.6.0         </span></span>
-<span><span class="co">## [29] reshape2_1.4.5       dplyr_1.1.4          httpuv_1.6.16        DT_0.34.0           </span></span>
-<span><span class="co">## [33] ROCR_1.0-11          vctrs_0.6.5          R6_2.6.1             mime_0.13           </span></span>
-<span><span class="co">## [37] lifecycle_1.0.4      stringr_1.6.0        fs_1.6.6             htmlwidgets_1.6.4   </span></span>
-<span><span class="co">## [41] ragg_1.5.0           pkgconfig_2.0.3      desc_1.4.3           pkgdown_2.2.0.9000  </span></span>
-<span><span class="co">## [45] pillar_1.11.1        bslib_0.9.0          later_1.4.4          gtable_0.3.6        </span></span>
-<span><span class="co">## [49] glue_1.8.0           Rcpp_1.1.0           statmod_1.5.1        systemfonts_1.3.1   </span></span>
-<span><span class="co">## [53] xfun_0.54            tibble_3.3.0         tidyselect_1.2.1     knitr_1.50          </span></span>
-<span><span class="co">## [57] farver_2.1.2         xtable_1.8-4         htmltools_0.5.8.1    labeling_0.4.3      </span></span>
-<span><span class="co">## [61] rmarkdown_2.30       compiler_4.6.0       S7_0.2.0</span></span></code></pre>
+<span><span class="co">## [17] UpSetR_1.4.0         textshaping_1.0.5    jquerylib_0.1.4      shinydashboard_0.7.3</span></span>
+<span><span class="co">## [21] cli_3.6.5            shiny_1.13.0         rlang_1.1.7          withr_3.0.2         </span></span>
+<span><span class="co">## [25] cachem_1.1.0         yaml_2.3.12          otel_0.2.0           tools_4.6.0         </span></span>
+<span><span class="co">## [29] reshape2_1.4.5       dplyr_1.2.0          httpuv_1.6.17        DT_0.34.0           </span></span>
+<span><span class="co">## [33] ROCR_1.0-12          vctrs_0.7.1          R6_2.6.1             mime_0.13           </span></span>
+<span><span class="co">## [37] lifecycle_1.0.5      stringr_1.6.0        fs_1.6.7             htmlwidgets_1.6.4   </span></span>
+<span><span class="co">## [41] ragg_1.5.1           pkgconfig_2.0.3      desc_1.4.3           pkgdown_2.2.0.9000  </span></span>
+<span><span class="co">## [45] pillar_1.11.1        bslib_0.10.0         later_1.4.8          gtable_0.3.6        </span></span>
+<span><span class="co">## [49] glue_1.8.0           Rcpp_1.1.1           statmod_1.5.1        systemfonts_1.3.2   </span></span>
+<span><span class="co">## [53] xfun_0.56            tibble_3.3.1         tidyselect_1.2.1     knitr_1.51          </span></span>
+<span><span class="co">## [57] farver_2.1.2         xtable_1.8-8         htmltools_0.5.9      labeling_0.4.3      </span></span>
+<span><span class="co">## [61] rmarkdown_2.30       compiler_4.6.0       S7_0.2.1</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
