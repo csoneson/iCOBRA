@@ -371,7 +371,7 @@ the example data set.
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-03-19 r89661)
+    ## R version 4.6.0 Patched (2026-04-27 r89967)
     ## Platform: aarch64-apple-darwin23
     ## Running under: macOS Sequoia 15.7.4
     ## 
@@ -389,22 +389,22 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.2 iCOBRA_1.39.2
+    ## [1] ggplot2_4.0.3 iCOBRA_1.41.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] sass_0.4.10          generics_0.1.4       stringi_1.8.7        digest_0.6.39       
-    ##  [5] magrittr_2.0.4       evaluate_1.0.5       grid_4.6.0           RColorBrewer_1.1-3  
-    ##  [9] fastmap_1.2.0        plyr_1.8.9           jsonlite_2.0.0       limma_3.67.0        
+    ##  [5] magrittr_2.0.5       evaluate_1.0.5       grid_4.6.0           RColorBrewer_1.1-3  
+    ##  [9] fastmap_1.2.0        plyr_1.8.9           jsonlite_2.0.0       limma_3.67.3        
     ## [13] gridExtra_2.3        promises_1.5.0       prompter_1.2.1       scales_1.4.0        
     ## [17] UpSetR_1.4.0         textshaping_1.0.5    jquerylib_0.1.4      shinydashboard_0.7.3
-    ## [21] cli_3.6.5            shiny_1.13.0         rlang_1.1.7          withr_3.0.2         
+    ## [21] cli_3.6.6            shiny_1.13.0         rlang_1.2.0          withr_3.0.2         
     ## [25] cachem_1.1.0         yaml_2.3.12          otel_0.2.0           tools_4.6.0         
-    ## [29] reshape2_1.4.5       dplyr_1.2.0          httpuv_1.6.17        DT_0.34.0           
-    ## [33] ROCR_1.0-12          vctrs_0.7.1          R6_2.6.1             mime_0.13           
-    ## [37] lifecycle_1.0.5      stringr_1.6.0        fs_1.6.7             htmlwidgets_1.6.4   
-    ## [41] ragg_1.5.1           pkgconfig_2.0.3      desc_1.4.3           pkgdown_2.2.0.9000  
+    ## [29] reshape2_1.4.5       dplyr_1.2.1          httpuv_1.6.17        DT_0.34.0           
+    ## [33] ROCR_1.0-12          vctrs_0.7.3          R6_2.6.1             mime_0.13           
+    ## [37] lifecycle_1.0.5      stringr_1.6.0        fs_2.1.0             htmlwidgets_1.6.4   
+    ## [41] ragg_1.5.2           pkgconfig_2.0.3      desc_1.4.3           pkgdown_2.2.0.9000  
     ## [45] pillar_1.11.1        bslib_0.10.0         later_1.4.8          gtable_0.3.6        
-    ## [49] glue_1.8.0           Rcpp_1.1.1           statmod_1.5.1        systemfonts_1.3.2   
-    ## [53] xfun_0.56            tibble_3.3.1         tidyselect_1.2.1     knitr_1.51          
+    ## [49] glue_1.8.1           Rcpp_1.1.1-1.1       statmod_1.5.1        systemfonts_1.3.2   
+    ## [53] xfun_0.57            tibble_3.3.1         tidyselect_1.2.1     knitr_1.51          
     ## [57] farver_2.1.2         xtable_1.8-8         htmltools_0.5.9      labeling_0.4.3      
-    ## [61] rmarkdown_2.30       compiler_4.6.0       S7_0.2.1
+    ## [61] rmarkdown_2.31       compiler_4.6.0       S7_0.2.2
