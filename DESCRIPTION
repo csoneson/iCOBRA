@@ -50,6 +50,6 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Classification, Visualization
 Encoding: UTF-8
-RoxygenNote: 7.3.3
 URL: https://csoneson.github.io/iCOBRA/
 BugReports: https://github.com/csoneson/iCOBRA/issues
+Config/roxygen2/version: 8.0.0
