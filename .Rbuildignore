@@ -3,3 +3,6 @@
 ^\.git$
 ^\.gitignore$
 ^\.github$
+^\.positai$
+^\.claude$
+^_pkgdown.yaml$
