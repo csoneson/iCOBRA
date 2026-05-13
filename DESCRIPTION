@@ -38,10 +38,11 @@ Imports:
     DT,
     limma,
     methods,
-    UpSetR,
     utils,
     rlang,
-    prompter
+    prompter,
+    SimpleUpset,
+    patchwork
 Suggests:
     knitr,
     markdown,

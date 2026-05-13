@@ -470,8 +470,8 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
                      column(2, uiOutput("upset.stratum")),
                      column(2, radioButtons(inputId = "order.upset.by",
                                             label = "Order intersections by",
-                                            choices = c("degree", "freq"),
-                                            selected = "freq")),
+                                            choices = c("degree", "size"),
+                                            selected = "size")),
                      column(2, radioButtons(inputId = "upset.order",
                                             label = "Order intersections",
                                             choices = c("decreasing", 
@@ -1140,9 +1140,30 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
         grDevices::pdf(file, height = 12, width = 12)
         if (length(values$all_methods) == 0 | length(input$cols) == 0)
           return(NULL)
-        plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
-                   decreasing = (input$upset.order == "decreasing"),
-                   stratum = input$upset.stratum)
+        if (input$order.upset.by == "degree") {
+          if (input$upset.order == "decreasing") {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(desc(degree)))
+          } else {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(degree))
+          }
+        } else  {
+          if (input$upset.order == "decreasing") {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(desc(size)))
+          } else {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(size))
+          }
+        }
+        # plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
+        #            decreasing = (input$upset.order == "decreasing"),
+        #            stratum = input$upset.stratum)
         grDevices::dev.off()
       })
     
@@ -1192,10 +1213,31 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
             (input$goButton == 0 & !isTRUE(autorun))) {
           return(NULL)
         }
-        
-        plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
-                   decreasing = (input$upset.order == "decreasing"),
-                   stratum = input$upset.stratum)
+
+        if (input$order.upset.by == "degree") {
+          if (input$upset.order == "decreasing") {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(desc(degree)))
+          } else {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(degree))
+          }
+        } else  {
+          if (input$upset.order == "decreasing") {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(desc(size)))
+          } else {
+            plot_upset(plotvalues()$all_vals,
+                       stratum = input$upset.stratum,
+                       sort_intersect = list(size))
+          }
+        }        
+        # plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
+        #            decreasing = (input$upset.order == "decreasing"),
+        #            stratum = input$upset.stratum)
       })
     })
     
