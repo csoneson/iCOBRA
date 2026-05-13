@@ -93,6 +93,7 @@ update_cobradata <- function(object, quiet = FALSE) {
 #' @export
 #' @rdname COBRAData
 #' @author Charlotte Soneson
+#' @importFrom dplyr full_join
 #' @examples
 #' ## Empty COBRAData object:
 #' COBRAData()

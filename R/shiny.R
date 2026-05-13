@@ -17,6 +17,7 @@
 #' @return Returns (and runs) an object representing the shiny app.
 #' @import shiny
 #' @import shinydashboard
+#' @importFrom dplyr desc
 #' @importFrom prompter use_prompt add_prompt
 #' @importFrom utils packageVersion
 #' @export
