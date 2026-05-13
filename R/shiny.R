@@ -1143,23 +1143,23 @@ COBRAapp <- function(cobradata = NULL, autorun = FALSE,
           return(NULL)
         if (input$order.upset.by == "degree") {
           if (input$upset.order == "decreasing") {
-            plot_upset(plotvalues()$all_vals,
-                       stratum = input$upset.stratum,
-                       sort_intersect = list(desc(degree)))
+            print(plot_upset(plotvalues()$all_vals,
+                             stratum = input$upset.stratum,
+                             sort_intersect = list(desc(degree))))
           } else {
-            plot_upset(plotvalues()$all_vals,
-                       stratum = input$upset.stratum,
-                       sort_intersect = list(degree))
+            print(plot_upset(plotvalues()$all_vals,
+                             stratum = input$upset.stratum,
+                             sort_intersect = list(degree)))
           }
-        } else  {
+        } else {
           if (input$upset.order == "decreasing") {
-            plot_upset(plotvalues()$all_vals,
-                       stratum = input$upset.stratum,
-                       sort_intersect = list(desc(size)))
+            print(plot_upset(plotvalues()$all_vals,
+                             stratum = input$upset.stratum,
+                             sort_intersect = list(desc(size))))
           } else {
-            plot_upset(plotvalues()$all_vals,
-                       stratum = input$upset.stratum,
-                       sort_intersect = list(size))
+            print(plot_upset(plotvalues()$all_vals,
+                             stratum = input$upset.stratum,
+                             sort_intersect = list(size)))
           }
         }
         # plot_upset(plotvalues()$all_vals, order.by = input$order.upset.by,
