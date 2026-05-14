@@ -78,8 +78,7 @@ setReplaceMethod("fdrtpr", signature(x = "COBRAPlot",
                  })
 
 #' @rdname onlyshared
-#' @aliases onlyshared onlyshared,COBRAPlot-method
-#'   onlyshared<-,COBRAPlot,logical-method
+#' @aliases onlyshared onlyshared,COBRAPlot-method onlyshared<-,COBRAPlot,logical-method
 setReplaceMethod("onlyshared", signature(x = "COBRAPlot",
                                          value = "logical"),
                  function(x, value) {
@@ -89,8 +88,7 @@ setReplaceMethod("onlyshared", signature(x = "COBRAPlot",
                  })
 
 #' @rdname fdrtprcurve
-#' @aliases fdrtprcurve fdrtprcurve,COBRAPlot-method
-#'   fdrtprcurve<-,COBRAPlot,data.frame-method
+#' @aliases fdrtprcurve fdrtprcurve,COBRAPlot-method fdrtprcurve<-,COBRAPlot,data.frame-method
 setReplaceMethod("fdrtprcurve", signature(x = "COBRAPlot",
                                           value = "data.frame"),
                  function(x, value) {
@@ -100,8 +98,7 @@ setReplaceMethod("fdrtprcurve", signature(x = "COBRAPlot",
                  })
 
 #' @rdname deviation
-#' @aliases deviation deviation,COBRAPlot-method
-#'   deviation<-,COBRAPlot,data.frame-method
+#' @aliases deviation deviation,COBRAPlot-method deviation<-,COBRAPlot,data.frame-method
 setReplaceMethod("deviation", signature(x = "COBRAPlot",
                                         value = "data.frame"),
                  function(x, value) {
@@ -121,8 +118,7 @@ setReplaceMethod("fdrnbr", signature(x = "COBRAPlot",
                  })
 
 #' @rdname fdrnbrcurve
-#' @aliases fdrnbrcurve fdrnbrcurve,COBRAPlot-method
-#'   fdrnbrcurve<-,COBRAPlot,data.frame-method
+#' @aliases fdrnbrcurve fdrnbrcurve,COBRAPlot-method fdrnbrcurve<-,COBRAPlot,data.frame-method
 setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPlot",
                                           value = "data.frame"),
                  function(x, value) {
@@ -143,8 +139,7 @@ setReplaceMethod("fsrnbr", signature(x = "COBRAPlot",
                  })
 
 #' @rdname fsrnbrcurve
-#' @aliases fsrnbrcurve fsrnbrcurve,COBRAPlot-method
-#'   fsrnbrcurve<-,COBRAPlot,data.frame-method
+#' @aliases fsrnbrcurve fsrnbrcurve,COBRAPlot-method fsrnbrcurve<-,COBRAPlot,data.frame-method
 setReplaceMethod("fsrnbrcurve", signature(x = "COBRAPlot",
                                           value = "data.frame"),
                  function(x, value) {
@@ -155,8 +150,7 @@ setReplaceMethod("fsrnbrcurve", signature(x = "COBRAPlot",
                  })
 
 #' @rdname scatter
-#' @aliases scatter scatter,COBRAPlot-method
-#'   scatter<-,COBRAPlot,data.frame-method
+#' @aliases scatter scatter,COBRAPlot-method scatter<-,COBRAPlot,data.frame-method
 setReplaceMethod("scatter", signature(x = "COBRAPlot",
                                       value = "data.frame"),
                  function(x, value) {
@@ -231,8 +225,7 @@ setReplaceMethod("splv", signature(x = "COBRAPlot", value = "character"),
                  })
 
 #' @rdname maxsplit
-#' @aliases maxsplit maxsplit,COBRAPlot-method
-#'   maxsplit<-,COBRAPlot,numeric-method
+#' @aliases maxsplit maxsplit,COBRAPlot-method maxsplit<-,COBRAPlot,numeric-method
 setReplaceMethod("maxsplit", signature(x = "COBRAPlot",
                                        value = "numeric"),
                  function(x, value) {
@@ -251,8 +244,7 @@ setReplaceMethod("maxsplit", signature(x = "COBRAPlot",
 #' @docType methods
 #' @name plotcolors
 #' @rdname plotcolors
-#' @aliases plotcolors plotcolors,COBRAPlot-method
-#'   plotcolors<-,COBRAPlot,character-method
+#' @aliases plotcolors plotcolors,COBRAPlot-method plotcolors<-,COBRAPlot,character-method
 #' @return The accessor function returns a character vector giving the colors
 #'   assigned to each of the methods (or method/stratification level
 #'   combinations) represented in the \code{COBRAPlot} object.
@@ -290,8 +282,7 @@ setReplaceMethod("plotcolors", signature(x = "COBRAPlot", value = "character"),
 #' @docType methods
 #' @name facetted
 #' @rdname facetted
-#' @aliases facetted facetted,COBRAPlot-method
-#'   facetted<-,COBRAPlot,logical-method
+#' @aliases facetted facetted,COBRAPlot-method facetted<-,COBRAPlot,logical-method
 #' @return The accessor function returns a logical value, indicating whether the
 #'   object is formatted for facetted plots (visualizing each stratification
 #'   level in a separate panel) or not.
@@ -324,8 +315,7 @@ setReplaceMethod("facetted", signature(x = "COBRAPlot", value = "logical"),
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases [ [,COBRAPlot-method \S4method{[}{COBRAPlot,ANY,ANY}
-#'   \S4method{[}{COBRAPlot,ANY,ANY,ANY}
+#' @aliases [ [,COBRAPlot-method \S4method{[}{COBRAPlot,ANY,ANY} \S4method{[}{COBRAPlot,ANY,ANY,ANY}
 #' @export
 #' @examples
 #' data(cobradata_example)
@@ -409,8 +399,7 @@ setValidity("COBRAPlot",
 #' @docType methods
 #' @name coerce
 #' @rdname coerce
-#' @aliases coerce coerce,COBRAPerformance,COBRAPlot-method coerce,
-#'   COBRAPlot,COBRAPerformance-method
+#' @aliases coerce coerce,COBRAPerformance,COBRAPlot-method coerce,COBRAPlot,COBRAPerformance-method
 #'
 #' @param from The object that is to be coerced into another class.
 #' @author Charlotte Soneson

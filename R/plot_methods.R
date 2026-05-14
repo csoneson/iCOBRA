@@ -659,7 +659,7 @@ plot_overlap <- function(cobraplot, ...) {
 #' @param sets.bar.color The colors to use for the bars in the UpSet plot. By
 #'   default, they are extracted from the \code{plotcolors} slot of the
 #'   \code{cobraplot} object.
-#' @param ... Additional arguments to \code{UpSetR::upset}.
+#' @param ... Additional arguments to \code{SimpleUpset::simpleUpSet}.
 #'
 #' @return Nothing, displays a graph
 #' @references 
@@ -669,7 +669,10 @@ plot_overlap <- function(cobraplot, ...) {
 #' Lex et al (2014): UpSet: Visualization of intersecting sets. IEEE
 #' Transactions on Visualization and Computer Graphics 20(12), 1983-1992.
 #' @export
-#' @import UpSetR
+#' @importFrom SimpleUpset simpleUpSet default_set_layers
+#' @importFrom ggplot2 theme theme_minimal scale_fill_manual
+#' @import patchwork
+#' 
 #' @author Charlotte Soneson
 #' @examples
 #' data(cobradata_example)
@@ -679,7 +682,7 @@ plot_overlap <- function(cobraplot, ...) {
 #' cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
 #'                                    incltruth = TRUE)
 #' plot_upset(cobraplot)
-#' plot_upset(cobraplot, order.by = "freq", decreasing = TRUE)
+#' plot_upset(cobraplot, sort_intersect = list(size))
 #' 
 #' cobraperf <- calculate_performance(cobradata_example, 
 #'                                    binary_truth = "status", 
@@ -701,11 +704,22 @@ plot_upset <- function(cobraplot, stratum = NULL, nsets = NULL,
                                     decreasing = "true")]
     if (all(colSums(overlap_table) == 0)) return(NULL)
     if (is.null(nsets)) nsets <- ncol(overlap_table)
+    nsets <- min(nsets, ncol(overlap_table))
     if (is.null(nintersects)) nintersects <- 2^(ncol(overlap_table)) - 1
     if (is.null(sets.bar.color)) 
       sets.bar.color <- plotcolors(cobraplot)[plotorder]
-    upset(overlap_table, nsets = nsets, nintersects = nintersects, 
-          sets.bar.color = sets.bar.color, ...)
+    simpleUpSet(
+      overlap_table, 
+      sets = colnames(overlap_table)[seq_len(nsets)],
+      n_intersect = nintersects, 
+      set_layers = default_set_layers(
+        fill = "set",
+        scale_fill_manual(values = sets.bar.color)
+      ), ...
+    ) & 
+      theme_minimal() & theme(legend.position = "none")
+    # upset(overlap_table, nsets = nsets, nintersects = nintersects, 
+    #       sets.bar.color = sets.bar.color, ...)
   } else {
     if (is.null(stratum)) stop("You must provide a stratum")
     plotorder <- 
@@ -715,12 +729,23 @@ plot_upset <- function(cobraplot, stratum = NULL, nsets = NULL,
               decreasing = "true")]
     if (all(colSums(overlap_table[[stratum]]) == 0)) return(NULL)
     if (is.null(nsets)) nsets <- ncol(overlap_table[[stratum]])
+    nsets <- min(nsets, ncol(overlap_table[[stratum]]))
     if (is.null(nintersects)) 
       nintersects <- 2^(ncol(overlap_table[[stratum]])) - 1
     if (is.null(sets.bar.color)) 
       sets.bar.color <- plotcolors(cobraplot)[plotorder]
-    upset(overlap_table[[stratum]], nsets = nsets, nintersects = nintersects,
-          sets.bar.color = sets.bar.color, ...)
+    simpleUpSet(
+      overlap_table[[stratum]], 
+      sets = colnames(overlap_table[[stratum]])[seq_len(nsets)],
+      n_intersect = nintersects, 
+      set_layers = default_set_layers(
+        fill = "set",
+        scale_fill_manual(values = sets.bar.color)
+      ), ...
+    ) & 
+      theme_minimal() & theme(legend.position = "none")
+    # upset(overlap_table[[stratum]], nsets = nsets, nintersects = nintersects,
+    #       sets.bar.color = sets.bar.color, ...)
   }
 }
 

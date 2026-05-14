@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.41.1
+-------------------------
+  o Replace UpSetR dependency with SimpleUpset
+
 CHANGES IN VERSION 1.37.1
 -------------------------
   o Minor fixes to tests to be more robust to possible future changes in ggplot2

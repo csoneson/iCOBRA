@@ -172,9 +172,7 @@ setMethod("show", "COBRAPerformance", function(object) {
 #' @docType methods
 #' @name fdrtpr
 #' @rdname fdrtpr
-#' @aliases fdrtpr fdrtpr,COBRAPerformance-method
-#'   fdrtpr<-,COBRAPerformance,data.frame-method fdrtpr,COBRAPlot-method
-#'   fdrtpr<-,COBRAPlot,data.frame-method
+#' @aliases fdrtpr fdrtpr,COBRAPerformance-method fdrtpr<-,COBRAPerformance,data.frame-method fdrtpr,COBRAPlot-method fdrtpr<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information about
 #'   the observed FPR and TPR for each method and each stratification level, at
 #'   various adjusted p-value thresholds.
@@ -212,9 +210,7 @@ setReplaceMethod("fdrtpr", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name onlyshared
 #' @rdname onlyshared
-#' @aliases onlyshared onlyshared,COBRAPerformance-method
-#'   onlyshared<-,COBRAPerformance,logical-method onlyshared,COBRAPlot-method
-#'   onlyshared<-,COBRAPlot,logical-method
+#' @aliases onlyshared onlyshared,COBRAPerformance-method onlyshared<-,COBRAPerformance,logical-method onlyshared,COBRAPlot-method onlyshared<-,COBRAPlot,logical-method
 #' @return The accessor function returns a logical indicating whether only
 #'   features that are shared between result and truth are retained, or if all
 #'   features in the truth are used.
@@ -253,9 +249,7 @@ setReplaceMethod("onlyshared", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name fdrtprcurve
 #' @rdname fdrtprcurve
-#' @aliases fdrtprcurve fdrtprcurve,COBRAPerformance-method
-#'   fdrtprcurve<-,COBRAPerformance,data.frame-method
-#'   fdrtprcurve,COBRAPlot-method fdrtprcurve<-,COBRAPlot,data.frame-method
+#' @aliases fdrtprcurve fdrtprcurve,COBRAPerformance-method fdrtprcurve<-,COBRAPerformance,data.frame-method fdrtprcurve,COBRAPlot-method fdrtprcurve<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate curves of observed FDR vs TPR for each method and
 #'   each stratification level.
@@ -292,9 +286,7 @@ setReplaceMethod("fdrtprcurve", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name deviation
 #' @rdname deviation
-#' @aliases deviation deviation,COBRAPerformance-method
-#'   deviation<-,COBRAPerformance,data.frame-method deviation,COBRAPlot-method
-#'   deviation<-,COBRAPlot,data.frame-method
+#' @aliases deviation deviation,COBRAPerformance-method deviation<-,COBRAPerformance,data.frame-method deviation,COBRAPlot-method deviation<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to plots of deviations between observed and true scores for each
 #'   method and each stratification level.
@@ -331,9 +323,7 @@ setReplaceMethod("deviation", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name fdrnbr
 #' @rdname fdrnbr
-#' @aliases fdrnbr fdrnbr,COBRAPerformance-method
-#'   fdrnbr<-,COBRAPerformance,data.frame-method fdrnbr,COBRAPlot-method
-#'   fdrnbr<-,COBRAPlot,data.frame-method
+#' @aliases fdrnbr fdrnbr,COBRAPerformance-method fdrnbr<-,COBRAPerformance,data.frame-method fdrnbr,COBRAPlot-method fdrnbr<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information about
 #'   the observed FPR and the number of features called positive for each method
 #'   and each stratification level, at various adjusted p-value thresholds.
@@ -371,9 +361,7 @@ setReplaceMethod("fdrnbr", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name fdrnbrcurve
 #' @rdname fdrnbrcurve
-#' @aliases fdrnbrcurve fdrnbrcurve,COBRAPerformance-method
-#'   fdrnbrcurve<-,COBRAPerformance,data.frame-method
-#'   fdrnbrcurve,COBRAPlot-method fdrnbrcurve<-,COBRAPlot,data.frame-method
+#' @aliases fdrnbrcurve fdrnbrcurve,COBRAPerformance-method fdrnbrcurve<-,COBRAPerformance,data.frame-method fdrnbrcurve,COBRAPlot-method fdrnbrcurve<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate curves of observed FDR vs number of features called
 #'   positive for each method and each stratification level.
@@ -411,9 +399,7 @@ setReplaceMethod("fdrnbrcurve", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name fsrnbr
 #' @rdname fsrnbr
-#' @aliases fsrnbr fsrnbr,COBRAPerformance-method
-#'   fsrnbr<-,COBRAPerformance,data.frame-method fsrnbr,COBRAPlot-method
-#'   fsrnbr<-,COBRAPlot,data.frame-method
+#' @aliases fsrnbr fsrnbr,COBRAPerformance-method fsrnbr<-,COBRAPerformance,data.frame-method fsrnbr,COBRAPlot-method fsrnbr<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information about
 #'   the observed FSR and the number of features called positive for each method
 #'   and each stratification level, at various s-value thresholds.
@@ -463,9 +449,7 @@ setReplaceMethod("fsrnbr", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name fsrnbrcurve
 #' @rdname fsrnbrcurve
-#' @aliases fsrnbrcurve fsrnbrcurve,COBRAPerformance-method
-#'   fsrnbrcurve<-,COBRAPerformance,data.frame-method
-#'   fsrnbrcurve,COBRAPlot-method fsrnbrcurve<-,COBRAPlot,data.frame-method
+#' @aliases fsrnbrcurve fsrnbrcurve,COBRAPerformance-method fsrnbrcurve<-,COBRAPerformance,data.frame-method fsrnbrcurve,COBRAPlot-method fsrnbrcurve<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate curves of observed FSR vs number of features called
 #'   positive for each method and each stratification level.
@@ -516,9 +500,7 @@ setReplaceMethod("fsrnbrcurve", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name scatter
 #' @rdname scatter
-#' @aliases scatter scatter,COBRAPerformance-method
-#'   scatter<-,COBRAPerformance,data.frame-method scatter,COBRAPlot-method
-#'   scatter<-,COBRAPlot,data.frame-method
+#' @aliases scatter scatter,COBRAPerformance-method scatter<-,COBRAPerformance,data.frame-method scatter,COBRAPlot-method scatter<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate scatter plots of observed vs true values for each
 #'   method and each stratification level.
@@ -555,9 +537,7 @@ setReplaceMethod("scatter", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name tpr
 #' @rdname tpr
-#' @aliases tpr tpr,COBRAPerformance-method
-#'   tpr<-,COBRAPerformance,data.frame-method tpr,COBRAPlot-method
-#'   tpr<-,COBRAPlot,data.frame-method
+#' @aliases tpr tpr,COBRAPerformance-method tpr<-,COBRAPerformance,data.frame-method tpr,COBRAPlot-method tpr<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information about
 #'   the observed TPR for each method and each stratification level, at various
 #'   adjusted p-value thresholds.
@@ -593,9 +573,7 @@ setReplaceMethod("tpr", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @docType methods
 #' @name fpr
 #' @rdname fpr
-#' @aliases fpr fpr,COBRAPerformance-method
-#'   fpr<-,COBRAPerformance,data.frame-method fpr,COBRAPlot-method
-#'   fpr<-,COBRAPlot,data.frame-method
+#' @aliases fpr fpr,COBRAPerformance-method fpr<-,COBRAPerformance,data.frame-method fpr,COBRAPlot-method fpr<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information about
 #'   the observed FPR for each method and each stratification level, at various
 #'   adjusted p-value thresholds.
@@ -631,9 +609,7 @@ setReplaceMethod("fpr", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @docType methods
 #' @name roc
 #' @rdname roc
-#' @aliases roc roc,COBRAPerformance-method
-#'   roc<-,COBRAPerformance,data.frame-method roc,COBRAPlot-method
-#'   roc<-,COBRAPlot,data.frame-method
+#' @aliases roc roc,COBRAPerformance-method roc<-,COBRAPerformance,data.frame-method roc,COBRAPlot-method roc<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate ROC curves for each method and each stratification
 #'   level.
@@ -668,9 +644,7 @@ setReplaceMethod("roc", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @docType methods
 #' @name fpc
 #' @rdname fpc
-#' @aliases fpc fpc,COBRAPerformance-method
-#'   fpc<-,COBRAPerformance,data.frame-method fpc,COBRAPlot-method
-#'   fpc<-,COBRAPlot,data.frame-method
+#' @aliases fpc fpc,COBRAPerformance-method fpc<-,COBRAPerformance,data.frame-method fpc,COBRAPlot-method fpc<-,COBRAPlot,data.frame-method
 #' @return The accessor function returns a data frame giving information
 #'   necessary to generate false positive curves for each method and each
 #'   stratification level.
@@ -705,8 +679,7 @@ setReplaceMethod("fpc", signature(x = "COBRAPerformance", value = "data.frame"),
 #' @docType methods
 #' @name corr
 #' @rdname corr
-#' @aliases corr corr,COBRAPerformance-method
-#'   corr<-,COBRAPerformance,data.frame-method
+#' @aliases corr corr,COBRAPerformance-method corr<-,COBRAPerformance,data.frame-method
 #' @return The accessor function returns a data frame giving correlation values
 #'   for each method and each stratification level.
 #'
@@ -741,9 +714,7 @@ setReplaceMethod("corr", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name overlap
 #' @rdname overlap
-#' @aliases overlap overlap,COBRAPerformance-method
-#'   overlap<-,COBRAPerformance,list_df-method overlap,COBRAPlot-method
-#'   overlap<-,COBRAPlot,list_df-method
+#' @aliases overlap overlap,COBRAPerformance-method overlap<-,COBRAPerformance,list_df-method overlap,COBRAPlot-method overlap<-,COBRAPlot,list_df-method
 #' @return The accessor function returns a data frame or a list, giving
 #'   information about which feature that are classified as 'positive' by each
 #'   method and for each stratification level.
@@ -781,9 +752,7 @@ setReplaceMethod("overlap", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name splv
 #' @rdname splv
-#' @aliases splv splv,COBRAPerformance-method
-#'   splv<-,COBRAPerformance,character-method splv,COBRAPlot-method
-#'   splv<-,COBRAPlot,character-method
+#' @aliases splv splv,COBRAPerformance-method splv<-,COBRAPerformance,character-method splv,COBRAPlot-method splv<-,COBRAPlot,character-method
 #' @return The accessor function returns a character string giving the name of a
 #'   feature annotation to use for stratification.
 #'
@@ -818,9 +787,7 @@ setReplaceMethod("splv", signature(x = "COBRAPerformance", value = "character"),
 #' @docType methods
 #' @name maxsplit
 #' @rdname maxsplit
-#' @aliases maxsplit maxsplit,COBRAPerformance-method
-#'   maxsplit<-,COBRAPerformance,numeric-method maxsplit,COBRAPlot-method
-#'   maxsplit<-,COBRAPlot,numeric-method
+#' @aliases maxsplit maxsplit,COBRAPerformance-method maxsplit<-,COBRAPerformance,numeric-method maxsplit,COBRAPlot-method maxsplit<-,COBRAPlot,numeric-method
 #' @return The accessor function returns a numeric value giving the maximal
 #'   number of strata to retain.
 #'
@@ -856,8 +823,7 @@ setReplaceMethod("maxsplit", signature(x = "COBRAPerformance",
 #' @docType methods
 #' @name basemethods
 #' @rdname basemethods
-#' @aliases basemethods basemethods,COBRAPerformance-method
-#'   basemethods,COBRAPlot-method
+#' @aliases basemethods basemethods,COBRAPerformance-method basemethods,COBRAPlot-method
 #' @return A character vector of all methods represented in the object.
 #'
 #' @param x A \code{COBRAPerformance} or \code{COBRAPlot} object.
@@ -890,8 +856,7 @@ setMethod("basemethods", "COBRAPerformance", function(x) {
 #' @docType methods
 #' @name stratiflevels
 #' @rdname stratiflevels
-#' @aliases stratiflevels stratiflevels,COBRAPerformance-method
-#'   stratiflevels,COBRAPlot-method
+#' @aliases stratiflevels stratiflevels,COBRAPerformance-method stratiflevels,COBRAPlot-method
 #' @return A character vector of all stratification levels represented in the
 #'   object
 #'
@@ -921,8 +886,7 @@ setMethod("stratiflevels", "COBRAPerformance", function(x) {
 #' @docType methods
 #' @name Extract
 #' @rdname Extract
-#' @aliases [ [,COBRAPerformance-method \S4method{[}{COBRAPerformance,ANY,ANY}
-#'   \S4method{[}{COBRAPerformance,ANY,ANY,ANY}
+#' @aliases [ [,COBRAPerformance-method \S4method{[}{COBRAPerformance,ANY,ANY} \S4method{[}{COBRAPerformance,ANY,ANY,ANY}
 #' @return A subset of the original object, of the same class
 #' @export
 setMethod("[", "COBRAPerformance",

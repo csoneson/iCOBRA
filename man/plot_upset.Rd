@@ -29,7 +29,7 @@ is determined automatically from the \code{cobraplot} object.}
 default, they are extracted from the \code{plotcolors} slot of the
 \code{cobraplot} object.}
 
-\item{...}{Additional arguments to \code{UpSetR::upset}.}
+\item{...}{Additional arguments to \code{SimpleUpset::simpleUpSet}.}
 }
 \value{
 Nothing, displays a graph
@@ -49,7 +49,7 @@ cobraperf <- calculate_performance(cobradata_example,
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                    incltruth = TRUE)
 plot_upset(cobraplot)
-plot_upset(cobraplot, order.by = "freq", decreasing = TRUE)
+plot_upset(cobraplot, sort_intersect = list(size))
 
 cobraperf <- calculate_performance(cobradata_example, 
                                    binary_truth = "status", 

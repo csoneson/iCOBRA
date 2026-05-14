@@ -31,7 +31,7 @@ is_plottable <- function(obj) {
     TRUE
 }
 
-#' @import dplyr
+#' @importFrom dplyr group_by summarise 
 #' @importFrom rlang .data
 get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
   if (splv != "none") {
@@ -40,7 +40,7 @@ get_keeplevels <- function(truth, splv, binary_truth, maxsplit) {
     } else {
       if (!is.null(binary_truth)) {
         nbrtrulydiff <-
-          as.data.frame(truth %>% group_by(.data[[splv]]) %>%
+          as.data.frame(truth |> group_by(.data[[splv]]) |>
                           summarise(nbrdiff = length(which(.data[[binary_truth]] == 1))),
                           # summarise_(nbrdiff = paste0("length(which(",
                           #                             binary_truth, "== 1))")),
