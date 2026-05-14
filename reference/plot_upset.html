@@ -15,7 +15,7 @@ category at a time can be displayed.'></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">iCOBRA</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.41.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.41.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,7 @@ default, they are extracted from the <code>plotcolors</code> slot of the
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments to <code><a href="https://rdrr.io/pkg/UpSetR/man/upset.html" class="external-link">UpSetR::upset</a></code>.</p></dd>
+<dd><p>Additional arguments to <code><a href="https://rdrr.io/pkg/SimpleUpset/man/simpleUpSet.html" class="external-link">SimpleUpset::simpleUpSet</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -120,21 +120,8 @@ Transactions on Visualization and Computer Graphics 20(12), 1983-1992.</p>
 <span class="r-in"><span><span class="va">cobraplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_data_for_plot.html">prepare_data_for_plot</a></span><span class="op">(</span><span class="va">cobraperf</span>, colorscheme <span class="op">=</span> <span class="st">"Dark2"</span>,</span></span>
 <span class="r-in"><span>                                   incltruth <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`aes_string()` was deprecated in ggplot2 3.0.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use tidy evaluation idioms with `aes()`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> See also `vignette("ggplot2-in-packages")` for more information.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">UpSetR</span> package.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">UpSetR</span> package.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">UpSetR</span> package.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
 <span class="r-plt img"><img src="plot_upset-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span>, order.by <span class="op">=</span> <span class="st">"freq"</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_upset</span><span class="op">(</span><span class="va">cobraplot</span>, sort_intersect <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">size</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_upset-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cobraperf</span> <span class="op">&lt;-</span> <span class="fu"><a href="calculate_performance.html">calculate_performance</a></span><span class="op">(</span><span class="va">cobradata_example</span>, </span></span>

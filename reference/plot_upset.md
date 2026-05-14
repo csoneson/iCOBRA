@@ -48,7 +48,7 @@ plot_upset(
 - ...:
 
   Additional arguments to
-  [`UpSetR::upset`](https://rdrr.io/pkg/UpSetR/man/upset.html).
+  [`SimpleUpset::simpleUpSet`](https://rdrr.io/pkg/SimpleUpset/man/simpleUpSet.html).
 
 ## Value
 
@@ -77,21 +77,8 @@ cobraperf <- calculate_performance(cobradata_example,
 cobraplot <- prepare_data_for_plot(cobraperf, colorscheme = "Dark2",
                                    incltruth = TRUE)
 plot_upset(cobraplot)
-#> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
-#> ℹ Please use tidy evaluation idioms with `aes()`.
-#> ℹ See also `vignette("ggplot2-in-packages")` for more information.
-#> ℹ The deprecated feature was likely used in the UpSetR package.
-#>   Please report the issue to the authors.
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
-#> ℹ The deprecated feature was likely used in the UpSetR package.
-#>   Please report the issue to the authors.
-#> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` argument instead.
-#> ℹ The deprecated feature was likely used in the UpSetR package.
-#>   Please report the issue to the authors.
 
-plot_upset(cobraplot, order.by = "freq", decreasing = TRUE)
+plot_upset(cobraplot, sort_intersect = list(size))
 
 
 cobraperf <- calculate_performance(cobradata_example, 

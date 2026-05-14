@@ -131,8 +131,6 @@ for import into `iCOBRA`.
 
 - [`coerce`](https://csoneson.github.io/iCOBRA/reference/coerce.md)
   [`coerce,COBRAPerformance,COBRAPlot-method`](https://csoneson.github.io/iCOBRA/reference/coerce.md)
-  [`coerce,`](https://csoneson.github.io/iCOBRA/reference/coerce.md)
-  [`COBRAPlot,COBRAPerformance-method`](https://csoneson.github.io/iCOBRA/reference/coerce.md)
   [`coerce,COBRAPlot,COBRAPerformance-method`](https://csoneson.github.io/iCOBRA/reference/coerce.md)
   : Convert an object to another class
 
