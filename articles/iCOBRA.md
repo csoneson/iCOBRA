@@ -391,13 +391,13 @@ the example data set.
 sessionInfo()
 ```
 
-    ## R Under development (unstable) (2026-05-03 r89994)
+    ## R version 4.6.2 (2026-10-29)
     ## Platform: aarch64-apple-darwin23
-    ## Running under: macOS Sequoia 15.7.4
+    ## Running under: macOS Tahoe 26.7.2
     ## 
     ## Matrix products: default
-    ## BLAS:   /Library/Frameworks/R.framework/Versions/4.7/Resources/lib/libRblas.0.dylib 
-    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.7/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+    ## BLAS:   /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRblas.0.dylib 
+    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
     ## 
     ## locale:
     ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -409,23 +409,23 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.3 iCOBRA_1.41.1
+    ## [1] ggplot2_4.0.4 iCOBRA_1.41.1
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyr_1.3.2          sass_0.4.10          generics_0.1.4       stringi_1.8.7       
-    ##  [5] digest_0.6.39        magrittr_2.0.5       evaluate_1.0.5       grid_4.7.0          
+    ##  [1] tidyr_1.3.2          sass_0.5.0           generics_0.1.4       stringi_1.8.9       
+    ##  [5] digest_0.6.39        magrittr_2.0.5       evaluate_1.0.5       grid_4.6.2          
     ##  [9] RColorBrewer_1.1-3   fastmap_1.2.0        plyr_1.8.9           jsonlite_2.0.0      
-    ## [13] limma_3.68.2         promises_1.5.0       prompter_1.2.1       purrr_1.2.2         
-    ## [17] SimpleUpset_0.1.4    scales_1.4.0         textshaping_1.0.5    jquerylib_0.1.4     
-    ## [21] shinydashboard_0.7.3 cli_3.6.6            shiny_1.13.0         rlang_1.2.0         
-    ## [25] withr_3.0.2          cachem_1.1.0         yaml_2.3.12          otel_0.2.0          
-    ## [29] tools_4.7.0          reshape2_1.4.5       dplyr_1.2.1          httpuv_1.6.17       
+    ## [13] limma_3.99.5         promises_1.5.0       prompter_1.2.1       purrr_1.2.2         
+    ## [17] SimpleUpset_0.1.6    scales_1.4.0         textshaping_1.1.0    jquerylib_0.1.4     
+    ## [21] shinydashboard_0.7.3 cli_3.6.6            shiny_1.15.0         rlang_1.3.0         
+    ## [25] withr_3.0.3          cachem_1.1.0         yaml_2.3.12          otel_0.3.0          
+    ## [29] tools_4.6.2          reshape2_1.4.5       dplyr_1.2.1          httpuv_1.6.17       
     ## [33] DT_0.34.0            ROCR_1.0-12          vctrs_0.7.3          R6_2.6.1            
     ## [37] mime_0.13            lifecycle_1.0.5      stringr_1.6.0        fs_2.1.0            
     ## [41] htmlwidgets_1.6.4    ragg_1.5.2           pkgconfig_2.0.3      desc_1.4.3          
-    ## [45] pkgdown_2.2.0.9000   pillar_1.11.1        bslib_0.10.0         later_1.4.8         
-    ## [49] gtable_0.3.6         glue_1.8.1           Rcpp_1.1.1-1.1       statmod_1.5.1       
-    ## [53] systemfonts_1.3.2    xfun_0.57            tibble_3.3.1         tidyselect_1.2.1    
-    ## [57] knitr_1.51           farver_2.1.2         xtable_1.8-8         htmltools_0.5.9     
-    ## [61] patchwork_1.3.2      labeling_0.4.3       rmarkdown_2.31       compiler_4.7.0      
-    ## [65] S7_0.2.2
+    ## [45] pkgdown_2.2.1.9000   pillar_1.11.1        bslib_0.12.0         later_1.4.8         
+    ## [49] gtable_0.3.6         glue_1.8.1           Rcpp_1.1.2           statmod_1.5.2       
+    ## [53] systemfonts_1.3.4    xfun_0.62            tibble_3.3.1         tidyselect_1.2.1    
+    ## [57] knitr_1.52           farver_2.1.2         xtable_1.8-8         htmltools_0.5.9     
+    ## [61] patchwork_1.3.2      labeling_0.4.3       rmarkdown_2.32       compiler_4.6.2      
+    ## [65] S7_1.0.0
