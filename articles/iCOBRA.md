@@ -409,7 +409,7 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ## [1] ggplot2_4.0.4 iCOBRA_1.41.1
+    ## [1] ggplot2_4.0.4 iCOBRA_1.43.0
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] tidyr_1.3.2          sass_0.5.0           generics_0.1.4       stringi_1.8.9       
